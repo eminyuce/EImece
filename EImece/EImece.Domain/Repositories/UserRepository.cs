@@ -81,6 +81,7 @@ namespace EImece.Domain.Repositories
             {
                 var key = search.ToLower().Trim();
                 users = users.Where(r => r.Email.ToLower().Contains(key)
+                                      || r.UserName.ToLower().Contains(key)
                                       || r.FirstName.ToLower().Contains(key)
                                       || r.LastName.ToLower().Contains(key));
             }
@@ -97,6 +98,7 @@ namespace EImece.Domain.Repositories
             {
                 var key = search.ToLower().Trim();
                 users = users.Where(r => r.Email.ToLower().Contains(key)
+                                      || r.UserName.ToLower().Contains(key)
                                       || r.FirstName.ToLower().Contains(key)
                                       || r.LastName.ToLower().Contains(key));
             }
@@ -126,6 +128,7 @@ namespace EImece.Domain.Repositories
             {
                 var key = searchKey.ToLower().Trim();
                 users = users.Where(r => r.Email.ToLower().Contains(key)
+                                      || r.UserName.ToLower().Contains(key)
                                       || r.FirstName.ToLower().Contains(key)
                                       || r.LastName.ToLower().Contains(key));
             }

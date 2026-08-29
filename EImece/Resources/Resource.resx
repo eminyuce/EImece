@@ -2407,6 +2407,27 @@
   <data name="LockoutMessage" xml:space="preserve">
     <value>Hesabınız geçici olarak kilitlendi. Lütfen daha sonra tekrar deneyin.</value>
   </data>
+  <data name="LockoutTitle" xml:space="preserve">
+    <value>Hesap kilitlendi</value>
+  </data>
+  <data name="LockoutWhy" xml:space="preserve">
+    <value>Çok sayıda başarısız giriş denemesi nedeniyle hesabınız geçici olarak kilitlendi.</value>
+  </data>
+  <data name="LockoutWaitMinutes" xml:space="preserve">
+    <value>Yaklaşık {0} dakika sonra tekrar deneyebilirsiniz.</value>
+  </data>
+  <data name="LockoutTryAgain" xml:space="preserve">
+    <value>Tekrar giriş yap</value>
+  </data>
+  <data name="LockoutSafetyNote" xml:space="preserve">
+    <value>Bu, hesabınızı korumak için otomatik bir güvenlik önlemidir.</value>
+  </data>
+  <data name="LockoutRemaining" xml:space="preserve">
+    <value>Kalan süre</value>
+  </data>
+  <data name="LockoutReady" xml:space="preserve">
+    <value>Bekleme süresi doldu. Şimdi tekrar giriş yapabilirsiniz.</value>
+  </data>
   <data name="UseAnotherService" xml:space="preserve">
     <value>Başka bir servis ile giriş yapın.</value>
   </data>

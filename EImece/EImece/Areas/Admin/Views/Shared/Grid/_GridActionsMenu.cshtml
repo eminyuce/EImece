@@ -28,6 +28,7 @@
     var forgotPasswordUrl = ViewData["ForgotPasswordUrl"].ToStr();
     var newPasswordUrl = ViewData["NewPasswordUrl"].ToStr();
     var rolesUrl = ViewData["RolesUrl"].ToStr();
+    var unlockUrl = ViewData["UnlockUrl"].ToStr();
 
     var hasSpecs = product != null
         && product.ProductCategory != null
@@ -52,6 +53,7 @@
     if (!string.IsNullOrEmpty(forgotPasswordUrl)) { actionCount++; }
     if (!string.IsNullOrEmpty(newPasswordUrl)) { actionCount++; }
     if (!string.IsNullOrEmpty(rolesUrl)) { actionCount++; }
+    if (!string.IsNullOrEmpty(unlockUrl)) { actionCount++; }
     if (hasDelete) { actionCount++; }
     var isSingleAction = actionCount == 1;
     var hasMenuItems = actionCount > 0;
@@ -156,6 +158,19 @@ if (!isSingleAction)
                 <a class="dropdown-item" href="@rolesUrl">
                     <i class="fa fa-user"></i> @AdminResource.Roles
                 </a>
+            </li>
+        }
+        @if (!string.IsNullOrEmpty(unlockUrl))
+        {
+            <li>
+                <form action="@unlockUrl" method="post" class="eg-unlock-form">
+                    @Html.AntiForgeryToken()
+                    <button type="submit"
+                            class="dropdown-item text-warning"
+                            onclick="return confirm('@AdminResource.UnlockAccountConfirm');">
+                        <i class="fa fa-unlock"></i> @AdminResource.UnlockAccount
+                    </button>
+                </form>
             </li>
         }
         @if (hasDelete)

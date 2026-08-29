@@ -2427,6 +2427,15 @@
   <data name="Locked" xml:space="preserve">
     <value>Kilitli</value>
   </data>
+  <data name="UnlockAccount" xml:space="preserve">
+    <value>Kilidi aç</value>
+  </data>
+  <data name="AccountUnlocked" xml:space="preserve">
+    <value>Hesap kilidi açıldı. Kullanıcı tekrar giriş yapabilir.</value>
+  </data>
+  <data name="UnlockAccountConfirm" xml:space="preserve">
+    <value>Bu hesabın kilidi açılsın mı?</value>
+  </data>
   <data name="Maintenance" xml:space="preserve">
     <value>Bakım</value>
   </data>
@@ -3481,13 +3490,16 @@
     <value>Rolleri işaretleyerek yetkileri açıp kapatabilirsiniz.</value>
   </data>
   <data name="AdminUsersIndexLead" xml:space="preserve">
-    <value>Yönetici ve editör hesaplarını arayın, role / 2FA durumuna göre filtreleyin ve işlem menüsünden düzenleyin.</value>
+    <value>Yönetici ve editör hesaplarını arayın, rol / 2FA / kilit durumuna göre filtreleyin ve işlem menüsünden düzenleyin.</value>
   </data>
   <data name="CustomersWithAccounts" xml:space="preserve">
     <value>Sitede hesabı olan müşteriler</value>
   </data>
   <data name="FilterByNameEmailRole2Fa" xml:space="preserve">
-    <value>Ad / e-posta, rol ve 2FA ile daraltın</value>
+    <value>Ad / e-posta, rol, 2FA veya kilit durumu ile daraltın</value>
+  </data>
+  <data name="SearchNameEmailPlaceholder" xml:space="preserve">
+    <value>Ad, soyad, e-posta veya kullanıcı adı</value>
   </data>
   <data name="Administrator" xml:space="preserve">
     <value>Yönetici</value>

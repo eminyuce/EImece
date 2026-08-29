@@ -95,6 +95,8 @@
             @RenderBody()
         </main>
 
+        @if (ViewBag.HideMarketingCta != true)
+        {
         <section class="crizal-cta-band contact-style01" aria-label="@companyName">
             <div class="container">
                 <div class="crizal-cta-band__panel">
@@ -108,6 +110,7 @@
                 </div>
             </div>
         </section>
+        }
 
         @Html.Action("Footer", "Home", new { lang = countryCode })
     </div>

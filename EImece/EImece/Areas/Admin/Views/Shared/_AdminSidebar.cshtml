@@ -44,7 +44,8 @@
     var catalogCount = 5 + (productPriceEnabled ? 1 : 0) + (productReviewEnabled ? 1 : 0);
     var salesCount = 4;
     var contentCount = 9;
-    var systemCount = 8;
+    var userManagementCount = isAdminRole ? 4 : 2;
+    var systemCount = 5;
 }
 
 @helper MegaItem(string href, string title, string icon, string activeClass, string target = null)
@@ -217,6 +218,23 @@
                     </div>
                 </section>
 
+                <section class="admin-mega-card admin-mega-card--users" data-mega-group="users">
+                    <header class="admin-mega-card-head">
+                        <span class="admin-mega-card-icon"><i class="fa fa-users" aria-hidden="true"></i></span>
+                        <h3 class="admin-mega-card-title">@AdminResource.UsersManagement</h3>
+                        <span class="admin-mega-count">@userManagementCount</span>
+                    </header>
+                    <div class="admin-mega-card-body">
+                        @if (isAdminRole)
+                        {
+                            @MegaItem(Url.Action("Index", "Users", new { area = "admin" }), AdminResource.Users, "fa-user", actionActive("users", "index") != "" || actionActive("users", "edit") != "" || actionActive("users", "register") != "" || actionActive("users", "userroles") != "" ? "active" : "")
+                            @MegaItem(Url.Action("CustomerRoles", "Users", new { area = "admin" }), AdminResource.CustomersWithAccounts, "fa-users", actionActive("users", "customerroles"))
+                        }
+                        @MegaItem(Url.Action("changepassword", "Users", new { area = "admin" }), AdminResource.ChangePassword, "fa-key", actionActive("users", "changepassword"))
+                        @MegaItem(Url.Action("EnableAuthenticator", "Users", new { area = "admin" }), AdminResource.Authenticator2FA, "fa-shield", actionActive("users", "enableauthenticator"))
+                    </div>
+                </section>
+
                 @if (isAdminRole)
                 {
                     <section class="admin-mega-card admin-mega-card--system" data-mega-group="system">
@@ -230,9 +248,6 @@
                             @MegaItem(Url.Action("AddWebSiteLogo", "Settings", new { area = "admin" }), AdminResource.WebSiteLogo, "fa-image", actionActive("settings", "addwebsitelogo") != "" || actionActive("settings", "websitelogo") != "" ? "active" : "")
                             @MegaItem(Url.Action("Index", "AdminSettings", new { area = "admin" }), AdminResource.AdminSettings, "fa-cogs", actionActive("adminsettings", "index"))
                             @MegaItem(Url.Action("SystemSettings", "AdminSettings", new { area = "admin" }), AdminResource.SystemSettings, "fa-sliders", actionActive("adminsettings", "systemsettings"))
-                            @MegaItem(Url.Action("Index", "Users", new { area = "admin" }), AdminResource.UsersManagement, "fa-user", actionActive("users", "index"))
-                            @MegaItem(Url.Action("changepassword", "Users", new { area = "admin" }), AdminResource.ChangePassword, "fa-key", actionActive("users", "changepassword"))
-                            @MegaItem(Url.Action("EnableAuthenticator", "Users", new { area = "admin" }), AdminResource.Authenticator2FA, "fa-shield", actionActive("users", "enableauthenticator"))
                             @MegaItem(Url.Action("SystemHealth", "Dashboard", new { area = "admin" }), AdminResource.SystemHealth, "fa-heartbeat", actionActive("dashboard", "systemhealth"))
                         </div>
                     </section>

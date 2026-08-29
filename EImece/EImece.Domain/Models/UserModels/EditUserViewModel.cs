@@ -34,6 +34,11 @@ namespace EImece.Models
         public bool AuthenticatorEnabled { get; set; }
 
         /// <summary>
+        /// True when Identity lockout end is still in the future.
+        /// </summary>
+        public bool IsLockedOut { get; set; }
+
+        /// <summary>
         /// Multi-line summary for admin grids (phone, address, company, etc.).
         /// </summary>
         public string DetailNote { get; set; }

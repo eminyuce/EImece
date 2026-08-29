@@ -6521,6 +6521,48 @@ namespace Resources {
                 return ResourceManager.GetString("LockoutMessage", resourceCulture);
             }
         }
+
+        public static string LockoutTitle {
+            get {
+                return ResourceManager.GetString("LockoutTitle", resourceCulture);
+            }
+        }
+
+        public static string LockoutWhy {
+            get {
+                return ResourceManager.GetString("LockoutWhy", resourceCulture);
+            }
+        }
+
+        public static string LockoutWaitMinutes {
+            get {
+                return ResourceManager.GetString("LockoutWaitMinutes", resourceCulture);
+            }
+        }
+
+        public static string LockoutTryAgain {
+            get {
+                return ResourceManager.GetString("LockoutTryAgain", resourceCulture);
+            }
+        }
+
+        public static string LockoutSafetyNote {
+            get {
+                return ResourceManager.GetString("LockoutSafetyNote", resourceCulture);
+            }
+        }
+
+        public static string LockoutRemaining {
+            get {
+                return ResourceManager.GetString("LockoutRemaining", resourceCulture);
+            }
+        }
+
+        public static string LockoutReady {
+            get {
+                return ResourceManager.GetString("LockoutReady", resourceCulture);
+            }
+        }
         
         public static string UseAnotherService {
             get {

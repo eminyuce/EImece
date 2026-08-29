@@ -1,11 +1,7 @@
-﻿@model System.Web.Mvc.HandleErrorInfo
-@using Resources;
-
+﻿@using Resources
 @{
-    ViewBag.Title = "Locked Out";
+    ViewBag.Title = Resource.LockoutTitle;
+    ViewBag.HideMarketingCta = true;
 }
 
-<hgroup>
-    <h1 class="text-danger">Locked out.</h1>
-    <h2 class="text-danger">@Resource.LockoutMessage</h2>
-</hgroup>
+@Html.Partial("_LockoutContent")

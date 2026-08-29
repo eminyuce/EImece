@@ -49,7 +49,7 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> Index(CancellationToken cancellationToken, String search = "", String role = "", String twoFactor = "")
+        public async Task<ActionResult> Index(CancellationToken cancellationToken, String search = "", String role = "", String twoFactor = "", String locked = "")
         {
             var staffUsers = (await UsersService.GetUsersAsync(string.Empty))
                 .Where(r => !r.Role.Equals(Domain.Constants.CustomerRole, StringComparison.InvariantCultureIgnoreCase))
@@ -71,35 +71,22 @@ namespace EImece.Areas.Admin.Controllers
                     .OrderBy(r => r.FirstName);
             }
 
-            if (!string.IsNullOrWhiteSpace(role))
-            {
-                query = query.Where(r => r.Role.Equals(role.Trim(), StringComparison.InvariantCultureIgnoreCase));
-            }
-
-            if (string.Equals(twoFactor, "yes", StringComparison.OrdinalIgnoreCase)
-                || string.Equals(twoFactor, "1", StringComparison.OrdinalIgnoreCase))
-            {
-                query = query.Where(r => r.AuthenticatorEnabled);
-            }
-            else if (string.Equals(twoFactor, "no", StringComparison.OrdinalIgnoreCase)
-                || string.Equals(twoFactor, "0", StringComparison.OrdinalIgnoreCase))
-            {
-                query = query.Where(r => !r.AuthenticatorEnabled);
-            }
+            query = UserAdminFilterHelper.Apply(query, role, twoFactor, locked);
 
             ViewBag.Search = search ?? string.Empty;
             ViewBag.Role = role ?? string.Empty;
             ViewBag.TwoFactor = twoFactor ?? string.Empty;
+            ViewBag.Locked = locked ?? string.Empty;
 
             return View(query.ToList());
         }
 
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
-        public async Task<ActionResult> IndexGrid(CancellationToken cancellationToken, String search = "", String role = "", String twoFactor = "")
+        public async Task<ActionResult> IndexGrid(CancellationToken cancellationToken, String search = "", String role = "", String twoFactor = "", String locked = "")
         {
             if (!CanRenderGrid())
             {
-                return RedirectToAction("Index", new { search, role, twoFactor });
+                return RedirectToAction("Index", new { search, role, twoFactor, locked });
             }
 
             var staffUsers = (await UsersService.GetUsersAsync(string.Empty))
@@ -115,21 +102,7 @@ namespace EImece.Areas.Admin.Controllers
                     .OrderBy(r => r.FirstName);
             }
 
-            if (!string.IsNullOrWhiteSpace(role))
-            {
-                query = query.Where(r => r.Role.Equals(role.Trim(), StringComparison.InvariantCultureIgnoreCase));
-            }
-
-            if (string.Equals(twoFactor, "yes", StringComparison.OrdinalIgnoreCase)
-                || string.Equals(twoFactor, "1", StringComparison.OrdinalIgnoreCase))
-            {
-                query = query.Where(r => r.AuthenticatorEnabled);
-            }
-            else if (string.Equals(twoFactor, "no", StringComparison.OrdinalIgnoreCase)
-                || string.Equals(twoFactor, "0", StringComparison.OrdinalIgnoreCase))
-            {
-                query = query.Where(r => !r.AuthenticatorEnabled);
-            }
+            query = UserAdminFilterHelper.Apply(query, role, twoFactor, locked);
 
             return new QueryableResult<EditUserViewModel>(query.AsQueryable());
         }
@@ -290,6 +263,7 @@ namespace EImece.Areas.Admin.Controllers
             model.Id = user.Id;
             ViewBag.MessageId = Message;
             ViewBag.AuthenticatorEnabled = user.TwoFactorAuthenticatorEnabled;
+            model.IsLockedOut = UserLockoutHelper.IsLockedOut(user.LockoutEndDateUtc);
             return View(model);
         }
 
@@ -384,6 +358,28 @@ namespace EImece.Areas.Admin.Controllers
             await UsersService.DeleteUserAsync(id);
             SetSuccessMessage();
             return ReturnIndexIfNotUrlReferrer(IndexAction);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AuthorizeRoles(Domain.Constants.AdministratorRole)]
+        public async Task<ActionResult> Unlock(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var user = await UserManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+
+            await UserManager.SetLockoutEndDateAsync(user.Id, DateTimeOffset.UtcNow);
+            await UserManager.ResetAccessFailedCountAsync(user.Id);
+            SetSuccessMessage(AdminResource.AccountUnlocked);
+            return ReturnIndexIfNotUrlReferrer("Edit", new { id });
         }
 
         [AuthorizeRoles(Domain.Constants.AdministratorRole)]

@@ -133,6 +133,7 @@ namespace EImece.Infrastructure.Designs
                    relative.Equals(@"Shared\_ErrorLayout.cshtml", StringComparison.OrdinalIgnoreCase) ||
                    relative.Equals(@"Shared/_ErrorLayout.cshtml", StringComparison.OrdinalIgnoreCase) ||
                    relative.Equals(@"Account\AdminLogin.cshtml", StringComparison.OrdinalIgnoreCase) ||
+                   relative.Equals(@"Account\AdminLockout.cshtml", StringComparison.OrdinalIgnoreCase) ||
                    relative.Equals(@"Account\VerifyAuthenticator.cshtml", StringComparison.OrdinalIgnoreCase);
         }
 

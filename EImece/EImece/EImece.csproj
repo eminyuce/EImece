@@ -1763,6 +1763,8 @@
     <Content Include="Views\Shared\EditorTemplates\ProductComment.cshtml" />
     <Content Include="Views\Payment\_OrderSummary.cshtml" />
     <Content Include="Views\Account\AdminLogin.cshtml" />
+    <Content Include="Views\Account\AdminLockout.cshtml" />
+    <Content Include="Views\Shared\_LockoutContent.cshtml" />
     <Content Include="SqlScripts\AddAuthenticatorTwoFactor.sql" />
     <Content Include="SqlScripts\AddPerformanceIndexes.sql" />
     <Content Include="SqlScripts\AddUserAuditReportsStoredProcedures.sql" />

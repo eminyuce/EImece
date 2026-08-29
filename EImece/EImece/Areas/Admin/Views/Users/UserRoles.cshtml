@@ -45,7 +45,8 @@
                                 @Model.UserName
                             </div>
                             <div class="user-roles-user-status mt-2">
-                                <span class="badge @(selectedCount > 0 ? "text-bg-primary" : "text-bg-secondary")">
+                                <span class="badge @(selectedCount > 0 ? "text-bg-primary" : "text-bg-secondary")"
+                                      data-selected-label="@AdminResource.PermissionsSelected">
                                     @selectedCount @AdminResource.PermissionsSelected
                                 </span>
                             </div>
@@ -99,7 +100,8 @@
             }
 
             if (statusLabel) {
-                statusLabel.textContent = selectedCount + " @AdminResource.PermissionsSelected";
+                var selectedLabel = statusLabel.getAttribute("data-selected-label") || "";
+                statusLabel.textContent = selectedCount + (selectedLabel ? " " + selectedLabel : "");
                 statusLabel.className = "badge " + (selectedCount > 0 ? "text-bg-primary" : "text-bg-secondary");
             }
         }

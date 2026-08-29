@@ -2427,6 +2427,15 @@
   <data name="Locked" xml:space="preserve">
     <value>Locked</value>
   </data>
+  <data name="UnlockAccount" xml:space="preserve">
+    <value>Unlock account</value>
+  </data>
+  <data name="AccountUnlocked" xml:space="preserve">
+    <value>Account unlocked. The user can sign in again.</value>
+  </data>
+  <data name="UnlockAccountConfirm" xml:space="preserve">
+    <value>Unlock this account?</value>
+  </data>
   <data name="Maintenance" xml:space="preserve">
     <value>Maintenance</value>
   </data>
@@ -3481,13 +3490,16 @@
     <value>Toggle permissions by checking role assignments.</value>
   </data>
   <data name="AdminUsersIndexLead" xml:space="preserve">
-    <value>Search admin and editor accounts, filter by role / 2FA status, and manage from the action menu.</value>
+    <value>Search admin and editor accounts, filter by role, 2FA, or lock status, and manage from the action menu.</value>
   </data>
   <data name="CustomersWithAccounts" xml:space="preserve">
     <value>Customers with registered accounts</value>
   </data>
   <data name="FilterByNameEmailRole2Fa" xml:space="preserve">
-    <value>Filter by name / email, role, and 2FA</value>
+    <value>Narrow by name / email, role, 2FA, or lock status</value>
+  </data>
+  <data name="SearchNameEmailPlaceholder" xml:space="preserve">
+    <value>First name, last name, email, or username</value>
   </data>
   <data name="Administrator" xml:space="preserve">
     <value>Administrator</value>

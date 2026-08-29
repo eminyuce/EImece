@@ -156,6 +156,7 @@ namespace EImece.Domain.Services
                 u.Email = user.Email;
                 u.Id = user.Id;
                 u.AuthenticatorEnabled = user.TwoFactorAuthenticatorEnabled;
+                u.IsLockedOut = UserLockoutHelper.IsLockedOut(user.LockoutEndDateUtc);
                 string role;
                 u.Role = roleNameByUserId.TryGetValue(user.Id, out role) ? role.ToStr() : String.Empty;
                 model.Add(u);

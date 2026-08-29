@@ -742,6 +742,34 @@ body.admin-app .admin-content .report-index-header h2::after {
     background: var(--admin-page-title-accent);
 }
 
+/* Single-card admin forms: keep the card in the middle of the content area. */
+body.admin-app .admin-content .admin-centered-page {
+    max-width: 640px;
+    width: 100%;
+    margin: 12px auto 40px;
+}
+
+body.admin-app .admin-content .admin-centered-page .admin-page-title {
+    text-align: center;
+}
+
+body.admin-app .admin-content .admin-centered-page .admin-page-title::after {
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+body.admin-app .admin-content .admin-centered-page .admin-centered-page-lead {
+    text-align: center;
+    color: #627d98;
+    font-size: 14px;
+    line-height: 1.5;
+    margin: -4px 0 20px;
+}
+
+body.admin-app .admin-content .admin-centered-page > .card {
+    margin-bottom: 0;
+}
+
 body.admin-app .admin-content .adminLine {
     display: none;
 }
@@ -1794,6 +1822,7 @@ body.admin-app.admin-mega-open .admin-sidebar-overlay {
 .admin-mega-card--catalog .admin-mega-card-icon { background: #2563eb; }
 .admin-mega-card--sales .admin-mega-card-icon { background: #16a34a; }
 .admin-mega-card--content .admin-mega-card-icon { background: #7c3aed; }
+.admin-mega-card--users .admin-mega-card-icon { background: #0f766e; }
 .admin-mega-card--system .admin-mega-card-icon { background: #d97706; }
 
 .admin-mega-card-title {

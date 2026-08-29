@@ -14,7 +14,11 @@
     var search = (ViewBag.Search as string) ?? Request.QueryString["search"].ToStr();
     var selectedRole = (ViewBag.Role as string) ?? Request.QueryString["role"].ToStr();
     var selectedTwoFactor = (ViewBag.TwoFactor as string) ?? Request.QueryString["twoFactor"].ToStr();
+    var selectedLocked = (ViewBag.Locked as string) ?? Request.QueryString["locked"].ToStr();
     var availableRoles = (ViewBag.AvailableRoles as List<string>) ?? new List<string>();
+    var twoFactorOn = UserAdminFilterHelper.IsOn(selectedTwoFactor);
+    var twoFactorOff = UserAdminFilterHelper.IsOff(selectedTwoFactor);
+    var lockedOn = UserAdminFilterHelper.IsOn(selectedLocked);
 
     Func<string, string> roleLabel = roleName =>
     {
@@ -33,28 +37,21 @@
         return roleName ?? string.Empty;
     };
 
-    var activeFilterChips = new List<Tuple<string, string>>();
-    if (!string.IsNullOrWhiteSpace(search))
-    {
-        activeFilterChips.Add(Tuple.Create("Arama", search));
-    }
-    if (!string.IsNullOrWhiteSpace(selectedRole))
-    {
-        activeFilterChips.Add(Tuple.Create(AdminResource.Roles, roleLabel(selectedRole)));
-    }
-    if (string.Equals(selectedTwoFactor, "yes", StringComparison.OrdinalIgnoreCase)
-        || selectedTwoFactor == "1")
-    {
-        activeFilterChips.Add(Tuple.Create("2FA", "Aktif"));
-    }
-    else if (string.Equals(selectedTwoFactor, "no", StringComparison.OrdinalIgnoreCase)
-        || selectedTwoFactor == "0")
-    {
-        activeFilterChips.Add(Tuple.Create("2FA", "Yok"));
-    }
+    Func<string, string, string, string, string> filterUrl = (searchVal, roleVal, twoFactorVal, lockedVal) =>
+        Url.Action("Index", controllerName, new
+        {
+            search = string.IsNullOrWhiteSpace(searchVal) ? null : searchVal,
+            role = string.IsNullOrWhiteSpace(roleVal) ? null : roleVal,
+            twoFactor = string.IsNullOrWhiteSpace(twoFactorVal) ? null : twoFactorVal,
+            locked = string.IsNullOrWhiteSpace(lockedVal) ? null : lockedVal
+        });
 
-    var hasAdvancedFilter = activeFilterChips.Count > 0;
     var clearFiltersUrl = Url.Action("Index", controllerName);
+    var hasActiveFilters = !string.IsNullOrWhiteSpace(search)
+        || !string.IsNullOrWhiteSpace(selectedRole)
+        || twoFactorOn
+        || twoFactorOff
+        || lockedOn;
 }
 
 @helper RoleBadge(string role)
@@ -82,7 +79,7 @@
     <div class="users-admin-header">
         <div class="users-admin-header-main">
             @Html.AdminBreadcrumb(AdminResource.Users)
-<h2 class="admin-page-title">@AdminResource.Users</h2>
+            <h2 class="admin-page-title">@AdminResource.Users</h2>
             <p class="users-admin-lead">
                 @AdminResource.AdminUsersIndexLead
             </p>
@@ -100,78 +97,126 @@
     </div>
     <hr class="adminLine" />
 
-    <div class="card users-admin-filters" id="usersAdminFilters">
-        <div class="card-header users-admin-filters-heading">
-            <div class="users-admin-filters-heading-main">
-                <span class="users-admin-filters-title">
-                    <i class="fa fa-filter" aria-hidden="true"></i>
-                    Filtreler
+    <div class="users-admin-toolbar" id="usersAdminFilters">
+        @using (Html.BeginForm("Index", controllerName, FormMethod.Get, new { @class = "eg-search-form users-admin-search", id = "usersAdminFilterForm", role = "search" }))
+        {
+            if (!string.IsNullOrWhiteSpace(selectedRole))
+            {
+                <input type="hidden" name="role" value="@selectedRole" />
+            }
+            if (!string.IsNullOrWhiteSpace(selectedTwoFactor))
+            {
+                <input type="hidden" name="twoFactor" value="@selectedTwoFactor" />
+            }
+            if (!string.IsNullOrWhiteSpace(selectedLocked))
+            {
+                <input type="hidden" name="locked" value="@selectedLocked" />
+            }
+            <div class="eg-search-field">
+                <span class="eg-search-icon" aria-hidden="true">
+                    <i class="fa fa-search"></i>
                 </span>
-                @if (activeFilterChips.Count > 0)
-                {
-                    <span class="badge users-admin-filters-count">@activeFilterChips.Count</span>
-                    foreach (var chip in activeFilterChips)
+                <label class="visually-hidden" for="usersSearch">@AdminResource.Search</label>
+                <input type="search"
+                       class="form-control"
+                       id="usersSearch"
+                       name="search"
+                       value="@search"
+                       placeholder="@AdminResource.SearchNameEmailPlaceholder"
+                       autocomplete="off" />
+                <div class="eg-search-actions">
+                    @if (!string.IsNullOrWhiteSpace(search))
                     {
-                        <span class="label text-bg-info product-admin-filter-chip">@chip.Item1: @chip.Item2</span>
+                        <a class="btn btn-secondary eg-search-clear"
+                           href="@filterUrl(null, selectedRole, selectedTwoFactor, selectedLocked)"
+                           title="@AdminResource.ClearSearch">@AdminResource.Clear</a>
                     }
-                    <a class="users-admin-filters-clear" href="@clearFiltersUrl" title="@Resource.Clear">
-                        <i class="fa fa-times" aria-hidden="true"></i> @Resource.Clear
-                    </a>
-                }
-                else
+                    <button class="btn btn-primary" id="usersSearchButton" type="submit">
+                        <i class="fa fa-search" aria-hidden="true"></i>
+                        <span>@AdminResource.GridSearchButtonText</span>
+                    </button>
+                </div>
+            </div>
+        }
+
+        <div class="users-admin-quick" aria-label="@AdminResource.FilterByNameEmailRole2Fa">
+            <div class="users-admin-quick-row">
+                <span class="users-admin-quick-label">@AdminResource.Roles</span>
+                <a class="eg-quick-chip @(string.IsNullOrWhiteSpace(selectedRole) ? "is-active" : "")"
+                   href="@filterUrl(search, null, selectedTwoFactor, selectedLocked)">@AdminResource.All</a>
+                @foreach (var roleOption in availableRoles)
                 {
-                    <span class="users-admin-filters-hint">@AdminResource.FilterByNameEmailRole2Fa</span>
+                    var isRoleActive = string.Equals(selectedRole, roleOption, StringComparison.OrdinalIgnoreCase);
+                    <a class="eg-quick-chip @(isRoleActive ? "is-active" : "")"
+                       href="@filterUrl(search, isRoleActive ? null : roleOption, selectedTwoFactor, selectedLocked)">@roleLabel(roleOption)</a>
                 }
             </div>
+            <div class="users-admin-quick-row">
+                <span class="users-admin-quick-label">@AdminResource.Authenticator2FA</span>
+                <a class="eg-quick-chip @(!twoFactorOn && !twoFactorOff ? "is-active" : "")"
+                   href="@filterUrl(search, selectedRole, null, selectedLocked)">@AdminResource.All</a>
+                <a class="eg-quick-chip @(twoFactorOn ? "is-active" : "")"
+                   href="@filterUrl(search, selectedRole, twoFactorOn ? null : "yes", selectedLocked)">@AdminResource.Active</a>
+                <a class="eg-quick-chip @(twoFactorOff ? "is-active" : "")"
+                   href="@filterUrl(search, selectedRole, twoFactorOff ? null : "no", selectedLocked)">@AdminResource.None</a>
+            </div>
+            <div class="users-admin-quick-row">
+                <span class="users-admin-quick-label">@AdminResource.Status</span>
+                <a class="eg-quick-chip @(lockedOn ? "is-active" : "")"
+                   href="@filterUrl(search, selectedRole, selectedTwoFactor, lockedOn ? null : "yes")">
+                    <i class="fa fa-lock" aria-hidden="true"></i>
+                    @AdminResource.Locked
+                </a>
+            </div>
         </div>
-        <div class="card-body">
-            @using (Html.BeginForm("Index", controllerName, FormMethod.Get, new { @class = "users-admin-filter-form", id = "usersAdminFilterForm" }))
-            {
-                <div class="users-admin-filter-grid">
-                    <div class="form-group row mb-3 users-admin-filter-search">
-                        <label for="usersSearch">Arama</label>
-                        <input type="text"
-                               class="form-control form-control-sm"
-                               id="usersSearch"
-                               name="search"
-                               value="@search"
-                               placeholder="Ad, soyad veya e-posta"
-                               autocomplete="off" />
-                    </div>
-                    <div class="form-group row mb-3">
-                        <label for="usersRole">@AdminResource.Roles</label>
-                        <select class="form-select form-select-sm" id="usersRole" name="role">
-                            <option value="">@AdminResource.All</option>
-                            @foreach (var roleOption in availableRoles)
-                            {
-                                <option value="@roleOption" @(string.Equals(selectedRole, roleOption, StringComparison.OrdinalIgnoreCase) ? "selected=\"selected\"" : null)>
-                                    @roleLabel(roleOption)
-                                </option>
-                            }
-                        </select>
-                    </div>
-                    <div class="form-group row mb-3">
-                        <label for="usersTwoFactor">2FA</label>
-                        <select class="form-select form-select-sm" id="usersTwoFactor" name="twoFactor">
-                            <option value="">@AdminResource.All</option>
-                            <option value="yes" @(string.Equals(selectedTwoFactor, "yes", StringComparison.OrdinalIgnoreCase) || selectedTwoFactor == "1" ? "selected=\"selected\"" : null)>Aktif</option>
-                            <option value="no" @(string.Equals(selectedTwoFactor, "no", StringComparison.OrdinalIgnoreCase) || selectedTwoFactor == "0" ? "selected=\"selected\"" : null)>Yok</option>
-                        </select>
-                    </div>
-                    <div class="form-group row mb-3 users-admin-filter-actions">
-                        <span class="col-form-label">&nbsp;</span>
-                        <button type="submit" class="btn btn-primary btn-sm">
-                            <i class="fa fa-search" aria-hidden="true"></i> Uygula
-                        </button>
-                    </div>
-                </div>
-            }
-        </div>
+
+        @if (hasActiveFilters)
+        {
+            <div class="users-admin-active" aria-live="polite">
+                @if (!string.IsNullOrWhiteSpace(search))
+                {
+                    <a class="users-admin-active-chip" href="@filterUrl(null, selectedRole, selectedTwoFactor, selectedLocked)" title="@AdminResource.ClearSearch">
+                        <span>@AdminResource.Search: @search</span>
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                    </a>
+                }
+                @if (!string.IsNullOrWhiteSpace(selectedRole))
+                {
+                    <a class="users-admin-active-chip" href="@filterUrl(search, null, selectedTwoFactor, selectedLocked)">
+                        <span>@AdminResource.Roles: @roleLabel(selectedRole)</span>
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                    </a>
+                }
+                @if (twoFactorOn || twoFactorOff)
+                {
+                    <a class="users-admin-active-chip" href="@filterUrl(search, selectedRole, null, selectedLocked)">
+                        <span>@AdminResource.Authenticator2FA: @(twoFactorOn ? AdminResource.Active : AdminResource.None)</span>
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                    </a>
+                }
+                @if (lockedOn)
+                {
+                    <a class="users-admin-active-chip" href="@filterUrl(search, selectedRole, selectedTwoFactor, null)">
+                        <span>@AdminResource.Locked</span>
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                    </a>
+                }
+                <a class="users-admin-filters-clear" href="@clearFiltersUrl">
+                    <i class="fa fa-times" aria-hidden="true"></i> @AdminResource.Clear
+                </a>
+            </div>
+        }
     </div>
 
     @Html.Partial("Grid/_GridChrome")
 
-<div class="js-griddly-async" data-url="@Url.Action("IndexGrid", new { search = Request.QueryString["search"], role = Request.QueryString["role"], twoFactor = Request.QueryString["twoFactor"] })"></div>
+    <div class="js-griddly-async" data-url="@Url.Action("IndexGrid", new
+    {
+        search = string.IsNullOrWhiteSpace(search) ? null : search,
+        role = string.IsNullOrWhiteSpace(selectedRole) ? null : selectedRole,
+        twoFactor = string.IsNullOrWhiteSpace(selectedTwoFactor) ? null : selectedTwoFactor,
+        locked = string.IsNullOrWhiteSpace(selectedLocked) ? null : selectedLocked
+    })"></div>
 </div>
 
 <style>
@@ -217,93 +262,166 @@
         margin-bottom: 12px;
     }
 
-    .users-admin-filters {
-        margin-bottom: 12px;
-        border-color: #d7dee8;
+    .users-admin-toolbar {
+        margin-bottom: 14px;
+        padding: 14px 16px 12px;
+        background: #fff;
+        border: 1px solid #d7dee8;
+        border-radius: 12px;
         box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
     }
 
-    .users-admin-filters-heading {
-        background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
-        border-color: #d7dee8;
-        padding: 10px 14px;
+    .users-admin-page .eg-search-form {
+        margin: 0 0 12px;
     }
 
-    .users-admin-filters-heading-main {
+    .users-admin-page .eg-search-field {
         display: flex;
+        align-items: stretch;
+        width: 100%;
+        min-height: 42px;
+        border: 1px solid #d7dee8;
+        border-radius: 10px;
+        background: #fff;
+        overflow: hidden;
+        transition: border-color 140ms ease, box-shadow 140ms ease;
+    }
+
+    .users-admin-page .eg-search-field:focus-within {
+        border-color: #0b6e99;
+        box-shadow: 0 0 0 3px rgba(11, 110, 153, 0.12);
+    }
+
+    .users-admin-page .eg-search-icon {
+        display: inline-flex;
         align-items: center;
-        flex-wrap: wrap;
+        justify-content: center;
+        width: 42px;
+        color: #627d98;
+        background: #f8fafc;
+        border-right: 1px solid #d7dee8;
+        flex-shrink: 0;
+    }
+
+    .users-admin-page #usersSearch {
+        flex: 1 1 auto;
+        height: 40px;
+        border: 0;
+        border-radius: 0;
+        box-shadow: none;
+        background: transparent;
+        padding-left: 12px;
+        font-size: 14px;
+    }
+
+    .users-admin-page #usersSearch:focus {
+        outline: none;
+        box-shadow: none;
+    }
+
+    .users-admin-page .eg-search-actions {
+        display: inline-flex;
+        align-items: stretch;
+        flex-shrink: 0;
+    }
+
+    .users-admin-page #usersSearchButton,
+    .users-admin-page .eg-search-clear {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        height: 40px;
+        border: 0;
+        border-left: 1px solid #d7dee8;
+        border-radius: 0;
+        padding: 0 14px;
+        font-weight: 600;
+    }
+
+    .users-admin-page #usersSearchButton {
+        background: #0b6e99;
+        color: #fff;
+    }
+
+    .users-admin-page #usersSearchButton:hover,
+    .users-admin-page #usersSearchButton:focus {
+        background: #095a7d;
+        color: #fff;
+    }
+
+    .users-admin-page .eg-search-clear {
+        background: #fff;
+        color: #627d98;
+        text-decoration: none;
+    }
+
+    .users-admin-page .eg-search-clear:hover {
+        background: #f8fafc;
+        color: #b91c1c;
+        text-decoration: none;
+    }
+
+    .users-admin-quick {
+        display: grid;
         gap: 8px;
     }
 
-    .users-admin-filters-title {
-        font-weight: 600;
-        color: #1f2937;
+    .users-admin-quick-row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
     }
 
-    .users-admin-filters-title .fa {
-        margin-right: 4px;
-        color: #3b6ea5;
+    .users-admin-quick-label {
+        min-width: 52px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: #627d98;
     }
 
-    .users-admin-filters-hint {
-        color: #6b7280;
+    .users-admin-active {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+        margin-top: 12px;
+        padding-top: 10px;
+        border-top: 1px dashed #d7dee8;
+    }
+
+    .users-admin-active-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 10px;
+        border-radius: 999px;
+        background: #e8f1fa;
+        border: 1px solid #c5d9ee;
+        color: #1e4e7a;
         font-size: 12px;
-        font-weight: normal;
+        font-weight: 600;
+        text-decoration: none !important;
     }
 
-    .users-admin-filters-count {
-        background: #3b6ea5;
-        font-weight: 600;
+    .users-admin-active-chip:hover {
+        background: #dbeafe;
+        color: #b91c1c;
     }
 
     .users-admin-filters-clear {
         font-size: 12px;
-        color: #6b7280;
+        font-weight: 600;
+        color: #627d98;
+        text-decoration: none;
     }
 
     .users-admin-filters-clear:hover {
         color: #b91c1c;
         text-decoration: none;
-    }
-
-    .users-admin-filters .card-body {
-        padding: 12px 14px 4px;
-        background: #fff;
-    }
-
-    .users-admin-filter-grid {
-        display: grid;
-        grid-template-columns: minmax(220px, 2fr) minmax(140px, 1fr) minmax(110px, 0.8fr) auto;
-        gap: 10px 12px;
-        align-items: end;
-    }
-
-    .users-admin-filter-form .form-group {
-        margin-bottom: 8px;
-    }
-
-    .users-admin-filter-form label {
-        display: block;
-        font-size: 12px;
-        font-weight: 600;
-        color: #374151;
-        margin-bottom: 4px;
-    }
-
-    .users-admin-filter-actions .btn {
-        min-width: 110px;
-        height: 30px;
-    }
-
-    @@media (max-width: 900px) {
-        .users-admin-filter-grid {
-            grid-template-columns: 1fr 1fr;
-        }
-
-        .users-admin-filter-search {
-            grid-column: 1 / -1;
-        }
     }
 
     .users-admin-page .eg-grid-chrome {
@@ -332,5 +450,38 @@
             flex: 1 1 auto;
             text-align: center;
         }
+
+        .users-admin-quick-label {
+            width: 100%;
+            min-width: 0;
+        }
+
+        .users-admin-page #usersSearchButton span {
+            display: none;
+        }
     }
 </style>
+
+@section Scripts {
+    <script>
+        $(function () {
+            var $form = $('#usersAdminFilterForm');
+            var $search = $('#usersSearch');
+            var timer;
+            if (!$form.length || !$search.length) {
+                return;
+            }
+
+            $search.on('input', function () {
+                clearTimeout(timer);
+                timer = setTimeout(function () {
+                    $form.trigger('submit');
+                }, 400);
+            });
+
+            $form.on('submit', function () {
+                clearTimeout(timer);
+            });
+        });
+    </script>
+}

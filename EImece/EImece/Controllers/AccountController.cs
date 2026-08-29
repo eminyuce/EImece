@@ -168,7 +168,7 @@ namespace EImece.Controllers
             {
                 Logger.Info("Account locked out for email: {0}", model.Email);
                 ModelState.AddModelError("", string.Format(Resource.InvalidLoginAttemptEmailLockedOut, model.Email));
-                return View(LockoutAction);
+                return await LockoutViewAsync(user.Id, admin: true);
             }
 
             if (!await UserManager.CheckPasswordAsync(user, model.Password))
@@ -214,7 +214,7 @@ namespace EImece.Controllers
                     Logger.Info("Account locked out for email: {0}", model.Email);
                     ModelState.AddModelError("", string.Format(Resource.InvalidLoginAttemptEmailLockedOut, model.Email));
                     Logger.Debug("Returning Lockout view.");
-                    return View(LockoutAction);
+                    return await LockoutViewAsync(user.Id, admin: true);
 
                 case SignInStatus.RequiresVerification:
                     Logger.Debug($"Account requires verification for email: {model.Email}");
@@ -332,7 +332,7 @@ namespace EImece.Controllers
                     Logger.Info("Account locked out for email: {0}", model.Email);
                     ModelState.AddModelError("", string.Format(Resource.AccountLockedOut, model.Email));
                     Logger.Debug("Returning Lockout view.");
-                    return View(LockoutAction);
+                    return await LockoutViewAsync(customerUser.Id, admin: false);
 
                 case SignInStatus.RequiresVerification:
                     Logger.Debug($"Account requires verification for email: {model.Email}");
@@ -409,7 +409,7 @@ namespace EImece.Controllers
 
                 case SignInStatus.LockedOut:
                     Logger.Info("Account locked out. Returning Lockout view.");
-                    return View(LockoutAction);
+                    return await LockoutViewAsync(null, admin: false);
 
                 case SignInStatus.Failure:
                 default:
@@ -471,7 +471,7 @@ namespace EImece.Controllers
 
             if (await UserManager.IsLockedOutAsync(user.Id))
             {
-                return View(LockoutAction);
+                return await LockoutViewAsync(user.Id, admin: true);
             }
 
             bool isValid = Domain.Helpers.AuthenticatorHelper.VerifyCode(user.AuthenticatorKey, model.Code);
@@ -597,7 +597,7 @@ namespace EImece.Controllers
                 case SignInStatus.LockedOut:
                     Logger.Info("Account locked out for email: {0}", model.Email);
                     ModelState.AddModelError("", $"The account {model.Email} LockedOut");
-                    return View(LockoutAction);
+                    return await LockoutViewAsync(null, admin: false);
 
                 case SignInStatus.RequiresVerification:
                     Logger.Debug($"Account requires verification for email: {model.Email}");
@@ -831,7 +831,7 @@ namespace EImece.Controllers
 
                 case SignInStatus.LockedOut:
                     Logger.Info("Account locked out. Returning Lockout view.");
-                    return View(LockoutAction);
+                    return await LockoutViewAsync(null, admin: false);
 
                 case SignInStatus.RequiresVerification:
                     Logger.Debug("Requires verification. Redirecting to SendCode.");
@@ -956,6 +956,28 @@ namespace EImece.Controllers
             }
             Logger.Debug("Default redirect to Admin Dashboard.");
             return RedirectToAction(IndexAction, DashboardAction, new { @area = AdminAreaName });
+        }
+
+        private async Task<ActionResult> LockoutViewAsync(string userId, bool admin)
+        {
+            int minutes = UserLockoutHelper.DefaultLockoutMinutes;
+            int remainingSeconds = UserLockoutHelper.DefaultLockoutMinutes * 60;
+            if (!string.IsNullOrEmpty(userId))
+            {
+                var end = await UserManager.GetLockoutEndDateAsync(userId).ConfigureAwait(false);
+                minutes = UserLockoutHelper.RemainingMinutes(end);
+                remainingSeconds = UserLockoutHelper.RemainingSeconds(end);
+            }
+
+            ViewBag.LockoutMinutes = minutes;
+            ViewBag.LockoutRemainingSeconds = remainingSeconds;
+            if (admin)
+            {
+                return View("AdminLockout");
+            }
+
+            ViewBag.LockoutRetryUrl = Url.Action("Login", "Account");
+            return View(LockoutAction);
         }
 
         internal class ChallengeResult : HttpUnauthorizedResult

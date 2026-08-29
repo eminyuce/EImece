@@ -720,6 +720,24 @@ body.admin-app .griddly table > tbody > tr > td.gridButtons {
     color: var(--eg-text-muted);
 }
 
+.eg-state-badge.eg-lock-badge {
+    background: #fde8e8;
+    color: #9b1c1c;
+}
+
+.eg-unlock-form {
+    margin: 0;
+}
+
+.eg-unlock-form .dropdown-item {
+    width: 100%;
+    display: block;
+    text-align: left;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+}
+
 body.admin-app .eg-state-badge.eg-state-NONE {
     background: #eef2f6;
     color: #64748b;

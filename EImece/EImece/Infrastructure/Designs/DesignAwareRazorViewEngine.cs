@@ -324,6 +324,7 @@ namespace EImece.Infrastructure.Designs
             }
 
             return string.Equals(viewName, "AdminLogin", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(viewName, "AdminLockout", StringComparison.OrdinalIgnoreCase)
                 || string.Equals(viewName, "VerifyAuthenticator", StringComparison.OrdinalIgnoreCase);
         }
     }

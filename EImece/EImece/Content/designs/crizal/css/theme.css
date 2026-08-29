@@ -624,6 +624,28 @@ body[data-design="crizal"] a.butn-style8.outline:hover {
     }
 }
 
+body[data-design="crizal"] .account-lockout {
+    background:
+        radial-gradient(ellipse 80% 60% at 12% 18%, rgba(9, 184, 80, 0.14), transparent 55%),
+        radial-gradient(ellipse 70% 50% at 88% 82%, rgba(20, 33, 43, 0.08), transparent 50%),
+        linear-gradient(180deg, #eef6f1 0%, #f7f8fb 45%, #ffffff 100%);
+}
+
+body[data-design="crizal"] .account-lockout__card {
+    border-color: var(--crizal-border, #e4eaf0);
+    box-shadow: var(--crizal-shadow-lg, 0 12px 36px rgba(21, 32, 43, 0.08));
+}
+
+body[data-design="crizal"] .account-lockout__actions .btn-primary {
+    background: var(--crizal-primary, #067a36);
+    border-color: var(--crizal-primary, #067a36);
+}
+
+body[data-design="crizal"] .account-lockout__actions .btn-primary:hover {
+    background: var(--crizal-secondary, #14212b);
+    border-color: var(--crizal-secondary, #14212b);
+}
+
 /* WOW.js can leave .wow at visibility:hidden if init/scroll fails — never hide content */
 body[data-design="crizal"] .wow {
     visibility: visible !important;

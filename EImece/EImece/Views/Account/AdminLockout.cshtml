@@ -1,0 +1,457 @@
+@using Resources
+@using System.Web
+@{
+    ViewBag.Title = Resource.LockoutTitle;
+    Layout = null;
+    var minutes = ViewBag.LockoutMinutes as int? ?? EImece.Domain.Helpers.UserLockoutHelper.DefaultLockoutMinutes;
+    if (minutes < 1)
+    {
+        minutes = 1;
+    }
+    var remainingSeconds = ViewBag.LockoutRemainingSeconds as int? ?? (minutes * 60);
+    if (remainingSeconds < 0)
+    {
+        remainingSeconds = 0;
+    }
+    var currentCulture = System.Threading.Thread.CurrentThread.CurrentCulture;
+    var initialClock = remainingSeconds <= 0
+        ? "00:00"
+        : string.Format("{0:00}:{1:00}", remainingSeconds / 60, remainingSeconds % 60);
+}
+
+<!DOCTYPE html>
+<html lang="@currentCulture.TwoLetterISOLanguageName">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="robots" content="noindex,nofollow">
+    <title>@ViewBag.Title</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:wght@500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        :root {
+            --ink: #15202b;
+            --ink-soft: #3d4f5f;
+            --muted: #6b7c8a;
+            --surface: #ffffff;
+            --panel: #0f3d4c;
+            --panel-mid: #155e75;
+            --accent: #0e7490;
+            --accent-hover: #0b5f75;
+            --warn-bg: #fff7ed;
+            --warn-border: #fdba74;
+            --warn-text: #9a3412;
+            --ready-bg: #ecfdf3;
+            --ready-border: #86efac;
+            --ready-text: #166534;
+            --shadow: 0 18px 50px rgba(15, 61, 76, 0.18);
+            --radius: 18px;
+            --font: "IBM Plex Sans", "Segoe UI", sans-serif;
+            --display: "IBM Plex Serif", Georgia, serif;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: var(--font);
+            color: var(--ink);
+            background:
+                radial-gradient(1200px 600px at 10% 0%, rgba(14, 116, 144, 0.12), transparent 55%),
+                radial-gradient(900px 500px at 90% 100%, rgba(15, 61, 76, 0.10), transparent 50%),
+                linear-gradient(160deg, #eef5f7 0%, #f7fafb 45%, #e8f1f4 100%);
+        }
+
+        .admin-login {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+
+        .admin-login__shell {
+            width: 100%;
+            max-width: 980px;
+            display: grid;
+            grid-template-columns: 1.05fr 1fr;
+            background: var(--surface);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            border: 1px solid rgba(21, 32, 43, 0.06);
+            animation: rise-in 0.45s ease-out both;
+        }
+
+        @@keyframes rise-in {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .admin-login__guide {
+            position: relative;
+            padding: 2.4rem 2.2rem;
+            color: #f4fafc;
+            background:
+                linear-gradient(165deg, rgba(255,255,255,0.08), transparent 40%),
+                linear-gradient(145deg, var(--panel) 0%, var(--panel-mid) 100%);
+            overflow: hidden;
+        }
+
+        .admin-login__guide::before {
+            content: "";
+            position: absolute;
+            inset: auto -40% -35% auto;
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.06);
+            pointer-events: none;
+        }
+
+        .admin-login__badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            color: rgba(244, 250, 252, 0.9);
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 999px;
+            padding: 0.35rem 0.75rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .admin-login__brand {
+            font-family: var(--display);
+            font-size: 1.85rem;
+            font-weight: 600;
+            line-height: 1.25;
+            margin: 0 0 0.65rem;
+            position: relative;
+        }
+
+        .admin-login__lead {
+            margin: 0 0 1.75rem;
+            color: rgba(244, 250, 252, 0.82);
+            font-size: 0.98rem;
+            line-height: 1.55;
+            max-width: 32ch;
+            position: relative;
+        }
+
+        .admin-login__steps {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            position: relative;
+            display: grid;
+            gap: 0.9rem;
+        }
+
+        .admin-login__steps li {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 0.85rem;
+            align-items: start;
+        }
+
+        .admin-login__step-num {
+            width: 1.85rem;
+            height: 1.85rem;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.82rem;
+            font-weight: 700;
+            background: rgba(255, 255, 255, 0.14);
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            flex-shrink: 0;
+        }
+
+        .admin-login__step-title {
+            display: block;
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 0.15rem;
+        }
+
+        .admin-login__step-text {
+            display: block;
+            font-size: 0.86rem;
+            line-height: 1.45;
+            color: rgba(244, 250, 252, 0.78);
+        }
+
+        .admin-login__guide-note {
+            margin-top: 1.75rem;
+            padding-top: 1.25rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.16);
+            font-size: 0.82rem;
+            line-height: 1.5;
+            color: rgba(244, 250, 252, 0.72);
+            position: relative;
+        }
+
+        .admin-login__panel {
+            padding: 2.4rem 2.2rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .admin-lockout__icon {
+            width: 3.5rem;
+            height: 3.5rem;
+            margin: 0 0 1.1rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fef2f2;
+            color: #b42318;
+            font-size: 1.35rem;
+        }
+
+        .admin-login__panel-title {
+            font-family: var(--display);
+            font-size: 1.45rem;
+            font-weight: 600;
+            margin: 0 0 0.35rem;
+            color: var(--ink);
+        }
+
+        .admin-login__panel-sub {
+            margin: 0 0 1.2rem;
+            color: var(--muted);
+            font-size: 0.92rem;
+            line-height: 1.5;
+        }
+
+        .admin-lockout__wait {
+            margin: 0 0 1.25rem;
+            padding: 1rem 1.05rem;
+            background: var(--warn-bg);
+            border: 1px solid var(--warn-border);
+            border-radius: 12px;
+            color: var(--warn-text);
+            text-align: center;
+        }
+
+        .admin-lockout__wait.is-ready {
+            background: var(--ready-bg);
+            border-color: var(--ready-border);
+            color: var(--ready-text);
+        }
+
+        .admin-lockout__wait-label {
+            display: block;
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin-bottom: 0.35rem;
+            opacity: 0.85;
+        }
+
+        .admin-lockout__clock {
+            display: block;
+            font-family: var(--display);
+            font-size: 2rem;
+            font-weight: 600;
+            line-height: 1.1;
+            font-variant-numeric: tabular-nums;
+            margin-bottom: 0.45rem;
+        }
+
+        .admin-lockout__wait-text {
+            display: block;
+            font-size: 0.86rem;
+            font-weight: 500;
+            line-height: 1.45;
+        }
+
+        .admin-login__submit {
+            width: 100%;
+            border: 0;
+            border-radius: 11px;
+            background: var(--accent);
+            color: #fff;
+            font-weight: 600;
+            font-size: 1rem;
+            padding: 0.85rem 1rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 0.35rem;
+        }
+
+        .admin-login__submit:hover,
+        .admin-login__submit:focus {
+            background: var(--accent-hover);
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .admin-login__back {
+            margin-top: auto;
+            padding-top: 1.35rem;
+            text-align: center;
+        }
+
+        .admin-login__back a {
+            color: var(--accent);
+            font-size: 0.88rem;
+            font-weight: 500;
+            text-decoration: none;
+        }
+
+        .admin-login__back a:hover {
+            text-decoration: underline;
+        }
+
+        @@media (max-width: 900px) {
+            .admin-login__shell {
+                grid-template-columns: 1fr;
+                max-width: 480px;
+            }
+
+            .admin-login__guide {
+                padding: 1.75rem 1.5rem 1.4rem;
+            }
+
+            .admin-login__lead {
+                max-width: none;
+                margin-bottom: 1.2rem;
+            }
+
+            .admin-login__panel {
+                padding: 1.6rem 1.4rem 1.5rem;
+            }
+        }
+
+        @@media (max-width: 520px) {
+            .admin-login {
+                padding: 0.75rem;
+            }
+
+            .admin-login__brand {
+                font-size: 1.55rem;
+            }
+        }
+
+        @@media (prefers-reduced-motion: reduce) {
+            .admin-login__shell {
+                animation: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-login">
+        <div class="admin-login__shell">
+            <aside class="admin-login__guide" aria-labelledby="admin-lockout-brand">
+                <div class="admin-login__badge">
+                    <i class="fas fa-shield-alt" aria-hidden="true"></i>
+                    @AdminResource.SecureAdminLogin
+                </div>
+                <h1 class="admin-login__brand" id="admin-lockout-brand">@Resource.AdminPanelLoginPage</h1>
+                <p class="admin-login__lead">@Resource.LockoutWhy</p>
+                <ol class="admin-login__steps">
+                    <li>
+                        <span class="admin-login__step-num" aria-hidden="true">1</span>
+                        <div>
+                            <span class="admin-login__step-title">@Resource.LockoutTitle</span>
+                            <span class="admin-login__step-text">@Resource.LockoutSafetyNote</span>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="admin-login__step-num" aria-hidden="true">2</span>
+                        <div>
+                            <span class="admin-login__step-title">@Resource.LockoutRemaining</span>
+                            <span class="admin-login__step-text">@string.Format(Resource.LockoutWaitMinutes, minutes)</span>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="admin-login__step-num" aria-hidden="true">3</span>
+                        <div>
+                            <span class="admin-login__step-title">@Resource.LockoutTryAgain</span>
+                            <span class="admin-login__step-text">@AdminResource.AdminLoginEncryptedNote</span>
+                        </div>
+                    </li>
+                </ol>
+                <p class="admin-login__guide-note">
+                    <i class="fas fa-lock mr-1" aria-hidden="true"></i>
+                    @AdminResource.JustOpenForAdmin
+                </p>
+            </aside>
+
+            <section class="admin-login__panel" aria-labelledby="admin-lockout-title" role="alert">
+                <div class="admin-lockout__icon" aria-hidden="true">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <h2 class="admin-login__panel-title" id="admin-lockout-title">@Resource.LockoutTitle</h2>
+                <p class="admin-login__panel-sub">@Resource.LockoutWhy</p>
+                <div class="admin-lockout__wait@(remainingSeconds <= 0 ? " is-ready" : "")" id="lockout-wait">
+                    <span class="admin-lockout__wait-label">@Resource.LockoutRemaining</span>
+                    <span class="admin-lockout__clock" id="lockout-countdown" aria-live="polite">@initialClock</span>
+                    <span class="admin-lockout__wait-text" id="lockout-wait-text">@(remainingSeconds <= 0 ? Resource.LockoutReady : string.Format(Resource.LockoutWaitMinutes, minutes))</span>
+                </div>
+                <a class="admin-login__submit" href="@Url.Action("AdminLogin", "Account")">
+                    <i class="fas fa-sign-in-alt" aria-hidden="true"></i>
+                    @Resource.LockoutTryAgain
+                </a>
+                <div class="admin-login__back">
+                    <a href="@Url.Action("Index", "Home", new { area = "" })">
+                        <i class="fas fa-arrow-left mr-1" aria-hidden="true"></i>
+                        @AdminResource.BackToSite
+                    </a>
+                </div>
+            </section>
+        </div>
+    </div>
+    <script>
+        (function () {
+            var wait = document.getElementById('lockout-wait');
+            var clock = document.getElementById('lockout-countdown');
+            var text = document.getElementById('lockout-wait-text');
+            var seconds = @remainingSeconds;
+            var ready = '@Html.Raw(HttpUtility.JavaScriptStringEncode(Resource.LockoutReady))';
+            if (!wait || !clock) {
+                return;
+            }
+            function pad(n) { return n < 10 ? '0' + n : String(n); }
+            function render() {
+                if (seconds <= 0) {
+                    clock.textContent = '00:00';
+                    if (text) {
+                        text.textContent = ready;
+                    }
+                    wait.classList.add('is-ready');
+                    return false;
+                }
+                clock.textContent = pad(Math.floor(seconds / 60)) + ':' + pad(seconds % 60);
+                return true;
+            }
+            if (!render()) {
+                return;
+            }
+            var timer = setInterval(function () {
+                seconds -= 1;
+                if (!render()) {
+                    clearInterval(timer);
+                }
+            }, 1000);
+        })();
+    </script>
+</body>
+</html>

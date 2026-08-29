@@ -2303,6 +2303,27 @@
   <data name="LockoutMessage" xml:space="preserve">
     <value>This account has been locked out. Please try again later.</value>
   </data>
+  <data name="LockoutTitle" xml:space="preserve">
+    <value>Account locked</value>
+  </data>
+  <data name="LockoutWhy" xml:space="preserve">
+    <value>Too many failed sign-in attempts temporarily locked this account.</value>
+  </data>
+  <data name="LockoutWaitMinutes" xml:space="preserve">
+    <value>You can try again in about {0} minutes.</value>
+  </data>
+  <data name="LockoutTryAgain" xml:space="preserve">
+    <value>Try signing in again</value>
+  </data>
+  <data name="LockoutSafetyNote" xml:space="preserve">
+    <value>This is an automatic safety measure to protect your account.</value>
+  </data>
+  <data name="LockoutRemaining" xml:space="preserve">
+    <value>Time remaining</value>
+  </data>
+  <data name="LockoutReady" xml:space="preserve">
+    <value>The waiting period is over. You can sign in again now.</value>
+  </data>
   <data name="UseAnotherService" xml:space="preserve">
     <value>Use another service to log in.</value>
   </data>

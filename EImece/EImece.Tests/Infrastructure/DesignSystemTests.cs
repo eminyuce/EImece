@@ -207,6 +207,29 @@ namespace EImece.Tests.Infrastructure
         }
 
         [TestMethod]
+        public void AdminLockout_UsesDefaultViewWhenActiveDesignSet()
+        {
+            var designProvider = new TestDesignProvider { ActiveDesign = "Crizal" };
+            var engine = new DesignAwareRazorViewEngine(designProvider);
+            bool designPathProbed = false;
+            engine.FileExistsOverride = (path) =>
+            {
+                if (path.StartsWith("~/Views/Designs/", StringComparison.OrdinalIgnoreCase))
+                {
+                    designPathProbed = true;
+                }
+                return path.Equals("~/Views/Account/AdminLockout.cshtml", StringComparison.OrdinalIgnoreCase);
+            };
+
+            var context = CreateControllerContext("Account", "AdminLogin");
+            var result = engine.FindView(context, "AdminLockout", null, false);
+
+            Assert.IsNotNull(result);
+            Assert.IsNotNull(result.View);
+            Assert.IsFalse(designPathProbed, "AdminLockout should not probe design paths under ~/Views/Designs/");
+        }
+
+        [TestMethod]
         public void LayoutResolver_ThrowsWhenDesignLayoutMissing()
         {
             var designProvider = new TestDesignProvider { ActiveDesign = "Modern" };

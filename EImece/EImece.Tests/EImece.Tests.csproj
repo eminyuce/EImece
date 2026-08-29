@@ -354,6 +354,8 @@
     <Compile Include="Helpers\MenuPageNullSafetyTests.cs" />
     <Compile Include="Helpers\ProductCategorySortingTests.cs" />
     <Compile Include="Helpers\ProductCommentAdminListHelperTests.cs" />
+    <Compile Include="Helpers\UserLockoutHelperTests.cs" />
+    <Compile Include="Helpers\UserAdminFilterHelperTests.cs" />
     <Compile Include="Helpers\PropertyInjectorCircularDependencyTests.cs" />
     <Compile Include="Helpers\SensitiveDataMaskerTests.cs" />
     <Compile Include="Helpers\MailTemplateModelInspectorTests.cs" />

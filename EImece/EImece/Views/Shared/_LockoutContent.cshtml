@@ -1,0 +1,176 @@
+@using Resources
+@using System.Web
+@{
+    var minutes = ViewBag.LockoutMinutes as int? ?? EImece.Domain.Helpers.UserLockoutHelper.DefaultLockoutMinutes;
+    if (minutes < 1)
+    {
+        minutes = 1;
+    }
+    var remainingSeconds = ViewBag.LockoutRemainingSeconds as int? ?? (minutes * 60);
+    if (remainingSeconds < 0)
+    {
+        remainingSeconds = 0;
+    }
+    var retryUrl = ViewBag.LockoutRetryUrl as string ?? Url.Action("Login", "Account");
+    var initialClock = remainingSeconds <= 0
+        ? "00:00"
+        : string.Format("{0:00}:{1:00}", remainingSeconds / 60, remainingSeconds % 60);
+}
+
+<style>
+    .account-lockout {
+        min-height: min(68vh, 720px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 48px 16px 64px;
+    }
+
+    .account-lockout__card {
+        width: 100%;
+        max-width: 520px;
+        background: #fff;
+        border: 1px solid #e4eaf0;
+        border-radius: 16px;
+        box-shadow: 0 12px 36px rgba(21, 32, 43, 0.08);
+        padding: 36px 28px 28px;
+        text-align: center;
+    }
+
+    .account-lockout__icon {
+        width: 64px;
+        height: 64px;
+        margin: 0 auto 18px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #fef2f2;
+        color: #b42318;
+        font-size: 26px;
+    }
+
+    .account-lockout__title {
+        margin: 0 0 10px;
+        font-size: 26px;
+        font-weight: 700;
+        color: #15202b;
+        line-height: 1.25;
+    }
+
+    .account-lockout__why {
+        margin: 0 0 16px;
+        color: #3d4f5f;
+        font-size: 15px;
+        line-height: 1.55;
+    }
+
+    .account-lockout__wait {
+        margin: 0 0 22px;
+        padding: 14px 16px;
+        background: #fff7ed;
+        border: 1px solid #fdba74;
+        border-radius: 12px;
+        color: #9a3412;
+    }
+
+    .account-lockout__wait.is-ready {
+        background: #ecfdf3;
+        border-color: #86efac;
+        color: #166534;
+    }
+
+    .account-lockout__wait-label {
+        display: block;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        margin-bottom: 4px;
+        opacity: 0.85;
+    }
+
+    .account-lockout__clock {
+        display: block;
+        font-size: 28px;
+        font-weight: 700;
+        font-variant-numeric: tabular-nums;
+        line-height: 1.15;
+        margin-bottom: 6px;
+    }
+
+    .account-lockout__wait-text {
+        display: block;
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 1.45;
+    }
+
+    .account-lockout__actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+    }
+
+    .account-lockout__actions .btn,
+    .account-lockout__actions .butn-style8 {
+        min-width: 160px;
+    }
+</style>
+
+<div class="account-lockout">
+    <div class="account-lockout__card" role="alert">
+        <div class="account-lockout__icon" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <rect x="5" y="11" width="14" height="10" rx="2"></rect>
+                <path d="M8 11V8a4 4 0 0 1 8 0v3"></path>
+            </svg>
+        </div>
+        <h1 class="account-lockout__title">@Resource.LockoutTitle</h1>
+        <p class="account-lockout__why">@Resource.LockoutWhy</p>
+        <div class="account-lockout__wait@(remainingSeconds <= 0 ? " is-ready" : "")" id="lockout-wait">
+            <span class="account-lockout__wait-label">@Resource.LockoutRemaining</span>
+            <span class="account-lockout__clock" id="lockout-countdown" aria-live="polite">@initialClock</span>
+            <span class="account-lockout__wait-text" id="lockout-wait-text">@(remainingSeconds <= 0 ? Resource.LockoutReady : string.Format(Resource.LockoutWaitMinutes, minutes))</span>
+        </div>
+        <div class="account-lockout__actions">
+            <a class="btn btn-primary" href="@retryUrl">@Resource.LockoutTryAgain</a>
+            <a class="btn btn-secondary" href="@Url.Action("Index", "Home")">@Resource.HomePage</a>
+        </div>
+    </div>
+</div>
+<script>
+    (function () {
+        var wait = document.getElementById('lockout-wait');
+        var clock = document.getElementById('lockout-countdown');
+        var text = document.getElementById('lockout-wait-text');
+        var seconds = @remainingSeconds;
+        var ready = '@Html.Raw(HttpUtility.JavaScriptStringEncode(Resource.LockoutReady))';
+        if (!wait || !clock) {
+            return;
+        }
+        function pad(n) { return n < 10 ? '0' + n : String(n); }
+        function render() {
+            if (seconds <= 0) {
+                clock.textContent = '00:00';
+                if (text) {
+                    text.textContent = ready;
+                }
+                wait.classList.add('is-ready');
+                return false;
+            }
+            clock.textContent = pad(Math.floor(seconds / 60)) + ':' + pad(seconds % 60);
+            return true;
+        }
+        if (!render()) {
+            return;
+        }
+        var timer = setInterval(function () {
+            seconds -= 1;
+            if (!render()) {
+                clearInterval(timer);
+            }
+        }, 1000);
+    })();
+</script>

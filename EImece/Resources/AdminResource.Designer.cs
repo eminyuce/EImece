@@ -6171,6 +6171,24 @@ namespace Resources {
             }
         }
 
+        public static string UnlockAccount {
+            get {
+                return ResourceManager.GetString("UnlockAccount", resourceCulture);
+            }
+        }
+
+        public static string AccountUnlocked {
+            get {
+                return ResourceManager.GetString("AccountUnlocked", resourceCulture);
+            }
+        }
+
+        public static string UnlockAccountConfirm {
+            get {
+                return ResourceManager.GetString("UnlockAccountConfirm", resourceCulture);
+            }
+        }
+
         public static string Maintenance {
             get {
                 return ResourceManager.GetString("Maintenance", resourceCulture);
@@ -8265,6 +8283,12 @@ namespace Resources {
         public static string FilterByNameEmailRole2Fa {
             get {
                 return ResourceManager.GetString("FilterByNameEmailRole2Fa", resourceCulture);
+            }
+        }
+
+        public static string SearchNameEmailPlaceholder {
+            get {
+                return ResourceManager.GetString("SearchNameEmailPlaceholder", resourceCulture);
             }
         }
 
