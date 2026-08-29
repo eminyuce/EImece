@@ -1227,22 +1227,70 @@ $(document).on("click", "[data-tree-root-btn]", function () {
         syncToggleAria();
     }
 
+    function isMegaOpen() {
+        return !!(document.body && document.body.classList.contains("admin-mega-open"));
+    }
+
+    function getMegaToggle() {
+        return document.getElementById("adminMegaMenuOpen") || document.getElementById("adminSidebarToggle");
+    }
+
+    function setMegaMenuOpen(isOpen, options) {
+        var body = document.body;
+        var panel = document.getElementById("adminMegaMenu");
+        var overlay = document.getElementById("adminSidebarOverlay");
+        if (!body || !panel) {
+            return;
+        }
+        options = options || {};
+        var focusGroup = options.focusGroup || "";
+        var focusSearch = !!options.focusSearch;
+
+        if (isOpen) {
+            body.classList.add("admin-mega-open");
+            panel.removeAttribute("hidden");
+            panel.setAttribute("aria-hidden", "false");
+            if (overlay) {
+                overlay.setAttribute("aria-hidden", "false");
+            }
+            if (!isDesktop()) {
+                setMobileDrawerOpen(false);
+            }
+            lockBodyScroll();
+            window.setTimeout(function () {
+                var input = document.getElementById("adminSidebarSearchInput");
+                if (focusSearch && input) {
+                    input.focus();
+                }
+                if (focusGroup) {
+                    var card = panel.querySelector('[data-mega-group="' + focusGroup + '"]');
+                    if (card && card.scrollIntoView) {
+                        card.scrollIntoView({ block: "nearest" });
+                    }
+                }
+            }, 40);
+        } else {
+            body.classList.remove("admin-mega-open");
+            panel.setAttribute("hidden", "hidden");
+            panel.setAttribute("aria-hidden", "true");
+            if (overlay && !body.classList.contains("sidebar-open")) {
+                overlay.setAttribute("aria-hidden", "true");
+            }
+            unlockBodyScroll();
+        }
+        syncToggleAria();
+    }
+
     function syncToggleAria() {
-        var toggle = document.getElementById("adminSidebarToggle");
+        var toggle = getMegaToggle();
         if (!toggle) {
             return;
         }
-        if (isDesktop()) {
-            var collapsed = document.body.classList.contains("sidebar-collapsed");
-            toggle.setAttribute("aria-expanded", collapsed ? "false" : "true");
-            toggle.setAttribute("title", toggle.getAttribute("data-label-toggle") || "Toggle sidebar");
-        } else {
-            var open = document.body.classList.contains("sidebar-open");
-            toggle.setAttribute("aria-expanded", open ? "true" : "false");
-            var openLabel = toggle.getAttribute("data-label-open") || "Open menu";
-            var closeLabel = toggle.getAttribute("data-label-close") || "Close menu";
-            toggle.setAttribute("title", open ? closeLabel : openLabel);
-        }
+        var open = isMegaOpen();
+        toggle.setAttribute("aria-expanded", open ? "true" : "false");
+        var openLabel = toggle.getAttribute("data-label-open") || "Open menu";
+        var closeLabel = toggle.getAttribute("data-label-close") || "Close menu";
+        toggle.setAttribute("title", open ? closeLabel : openLabel);
     }
 
     function setGroupOpen(groupEl, isOpen, persist) {
@@ -1301,59 +1349,41 @@ $(document).on("click", "[data-tree-root-btn]", function () {
     }
 
     function initNavGroups() {
-        var toggles = document.querySelectorAll("#adminSidebar .admin-nav-group-toggle");
-        for (var i = 0; i < toggles.length; i++) {
-            toggles[i].addEventListener("click", function (e) {
+        var triggers = document.querySelectorAll("[data-open-mega]");
+        for (var i = 0; i < triggers.length; i++) {
+            triggers[i].addEventListener("click", function (e) {
                 e.preventDefault();
-                var group = this.closest ? this.closest(".admin-nav-group") : this.parentNode;
-                if (!group) {
-                    return;
-                }
-                // On desktop collapsed mode, expand sidebar so labels + children are usable
-                if (isDesktop() && document.body.classList.contains("sidebar-collapsed")) {
-                    setSidebarCollapsed(false);
-                    setGroupOpen(group, true, true);
-                    return;
-                }
-                var willOpen = !group.classList.contains("is-open");
-                setGroupOpen(group, willOpen, true);
+                var group = this.getAttribute("data-open-mega") || "";
+                var focusSearch = this.getAttribute("data-mega-focus-search") === "true";
+                setMegaMenuOpen(true, { focusGroup: group, focusSearch: focusSearch });
             });
         }
         markActiveGroups();
-        restoreGroupState();
     }
 
     function normalizeSearchText(str) {
         if (!str) return "";
         return str
             .replace(/İ/g, "i")
-            .replace(/I/g, "ı")
+            .replace(/I/g, "i")
             .toLowerCase()
+            .replace(/ı/g, "i")
+            .replace(/ü/g, "u")
+            .replace(/ö/g, "o")
+            .replace(/ş/g, "s")
+            .replace(/ç/g, "c")
+            .replace(/ğ/g, "g")
             .trim();
     }
 
     function initSidebarMenuSearch() {
         var searchInput = document.getElementById("adminSidebarSearchInput");
-        var searchContainer = document.getElementById("adminSidebarSearchContainer");
         var searchClear = document.getElementById("adminSidebarSearchClear");
         var searchEmpty = document.getElementById("adminSidebarSearchEmpty");
-        var sidebar = document.getElementById("adminSidebar");
-        var body = document.body;
+        var mega = document.getElementById("adminMegaMenu");
 
-        if (!searchInput || !sidebar) {
+        if (!searchInput || !mega) {
             return;
-        }
-
-        // On collapsed desktop sidebar, clicking the search icon/container expands the sidebar and focuses the input
-        if (searchContainer) {
-            searchContainer.addEventListener("click", function () {
-                if (isDesktop() && body.classList.contains("sidebar-collapsed")) {
-                    setSidebarCollapsed(false);
-                    setTimeout(function () {
-                        searchInput.focus();
-                    }, 100);
-                }
-            });
         }
 
         function filterMenu() {
@@ -1364,67 +1394,37 @@ $(document).on("click", "[data-tree-root-btn]", function () {
                 searchClear.style.display = isSearching ? "flex" : "none";
             }
 
-            var groups = sidebar.querySelectorAll(".admin-nav-group");
-            var topLevelItems = sidebar.querySelectorAll(".admin-sidebar-nav > .admin-nav-item");
+            var items = mega.querySelectorAll(".admin-mega-item");
             var totalVisibleItems = 0;
 
-            // 1. Filter top-level items (e.g. Yönetim Ana Sayfa)
-            for (var t = 0; t < topLevelItems.length; t++) {
-                var topItem = topLevelItems[t];
-                var topLabel = topItem.querySelector(".admin-nav-label");
-                var topText = normalizeSearchText(topLabel ? topLabel.textContent : topItem.textContent);
-                var topTitle = normalizeSearchText(topItem.getAttribute("title") || "");
-                var topMatch = !isSearching || topText.indexOf(query) >= 0 || topTitle.indexOf(query) >= 0;
+            for (var i = 0; i < items.length; i++) {
+                var item = items[i];
+                var itemText = normalizeSearchText(item.textContent);
+                var itemTitle = normalizeSearchText(item.getAttribute("title") || "");
+                var card = item.closest ? item.closest(".admin-mega-card") : null;
+                var cardTitleEl = card ? card.querySelector(".admin-mega-card-title") : null;
+                var cardTitle = normalizeSearchText(cardTitleEl ? cardTitleEl.textContent : "");
+                var itemMatch = !isSearching || itemText.indexOf(query) >= 0 || itemTitle.indexOf(query) >= 0 || cardTitle.indexOf(query) >= 0;
 
-                if (topMatch) {
-                    topItem.style.display = "";
+                if (itemMatch) {
+                    item.style.display = "";
                     totalVisibleItems++;
+                    if (isSearching) {
+                        item.classList.add("search-highlight");
+                    } else {
+                        item.classList.remove("search-highlight");
+                    }
                 } else {
-                    topItem.style.display = "none";
+                    item.style.display = "none";
+                    item.classList.remove("search-highlight");
                 }
             }
 
-            // 2. Filter groups and group items
-            for (var g = 0; g < groups.length; g++) {
-                var group = groups[g];
-                var groupToggle = group.querySelector(".admin-nav-group-toggle");
-                var groupLabel = groupToggle ? groupToggle.querySelector(".admin-nav-label") : null;
-                var groupTitle = normalizeSearchText(groupLabel ? groupLabel.textContent : (groupToggle ? groupToggle.textContent : ""));
-                var groupItems = group.querySelectorAll(".admin-nav-item");
-                var groupMatchCount = 0;
-
-                for (var i = 0; i < groupItems.length; i++) {
-                    var item = groupItems[i];
-                    var itemLabel = item.querySelector(".admin-nav-label");
-                    var itemText = normalizeSearchText(itemLabel ? itemLabel.textContent : item.textContent);
-                    var itemTitle = normalizeSearchText(item.getAttribute("title") || "");
-
-                    var itemMatch = !isSearching || itemText.indexOf(query) >= 0 || itemTitle.indexOf(query) >= 0 || groupTitle.indexOf(query) >= 0;
-
-                    if (itemMatch) {
-                        item.style.display = "";
-                        groupMatchCount++;
-                        totalVisibleItems++;
-                        if (isSearching) {
-                            item.classList.add("search-highlight");
-                        } else {
-                            item.classList.remove("search-highlight");
-                        }
-                    } else {
-                        item.style.display = "none";
-                        item.classList.remove("search-highlight");
-                    }
-                }
-
-                if (!isSearching) {
-                    group.style.display = "";
-                    restoreGroupState();
-                } else if (groupMatchCount > 0) {
-                    group.style.display = "";
-                    setGroupOpen(group, true, false);
-                } else {
-                    group.style.display = "none";
-                }
+            var cards = mega.querySelectorAll(".admin-mega-card");
+            for (var c = 0; c < cards.length; c++) {
+                var cardEl = cards[c];
+                var visibleInCard = cardEl.querySelectorAll(".admin-mega-item:not([style*='display: none'])").length;
+                cardEl.style.display = (!isSearching || visibleInCard > 0) ? "" : "none";
             }
 
             if (searchEmpty) {
@@ -1436,13 +1436,16 @@ $(document).on("click", "[data-tree-root-btn]", function () {
 
         searchInput.addEventListener("keydown", function (e) {
             if (e.key === "Escape" || e.key === "Esc") {
-                searchInput.value = "";
-                filterMenu();
-                searchInput.blur();
+                if (searchInput.value) {
+                    searchInput.value = "";
+                    filterMenu();
+                    e.stopPropagation();
+                    return;
+                }
+                setMegaMenuOpen(false);
             } else if (e.key === "Enter") {
                 e.preventDefault();
-                // Navigate to the first visible nav item
-                var firstVisible = sidebar.querySelector(".admin-nav-item:not([style*='display: none'])");
+                var firstVisible = mega.querySelector(".admin-mega-item:not([style*='display: none'])");
                 if (firstVisible && firstVisible.href) {
                     window.location.href = firstVisible.href;
                 }
@@ -1465,97 +1468,59 @@ $(document).on("click", "[data-tree-root-btn]", function () {
             return;
         }
 
-        var toggle = document.getElementById("adminSidebarToggle");
+        var toggle = getMegaToggle();
         var overlay = document.getElementById("adminSidebarOverlay");
-        var closeBtn = document.getElementById("adminSidebarClose");
-        var sidebar = document.getElementById("adminSidebar");
-
-        // Restore desktop collapsed preference
-        var storedCollapsed = safeGet(STORAGE_COLLAPSED) === "1";
-        if (isDesktop()) {
-            setSidebarCollapsed(storedCollapsed);
-        } else {
-            // Keep preference stored but do not apply icon-only on mobile
-            body.classList.remove("sidebar-collapsed");
-            if (sidebar) {
-                sidebar.setAttribute("data-collapsed", "false");
-            }
-            syncToggleAria();
-        }
+        body.classList.remove("sidebar-collapsed");
+        body.classList.remove("sidebar-open");
 
         initNavGroups();
         initSidebarMenuSearch();
 
+        var megaCloseBtn = document.getElementById("adminMegaMenuClose");
+        if (megaCloseBtn) {
+            megaCloseBtn.addEventListener("click", function (e) {
+                e.preventDefault();
+                setMegaMenuOpen(false);
+            });
+        }
+
         if (toggle) {
             toggle.addEventListener("click", function (e) {
                 e.preventDefault();
-                if (isDesktop()) {
-                    var nextCollapsed = !body.classList.contains("sidebar-collapsed");
-                    setSidebarCollapsed(nextCollapsed);
+                if (isMegaOpen()) {
+                    setMegaMenuOpen(false);
                 } else {
-                    setMobileDrawerOpen(!body.classList.contains("sidebar-open"));
+                    setMegaMenuOpen(true, { focusSearch: true });
                 }
             });
         }
 
         if (overlay) {
             overlay.addEventListener("click", function () {
+                setMegaMenuOpen(false);
                 setMobileDrawerOpen(false);
-            });
-        }
-
-        if (closeBtn) {
-            closeBtn.addEventListener("click", function (e) {
-                e.preventDefault();
-                setMobileDrawerOpen(false);
-            });
-        }
-
-        var sidebarLinks = document.querySelectorAll("#adminSidebar a.admin-nav-item, #adminSidebar .admin-sidebar-brand a");
-        for (var i = 0; i < sidebarLinks.length; i++) {
-            sidebarLinks[i].addEventListener("click", function () {
-                if (!isDesktop()) {
-                    setMobileDrawerOpen(false);
-                }
             });
         }
 
         document.addEventListener("keydown", function (e) {
-            if ((e.key === "Escape" || e.key === "Esc")
-                && !isDesktop()
-                && body.classList.contains("sidebar-open")) {
-                setMobileDrawerOpen(false);
+            if (e.key !== "Escape" && e.key !== "Esc") {
+                return;
+            }
+            if (isMegaOpen()) {
+                setMegaMenuOpen(false);
             }
         });
 
-        // Start closed on phones; announce drawer state for assistive tech
-        if (!isDesktop()) {
-            setMobileDrawerOpen(false);
-            if (sidebar) {
-                sidebar.setAttribute("aria-hidden", "true");
-            }
-        }
+        setMegaMenuOpen(false);
 
         window.addEventListener("resize", function () {
-            if (isDesktop()) {
-                setMobileDrawerOpen(false);
-                setSidebarCollapsed(safeGet(STORAGE_COLLAPSED) === "1");
-                if (sidebar) {
-                    sidebar.setAttribute("aria-hidden", "false");
-                }
-            } else {
-                body.classList.remove("sidebar-collapsed");
-                if (sidebar) {
-                    sidebar.setAttribute("data-collapsed", "false");
-                }
-                if (!body.classList.contains("sidebar-open")) {
-                    unlockBodyScroll();
-                    if (sidebar) {
-                        sidebar.setAttribute("aria-hidden", "true");
-                    }
-                }
-                syncToggleAria();
+            if (isMegaOpen()) {
+                setMegaMenuOpen(false);
             }
+            body.classList.remove("sidebar-collapsed");
+            body.classList.remove("sidebar-open");
+            unlockBodyScroll();
+            syncToggleAria();
         });
     }
 

@@ -439,6 +439,23 @@
 
         var mobileTreeMq = window.matchMedia('(max-width: 991px)');
 
+        function normalizeTreeSearch(str) {
+            if (!str) {
+                return '';
+            }
+            return String(str)
+                .replace(/İ/g, 'i')
+                .replace(/I/g, 'i')
+                .toLowerCase()
+                .replace(/ı/g, 'i')
+                .replace(/ü/g, 'u')
+                .replace(/ö/g, 'o')
+                .replace(/ş/g, 's')
+                .replace(/ç/g, 'c')
+                .replace(/ğ/g, 'g')
+                .trim();
+        }
+
         function syncMobileTreeCollapse($tree) {
             var selectedId = String($tree.attr('data-selected-id') || '0');
             var hasSelection = selectedId && selectedId !== '0';
@@ -448,6 +465,49 @@
                 .attr('aria-expanded', collapsed ? 'false' : 'true');
         }
 
+        function filterTree($tree, rawQuery) {
+            var query = normalizeTreeSearch(rawQuery);
+            var $nodes = $tree.find('.eg-tree-node');
+            var $empty = $tree.find('.eg-tree-search-empty');
+            $nodes.removeClass('is-search-hidden is-search-match');
+            $empty.removeClass('is-visible');
+            $tree.removeClass('is-searching is-search-empty');
+
+            if (!query) {
+                return;
+            }
+
+            $tree.addClass('is-searching');
+            $nodes.each(function () {
+                var $node = $(this);
+                var name = $node.children('.eg-tree-row').find('.eg-tree-name').first().text();
+                if (normalizeTreeSearch(name).indexOf(query) !== -1) {
+                    $node.addClass('is-search-match');
+                }
+            });
+
+            var matchCount = $tree.find('.eg-tree-node.is-search-match').length;
+            $nodes.each(function () {
+                var $node = $(this);
+                var keep = $node.hasClass('is-search-match')
+                    || $node.find('.eg-tree-node.is-search-match').length > 0
+                    || $node.parents('.eg-tree-node.is-search-match').length > 0;
+                $node.toggleClass('is-search-hidden', !keep);
+            });
+
+            $tree.find('.eg-tree-node.is-search-match').parents('.eg-tree-node.has-children')
+                .addClass('is-open')
+                .children('.eg-tree-row').find('.eg-tree-toggle').attr('aria-expanded', 'true');
+            $tree.find('.eg-tree-node.is-search-match.has-children')
+                .addClass('is-open')
+                .children('.eg-tree-row').find('.eg-tree-toggle').attr('aria-expanded', 'true');
+
+            if (matchCount === 0) {
+                $tree.addClass('is-search-empty');
+                $empty.addClass('is-visible');
+            }
+        }
+
         $trees.each(function () {
             var $tree = $(this);
             var selectedId = String($tree.attr('data-selected-id') || '0');
@@ -455,12 +515,10 @@
                 var $active = $tree.find('.eg-tree-node[data-category-id="' + selectedId + '"]');
                 $active.parents('.eg-tree-node.has-children').addClass('is-open')
                     .children('.eg-tree-row').find('.eg-tree-toggle').attr('aria-expanded', 'true');
-                // Collapse siblings of the path for a quieter tree when a deep node is selected.
                 $tree.find('.eg-tree-node.has-children').not($active.parents('.eg-tree-node').add($active)).each(function () {
                     var $node = $(this);
                     if ($node.find('.eg-tree-node[data-category-id="' + selectedId + '"]').length === 0
                         && String($node.attr('data-category-id')) !== selectedId) {
-                        // keep top-level open by default; only collapse deeper unrelated branches
                         if ($node.parents('.eg-tree-node').length > 0) {
                             $node.removeClass('is-open')
                                 .children('.eg-tree-row').find('.eg-tree-toggle').attr('aria-expanded', 'false');
@@ -469,30 +527,49 @@
                 });
             }
             syncMobileTreeCollapse($tree);
+
+            var searchTimer = null;
+            $tree.find('.eg-tree-search').off('.egTreeSearch').on('input.egTreeSearch', function () {
+                var $input = $(this);
+                window.clearTimeout(searchTimer);
+                searchTimer = window.setTimeout(function () {
+                    if (mobileTreeMq.matches) {
+                        $tree.removeClass('is-mobile-collapsed');
+                        $tree.find('> .eg-category-tree-head .eg-category-tree-toggle')
+                            .attr('aria-expanded', 'true');
+                    }
+                    filterTree($tree, $input.val());
+                }, 80);
+            }).on('keydown.egTreeSearch', function (e) {
+                if (e.key === 'Enter' || e.keyCode === 13) {
+                    e.preventDefault();
+                }
+            });
         });
 
-        $(document).on('click', '[data-eg-category-tree] .eg-tree-toggle', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-            var $btn = $(this);
-            var $node = $btn.closest('.eg-tree-node');
-            var open = !$node.hasClass('is-open');
-            $node.toggleClass('is-open', open);
-            $btn.attr('aria-expanded', open ? 'true' : 'false');
-        });
-
-        $(document).on('click', '[data-eg-category-tree] .eg-category-tree-toggle', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-            if (!mobileTreeMq.matches) {
-                return;
-            }
-            var $btn = $(this);
-            var $tree = $btn.closest('[data-eg-category-tree]');
-            var collapsed = !$tree.hasClass('is-mobile-collapsed');
-            $tree.toggleClass('is-mobile-collapsed', collapsed);
-            $btn.attr('aria-expanded', collapsed ? 'false' : 'true');
-        });
+        $(document)
+            .off('click.egCategoryTree')
+            .on('click.egCategoryTree', '[data-eg-category-tree] .eg-tree-toggle:not(.eg-tree-toggle-spacer)', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                var $btn = $(this);
+                var $node = $btn.closest('.eg-tree-node');
+                var open = !$node.hasClass('is-open');
+                $node.toggleClass('is-open', open);
+                $btn.attr('aria-expanded', open ? 'true' : 'false');
+            })
+            .on('click.egCategoryTree', '[data-eg-category-tree] .eg-category-tree-toggle', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                if (!mobileTreeMq.matches) {
+                    return;
+                }
+                var $btn = $(this);
+                var $tree = $btn.closest('[data-eg-category-tree]');
+                var collapsed = !$tree.hasClass('is-mobile-collapsed');
+                $tree.toggleClass('is-mobile-collapsed', collapsed);
+                $btn.attr('aria-expanded', collapsed ? 'false' : 'true');
+            });
 
         function onTreeMqChange() {
             $trees.each(function () {
