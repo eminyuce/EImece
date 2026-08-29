@@ -538,6 +538,7 @@
     <Content Include="Content\adminSearchResult.css" />
     <Content Include="Content\adminShell.css" />
     <Content Include="Content\adminGridModern.css" />
+    <Content Include="Content\adminTree.css" />
     <Content Include="Content\adminGriddlyCompat.css" />
     <Content Include="Content\adminSettingsCenter.css" />
     <Content Include="Content\adminReports.css" />
@@ -1872,6 +1873,7 @@
     <Content Include="Views\Shared\_ErrorLayout.cshtml" />
     <Content Include="Views\UnderConstruction\Index.cshtml" />
     <Content Include="Content\adminGridModern.css" />
+    <Content Include="Content\adminTree.css" />
     <Content Include="Content\adminGriddlyCompat.css" />
     <Content Include="Content\adminMobile.css" />
     <Content Include="Content\adminReports.css" />

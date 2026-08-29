@@ -1731,6 +1731,18 @@
   <data name="SearchMenu" xml:space="preserve">
     <value>Menüde ara</value>
   </data>
+  <data name="SearchAdminTools" xml:space="preserve">
+    <value>Yönetici araçlarında ara...</value>
+  </data>
+  <data name="Profile" xml:space="preserve">
+    <value>Profil</value>
+  </data>
+  <data name="MyPermissions" xml:space="preserve">
+    <value>İzinlerim</value>
+  </data>
+  <data name="AdminBadge" xml:space="preserve">
+    <value>ADMIN</value>
+  </data>
   <data name="NoMatchingMenuFound" xml:space="preserve">
     <value>Eşleşen menü bulunamadı</value>
   </data>

@@ -1731,6 +1731,18 @@
   <data name="SearchMenu" xml:space="preserve">
     <value>Search menu</value>
   </data>
+  <data name="SearchAdminTools" xml:space="preserve">
+    <value>Search in admin tools...</value>
+  </data>
+  <data name="Profile" xml:space="preserve">
+    <value>Profile</value>
+  </data>
+  <data name="MyPermissions" xml:space="preserve">
+    <value>My permissions</value>
+  </data>
+  <data name="AdminBadge" xml:space="preserve">
+    <value>ADMIN</value>
+  </data>
   <data name="NoMatchingMenuFound" xml:space="preserve">
     <value>No matching menu found</value>
   </data>

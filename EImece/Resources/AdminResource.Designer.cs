@@ -4797,6 +4797,30 @@ namespace Resources {
             }
         }
 
+        public static string SearchAdminTools {
+            get {
+                return ResourceManager.GetString("SearchAdminTools", resourceCulture);
+            }
+        }
+
+        public static string Profile {
+            get {
+                return ResourceManager.GetString("Profile", resourceCulture);
+            }
+        }
+
+        public static string MyPermissions {
+            get {
+                return ResourceManager.GetString("MyPermissions", resourceCulture);
+            }
+        }
+
+        public static string AdminBadge {
+            get {
+                return ResourceManager.GetString("AdminBadge", resourceCulture);
+            }
+        }
+
         public static string NoMatchingMenuFound {
             get {
                 return ResourceManager.GetString("NoMatchingMenuFound", resourceCulture);

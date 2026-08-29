@@ -30,12 +30,14 @@
     // Collapse by default on mobile unless a category is already selected.
     var mobileCollapsedClass = selectedCategoryId > 0 ? "" : "is-mobile-collapsed";
     var treeToggleExpanded = selectedCategoryId > 0 ? "true" : "false";
+    var treePanelId = "eg-tree-panel-" + Guid.NewGuid().ToString("N").Substring(0, 8);
 }
 <div class="eg-category-tree @mobileCollapsedClass" data-eg-category-tree="1" data-selected-id="@selectedCategoryId">
     <div class="eg-category-tree-head">
         <button type="button"
                 class="eg-category-tree-toggle"
                 aria-expanded="@treeToggleExpanded"
+                aria-controls="@treePanelId"
                 title="Kategori listesini aç/kapat">
             <span class="eg-category-tree-title">
                 <i class="fa fa-folder-open" aria-hidden="true"></i>
@@ -43,17 +45,30 @@
             </span>
             <i class="fa fa-chevron-down eg-category-tree-chevron" aria-hidden="true"></i>
         </button>
-        @if (showAllLink && !string.IsNullOrEmpty(urlPattern))
-        {
-            <a class="eg-category-all @(selectedCategoryId <= 0 ? "is-active" : "")" href="@allHref" title="Tüm ürünler">@AdminResource.All</a>
-        }
     </div>
-    @if (showPickHint)
-    {
-        <p class="eg-category-tree-pick-hint">Seçmek için bir kategoriye tıklayın</p>
-    }
+    <div class="eg-category-tree-panel" id="@treePanelId">
+        <div class="eg-category-tree-tools">
+            <div class="eg-category-tree-search">
+                <i class="fa fa-search" aria-hidden="true"></i>
+                <input type="search"
+                       class="eg-tree-search"
+                       placeholder="@AdminResource.Search"
+                       aria-label="@AdminResource.Search"
+                       autocomplete="off"
+                       spellcheck="false" />
+            </div>
+            @if (showAllLink && !string.IsNullOrEmpty(urlPattern))
+            {
+                <a class="eg-category-all @(selectedCategoryId <= 0 ? "is-active" : "")" href="@allHref" title="Tüm ürünler">@AdminResource.All</a>
+            }
+        </div>
+        @if (showPickHint)
+        {
+            <p class="eg-category-tree-pick-hint">Seçmek için bir kategoriye tıklayın</p>
+        }
+        <p class="eg-tree-search-empty" role="status">Eşleşen kayıt yok</p>
 
-    <ul class="treeProducts eg-tree eg-category-tree-body" id="responsive">
+        <ul class="treeProducts eg-tree eg-category-tree-body" id="responsive">
         @foreach (ProductCategoryTreeModel p in treeNodes)
         {
             var productCategory = p.ProductCategory;
@@ -115,5 +130,6 @@
                 }
             </li>
         }
-    </ul>
+        </ul>
+    </div>
 </div>

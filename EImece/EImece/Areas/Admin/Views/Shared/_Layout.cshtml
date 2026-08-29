@@ -27,8 +27,9 @@
     @* Cache-bust report filter styles so IIS/bundle cache does not keep oversized date inputs *@
     <link href="~/Content/adminReports.css?v=20260824card1" rel="stylesheet" type="text/css" />
     <link href="~/Content/adminSite.css?v=20260827brandSearch" rel="stylesheet" type="text/css" />
-    <link href="~/Content/adminShell.css?v=20260824card1" rel="stylesheet" type="text/css" />
+    <link href="~/Content/adminShell.css?v=20260829mega12" rel="stylesheet" type="text/css" />
     <link href="~/Content/adminGridModern.css?v=20260824card1" rel="stylesheet" type="text/css" />
+    <link href="~/Content/adminTree.css?v=20260829tree2" rel="stylesheet" type="text/css" />
     <link href="~/Content/adminMobile.css?v=20260824card1" rel="stylesheet" type="text/css" />
     <link href="~/Content/adminGriddlyCompat.css?v=20260824card1" rel="stylesheet" type="text/css" />
     @RenderSection("scripts", required: false)
@@ -41,17 +42,6 @@
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
 </head>
 <body class="admin-app">
-    <script>
-        (function () {
-            try {
-                if (window.matchMedia && window.matchMedia("(min-width: 992px)").matches
-                    && window.localStorage.getItem("eimece.admin.sidebarCollapsed") === "1") {
-                    document.body.classList.add("sidebar-collapsed");
-                }
-            } catch (e) { }
-        })();
-    </script>
-
     <input type="hidden" id="CheckboxesDataTableDoesNotSelected" value="@AdminResource.CheckboxesDataTableDoesNotSelected" />
     <input type="hidden" id="CookieLanguage" value="@AppConfig.MainLanguage" />
     <form id="__AjaxAntiForgeryForm" style="display:none">@Html.AntiForgeryToken()</form>
@@ -144,6 +134,6 @@
             window.location.href = "/admin/dashboard/setlanguage/" + selectedLanguage;
         }
     </script>
-    <script src="~/Scripts/adminGridModern.js?v=20260818iphone"></script>
+    <script src="~/Scripts/adminGridModern.js?v=20260829tree1"></script>
 </body>
 </html>
