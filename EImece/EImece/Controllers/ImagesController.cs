@@ -71,6 +71,7 @@ namespace EImece.Controllers
                 return Content("Id cannot be null");
             }
 
+            id = id.Trim().TrimEnd('/');
             var fileStorageId = id.Replace(".jpg", "").GetId();
 
             if (fileStorageId > 0)
@@ -85,21 +86,26 @@ namespace EImece.Controllers
                 width = Regex.Match(imageSize, @"w(\d*)").Value.Replace("w", "").ToInt();
                 height = Regex.Match(imageSize, @"h(\d*)").Value.Replace("h", "").ToInt();
 
-                bool wantsWebP = Request.AcceptTypes != null
-                    && Request.AcceptTypes.Any(t => t != null && t.IndexOf("image/webp", StringComparison.OrdinalIgnoreCase) >= 0);
-                var imageByte = wantsWebP
-                    ? await FilesHelper.GetResizedImageAsWebPAsync(fileStorageId, width, height)
-                    : await FilesHelper.GetResizedImageAsync(fileStorageId, width, height);
-                if (imageByte != null && imageByte.ImageBytes != null)
+                try
                 {
-                    Response.StatusCode = 200;
-                    ApplyLongLivedImageCache(imageByte.UpdatedDated);
-                    return File(imageByte.ImageBytes, imageByte.ContentType);
+                    bool wantsWebP = Request.AcceptTypes != null
+                        && Request.AcceptTypes.Any(t => t != null && t.IndexOf("image/webp", StringComparison.OrdinalIgnoreCase) >= 0);
+                    var imageByte = wantsWebP
+                        ? await FilesHelper.GetResizedImageAsWebPAsync(fileStorageId, width, height)
+                        : await FilesHelper.GetResizedImageAsync(fileStorageId, width, height);
+                    if (imageByte != null && imageByte.ImageBytes != null)
+                    {
+                        Response.StatusCode = 200;
+                        ApplyLongLivedImageCache(imageByte.UpdatedDated);
+                        return File(imageByte.ImageBytes, imageByte.ContentType);
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    return this.GetDefaultFileContentResult((string)imageSize);
+                    Logger.Error(ex, "Failed to generate image id={0} size={1}", id, imageSize);
                 }
+
+                return this.GetDefaultFileContentResult((string)imageSize);
             }
             else
             {

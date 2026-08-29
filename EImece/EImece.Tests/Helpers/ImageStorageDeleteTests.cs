@@ -80,6 +80,24 @@ namespace EImece.Tests.Helpers
             Directory.Delete(root, true);
         }
 
+        [TestMethod]
+        public void TryCombineStorageFilePath_NullRootOrFileName_ReturnsFalse()
+        {
+            string fullPath;
+            Assert.IsFalse(FilesHelper.TryCombineStorageFilePath(null, "a.jpg", out fullPath));
+            Assert.IsNull(fullPath);
+            Assert.IsFalse(FilesHelper.TryCombineStorageFilePath(@"C:\media", null, out fullPath));
+            Assert.IsFalse(FilesHelper.TryCombineStorageFilePath(@"C:\media", "", out fullPath));
+        }
+
+        [TestMethod]
+        public void TryCombineStorageFilePath_UsesFileNameOnly()
+        {
+            string fullPath;
+            Assert.IsTrue(FilesHelper.TryCombineStorageFilePath(@"C:\media", @"..\secret\photo.jpg", out fullPath));
+            Assert.AreEqual(Path.Combine(@"C:\media", "photo.jpg"), fullPath);
+        }
+
         private static void WriteDummy(string path)
         {
             File.WriteAllText(path, "x", Encoding.ASCII);

@@ -2,7 +2,6 @@ using EImece.Domain.Helpers;
 using System;
 using System.Collections.Concurrent;
 using System.Configuration;
-using System.IO;
 using System.Web.Hosting;
 
 namespace EImece.Domain
@@ -322,7 +321,11 @@ namespace EImece.Domain
 
         public static string StorageRoot
         {
-            get { return Path.Combine(HostingEnvironment.MapPath(Constants.ServerMapPath)); }
+            get
+            {
+                var mapped = HostingEnvironment.MapPath(Constants.ServerMapPath);
+                return string.IsNullOrEmpty(mapped) ? null : mapped;
+            }
         }
 
         public static bool IsCacheActive

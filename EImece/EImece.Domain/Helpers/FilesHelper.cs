@@ -347,10 +347,43 @@ namespace EImece.Domain.Helpers
 
         private void EnsureStorageInitialized()
         {
+            if (!string.IsNullOrWhiteSpace(StorageRoot))
+            {
+                return;
+            }
+
+            InitFilesMediaFolder();
             if (string.IsNullOrWhiteSpace(StorageRoot))
             {
-                InitFilesMediaFolder();
+                StorageRoot = AppConfig.StorageRoot;
             }
+        }
+
+        /// <summary>
+        /// Builds a media-folder path without throwing when root or file name is missing.
+        /// </summary>
+        internal static bool TryCombineStorageFilePath(string storageRoot, string fileName, out string fullPath)
+        {
+            fullPath = null;
+            if (string.IsNullOrWhiteSpace(storageRoot) || string.IsNullOrWhiteSpace(fileName))
+            {
+                return false;
+            }
+
+            var safeName = Path.GetFileName(fileName);
+            if (string.IsNullOrEmpty(safeName))
+            {
+                return false;
+            }
+
+            fullPath = Path.Combine(storageRoot, safeName);
+            return true;
+        }
+
+        private bool TryGetStoredFilePath(string fileName, out string fullPath)
+        {
+            EnsureStorageInitialized();
+            return TryCombineStorageFilePath(StorageRoot, fileName, out fullPath);
         }
 
         private static bool TryDeletePhysicalFile(string path)
@@ -1183,8 +1216,8 @@ namespace EImece.Domain.Helpers
                 }
                 else
                 {
-                    String fullPath = Path.Combine(StorageRoot, fileStorage.FileName);
-                    if (File.Exists(fullPath))
+                    string fullPath;
+                    if (TryGetStoredFilePath(fileStorage.FileName, out fullPath) && File.Exists(fullPath))
                     {
                         imageBytes = File.ReadAllBytes(fullPath);
                     }
@@ -1213,8 +1246,8 @@ namespace EImece.Domain.Helpers
                 return Tuple.Create(GenerateAbstractPlaceholder(fileStorage.Id, w, h), fileStorage);
             }
 
-            String fullPath = Path.Combine(StorageRoot, fileStorage.FileName);
-            if (!File.Exists(fullPath))
+            string fullPath;
+            if (!TryGetStoredFilePath(fileStorage.FileName, out fullPath) || !File.Exists(fullPath))
             {
                 return Tuple.Create<byte[], FileStorage>(null, fileStorage);
             }
