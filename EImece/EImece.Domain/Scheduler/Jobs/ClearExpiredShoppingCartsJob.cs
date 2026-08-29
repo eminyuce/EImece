@@ -22,7 +22,7 @@ namespace EImece.Domain.Scheduler.Jobs
             var correlationId = $"job-cart-cleanup-{Guid.NewGuid():N}";
             using (ScopeContext.PushProperty("CorrelationId", correlationId))
             {
-                Logger.Info("ClearExpiredShoppingCartsJob started. JobKey: {0} (CorrelationId: {1})", jobKey, correlationId);
+                Logger.Debug("ClearExpiredShoppingCartsJob started. JobKey: {0} (CorrelationId: {1})", jobKey, correlationId);
 
                 try
                 {

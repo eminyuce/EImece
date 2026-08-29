@@ -57,7 +57,7 @@ namespace EImece.Domain.Services
             IOrderProductService orderProductService,
             IProductService productService = null) : base(repository)
         {
-            Logger.Info("ShoppingCartService initialized");
+            Logger.Debug("ShoppingCartService initialized");
             this.ShoppingCartRepository = repository;
             this.UserManager = userManager;
             this.OrderService = orderService;
@@ -70,71 +70,71 @@ namespace EImece.Domain.Services
         [Timed("service.shopping_cart.save_or_edit_sync")]
         public virtual void SaveOrEditShoppingCart(ShoppingCart item)
         {
-            Logger.Info($"SaveOrEditShoppingCart called with OrderGuid: {item.OrderGuid}");
+            Logger.Debug($"SaveOrEditShoppingCart called with OrderGuid: {item.OrderGuid}");
             var shoppingCart = ShoppingCartRepository.GetShoppingCartByOrderGuid(item.OrderGuid);
             if (shoppingCart == null)
             {
-                Logger.Info($"No existing shopping cart found for OrderGuid: {item.OrderGuid}. Creating new cart.");
+                Logger.Debug($"No existing shopping cart found for OrderGuid: {item.OrderGuid}. Creating new cart.");
                 shoppingCart = item;
             }
             else
             {
-                Logger.Info($"Existing shopping cart found for OrderGuid: {item.OrderGuid}. Updating cart content.");
+                Logger.Debug($"Existing shopping cart found for OrderGuid: {item.OrderGuid}. Updating cart content.");
                 shoppingCart.ShoppingCartJson = item.ShoppingCartJson;
             }
             ShoppingCartRepository.SaveOrEdit(shoppingCart);
-            Logger.Info($"Shopping cart saved successfully for OrderGuid: {item.OrderGuid}");
+            Logger.Debug($"Shopping cart saved successfully for OrderGuid: {item.OrderGuid}");
         }
 
         [Timed("service.shopping_cart.save_or_edit")]
         public virtual async Task SaveOrEditShoppingCartAsync(ShoppingCart item)
         {
-            Logger.Info($"SaveOrEditShoppingCartAsync called with OrderGuid: {item.OrderGuid}");
+            Logger.Debug($"SaveOrEditShoppingCartAsync called with OrderGuid: {item.OrderGuid}");
             var shoppingCart = await ShoppingCartRepository.GetShoppingCartByOrderGuidAsync(item.OrderGuid).ConfigureAwait(false);
             if (shoppingCart == null)
             {
-                Logger.Info($"No existing shopping cart found for OrderGuid: {item.OrderGuid}. Creating new cart.");
+                Logger.Debug($"No existing shopping cart found for OrderGuid: {item.OrderGuid}. Creating new cart.");
                 shoppingCart = item;
             }
             else
             {
-                Logger.Info($"Existing shopping cart found for OrderGuid: {item.OrderGuid}. Updating cart content.");
+                Logger.Debug($"Existing shopping cart found for OrderGuid: {item.OrderGuid}. Updating cart content.");
                 shoppingCart.ShoppingCartJson = item.ShoppingCartJson;
             }
             await ShoppingCartRepository.SaveOrEditAsync(shoppingCart).ConfigureAwait(false);
-            Logger.Info($"Shopping cart saved successfully for OrderGuid: {item.OrderGuid}");
+            Logger.Debug($"Shopping cart saved successfully for OrderGuid: {item.OrderGuid}");
         }
 
         [Timed("service.shopping_cart.get_by_order_guid_sync")]
         public virtual ShoppingCart GetShoppingCartByOrderGuid(string orderGuid)
         {
-            Logger.Info($"GetShoppingCartByOrderGuid called with OrderGuid: {orderGuid}");
+            Logger.Debug($"GetShoppingCartByOrderGuid called with OrderGuid: {orderGuid}");
             var cart = ShoppingCartRepository.GetShoppingCartByOrderGuid(orderGuid);
-            Logger.Info($"GetShoppingCartByOrderGuid result: {(cart == null ? "No cart found" : "Cart found")}");
+            Logger.Debug($"GetShoppingCartByOrderGuid result: {(cart == null ? "No cart found" : "Cart found")}");
             return cart;
         }
 
         [Timed("service.shopping_cart.get_by_order_guid")]
         public virtual async Task<ShoppingCart> GetShoppingCartByOrderGuidAsync(string orderGuid)
         {
-            Logger.Info($"GetShoppingCartByOrderGuidAsync called with OrderGuid: {orderGuid}");
+            Logger.Debug($"GetShoppingCartByOrderGuidAsync called with OrderGuid: {orderGuid}");
             var cart = await ShoppingCartRepository.GetShoppingCartByOrderGuidAsync(orderGuid).ConfigureAwait(false);
-            Logger.Info($"GetShoppingCartByOrderGuidAsync result: {(cart == null ? "No cart found" : "Cart found")}");
+            Logger.Debug($"GetShoppingCartByOrderGuidAsync result: {(cart == null ? "No cart found" : "Cart found")}");
             return cart;
         }
 
         [Timed("service.shopping_cart.delete_by_order_guid_sync")]
         public virtual void DeleteByOrderGuid(string orderGuid)
         {
-            Logger.Info($"DeleteByOrderGuid called with OrderGuid: {orderGuid}");
+            Logger.Debug($"DeleteByOrderGuid called with OrderGuid: {orderGuid}");
             ShoppingCartRepository.DeleteByWhereCondition(r => r.OrderGuid.Equals(orderGuid, StringComparison.InvariantCultureIgnoreCase));
-            Logger.Info($"Shopping cart deleted for OrderGuid: {orderGuid}");
+            Logger.Debug($"Shopping cart deleted for OrderGuid: {orderGuid}");
         }
 
         [Timed("service.shopping_cart.delete_by_order_guid")]
         public virtual async Task DeleteByOrderGuidAsync(string orderGuid)
         {
-            Logger.Info($"DeleteByOrderGuidAsync called with OrderGuid: {orderGuid}");
+            Logger.Debug($"DeleteByOrderGuidAsync called with OrderGuid: {orderGuid}");
             var carts = await ShoppingCartRepository.FindBy(r => r.OrderGuid.Equals(orderGuid, StringComparison.InvariantCultureIgnoreCase)).ToListAsync().ConfigureAwait(false);
             foreach (var cart in carts)
             {
@@ -144,13 +144,13 @@ namespace EImece.Domain.Services
             {
                 await ShoppingCartRepository.SaveAsync().ConfigureAwait(false);
             }
-            Logger.Info($"Shopping cart deleted for OrderGuid: {orderGuid}");
+            Logger.Debug($"Shopping cart deleted for OrderGuid: {orderGuid}");
         }
 
         [Timed("service.shopping_cart.save_cart_sync")]
         public virtual Order SaveShoppingCart(string orderNumber, ShoppingCartSession shoppingCart, PaymentResult paymentResult, string userId)
         {
-            Logger.Info($"SaveShoppingCart started - UserId: {userId}, OrderGuid: {shoppingCart?.OrderGuid}");
+            Logger.Debug($"SaveShoppingCart started - UserId: {userId}, OrderGuid: {shoppingCart?.OrderGuid}");
 
             if (shoppingCart == null)
             {
@@ -173,13 +173,13 @@ namespace EImece.Domain.Services
             {
                 try
                 {
-                    Logger.Info($"Processing addresses - Initial ShippingAddressId: {shoppingCart.ShippingAddress.Id}, BillingAddressId: {shoppingCart.BillingAddress.Id}");
+                    Logger.Debug($"Processing addresses - Initial ShippingAddressId: {shoppingCart.ShippingAddress.Id}, BillingAddressId: {shoppingCart.BillingAddress.Id}");
 
                     int shippingAddressId = shoppingCart.ShippingAddress.Id;
                     int billingAddressId = shoppingCart.BillingAddress.Id;
                     if (shippingAddressId == 0)
                     {
-                        Logger.Info("Creating new shipping address");
+                        Logger.Debug("Creating new shipping address");
                         shoppingCart.ShippingAddress.Name = Resource.ShippingAddress;
                         shoppingCart.ShippingAddress.AddressType = (int)AddressType.ShippingAddress;
                         shoppingCart.ShippingAddress.Description = shoppingCart.Customer.RegistrationAddress;
@@ -188,11 +188,11 @@ namespace EImece.Domain.Services
                         shoppingCart.ShippingAddress.ZipCode = shoppingCart.Customer.ZipCode.ToStr();
                         var shippingAddress = AddressService.SaveOrEditEntity(shoppingCart.ShippingAddress.ToEntity());
                         shippingAddressId = shippingAddress.Id;
-                        Logger.Info($"New shipping address created with Id: {shippingAddressId}");
+                        Logger.Debug($"New shipping address created with Id: {shippingAddressId}");
                     }
                     if (billingAddressId == 0)
                     {
-                        Logger.Info("Creating new billing address");
+                        Logger.Debug("Creating new billing address");
                         shoppingCart.BillingAddress.Name = Resource.BillingAdress;
                         shoppingCart.BillingAddress.AddressType = (int)AddressType.BillingAddress;
                         shoppingCart.BillingAddress.Description = shoppingCart.Customer.RegistrationAddress;
@@ -201,22 +201,22 @@ namespace EImece.Domain.Services
                         shoppingCart.BillingAddress.ZipCode = shoppingCart.Customer.ZipCode.ToStr();
                         var billingAddress = AddressService.SaveOrEditEntity(shoppingCart.BillingAddress.ToEntity());
                         billingAddressId = billingAddress.Id;
-                        Logger.Info($"New billing address created with Id: {billingAddressId}");
+                        Logger.Debug($"New billing address created with Id: {billingAddressId}");
                     }
 
-                    Logger.Info($"Saving customer type to normal for userId: {userId}");
+                    Logger.Debug($"Saving customer type to normal for userId: {userId}");
                     CustomerService.SaveCustomerTypeToNormal(userId);
 
                     // Central coupon validation (must happen inside transaction before order creation)
                     couponValidationResult = ValidateCouponForOrderSync(shoppingCart, userId, paymentResult.Currency);
 
-                    Logger.Info($"Creating order for userId: {userId}, ShippingAddressId: {shippingAddressId}, BillingAddressId: {billingAddressId}");
+                    Logger.Debug($"Creating order for userId: {userId}, ShippingAddressId: {shippingAddressId}, BillingAddressId: {billingAddressId}");
                     Order savedOrder = SaveOrder(orderNumber, userId, shoppingCart, paymentResult, shippingAddressId, billingAddressId, couponValidationResult);
-                    Logger.Info($"Order created with Id: {savedOrder.Id}, OrderNumber: {savedOrder.OrderNumber}");
+                    Logger.Debug($"Order created with Id: {savedOrder.Id}, OrderNumber: {savedOrder.OrderNumber}");
 
-                    Logger.Info($"Saving order products for OrderId: {savedOrder.Id}");
+                    Logger.Debug($"Saving order products for OrderId: {savedOrder.Id}");
                     SaveOrderProduct(shoppingCart, savedOrder);
-                    Logger.Info($"Order products saved successfully for OrderId: {savedOrder.Id}");
+                    Logger.Debug($"Order products saved successfully for OrderId: {savedOrder.Id}");
 
                     // Record coupon redemption transactionally (after order and products)
                     if (couponValidationResult != null && couponValidationResult.IsValid && couponValidationResult.CouponId.HasValue)
@@ -227,7 +227,7 @@ namespace EImece.Domain.Services
 
                     transaction?.Commit();
 
-                    Logger.Info($"SaveShoppingCart completed successfully for OrderId: {savedOrder.Id}, OrderGuid: {savedOrder.OrderGuid}");
+                    Logger.Debug($"SaveShoppingCart completed successfully for OrderId: {savedOrder.Id}, OrderGuid: {savedOrder.OrderGuid}");
                     return savedOrder;
                 }
                 catch (Exception ex)
@@ -242,7 +242,7 @@ namespace EImece.Domain.Services
         [Timed("service.shopping_cart.save_cart")]
         public virtual async Task<Order> SaveShoppingCartAsync(string orderNumber, ShoppingCartSession shoppingCart, PaymentResult paymentResult, string userId)
         {
-            Logger.Info($"SaveShoppingCartAsync started - UserId: {userId}, OrderGuid: {shoppingCart?.OrderGuid}");
+            Logger.Debug($"SaveShoppingCartAsync started - UserId: {userId}, OrderGuid: {shoppingCart?.OrderGuid}");
 
             if (shoppingCart == null)
             {
@@ -310,7 +310,7 @@ namespace EImece.Domain.Services
 
                     transaction?.Commit();
 
-                    Logger.Info($"SaveShoppingCartAsync completed successfully for OrderId: {savedOrder.Id}, OrderGuid: {savedOrder.OrderGuid}");
+                    Logger.Debug($"SaveShoppingCartAsync completed successfully for OrderId: {savedOrder.Id}, OrderGuid: {savedOrder.OrderGuid}");
                     return savedOrder;
                 }
                 catch (Exception ex)
@@ -326,7 +326,7 @@ namespace EImece.Domain.Services
             int shippingAddressId,
            int billingAddressId, CouponValidationResult couponValidation = null)
         {
-            Logger.Info($"SaveOrder started - UserId: {userId}, ShippingAddressId: {shippingAddressId}, BillingAddressId: {billingAddressId}");
+            Logger.Debug($"SaveOrder started - UserId: {userId}, ShippingAddressId: {shippingAddressId}, BillingAddressId: {billingAddressId}");
 
             if (shippingAddressId == 0)
             {
@@ -408,7 +408,7 @@ namespace EImece.Domain.Services
             item.Locale = paymentResult.Locale;
             item.SystemTime = paymentResult.SystemTime;
 
-            Logger.Info($"Saving order with OrderNumber: {item.OrderNumber}, OrderGuid: {item.OrderGuid}, PaymentId: {item.PaymentId}");
+            Logger.Debug($"Saving order with OrderNumber: {item.OrderNumber}, OrderGuid: {item.OrderGuid}, PaymentId: {item.PaymentId}");
             Order savedOrder = OrderService.SaveOrEditEntity(item);
             Logger.Info($"Order saved successfully with Id: {savedOrder.Id}, OrderNumber: {savedOrder.OrderNumber}");
 
@@ -418,7 +418,7 @@ namespace EImece.Domain.Services
         private Order SaveOrder(String orderNumber, BuyWithNoAccountCreation buyWithNoAccountCreation, PaymentResult paymentResult,
           int shippingAddressId, CouponValidationResult couponValidation = null)
         {
-            Logger.Info($"SaveOrder (buyWithNoAccountCreation) started - UserId: {buyWithNoAccountCreation.Customer.UserId}, ShippingAddressId: {shippingAddressId}");
+            Logger.Debug($"SaveOrder (buyWithNoAccountCreation) started - UserId: {buyWithNoAccountCreation.Customer.UserId}, ShippingAddressId: {shippingAddressId}");
 
             var item = new Order();
 
@@ -487,7 +487,7 @@ namespace EImece.Domain.Services
             item.Locale = paymentResult.Locale;
             item.SystemTime = paymentResult.SystemTime;
 
-            Logger.Info($"Saving buyWithNoAccountCreation order with OrderNumber: {item.OrderNumber}, OrderGuid: {item.OrderGuid}, PaymentId: {item.PaymentId}");
+            Logger.Debug($"Saving buyWithNoAccountCreation order with OrderNumber: {item.OrderNumber}, OrderGuid: {item.OrderGuid}, PaymentId: {item.PaymentId}");
             Order savedOrder = OrderService.SaveOrEditEntity(item);
             Logger.Info($"buyWithNoAccountCreation order saved successfully with Id: {savedOrder.Id}, OrderNumber: {savedOrder.OrderNumber}");
 
@@ -497,7 +497,7 @@ namespace EImece.Domain.Services
         private Order SaveOrder(String userId, BuyNowModel buyNowSession, PaymentResult paymentResult,
           int shippingAddressId)
         {
-            Logger.Info($"SaveOrder (BuyNow) started - UserId: {userId}, ShippingAddressId: {shippingAddressId}");
+            Logger.Debug($"SaveOrder (BuyNow) started - UserId: {userId}, ShippingAddressId: {shippingAddressId}");
 
             var item = new Order();
 
@@ -549,7 +549,7 @@ namespace EImece.Domain.Services
             item.Locale = paymentResult.Locale;
             item.SystemTime = paymentResult.SystemTime;
 
-            Logger.Info($"Saving BuyNow order with OrderNumber: {item.OrderNumber}, OrderGuid: {item.OrderGuid}, PaymentId: {item.PaymentId}");
+            Logger.Debug($"Saving BuyNow order with OrderNumber: {item.OrderNumber}, OrderGuid: {item.OrderGuid}, PaymentId: {item.PaymentId}");
             Order savedOrder = OrderService.SaveOrEditEntity(item);
             Logger.Info($"BuyNow order saved successfully with Id: {savedOrder.Id}, OrderNumber: {savedOrder.OrderNumber}");
 
@@ -560,7 +560,7 @@ namespace EImece.Domain.Services
             int shippingAddressId,
            int billingAddressId, CouponValidationResult couponValidation = null)
         {
-            Logger.Info($"SaveOrderAsync started - UserId: {userId}, ShippingAddressId: {shippingAddressId}, BillingAddressId: {billingAddressId}");
+            Logger.Debug($"SaveOrderAsync started - UserId: {userId}, ShippingAddressId: {shippingAddressId}, BillingAddressId: {billingAddressId}");
 
             if (shippingAddressId == 0)
             {
@@ -650,7 +650,7 @@ namespace EImece.Domain.Services
         private async Task<Order> SaveOrderAsync(String orderNumber, BuyWithNoAccountCreation buyWithNoAccountCreation, PaymentResult paymentResult,
           int shippingAddressId, CouponValidationResult couponValidation = null)
         {
-            Logger.Info($"SaveOrderAsync (buyWithNoAccountCreation) started - UserId: {buyWithNoAccountCreation.Customer.UserId}, ShippingAddressId: {shippingAddressId}");
+            Logger.Debug($"SaveOrderAsync (buyWithNoAccountCreation) started - UserId: {buyWithNoAccountCreation.Customer.UserId}, ShippingAddressId: {shippingAddressId}");
 
             var item = new Order();
 
@@ -729,7 +729,7 @@ namespace EImece.Domain.Services
         private async Task<Order> SaveOrderAsync(String userId, BuyNowModel buyNowSession, PaymentResult paymentResult,
           int shippingAddressId)
         {
-            Logger.Info($"SaveOrderAsync (BuyNow) started - UserId: {userId}, ShippingAddressId: {shippingAddressId}");
+            Logger.Debug($"SaveOrderAsync (BuyNow) started - UserId: {userId}, ShippingAddressId: {shippingAddressId}");
 
             var item = new Order();
 
@@ -791,7 +791,7 @@ namespace EImece.Domain.Services
         [Timed("service.shopping_cart.save_buy_with_no_account_sync")]
         public virtual Order SaveBuyWithNoAccountCreation(string orderNumber, BuyWithNoAccountCreation buyWithNoAccountCreation, PaymentResult paymentResult)
         {
-            Logger.Info($"SaveBuyWithNoAccountCreation started - OrderGuid: {buyWithNoAccountCreation?.OrderGuid}");
+            Logger.Debug($"SaveBuyWithNoAccountCreation started - OrderGuid: {buyWithNoAccountCreation?.OrderGuid}");
 
             if (buyWithNoAccountCreation == null)
             {
@@ -813,7 +813,7 @@ namespace EImece.Domain.Services
                     int shippingAddressId = shippingAddress.Id;
                     if (shippingAddressId == 0)
                     {
-                        Logger.Info("Creating new shipping address for BuyWithNoAccountCreation order");
+                        Logger.Debug("Creating new shipping address for BuyWithNoAccountCreation order");
                         shippingAddress.Name = Resource.ShippingAddress;
                         shippingAddress.AddressType = (int)AddressType.ShippingAddress;
                         shippingAddress.Description = customer.RegistrationAddress;
@@ -822,7 +822,7 @@ namespace EImece.Domain.Services
                         shippingAddress.ZipCode = customer.ZipCode;
                         var savedShippingAddress = AddressService.SaveOrEditEntity(shippingAddress.ToEntity());
                         shippingAddressId = savedShippingAddress.Id;
-                        Logger.Info($"New shipping address created with Id: {shippingAddressId}");
+                        Logger.Debug($"New shipping address created with Id: {shippingAddressId}");
                     }
 
                     // Guest coupon validation (must enforce login-required, usage limits etc.)
@@ -851,13 +851,13 @@ namespace EImece.Domain.Services
                         catch (Exception ex) { Logger.Error(ex, "Guest coupon validation failed"); throw new InvalidOperationException("Coupon validation failed: " + ex.Message, ex); }
                     }
 
-                    Logger.Info($"Creating buyWithNoAccountCreation order for UserId: {buyWithNoAccountCreation.Customer.UserId}, ShippingAddressId: {shippingAddressId}");
+                    Logger.Debug($"Creating buyWithNoAccountCreation order for UserId: {buyWithNoAccountCreation.Customer.UserId}, ShippingAddressId: {shippingAddressId}");
                     Order savedOrder = SaveOrder(orderNumber, buyWithNoAccountCreation, paymentResult, shippingAddressId, guestValidation);
-                    Logger.Info($"buyWithNoAccountCreation order created with Id: {savedOrder.Id}, OrderNumber: {savedOrder.OrderNumber}");
+                    Logger.Debug($"buyWithNoAccountCreation order created with Id: {savedOrder.Id}, OrderNumber: {savedOrder.OrderNumber}");
 
-                    Logger.Info($"Saving order product for buyWithNoAccountCreation OrderId: {savedOrder.Id}");
+                    Logger.Debug($"Saving order product for buyWithNoAccountCreation OrderId: {savedOrder.Id}");
                     SaveOrderProduct(buyWithNoAccountCreation.ShoppingCartItems, savedOrder);
-                    Logger.Info($"Order product saved successfully for buyWithNoAccountCreation OrderId: {savedOrder.Id}");
+                    Logger.Debug($"Order product saved successfully for buyWithNoAccountCreation OrderId: {savedOrder.Id}");
 
                     if (guestValidation != null && guestValidation.IsValid && guestValidation.CouponId.HasValue)
                     {
@@ -884,7 +884,7 @@ namespace EImece.Domain.Services
 
                     transaction?.Commit();
 
-                    Logger.Info($"SaveBuyWithNoAccountCreation completed successfully for OrderId: {savedOrder.Id}, OrderGuid: {savedOrder.OrderGuid}");
+                    Logger.Debug($"SaveBuyWithNoAccountCreation completed successfully for OrderId: {savedOrder.Id}, OrderGuid: {savedOrder.OrderGuid}");
                     return savedOrder;
                 }
                 catch (Exception ex)
@@ -899,7 +899,7 @@ namespace EImece.Domain.Services
         [Timed("service.shopping_cart.save_buy_now_sync")]
         public virtual Order SaveBuyNow(BuyNowModel buyNowSession, PaymentResult paymentResult)
         {
-            Logger.Info($"SaveBuyNow started - OrderGuid: {buyNowSession?.OrderGuid}");
+            Logger.Debug($"SaveBuyNow started - OrderGuid: {buyNowSession?.OrderGuid}");
 
             if (buyNowSession == null)
             {
@@ -915,22 +915,22 @@ namespace EImece.Domain.Services
             {
                 try
                 {
-                    Logger.Info("Saving customer information");
+                    Logger.Debug("Saving customer information");
                     CustomerDto customer = buyNowSession.Customer;
                     customer.CustomerType = (int)EImeceCustomerType.BuyNow;
                     customer.CreatedDate = DateTime.Now;
                     customer.UpdatedDate = DateTime.Now;
                     var customerEntity = CustomerService.SaveOrEditEntity(customer.ToEntity());
-                    Logger.Info($"Customer saved with Id: {customerEntity.Id}");
+                    Logger.Debug($"Customer saved with Id: {customerEntity.Id}");
 
                     buyNowSession.Customer.UserId = GeneralHelper.RandomNumber(12) + "-" + Constants.BuyNowCustomerUserId + "-" + customerEntity.Id;
-                    Logger.Info($"Generated UserId for BuyNow customer: {buyNowSession.Customer.UserId}");
+                    Logger.Debug($"Generated UserId for BuyNow customer: {buyNowSession.Customer.UserId}");
 
                     AddressDto shippingAddress = buyNowSession.ShippingAddress;
                     int shippingAddressId = shippingAddress.Id;
                     if (shippingAddressId == 0)
                     {
-                        Logger.Info("Creating new shipping address for BuyNow order");
+                        Logger.Debug("Creating new shipping address for BuyNow order");
                         shippingAddress.Name = Resource.ShippingAddress;
                         shippingAddress.AddressType = (int)AddressType.ShippingAddress;
                         shippingAddress.Description = customer.RegistrationAddress;
@@ -939,20 +939,20 @@ namespace EImece.Domain.Services
                         shippingAddress.ZipCode = customer.ZipCode;
                         var savedShippingAddress = AddressService.SaveOrEditEntity(shippingAddress.ToEntity());
                         shippingAddressId = savedShippingAddress.Id;
-                        Logger.Info($"New shipping address created with Id: {shippingAddressId}");
+                        Logger.Debug($"New shipping address created with Id: {shippingAddressId}");
                     }
 
-                    Logger.Info($"Creating BuyNow order for UserId: {buyNowSession.Customer.UserId}, ShippingAddressId: {shippingAddressId}");
+                    Logger.Debug($"Creating BuyNow order for UserId: {buyNowSession.Customer.UserId}, ShippingAddressId: {shippingAddressId}");
                     Order savedOrder = SaveOrder(buyNowSession.Customer.UserId, buyNowSession, paymentResult, shippingAddressId);
-                    Logger.Info($"BuyNow order created with Id: {savedOrder.Id}, OrderNumber: {savedOrder.OrderNumber}");
+                    Logger.Debug($"BuyNow order created with Id: {savedOrder.Id}, OrderNumber: {savedOrder.OrderNumber}");
 
-                    Logger.Info($"Saving order product for BuyNow OrderId: {savedOrder.Id}");
+                    Logger.Debug($"Saving order product for BuyNow OrderId: {savedOrder.Id}");
                     SaveOrderProduct(buyNowSession, savedOrder);
-                    Logger.Info($"Order product saved successfully for BuyNow OrderId: {savedOrder.Id}");
+                    Logger.Debug($"Order product saved successfully for BuyNow OrderId: {savedOrder.Id}");
 
                     transaction?.Commit();
 
-                    Logger.Info($"SaveBuyNow completed successfully for OrderId: {savedOrder.Id}, OrderGuid: {savedOrder.OrderGuid}");
+                    Logger.Debug($"SaveBuyNow completed successfully for OrderId: {savedOrder.Id}, OrderGuid: {savedOrder.OrderGuid}");
                     return savedOrder;
                 }
                 catch (Exception ex)
@@ -967,7 +967,7 @@ namespace EImece.Domain.Services
         [Timed("service.shopping_cart.save_buy_with_no_account")]
         public virtual async Task<Order> SaveBuyWithNoAccountCreationAsync(string orderNumber, BuyWithNoAccountCreation buyWithNoAccountCreation, PaymentResult paymentResult)
         {
-            Logger.Info($"SaveBuyWithNoAccountCreationAsync started - OrderGuid: {buyWithNoAccountCreation?.OrderGuid}");
+            Logger.Debug($"SaveBuyWithNoAccountCreationAsync started - OrderGuid: {buyWithNoAccountCreation?.OrderGuid}");
 
             if (buyWithNoAccountCreation == null)
             {
@@ -1053,7 +1053,7 @@ namespace EImece.Domain.Services
 
                     transaction?.Commit();
 
-                    Logger.Info($"SaveBuyWithNoAccountCreationAsync completed successfully for OrderId: {savedOrder.Id}, OrderGuid: {savedOrder.OrderGuid}");
+                    Logger.Debug($"SaveBuyWithNoAccountCreationAsync completed successfully for OrderId: {savedOrder.Id}, OrderGuid: {savedOrder.OrderGuid}");
                     return savedOrder;
                 }
                 catch (Exception ex)
@@ -1068,7 +1068,7 @@ namespace EImece.Domain.Services
         [Timed("service.shopping_cart.save_buy_now")]
         public virtual async Task<Order> SaveBuyNowAsync(BuyNowModel buyNowSession, PaymentResult paymentResult)
         {
-            Logger.Info($"SaveBuyNowAsync started - OrderGuid: {buyNowSession?.OrderGuid}");
+            Logger.Debug($"SaveBuyNowAsync started - OrderGuid: {buyNowSession?.OrderGuid}");
 
             if (buyNowSession == null)
             {
@@ -1116,7 +1116,7 @@ namespace EImece.Domain.Services
 
                     transaction?.Commit();
 
-                    Logger.Info($"SaveBuyNowAsync completed successfully for OrderId: {savedOrder.Id}, OrderGuid: {savedOrder.OrderGuid}");
+                    Logger.Debug($"SaveBuyNowAsync completed successfully for OrderId: {savedOrder.Id}, OrderGuid: {savedOrder.OrderGuid}");
                     return savedOrder;
                 }
                 catch (Exception ex)
@@ -1135,12 +1135,12 @@ namespace EImece.Domain.Services
 
         private void SaveOrderProduct(List<ShoppingCartItem> shoppingCartItems, Order savedOrder)
         {
-            Logger.Info($"SaveOrderProduct started for OrderId: {savedOrder.Id}, ItemCount: {shoppingCartItems.Count}");
+            Logger.Debug($"SaveOrderProduct started for OrderId: {savedOrder.Id}, ItemCount: {shoppingCartItems.Count}");
 
             foreach (var shoppingCartItem in shoppingCartItems)
             {
                 var product = shoppingCartItem.Product;
-                Logger.Info($"Saving order product - OrderId: {savedOrder.Id}, ProductId: {product.Id}, ProductName: {product.Name}, Quantity: {shoppingCartItem.Quantity}");
+                Logger.Debug($"Saving order product - OrderId: {savedOrder.Id}, ProductId: {product.Id}, ProductName: {product.Name}, Quantity: {shoppingCartItem.Quantity}");
 
                 OrderProductService.SaveOrEditEntity(new OrderProduct()
                 {
@@ -1161,16 +1161,16 @@ namespace EImece.Domain.Services
                     ProductService.DecreaseStock(product.Id, shoppingCartItem.Quantity);
                 }
 
-                Logger.Info($"Order product saved successfully - OrderId: {savedOrder.Id}, ProductId: {product.Id}");
+                Logger.Debug($"Order product saved successfully - OrderId: {savedOrder.Id}, ProductId: {product.Id}");
             }
 
-            Logger.Info($"All order products saved successfully for OrderId: {savedOrder.Id}");
+            Logger.Debug($"All order products saved successfully for OrderId: {savedOrder.Id}");
         }
 
         private void SaveOrderProduct(BuyNowModel buyNowModel, Order savedOrder)
         {
             var product = buyNowModel.ShoppingCartItem.Product;
-            Logger.Info($"SaveOrderProduct (BuyNow) started for OrderId: {savedOrder.Id}, ProductId: {product.Id}, ProductName: {product.Name}");
+            Logger.Debug($"SaveOrderProduct (BuyNow) started for OrderId: {savedOrder.Id}, ProductId: {product.Id}, ProductName: {product.Name}");
 
             var entity = new OrderProduct()
             {
@@ -1193,7 +1193,7 @@ namespace EImece.Domain.Services
                 ProductService.DecreaseStock(product.Id, 1);
             }
 
-            Logger.Info($"BuyNow order product saved successfully - OrderId: {savedOrder.Id}, ProductId: {product.Id}, OrderProductId: {savedOrderProduct.Id}");
+            Logger.Debug($"BuyNow order product saved successfully - OrderId: {savedOrder.Id}, ProductId: {product.Id}, OrderProductId: {savedOrderProduct.Id}");
         }
 
         private async Task SaveOrderProductAsync(ShoppingCartSession shoppingCart, Order savedOrder)
@@ -1203,12 +1203,12 @@ namespace EImece.Domain.Services
 
         private async Task SaveOrderProductAsync(List<ShoppingCartItem> shoppingCartItems, Order savedOrder)
         {
-            Logger.Info($"SaveOrderProductAsync started for OrderId: {savedOrder.Id}, ItemCount: {shoppingCartItems.Count}");
+            Logger.Debug($"SaveOrderProductAsync started for OrderId: {savedOrder.Id}, ItemCount: {shoppingCartItems.Count}");
 
             foreach (var shoppingCartItem in shoppingCartItems)
             {
                 var product = shoppingCartItem.Product;
-                Logger.Info($"Saving order product - OrderId: {savedOrder.Id}, ProductId: {product.Id}, ProductName: {product.Name}, Quantity: {shoppingCartItem.Quantity}");
+                Logger.Debug($"Saving order product - OrderId: {savedOrder.Id}, ProductId: {product.Id}, ProductName: {product.Name}, Quantity: {shoppingCartItem.Quantity}");
 
                 await OrderProductService.SaveOrEditEntityAsync(new OrderProduct()
                 {
@@ -1229,16 +1229,16 @@ namespace EImece.Domain.Services
                     await ProductService.DecreaseStockAsync(product.Id, shoppingCartItem.Quantity).ConfigureAwait(false);
                 }
 
-                Logger.Info($"Order product saved successfully - OrderId: {savedOrder.Id}, ProductId: {product.Id}");
+                Logger.Debug($"Order product saved successfully - OrderId: {savedOrder.Id}, ProductId: {product.Id}");
             }
 
-            Logger.Info($"All order products saved successfully for OrderId: {savedOrder.Id}");
+            Logger.Debug($"All order products saved successfully for OrderId: {savedOrder.Id}");
         }
 
         private async Task SaveOrderProductAsync(BuyNowModel buyNowModel, Order savedOrder)
         {
             var product = buyNowModel.ShoppingCartItem.Product;
-            Logger.Info($"SaveOrderProductAsync (BuyNow) started for OrderId: {savedOrder.Id}, ProductId: {product.Id}, ProductName: {product.Name}");
+            Logger.Debug($"SaveOrderProductAsync (BuyNow) started for OrderId: {savedOrder.Id}, ProductId: {product.Id}, ProductName: {product.Name}");
 
             var entity = new OrderProduct()
             {
@@ -1261,7 +1261,7 @@ namespace EImece.Domain.Services
                 await ProductService.DecreaseStockAsync(product.Id, 1).ConfigureAwait(false);
             }
 
-            Logger.Info($"BuyNow order product saved successfully - OrderId: {savedOrder.Id}, ProductId: {product.Id}, OrderProductId: {savedOrderProduct.Id}");
+            Logger.Debug($"BuyNow order product saved successfully - OrderId: {savedOrder.Id}, ProductId: {product.Id}, OrderProductId: {savedOrderProduct.Id}");
         }
 
         [Timed("service.shopping_cart.get_admin_page_list_sync")]
@@ -1285,7 +1285,7 @@ namespace EImece.Domain.Services
             }
 
             var cutoffDate = DateTime.Now.AddDays(-olderThanDays);
-            Logger.Info($"ClearExpiredShoppingCarts starting. CutoffDate: {cutoffDate:yyyy-MM-dd HH:mm:ss} (older than {olderThanDays} days)");
+            Logger.Debug($"ClearExpiredShoppingCarts starting. CutoffDate: {cutoffDate:yyyy-MM-dd HH:mm:ss} (older than {olderThanDays} days)");
             int count = ShoppingCartRepository.DeleteExpiredShoppingCarts(cutoffDate);
             Logger.Info($"ClearExpiredShoppingCarts completed. Deleted {count} expired carts.");
             return count;
@@ -1300,7 +1300,7 @@ namespace EImece.Domain.Services
             }
 
             var cutoffDate = DateTime.Now.AddDays(-olderThanDays);
-            Logger.Info($"ClearExpiredShoppingCartsAsync starting. CutoffDate: {cutoffDate:yyyy-MM-dd HH:mm:ss} (older than {olderThanDays} days)");
+            Logger.Debug($"ClearExpiredShoppingCartsAsync starting. CutoffDate: {cutoffDate:yyyy-MM-dd HH:mm:ss} (older than {olderThanDays} days)");
             int count = await ShoppingCartRepository.DeleteExpiredShoppingCartsAsync(cutoffDate, 500, cancellationToken).ConfigureAwait(false);
             Logger.Info($"ClearExpiredShoppingCartsAsync completed. Deleted {count} expired carts.");
             return count;

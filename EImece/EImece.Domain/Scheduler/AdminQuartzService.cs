@@ -24,7 +24,6 @@ namespace EImece.Domain.Scheduler
 
             try
             {
-                Logger.Info("AdminQuartzService scheduling admin jobs...");
                 await ExecuteAdminTasksAsync().ConfigureAwait(false);
             }
             catch (Exception ex)

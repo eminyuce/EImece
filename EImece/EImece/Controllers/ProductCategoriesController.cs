@@ -117,7 +117,7 @@ namespace EImece.Controllers
         [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
         public async Task<ActionResult> Category(String id, int page = 0, int sorting = 0, string filtreler = "", int minPrice = 0, int maxPrice = 0)
         {
-            Logger.Info($"Entering Category action with id: '{id}', page: {page}, sorting: {sorting}, filtreler: '{filtreler}', minPrice: {minPrice}, maxPrice: {maxPrice}");
+            Logger.Debug($"Entering Category action with id: '{id}', page: {page}, sorting: {sorting}, filtreler: '{filtreler}', minPrice: {minPrice}, maxPrice: {maxPrice}");
             try
             {
                 if (String.IsNullOrEmpty(id))
@@ -127,7 +127,7 @@ namespace EImece.Controllers
                 }
 
                 var categoryId = id.GetId();
-                Logger.Info($"Parsed category ID: {categoryId}");
+                Logger.Debug($"Parsed category ID: {categoryId}");
 
                 var productCategory = await ProductCategoryService.GetStorefrontCategoryPageViewModelAsync(
                     categoryId,
@@ -139,7 +139,7 @@ namespace EImece.Controllers
                     AppConfig.ProductDefaultRecordPerPage,
                     CurrentLanguage);
 
-                Logger.Info($"Retrieved product category view model for ID: {categoryId}, Name: {productCategory?.CategoryDto?.Name}");
+                Logger.Debug($"Retrieved product category view model for ID: {categoryId}, Name: {productCategory?.CategoryDto?.Name}");
 
                 if (productCategory == null || productCategory.CategoryDto == null)
                 {
@@ -155,7 +155,7 @@ namespace EImece.Controllers
                 productCategory.SeoId = id;
                 ViewBag.SeoId = productCategory.CategoryDto.GetSeoUrl();
 
-                Logger.Info("Returning Category view.");
+                Logger.Debug("Returning Category view.");
                 return View(productCategory);
             }
             catch (Exception ex)

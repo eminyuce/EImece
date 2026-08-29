@@ -63,7 +63,7 @@ namespace EImece.Domain.Helpers.EmailHelper
         public override string ToString()
         {
             return "EmailAccount [Email=" + Email + ", DisplayName=" + DisplayName + ", Host=" + Host + ", Port=" + Port
-                    + ", Username=" + Username + ", Password=" + Password + ", EnableSsl=" + EnableSsl
+                    + ", Username=" + Username + ", EnableSsl=" + EnableSsl
                     + ", UseDefaultCredentials=" + UseDefaultCredentials + "]";
         }
     }

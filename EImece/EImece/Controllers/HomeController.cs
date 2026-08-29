@@ -147,22 +147,17 @@ namespace EImece.Controllers
             switch ((EImeceLanguage)CurrentLanguage)
             {
                 case EImeceLanguage.Turkish:
-                    HomeLogger.Info("Current language is Turkish. Returning 'tr'.");
                     return Content("tr");
 
                 case EImeceLanguage.English:
-                    HomeLogger.Info("Current language is English. Returning 'en'.");
                     return Content("en");
 
                 case EImeceLanguage.Russian:
-                    HomeLogger.Info("Current language is Russian. Returning 'ru'.");
                     return Content("ru");
 
                 case EImeceLanguage.German:
-                    HomeLogger.Info("Current language is German. Returning 'de'.");
                     return Content("de");
             }
-            HomeLogger.Info("Default case. Returning 'tr'.");
             return Content("tr");
         }
 
@@ -191,7 +186,6 @@ namespace EImece.Controllers
         public ActionResult GetCompanyName()
         {
             string companyName = SettingService.GetSettingByKey(Constants.CompanyName);
-            HomeLogger.Info($"Retrieved company name: {companyName}");
             return Content(companyName);
         }
 
@@ -219,7 +213,6 @@ namespace EImece.Controllers
             item.isMobilePage = isMobilePage;
             item.WebSiteCompanyPhoneAndLocation = SettingService.GetCachedSettingValueDtoByKey(Constants.WebSiteCompanyPhoneAndLocation);
             item.WebSiteCompanyEmailAddress = SettingService.GetCachedSettingValueDtoByKey(Constants.WebSiteCompanyEmailAddress);
-            HomeLogger.Info("Returning _WebSiteAddressInfo partial view.");
             return PartialView("_WebSiteAddressInfo", item);
         }
 
@@ -229,11 +222,9 @@ namespace EImece.Controllers
         [RateLimit("contact", DefaultLimit = 3, DefaultWindowMinutes = 10)]
         public async Task<ActionResult> SendContactUs(ContactUsFormViewModel contact)
         {
-            HomeLogger.Info("Entering SendContactUs POST action.");
             if (contact == null)
             {
                 HomeLogger.Error("Contact form data is null.");
-                HomeLogger.Info("Returning BadRequest status.");
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             string ipAddress = Request.Headers["X-Forwarded-For"];
@@ -250,15 +241,13 @@ namespace EImece.Controllers
             }
             else if (!validateContactUsFormViewModel(contact))
             {
-                HomeLogger.Info("Contact form validation failed.");
-                HomeLogger.Info("Returning _ContactUsFormViewModel view with errors.");
+                HomeLogger.Debug("Contact form validation failed.");
                 return View("_ContactUsFormViewModel", contact);
             }
             else
             {
                 try
                 {
-                    HomeLogger.Info("Saving subscriber from contact form.");
                     await saveSubsciberAsync(contact);
                 }
                 catch (DbEntityValidationException ex)
@@ -275,13 +264,11 @@ namespace EImece.Controllers
                 {
                     if (contact.ItemType == EImeceItemType.Product)
                     {
-                        HomeLogger.Info($"Sending contact email for product ID: {contact.ItemId}");
                         await RazorEngineHelper.SendContactUsAboutProductDetailEmailAsync(contact);
-                        HomeLogger.Info("Product contact email sent.");
+                        HomeLogger.Info("Product contact email sent. ProductId={0}", contact.ItemId);
                     }
                     else
                     {
-                        HomeLogger.Info("Sending general contact email.");
                         await RazorEngineHelper.SendContactUsForCommunicationAsync(contact);
                         HomeLogger.Info("General contact email sent.");
                     }
@@ -290,34 +277,28 @@ namespace EImece.Controllers
                 {
                     HomeLogger.Error($"Exception while sending email: {ex.Message}", ex);
                 }
-                HomeLogger.Info("Returning _pThankYouForContactingUs view.");
                 return View("_pThankYouForContactingUs", contact);
             }
         }
 
         private bool validateContactUsFormViewModel(ContactUsFormViewModel contact)
         {
-            HomeLogger.Info("Entering validateContactUsFormViewModel method.");
             bool result = true;
             if (string.IsNullOrEmpty(contact.Email))
             {
-                HomeLogger.Info("Email is empty. Adding error.");
                 result = false;
                 ModelState.AddModelError("Email", Resource.EmailRequired);
             }
             if (string.IsNullOrEmpty(contact.Name))
             {
-                HomeLogger.Info("Name is empty. Adding error.");
                 result = false;
                 ModelState.AddModelError("Name", Resource.MandatoryField);
             }
             if (string.IsNullOrEmpty(contact.Message))
             {
-                HomeLogger.Info("Message is empty. Adding error.");
                 result = false;
                 ModelState.AddModelError("Message", Resource.ContactUsMessageErrorMessage);
             }
-            HomeLogger.Info($"Validation result: {result}");
             return result;
         }
 
@@ -348,7 +329,6 @@ namespace EImece.Controllers
 
         private async Task saveSubsciberAsync(ContactUsFormViewModel contact)
         {
-            HomeLogger.Info("Entering saveSubsciber method.");
             var s = new Subscriber();
             s.Email = contact.Email.ToStr();
             s.CreatedDate = DateTime.Now;
@@ -359,38 +339,30 @@ namespace EImece.Controllers
             s.Lang = CurrentLanguage;
             s.Note = string.Format("{0} {4} {1} {4} {2} {4} {3} ",
                 contact.CompanyName, contact.Phone, contact.Address, contact.Message, Environment.NewLine);
-            HomeLogger.Info($"Saving subscriber with email: {s.Email}");
             await SubsciberService.SaveOrEditEntityAsync(s);
-            HomeLogger.Info("Subscriber saved successfully.");
+            HomeLogger.Info("Subscriber saved successfully. Email={0}", s.Email);
         }
 
         public ActionResult Language(string id)
         {
-            HomeLogger.Info($"Entering Language action with id: {id}");
             SetLanguage(id);
             MemoryCacheProvider.ClearAll();
-            HomeLogger.Info("Language set and cache cleared.");
-            HomeLogger.Info("Redirecting to Index.");
+            HomeLogger.Info("Language set and cache cleared. Language={0}", id);
             return RedirectToAction("Index", "Home");
         }
 
         public async Task<ActionResult> OrderConfirmationEmail(int orderId = 1)
         {
-            HomeLogger.Info($"Entering OrderConfirmationEmail with orderId: {orderId}");
             var emailTemplate = await RazorEngineHelper.OrderConfirmationEmailAsync(orderId);
-            HomeLogger.Info("Generated order confirmation email template.");
             EmailSender.SendRenderedEmailTemplateToCustomer(await SettingService.GetEmailAccountAsync(), emailTemplate);
-            HomeLogger.Info("Order confirmation email sent to customer.");
-            HomeLogger.Info("Returning email template view.");
+            HomeLogger.Info("Order confirmation email sent to customer. OrderId={0}", orderId);
             return View(emailTemplate.Item2);
         }
 
         public ActionResult DisplayAllCache()
         {
-            HomeLogger.Info("Entering DisplayAllCache action.");
             var cache = MemoryCache.Default;
             List<string> cacheKeys = cache.Select(kvp => kvp.Key).Where(r => r.Contains("Memory:")).ToList();
-            HomeLogger.Info($"Retrieved {cacheKeys.Count} MemoryCache keys.");
             List<string> keys = new List<string>();
             IDictionaryEnumerator enumerator = System.Web.HttpRuntime.Cache.GetEnumerator();
             while (enumerator.MoveNext())
@@ -398,16 +370,14 @@ namespace EImece.Controllers
                 string key = (string)enumerator.Key;
                 keys.Add(key);
             }
-            HomeLogger.Info($"Retrieved {keys.Count} HttpRuntime cache keys.");
             var approximateSize = GetApproximateSize(cache);
-            HomeLogger.Info($"Calculated approximate cache size: {approximateSize}");
-            HomeLogger.Info("Returning DisplayAllCache view.");
+            HomeLogger.Debug("DisplayAllCache MemoryKeys={0} HttpRuntimeKeys={1} ApproximateSize={2}",
+                cacheKeys.Count, keys.Count, approximateSize);
             return View(new AllCacheList() { HttpRuntimeKey = keys, MemoryCacheKey = cacheKeys, ApproximateSize = approximateSize });
         }
 
         public static long GetApproximateSize(MemoryCache cache)
         {
-            HomeLogger.Info("Entering GetApproximateSize method.");
             try
             {
                 var statsField = typeof(MemoryCache).GetField("_stats", BindingFlags.NonPublic | BindingFlags.Instance);
@@ -417,14 +387,11 @@ namespace EImece.Controllers
                 var sizeField = monitorValue.GetType().GetField("_sizedRefMultiple", BindingFlags.NonPublic | BindingFlags.Instance);
                 var sizeValue = sizeField.GetValue(monitorValue);
                 var approxProp = sizeValue.GetType().GetProperty("ApproximateSize", BindingFlags.NonPublic | BindingFlags.Instance);
-                long size = (long)approxProp.GetValue(sizeValue, null);
-                HomeLogger.Info($"Calculated approximate size: {size}");
-                return size;
+                return (long)approxProp.GetValue(sizeValue, null);
             }
             catch (Exception ex)
             {
                 HomeLogger.Error($"Exception in GetApproximateSize: {ex.Message}", ex);
-                HomeLogger.Info("Returning -1 due to error.");
                 return -1;
             }
         }

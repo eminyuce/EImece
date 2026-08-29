@@ -56,7 +56,6 @@ namespace EImece.Controllers
         public AccountController(ApplicationUserManager userManager,
             ApplicationSignInManager signInManager, ICustomerService customerService)
         {
-            Logger.Info("AccountController constructor called. Initializing UserManager, SignInManager, and CustomerService.");
             UserManager = userManager;
             SignInManager = signInManager;
             CustomerService = customerService;
@@ -65,8 +64,6 @@ namespace EImece.Controllers
         [AllowAnonymous]
         public ActionResult AdminLogin(string returnUrl = "")
         {
-            Logger.Info($"Entering AdminLogin with returnUrl: {returnUrl}");
-
             if (!Domain.AppConfig.AdminLoginEnabled)
             {
                 Logger.Info("AdminLoginEnabled is false. Redirecting AdminLogin to home.");
@@ -75,7 +72,6 @@ namespace EImece.Controllers
 
             ViewBag.ReturnUrl = returnUrl;
             ApplyAdminCulture();
-            Logger.Info("Returning AdminLogin view.");
             return View();
         }
 
@@ -121,7 +117,7 @@ namespace EImece.Controllers
         public async Task<ActionResult> AdminLogin(LoginViewModel model, string returnUrl = "")
         {
             ApplyAdminCulture();
-            Logger.Info($"Entering AdminLogin POST with email: {model?.Email}, returnUrl: {returnUrl}");
+            Logger.Debug($"Entering AdminLogin POST with email: {model?.Email}, returnUrl: {returnUrl}");
 
             if (!Domain.AppConfig.AdminLoginEnabled)
             {
@@ -170,7 +166,7 @@ namespace EImece.Controllers
 
             if (await UserManager.IsLockedOutAsync(user.Id))
             {
-                Logger.Debug($"Account locked out for email: {model.Email}");
+                Logger.Info("Account locked out for email: {0}", model.Email);
                 ModelState.AddModelError("", string.Format(Resource.InvalidLoginAttemptEmailLockedOut, model.Email));
                 return View(LockoutAction);
             }
@@ -215,7 +211,7 @@ namespace EImece.Controllers
                     return RedirectToAction(IndexAction, DashboardAction, new { @area = AdminAreaName });
 
                 case SignInStatus.LockedOut:
-                    Logger.Debug($"Account locked out for email: {model.Email}");
+                    Logger.Info("Account locked out for email: {0}", model.Email);
                     ModelState.AddModelError("", string.Format(Resource.InvalidLoginAttemptEmailLockedOut, model.Email));
                     Logger.Debug("Returning Lockout view.");
                     return View(LockoutAction);
@@ -237,11 +233,8 @@ namespace EImece.Controllers
 
         private bool isUserAsCustomerRole(LoginViewModel model)
         {
-            Logger.Info($"Entering isUserAsCustomerRole for email: {model.Email}");
             var login = (model.Email ?? string.Empty).Trim();
-            bool isCustomer = UsersService.IsUserInRole(login, Domain.Constants.CustomerRole);
-            Logger.Info($"User role check result: isCustomer = {isCustomer}");
-            return isCustomer;
+            return UsersService.IsUserInRole(login, Domain.Constants.CustomerRole);
         }
 
         /// <summary>
@@ -268,13 +261,11 @@ namespace EImece.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl = "")
         {
-            Logger.Info($"Entering Login with returnUrl: {returnUrl}");
             if (!IsProductPriceEnabled)
             {
                 return RedirectToAction(IndexAction, "Home");
             }
             ViewBag.ReturnUrl = returnUrl;
-            Logger.Info("Returning Login view.");
             return View();
         }
 
@@ -285,7 +276,7 @@ namespace EImece.Controllers
         [RateLimit("login", DefaultLimit = 5, DefaultWindowMinutes = 15)]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl = "")
         {
-            Logger.Info($"Entering Login POST with email: {model?.Email}, returnUrl: {returnUrl}");
+            Logger.Debug($"Entering Login POST with email: {model?.Email}, returnUrl: {returnUrl}");
             if (!IsProductPriceEnabled)
             {
                 return RedirectToAction(IndexAction, "Home");
@@ -338,7 +329,7 @@ namespace EImece.Controllers
                     return RedirectToAction(IndexAction, "Home", new { @area = "customers" });
 
                 case SignInStatus.LockedOut:
-                    Logger.Debug($"Account locked out for email: {model.Email}");
+                    Logger.Info("Account locked out for email: {0}", model.Email);
                     ModelState.AddModelError("", string.Format(Resource.AccountLockedOut, model.Email));
                     Logger.Debug("Returning Lockout view.");
                     return View(LockoutAction);
@@ -383,14 +374,14 @@ namespace EImece.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> VerifyCode(string provider, string returnUrl, bool rememberMe)
         {
-            Logger.Info($"Entering VerifyCode with provider: {provider}, returnUrl: {returnUrl}, rememberMe: {rememberMe}");
+            Logger.Debug($"Entering VerifyCode with provider: {provider}, returnUrl: {returnUrl}, rememberMe: {rememberMe}");
             if (!await SignInManager.HasBeenVerifiedAsync())
             {
                 Logger.Error("User has not been verified.");
-                Logger.Info("Returning Error view.");
+                Logger.Debug("Returning Error view.");
                 return View("Error");
             }
-            Logger.Info("User verified. Returning VerifyCode view.");
+            Logger.Debug("User verified. Returning VerifyCode view.");
             return View(new VerifyCodeViewModel { Provider = provider, ReturnUrl = returnUrl, RememberMe = rememberMe });
         }
 
@@ -399,16 +390,16 @@ namespace EImece.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> VerifyCode(VerifyCodeViewModel model)
         {
-            Logger.Info($"Entering VerifyCode POST with provider: {model.Provider}");
+            Logger.Debug($"Entering VerifyCode POST with provider: {model.Provider}");
             if (!ModelState.IsValid)
             {
-                Logger.Info("Model state is invalid. Returning view with errors.");
+                Logger.Debug("Model state is invalid. Returning view with errors.");
                 return View(model);
             }
 
-            Logger.Info($"Attempting two-factor sign-in with code: {model.Code}");
+            Logger.Debug($"Attempting two-factor sign-in. Provider={model.Provider}");
             var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent: model.RememberMe, rememberBrowser: model.RememberBrowser);
-            Logger.Info($"Two-factor sign-in result: {result}");
+            Logger.Debug($"Two-factor sign-in result: {result}");
 
             switch (result)
             {
@@ -422,9 +413,9 @@ namespace EImece.Controllers
 
                 case SignInStatus.Failure:
                 default:
-                    Logger.Info("Two-factor sign-in failed. Adding error.");
+                    Logger.Debug("Two-factor sign-in failed. Adding error.");
                     ModelState.AddModelError("", Resource.InvalidCode);
-                    Logger.Info("Returning VerifyCode view with error.");
+                    Logger.Debug("Returning VerifyCode view with error.");
                     return View(model);
             }
         }
@@ -435,7 +426,7 @@ namespace EImece.Controllers
         [AllowAnonymous]
         public ActionResult VerifyAuthenticator(string token, bool rememberMe = false, string returnUrl = null)
         {
-            Logger.Info("Entering VerifyAuthenticator GET.");
+            Logger.Debug("Entering VerifyAuthenticator GET.");
             if (string.IsNullOrEmpty(token))
             {
                 return RedirectToAction(AdminLoginAction);
@@ -454,7 +445,7 @@ namespace EImece.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> VerifyAuthenticator(VerifyAuthenticatorViewModel model)
         {
-            Logger.Info("Entering VerifyAuthenticator POST.");
+            Logger.Debug("Entering VerifyAuthenticator POST.");
             if (model == null || string.IsNullOrEmpty(model.Token))
             {
                 return RedirectToAction(AdminLoginAction);
@@ -509,7 +500,6 @@ namespace EImece.Controllers
         [AllowAnonymous]
         public ActionResult Register(string returnUrl = "")
         {
-            Logger.Info($"Entering Register action. returnUrl={returnUrl}");
             if (!IsProductPriceEnabled)
             {
                 return RedirectToAction(IndexAction, "Home");
@@ -517,7 +507,6 @@ namespace EImece.Controllers
             var model = new RegisterViewModel();
             model.IsPermissionGranted = true;
             ViewBag.ReturnUrl = returnUrl;
-            Logger.Info("Returning Register view with default model.");
             return View(model);
         }
 
@@ -527,7 +516,7 @@ namespace EImece.Controllers
         [ValidateCaptcha(Prefix = "CustomerRegister")]
         public async Task<ActionResult> Register(RegisterViewModel model, string returnUrl = "")
         {
-            Logger.Info($"Entering Register POST with email: {model.Email}, returnUrl={returnUrl}");
+            Logger.Debug($"Entering Register POST with email: {model.Email}, returnUrl={returnUrl}");
             if (!IsProductPriceEnabled)
             {
                 return RedirectToAction(IndexAction, "Home");
@@ -537,7 +526,7 @@ namespace EImece.Controllers
             {
                 Logger.Error("Captcha validation failed for Register.");
                 ModelState.AddModelError("", CaptchaService.GetErrorMessage());
-                Logger.Info("Returning Register view with captcha error.");
+                Logger.Debug("Returning Register view with captcha error.");
                 return View(model);
             }
             if (ModelState.IsValid)
@@ -545,15 +534,14 @@ namespace EImece.Controllers
                 var user = model.GetUser();
                 Logger.Info($"Creating user with email: {user.Email}");
                 var result = await UserManager.CreateAsync(user, model.Password);
-                Logger.Info($"User creation result: {result.Succeeded}");
+                Logger.Debug($"User creation result: {result.Succeeded}");
                 if (result.Succeeded)
                 {
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-                    Logger.Info("User signed in after registration.");
 
                     string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    Logger.Info($"Generated email confirmation token. Callback URL: {callbackUrl}");
+                    Logger.Debug("Generated email confirmation token.");
                     var emailTemplate = await RazorEngineHelper.ConfirmYourAccountEmailBodyAsync(model.Email, model.FirstName + " " + model.LastName, callbackUrl);
                     await UserManager.SendEmailAsync(user.Id, emailTemplate.Item1, emailTemplate.Item2);
                     Logger.Info("Confirmation email sent.");
@@ -563,10 +551,10 @@ namespace EImece.Controllers
                     Logger.Info($"Assigned Customer role and saved customer data for user ID: {user.Id}");
 
                     IdentitySignout();
-                    Logger.Info("Signed out after registration setup.");
+                    Logger.Debug("Signed out after registration setup.");
 
                     var result2 = await SignInManager.PasswordSignInAsync(user.UserName, model.Password, false, shouldLockout: false);
-                    Logger.Info($"Post-registration sign-in result: {result2}");
+                    Logger.Debug($"Post-registration sign-in result: {result2}");
                     return await CompleteRegistrationSignInAsync(model, returnUrl, result2);
                 }
                 else
@@ -586,10 +574,10 @@ namespace EImece.Controllers
                 if (model.Password.Length < 6)
                     ModelState.AddModelError("Password", Resource.PasswordMinLength);
 
-                Logger.Info("Model state is invalid. Adding error.");
+                Logger.Debug("Model state is invalid. Adding error.");
                 ModelState.AddModelError("", Resource.RequestIsNotValid);
             }
-            Logger.Info("Returning Register view with errors.");
+            Logger.Debug("Returning Register view with errors.");
             return View(model);
         }
 
@@ -607,7 +595,7 @@ namespace EImece.Controllers
                     return RedirectToAction(IndexAction, "Home", new { @area = "customers" });
 
                 case SignInStatus.LockedOut:
-                    Logger.Debug($"Account locked out for email: {model.Email}");
+                    Logger.Info("Account locked out for email: {0}", model.Email);
                     ModelState.AddModelError("", $"The account {model.Email} LockedOut");
                     return View(LockoutAction);
 
@@ -621,7 +609,7 @@ namespace EImece.Controllers
                     if (user2 != null)
                     {
                         bool checkPassword = await SignInManager.UserManager.CheckPasswordAsync(user2, model.Password);
-                        Logger.Info($"Password check for {model.Email}: {checkPassword}");
+                        Logger.Debug($"Password check for {model.Email}: {checkPassword}");
                         if (!checkPassword)
                             ModelState.AddModelError("", "Invalid login attempt. Password is not correct");
                         else
@@ -642,7 +630,6 @@ namespace EImece.Controllers
 
         public void IdentitySignout()
         {
-            Logger.Info("Entering IdentitySignout.");
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie, DefaultAuthenticationTypes.ExternalCookie);
             Logger.Info("Signed out user.");
         }
@@ -650,24 +637,19 @@ namespace EImece.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> ConfirmEmail(string userId, string code)
         {
-            Logger.Info($"Entering ConfirmEmail with userId: {userId}, code: {code}");
             if (userId == null || code == null)
             {
-                Logger.Error("UserId or code is null.");
-                Logger.Info("Returning Error view.");
+                Logger.Error("ConfirmEmail failed: userId or code is null.");
                 return View("Error");
             }
             var result = await UserManager.ConfirmEmailAsync(userId, code);
-            Logger.Info($"Email confirmation result: {result.Succeeded}");
-            Logger.Info($"Returning {(result.Succeeded ? "ConfirmEmail" : "Error")} view.");
+            Logger.Info("Email confirmation result: {0} UserId={1}", result.Succeeded, userId);
             return View(result.Succeeded ? "ConfirmEmail" : "Error");
         }
 
         [AllowAnonymous]
         public ActionResult ForgotPassword()
         {
-            Logger.Info("Entering ForgotPassword action.");
-            Logger.Info("Returning ForgotPassword view.");
             return View();
         }
 
@@ -677,7 +659,7 @@ namespace EImece.Controllers
         [ValidateCaptcha(Prefix = "ForgotPassword")]
         public async Task<ActionResult> ForgotPassword(ForgotPasswordViewModel model)
         {
-            Logger.Info($"Entering ForgotPassword POST with email: {model.Email}");
+            Logger.Debug($"Entering ForgotPassword POST with email: {model.Email}");
             if (CaptchaService.HasValidationError(ModelState))
             {
                 Logger.Error("Captcha validation failed for ForgotPassword.");
@@ -694,11 +676,11 @@ namespace EImece.Controllers
                 }
                 if (!(await UserManager.IsEmailConfirmedAsync(user.Id)))
                 {
-                    Logger.Info($"Email not confirmed for user ID: {user.Id}");
+                    Logger.Debug($"Email not confirmed for user ID: {user.Id}");
 
                     string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    Logger.Info($"Generated email confirmation token. Callback URL: {callbackUrl}");
+                    Logger.Debug("Generated email confirmation token.");
                     var emailTemplate = await RazorEngineHelper.ConfirmYourAccountEmailBodyAsync(model.Email, user.FirstName + " " + user.LastName, callbackUrl);
                     await UserManager.SendEmailAsync(user.Id, emailTemplate.Item1, emailTemplate.Item2);
                     ModelState.AddModelError("", Resource.UserEmailNotConfirmed);
@@ -708,42 +690,38 @@ namespace EImece.Controllers
                 {
                     string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
                     var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    Logger.Info($"Generated password reset token. Callback URL: {callbackUrl}");
+                    Logger.Debug("Generated password reset token.");
                     var emailTemplate = await RazorEngineHelper.ForgotPasswordEmailBodyAsync(model.Email, callbackUrl);
                     await UserManager.SendEmailAsync(user.Id, emailTemplate.Item1, emailTemplate.Item2);
                     Logger.Info("Password reset email sent.");
-                    Logger.Info("Redirecting to ForgotPasswordConfirmation.");
+                    Logger.Debug("Redirecting to ForgotPasswordConfirmation.");
                     return RedirectToAction("ForgotPasswordConfirmation", "Account");
                 }
             }
-            Logger.Info("Model state is invalid. Returning ForgotPassword view.");
+            Logger.Debug("Model state is invalid. Returning ForgotPassword view.");
             return View(model);
         }
 
         [AllowAnonymous]
         public ActionResult ForgotPasswordConfirmation()
         {
-            Logger.Info("Entering ForgotPasswordConfirmation action.");
-            Logger.Info("Returning ForgotPasswordConfirmation view.");
             return View();
         }
 
         [AllowAnonymous]
         public async Task<ActionResult> ResetPassword(string userId, string code)
         {
-            Logger.Info($"Entering ResetPassword with userId: {userId}, code: {code}");
             if (code == null)
             {
-                Logger.Error("Code is null.");
-                Logger.Info("Returning BadRequest status.");
+                Logger.Error("ResetPassword failed: code is null. UserId={0}", userId);
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             var user = await UserManager.FindByIdAsync(userId);
             ResetPasswordViewModel model = new ResetPasswordViewModel();
             model.Email = user.Email;
             model.Code = code;
-            Logger.Info($"Retrieved user email: {user.Email} for reset.");
-            Logger.Info("Returning ResetPassword view.");
+            Logger.Debug($"Retrieved user email: {user.Email} for reset.");
+            Logger.Debug("Returning ResetPassword view.");
             return View(model);
         }
 
@@ -752,23 +730,22 @@ namespace EImece.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ResetPassword(ResetPasswordViewModel model)
         {
-            Logger.Info($"Entering ResetPassword POST with email: {model.Email}");
+            Logger.Debug($"Entering ResetPassword POST with email: {model.Email}");
             if (!ModelState.IsValid)
             {
-                Logger.Info("Model state is invalid. Returning view with errors.");
+                Logger.Debug("Model state is invalid. Returning view with errors.");
                 return View(model);
             }
             var user = await FindUserByEmailOrUserNameAsync(model.Email);
             if (user == null)
             {
-                Logger.Info($"No user found for email: {model.Email}. Redirecting to confirmation.");
+                Logger.Debug($"No user found for email: {model.Email}. Redirecting to confirmation.");
                 return RedirectToAction("ResetPasswordConfirmation", "Account");
             }
             var result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
-            Logger.Info($"Password reset result: {result.Succeeded}");
             if (result.Succeeded)
             {
-                Logger.Info("Password reset successful. Redirecting to confirmation.");
+                Logger.Info("Password reset successful. Email={0}", model.Email);
                 return RedirectToAction("ResetPasswordConfirmation", "Account");
             }
             AddErrors(result);
@@ -779,8 +756,6 @@ namespace EImece.Controllers
         [AllowAnonymous]
         public ActionResult ResetPasswordConfirmation()
         {
-            Logger.Info("Entering ResetPasswordConfirmation action.");
-            Logger.Info("Returning ResetPasswordConfirmation view.");
             return View();
         }
 
@@ -789,26 +764,24 @@ namespace EImece.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ExternalLogin(string provider, string returnUrl)
         {
-            Logger.Info($"Entering ExternalLogin with provider: {provider}, returnUrl: {returnUrl}");
-            Logger.Info("Initiating external login challenge.");
             return new ChallengeResult(provider, Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl }));
         }
 
         [AllowAnonymous]
         public async Task<ActionResult> SendCode(string returnUrl, bool rememberMe)
         {
-            Logger.Info($"Entering SendCode with returnUrl: {returnUrl}, rememberMe: {rememberMe}");
+            Logger.Debug($"Entering SendCode with returnUrl: {returnUrl}, rememberMe: {rememberMe}");
             var userId = await SignInManager.GetVerifiedUserIdAsync();
             if (userId == null)
             {
                 Logger.Error("No verified user ID found.");
-                Logger.Info("Returning Error view.");
+                Logger.Debug("Returning Error view.");
                 return View("Error");
             }
             var userFactors = await UserManager.GetValidTwoFactorProvidersAsync(userId);
             var factorOptions = userFactors.Select(purpose => new SelectListItem { Text = purpose, Value = purpose }).ToList();
-            Logger.Info($"Retrieved {factorOptions.Count} two-factor providers for user ID: {userId}");
-            Logger.Info("Returning SendCode view.");
+            Logger.Debug($"Retrieved {factorOptions.Count} two-factor providers for user ID: {userId}");
+            Logger.Debug("Returning SendCode view.");
             return View(new SendCodeViewModel { Providers = factorOptions, ReturnUrl = returnUrl, RememberMe = rememberMe });
         }
 
@@ -817,17 +790,17 @@ namespace EImece.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> SendCode(SendCodeViewModel model)
         {
-            Logger.Info($"Entering SendCode POST with provider: {model.SelectedProvider}");
+            Logger.Debug($"Entering SendCode POST with provider: {model.SelectedProvider}");
             if (!ModelState.IsValid)
             {
-                Logger.Info("Model state is invalid. Returning view.");
+                Logger.Debug("Model state is invalid. Returning view.");
                 return View();
             }
 
             if (!await SignInManager.SendTwoFactorCodeAsync(model.SelectedProvider))
             {
                 Logger.Error($"Failed to send two-factor code for provider: {model.SelectedProvider}");
-                Logger.Info("Returning Error view.");
+                Logger.Debug("Returning Error view.");
                 return View("Error");
             }
             Logger.Info("Two-factor code sent successfully. Redirecting to VerifyCode.");
@@ -837,18 +810,18 @@ namespace EImece.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
         {
-            Logger.Info($"Entering ExternalLoginCallback with returnUrl: {returnUrl}");
+            Logger.Debug($"Entering ExternalLoginCallback with returnUrl: {returnUrl}");
             var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync();
             if (loginInfo == null)
             {
                 Logger.Error("No external login info found.");
-                Logger.Info("Redirecting to Login.");
+                Logger.Debug("Redirecting to Login.");
                 return RedirectToAction("Login");
             }
 
             Logger.Info($"Attempting external sign-in for provider: {loginInfo.Login.LoginProvider}");
             var result = await SignInManager.ExternalSignInAsync(loginInfo, isPersistent: false);
-            Logger.Info($"External sign-in result: {result}");
+            Logger.Debug($"External sign-in result: {result}");
 
             switch (result)
             {
@@ -861,14 +834,14 @@ namespace EImece.Controllers
                     return View(LockoutAction);
 
                 case SignInStatus.RequiresVerification:
-                    Logger.Info("Requires verification. Redirecting to SendCode.");
+                    Logger.Debug("Requires verification. Redirecting to SendCode.");
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = false });
 
                 case SignInStatus.Failure:
                 default:
                     ViewBag.ReturnUrl = returnUrl;
                     ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
-                    Logger.Info("External sign-in failed. Returning ExternalLoginConfirmation view.");
+                    Logger.Debug("External sign-in failed. Returning ExternalLoginConfirmation view.");
                     return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = loginInfo.Email });
             }
         }
@@ -878,10 +851,10 @@ namespace EImece.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model, string returnUrl)
         {
-            Logger.Info($"Entering ExternalLoginConfirmation POST with email: {model.Email}");
+            Logger.Debug($"Entering ExternalLoginConfirmation POST with email: {model.Email}");
             if (User.Identity.IsAuthenticated)
             {
-                Logger.Info("User already authenticated. Redirecting to Manage Index.");
+                Logger.Debug("User already authenticated. Redirecting to Manage Index.");
                 return RedirectToAction(IndexAction, "Manage");
             }
 
@@ -891,16 +864,16 @@ namespace EImece.Controllers
                 if (info == null)
                 {
                     Logger.Error("No external login info found.");
-                    Logger.Info("Returning ExternalLoginFailure view.");
+                    Logger.Debug("Returning ExternalLoginFailure view.");
                     return View("ExternalLoginFailure");
                 }
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
                 var result = await UserManager.CreateAsync(user);
-                Logger.Info($"User creation result: {result.Succeeded}");
+                Logger.Debug($"User creation result: {result.Succeeded}");
                 if (result.Succeeded)
                 {
                     result = await UserManager.AddLoginAsync(user.Id, info.Login);
-                    Logger.Info($"Add login result: {result.Succeeded}");
+                    Logger.Debug($"Add login result: {result.Succeeded}");
                     if (result.Succeeded)
                     {
                         await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
@@ -909,10 +882,10 @@ namespace EImece.Controllers
                     }
                 }
                 AddErrors(result);
-                Logger.Info("External login confirmation failed. Adding errors.");
+                Logger.Debug("External login confirmation failed. Adding errors.");
             }
             ViewBag.ReturnUrl = returnUrl;
-            Logger.Info("Returning ExternalLoginConfirmation view with errors.");
+            Logger.Debug("Returning ExternalLoginConfirmation view with errors.");
             return View(model);
         }
 
@@ -920,7 +893,6 @@ namespace EImece.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
-            Logger.Info("Entering LogOff action.");
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             Logger.Info("User signed out. Redirecting to Home Index.");
             return RedirectToAction(IndexAction, "Home");
@@ -929,8 +901,6 @@ namespace EImece.Controllers
         [AllowAnonymous]
         public ActionResult ExternalLoginFailure()
         {
-            Logger.Info("Entering ExternalLoginFailure action.");
-            Logger.Info("Returning ExternalLoginFailure view.");
             return View();
         }
 
@@ -941,10 +911,8 @@ namespace EImece.Controllers
 
         private void AddErrors(IdentityResult result)
         {
-            Logger.Info("Entering AddErrors method.");
             foreach (var error in result.Errors)
             {
-                Logger.Info($"Adding error: {error}");
                 string errorMessage = error.ToLowerInvariant(); // Büyük/küçük harf duyarlılığını kaldırmak için (teknik karşılaştırma, kültürden bağımsız)
 
                 if (errorMessage.Contains("passwords must have at least one lowercase"))
@@ -973,20 +941,20 @@ namespace EImece.Controllers
 
         private ActionResult RedirectToLocal(string returnUrl = "")
         {
-            Logger.Info($"Entering RedirectToLocal with returnUrl: {returnUrl}");
+            Logger.Debug($"Entering RedirectToLocal with returnUrl: {returnUrl}");
             bool isAdmin = User.IsInRole(Domain.Constants.AdministratorRole) || User.IsInRole(Domain.Constants.EditorRole);
-            Logger.Info($"User isAdmin: {isAdmin}");
+            Logger.Debug($"User isAdmin: {isAdmin}");
             if (isAdmin)
             {
-                Logger.Info("Admin role detected. Redirecting to Admin Dashboard.");
+                Logger.Debug("Admin role detected. Redirecting to Admin Dashboard.");
                 return RedirectToAction(IndexAction, DashboardAction, new { @area = AdminAreaName });
             }
             else if (!String.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
             {
-                Logger.Info($"Valid local returnUrl. Redirecting to: {returnUrl}");
+                Logger.Debug($"Valid local returnUrl. Redirecting to: {returnUrl}");
                 return Redirect(returnUrl);
             }
-            Logger.Info("Default redirect to Admin Dashboard.");
+            Logger.Debug("Default redirect to Admin Dashboard.");
             return RedirectToAction(IndexAction, DashboardAction, new { @area = AdminAreaName });
         }
 
@@ -999,7 +967,7 @@ namespace EImece.Controllers
 
             public ChallengeResult(string provider, string redirectUri, string userId)
             {
-                Logger.Info($"Creating ChallengeResult with provider: {provider}, redirectUri: {redirectUri}, userId: {userId}");
+                Logger.Debug($"Creating ChallengeResult with provider: {provider}, redirectUri: {redirectUri}, userId: {userId}");
                 LoginProvider = provider;
                 RedirectUri = redirectUri;
                 UserId = userId;
@@ -1011,19 +979,19 @@ namespace EImece.Controllers
 
             public override void ExecuteResult(ControllerContext context)
             {
-                Logger.Info($"Executing ChallengeResult for provider: {LoginProvider}");
+                Logger.Debug($"Executing ChallengeResult for provider: {LoginProvider}");
                 var properties = new AuthenticationProperties { RedirectUri = RedirectUri };
                 if (UserId != null)
                 {
                     properties.Dictionary[XsrfKey] = UserId;
-                    Logger.Info($"Added XsrfKey '{XsrfKey}' with UserId: {UserId} to properties.");
+                    Logger.Debug($"Added XsrfKey '{XsrfKey}' with UserId: {UserId} to properties.");
                 }
                 else
                 {
-                    Logger.Info($"No UserId provided; XsrfKey '{XsrfKey}' not added to properties.");
+                    Logger.Debug($"No UserId provided; XsrfKey '{XsrfKey}' not added to properties.");
                 }
                 context.HttpContext.GetOwinContext().Authentication.Challenge(properties, LoginProvider);
-                Logger.Info("Authentication challenge issued.");
+                Logger.Debug("Authentication challenge issued.");
             }
         }
 

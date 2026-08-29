@@ -22,7 +22,7 @@ namespace EImece.Domain.Scheduler.Jobs
             var correlationId = $"job-log-cleanup-{Guid.NewGuid():N}";
             using (ScopeContext.PushProperty("CorrelationId", correlationId))
             {
-                Logger.Info("ClearLogsFromDbJob started. JobKey: {0} (CorrelationId: {1})", jobKey, correlationId);
+                Logger.Debug("ClearLogsFromDbJob started. JobKey: {0} (CorrelationId: {1})", jobKey, correlationId);
 
                 try
                 {

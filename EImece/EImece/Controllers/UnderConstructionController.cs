@@ -28,8 +28,6 @@ namespace EImece.Controllers
         // GET: UnderConstruction
         public async Task<ActionResult> Index()
         {
-            Logger.Info("Entering Index action.");
-
             bool isSiteUnderConstruction = false;
             ISettingService settingService = SettingService;
             if (settingService == null)
@@ -50,11 +48,9 @@ namespace EImece.Controllers
                 isSiteUnderConstruction = settingVal.ToBool(false);
             }
 
-            Logger.Info($"Checking site status: IsSiteUnderConstruction = {isSiteUnderConstruction}");
-
             if (isSiteUnderConstruction)
             {
-                Logger.Info("Site is under construction. Setting response to ServiceUnavailable (503).");
+                Logger.Debug("Site is under construction. Returning ServiceUnavailable (503).");
                 var response = HttpContext?.Response;
                 if (response != null)
                 {
@@ -63,14 +59,10 @@ namespace EImece.Controllers
                 }
                 var customHtml = settingService != null ? await settingService.GetSettingByKeyAsync(Constants.UnderConstructionHtml) : string.Empty;
                 ViewBag.CustomHtml = customHtml;
-                Logger.Info("Returning Index view with 503 status.");
                 return await Task.FromResult(View());
             }
-            else
-            {
-                Logger.Info("Site is not under construction. Redirecting to Home Index.");
-                return await Task.FromResult(RedirectToAction("Index", "Home"));
-            }
+
+            return await Task.FromResult(RedirectToAction("Index", "Home"));
         }
     }
 }

@@ -32,8 +32,6 @@ namespace EImece.Controllers
         [CustomOutputCache(CacheProfile = Constants.Cache30Days)]
         public async Task<FileContentResult> RobotsText()
         {
-            Logger.Info("Entering RobotsText action.");
-
             var sb = new StringBuilder(512);
 
             ISettingService settingService = SettingService;
@@ -55,13 +53,13 @@ namespace EImece.Controllers
 
             if (!SeoSettings.AllowIndexing)
             {
-                Logger.Info("Search engine indexing is disabled. Setting robots.txt to disallow all.");
+                Logger.Debug("Search engine indexing is disabled. Setting robots.txt to disallow all.");
                 sb.AppendLine(Constants.RobotsUserAgentAll)
                   .AppendLine("Disallow: /");
             }
             else if (isUnderConstruction || AppConfig.IsSiteUnderDevelopment)
             {
-                Logger.Info("Site is under construction or development. Setting robots.txt to disallow all.");
+                Logger.Debug("Site is under construction or development. Setting robots.txt to disallow all.");
                 sb.AppendLine(Constants.RobotsUserAgentAll)
                   .AppendLine("Disallow: /")
                   .AppendLine("# Disallow Robots (Debug)");
@@ -71,7 +69,6 @@ namespace EImece.Controllers
                 string host = !string.IsNullOrWhiteSpace(AppConfig.Domain) ? AppConfig.Domain : (Request?.Url != null ? Request.Url.Authority : "localhost");
                 string protocol = !string.IsNullOrWhiteSpace(AppConfig.HttpProtocol) ? AppConfig.HttpProtocol : "https";
                 string sitemapUrl = $"{protocol}://{host}/sitemap.xml";
-                Logger.Info($"Generated sitemap URL: {sitemapUrl}");
 
                 sb.AppendLine(Constants.RobotsUserAgentAll)
                   .AppendLine("Allow: /")
@@ -86,7 +83,6 @@ namespace EImece.Controllers
             }
             else
             {
-                Logger.Info("No specific site status matched. Returning allow-all robots.txt.");
                 sb.AppendLine(Constants.RobotsUserAgentAll)
                   .AppendLine("Allow: /");
             }

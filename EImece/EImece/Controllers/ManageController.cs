@@ -34,7 +34,7 @@ namespace EImece.Controllers
         [HttpGet]
         public ActionResult ChangePassword()
         {
-            Logger.Info("Legacy /Manage/ChangePassword redirected to Customers/Home/ChangePassword.");
+            Logger.Debug("Legacy /Manage/ChangePassword redirected to Customers/Home/ChangePassword.");
             return RedirectToActionPermanent("ChangePassword", "Home", new { area = "Customers" });
         }
 
@@ -43,7 +43,7 @@ namespace EImece.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ChangePassword(ChangePasswordViewModel model)
         {
-            Logger.Info("ChangePassword action called with model: {@Model}", model);
+            Logger.Debug("ChangePassword action called.");
 
             if (!ModelState.IsValid)
             {
@@ -60,7 +60,6 @@ namespace EImece.Controllers
                 if (user != null)
                 {
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-                    Logger.Info("User signed in after changing password.");
                 }
 
                 return RedirectToAction(IndexAction, new { Message = ManageMessageId.ChangePasswordSuccess });
@@ -78,14 +77,14 @@ namespace EImece.Controllers
         [HttpGet]
         public ActionResult ManageLogins(ManageMessageId? message)
         {
-            Logger.Info("Legacy /Manage/ManageLogins redirected to Customers/Home/Index. Message={0}", message);
+            Logger.Debug("Legacy /Manage/ManageLogins redirected to Customers/Home/Index. Message={0}", message);
             return RedirectToActionPermanent(IndexAction, "Home", new { area = "Customers" });
         }
 
         // GET: /Manage/Index
         public async Task<ActionResult> Index(ManageMessageId? message)
         {
-            Logger.Info("Index action called with message: {0}", message);
+            Logger.Debug("Index action called with message: {0}", message);
 
             ViewBag.StatusMessage = GetIndexStatusMessage(message);
 
@@ -100,8 +99,6 @@ namespace EImece.Controllers
                 Logins = await UserManager.GetLoginsAsync(userId),
                 BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId)
             };
-
-            Logger.Info("Returning view with model: {@Model}", model);
 
             return View(model);
         }
@@ -204,7 +201,7 @@ namespace EImece.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> RemoveLogin(string loginProvider, string providerKey)
         {
-            Logger.Info("RemoveLogin action called with loginProvider: {0}, providerKey: {1}", loginProvider, providerKey);
+            Logger.Debug("RemoveLogin action called with loginProvider: {0}, providerKey: {1}", loginProvider, providerKey);
 
             ManageMessageId? message;
             var result = await UserManager.RemoveLoginAsync(User.Identity.GetUserId(), new UserLoginInfo(loginProvider, providerKey));
@@ -216,7 +213,6 @@ namespace EImece.Controllers
                 if (user != null)
                 {
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-                    Logger.Info("User signed in after removing login.");
                 }
                 message = ManageMessageId.RemoveLoginSuccess;
             }
@@ -234,7 +230,7 @@ namespace EImece.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> AddPhoneNumber(AddPhoneNumberViewModel model)
         {
-            Logger.Info("AddPhoneNumber action called with model: {@Model}", model);
+            Logger.Debug("AddPhoneNumber action called. Number={0}", model.Number);
 
             if (!ModelState.IsValid)
             {
@@ -262,7 +258,7 @@ namespace EImece.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> EnableTwoFactorAuthentication()
         {
-            Logger.Info("EnableTwoFactorAuthentication action called.");
+            Logger.Debug("EnableTwoFactorAuthentication action called.");
 
             await UserManager.SetTwoFactorEnabledAsync(User.Identity.GetUserId(), true);
             var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
@@ -280,7 +276,7 @@ namespace EImece.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DisableTwoFactorAuthentication()
         {
-            Logger.Info("DisableTwoFactorAuthentication action called.");
+            Logger.Debug("DisableTwoFactorAuthentication action called.");
 
             await UserManager.SetTwoFactorEnabledAsync(User.Identity.GetUserId(), false);
             var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
@@ -298,7 +294,7 @@ namespace EImece.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> RemovePhoneNumber()
         {
-            Logger.Info("RemovePhoneNumber action called.");
+            Logger.Debug("RemovePhoneNumber action called.");
 
             var result = await UserManager.SetPhoneNumberAsync(User.Identity.GetUserId(), null);
             if (!result.Succeeded)

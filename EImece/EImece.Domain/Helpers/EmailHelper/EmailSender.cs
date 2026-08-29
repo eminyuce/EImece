@@ -112,7 +112,7 @@ namespace EImece.Domain.Helpers.EmailHelper
                     smtpClient.Port = emailAccount.Port;
                     smtpClient.EnableSsl = emailAccount.EnableSsl;
                     smtpClient.Credentials = new NetworkCredential(emailAccount.Username, emailAccount.Password);
-                    Logger.Info($"Sending email. Subject: '{subject}', To: '{to.Address}', Host: '{emailAccount.Host}:{emailAccount.Port}', SSL: {emailAccount.EnableSsl}");
+                    Logger.Debug($"Sending email. Subject: '{subject}', To: '{to.Address}', Host: '{emailAccount.Host}:{emailAccount.Port}', SSL: {emailAccount.EnableSsl}");
                     smtpClient.Send(message);
                     Logger.Info($"Email sent successfully. Subject: '{subject}', To: '{to.Address}'");
                 }
@@ -268,7 +268,7 @@ namespace EImece.Domain.Helpers.EmailHelper
             var from = new MailAddress(fromAddress, fromAddressDisplayName);
             var to = new MailAddress(customer.Email, customer.FullName);
 
-            Logger.Info("emailAccount:" + emailAccount + " from:" + from + " to:" + to + " renderedEmailTemplate: " + renderedEmailTemplate.Item1 + " " + renderedEmailTemplate.Item2);
+            Logger.Debug("Queuing customer email. Subject: '{0}', To: '{1}'", renderedEmailTemplate.Item1, to.Address);
             // Validation and address building above run synchronously (so config/render errors
             // surface to the caller); only the SMTP round-trip is deferred when requested.
             if (sendInBackground)
@@ -321,7 +321,7 @@ namespace EImece.Domain.Helpers.EmailHelper
             }
             var from = new MailAddress(fromAddress, fromAddressDisplayName);
 
-            Logger.Info("emailAccount:" + emailAccount + " from:" + from + " to:" + from + " renderedEmailTemplate: " + renderedEmailTemplate.Item1 + " " + renderedEmailTemplate.Item2);
+            Logger.Debug("Queuing admin email. Subject: '{0}', To: '{1}'", renderedEmailTemplate.Item1, from.Address);
             // Validation and address building above run synchronously (so config/render errors
             // surface to the caller); only the SMTP round-trip is deferred when requested.
             if (sendInBackground)

@@ -27,12 +27,12 @@ namespace EImece.Controllers
         [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
         public async Task<ActionResult> Index(CancellationToken cancellationToken, int page = 1)
         {
-            Logger.Info($"Entering Index action with page: {page}");
+            Logger.Debug($"Entering Index action with page: {page}");
             try
             {
                 var stories = await StoryService.GetMainPageStoriesAsync(page, CurrentLanguage, cancellationToken);
-                Logger.Info($"Retrieved {stories?.StorefrontStories?.Count ?? 0} stories for page: {page}, language: {CurrentLanguage}");
-                Logger.Info("Returning Index view.");
+                Logger.Debug($"Retrieved {stories?.StorefrontStories?.Count ?? 0} stories for page: {page}, language: {CurrentLanguage}");
+                Logger.Debug("Returning Index view.");
                 return View(stories);
             }
             catch (Exception ex)
@@ -44,7 +44,7 @@ namespace EImece.Controllers
         [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
         public async Task<ActionResult> Detail(CancellationToken cancellationToken, String id)
         {
-            Logger.Info($"Entering Detail action with id: '{id}'");
+            Logger.Debug($"Entering Detail action with id: '{id}'");
             try
             {
                 if (String.IsNullOrEmpty(id))
@@ -62,7 +62,7 @@ namespace EImece.Controllers
                 {
                     return HttpNotFound();
                 }
-                Logger.Info($"Retrieved story details for ID: {storyId}, Name: {story.StorefrontStory.Name}");
+                Logger.Debug($"Retrieved story details for ID: {storyId}, Name: {story.StorefrontStory.Name}");
 
                 ViewBag.SeoId = story.StorefrontStory.SeoUrl;
                 Logger.Debug($"Set ViewBag.SeoId: {ViewBag.SeoId}");
@@ -80,7 +80,7 @@ namespace EImece.Controllers
         [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
         public async Task<ActionResult> Categories(CancellationToken cancellationToken, String id, int page = 1)
         {
-            Logger.Info($"Entering Categories action with id: '{id}', page: {page}");
+            Logger.Debug($"Entering Categories action with id: '{id}', page: {page}");
             try
             {
                 if (String.IsNullOrEmpty(id))
@@ -98,7 +98,7 @@ namespace EImece.Controllers
                 {
                     return HttpNotFound();
                 }
-                Logger.Info($"Retrieved story category for ID: {storyCategoryId}, Name: {storyCategory.StoryCategory.Name}, Stories Count: {storyCategory.StorefrontStories?.Count ?? 0}");
+                Logger.Debug($"Retrieved story category for ID: {storyCategoryId}, Name: {storyCategory.StoryCategory.Name}, Stories Count: {storyCategory.StorefrontStories?.Count ?? 0}");
 
                 ViewBag.SeoId = storyCategory.StoryCategory.GetSeoUrl();
                 Logger.Debug($"Set ViewBag.SeoId: {ViewBag.SeoId}");
@@ -138,22 +138,22 @@ namespace EImece.Controllers
         [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
         public async Task<ActionResult> Tag(CancellationToken cancellationToken, String id)
         {
-            Logger.Info($"Entering Tag action with id: '{id}'");
+            Logger.Debug($"Entering Tag action with id: '{id}'");
             try
             {
                 if (String.IsNullOrEmpty(id))
                 {
                     Logger.Error("Tag ID is null or empty.");
-                    Logger.Info("Returning BadRequest status.");
+                    Logger.Debug("Returning BadRequest status.");
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
 
                 var tagId = id.GetId();
-                Logger.Info($"Parsed tag ID: {tagId}");
+                Logger.Debug($"Parsed tag ID: {tagId}");
 
                 int pageIndex = 1;
                 int pageSize = 20;
-                Logger.Info($"Using pageIndex: {pageIndex}, pageSize: {pageSize}");
+                Logger.Debug($"Using pageIndex: {pageIndex}, pageSize: {pageSize}");
 
                 var stories = await StoryService.GetStoriesByTagIdAsync(tagId, pageIndex, pageSize, CurrentLanguage, cancellationToken);
                 if (stories == null || stories.Tag == null)
@@ -168,12 +168,12 @@ namespace EImece.Controllers
                     return RedirectToAction("NotFound", "Error");
                 }
 
-                Logger.Info($"Retrieved {stories.StoryTags.Count} stories for tag ID: {tagId}, language: {CurrentLanguage}");
+                Logger.Debug($"Retrieved {stories.StoryTags.Count} stories for tag ID: {tagId}, language: {CurrentLanguage}");
 
                 ViewBag.SeoId = stories.Tag.GetSeoUrl();
-                Logger.Info($"Set ViewBag.SeoId: {ViewBag.SeoId}");
+                Logger.Debug($"Set ViewBag.SeoId: {ViewBag.SeoId}");
 
-                Logger.Info("Returning Tag view.");
+                Logger.Debug("Returning Tag view.");
                 return View(stories);
             }
             catch (Exception ex)

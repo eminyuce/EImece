@@ -1,7 +1,7 @@
 using EImece.Domain;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Models.HelperModels;
-using NLog; // Added for logging
+using NLog;
 using System;
 using System.Net;
 using System.Web.Mvc;
@@ -13,14 +13,12 @@ namespace EImece.Controllers
     /// </summary>
     public class ErrorController : BaseController
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger(); // Added logger instance
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         #region Public Methods
 
         public ActionResult Index()
         {
-            Logger.Info("Entering Index action.");
-            Logger.Info("Returning Index view.");
             return View();
         }
 
@@ -31,10 +29,7 @@ namespace EImece.Controllers
         [CustomOutputCache(CacheProfile = "BadRequest")]
         public ActionResult BadRequest()
         {
-            Logger.Info("Entering BadRequest action.");
-            var result = this.GetErrorView(HttpStatusCode.BadRequest, "badrequest");
-            Logger.Info("Returning BadRequest view or partial view.");
-            return result;
+            return this.GetErrorView(HttpStatusCode.BadRequest, "badrequest");
         }
 
         /// <summary>
@@ -45,10 +40,7 @@ namespace EImece.Controllers
         [CustomOutputCache(CacheProfile = "Forbidden")]
         public ActionResult Forbidden()
         {
-            Logger.Info("Entering Forbidden action.");
-            var result = this.GetErrorView(HttpStatusCode.Forbidden, "forbidden");
-            Logger.Info("Returning Forbidden view or partial view.");
-            return result;
+            return this.GetErrorView(HttpStatusCode.Forbidden, "forbidden");
         }
 
         /// <summary>
@@ -57,14 +49,11 @@ namespace EImece.Controllers
         /// <returns>The partial or full internal server error view.</returns>
         public ActionResult InternalServerError()
         {
-            Logger.Info("Entering InternalServerError action.");
             if (HttpContext.IsDebuggingEnabled)
             {
                 ViewBag.ExceptionDetail = TempData["LastException"] as Exception ?? Server.GetLastError();
             }
-            var result = this.GetErrorView(HttpStatusCode.InternalServerError, "internalservererror");
-            Logger.Info("Returning InternalServerError view or partial view.");
-            return result;
+            return this.GetErrorView(HttpStatusCode.InternalServerError, "internalservererror");
         }
 
         /// <summary>
@@ -74,10 +63,7 @@ namespace EImece.Controllers
         [CustomOutputCache(CacheProfile = "MethodNotAllowed")]
         public ActionResult MethodNotAllowed()
         {
-            Logger.Info("Entering MethodNotAllowed action.");
-            var result = this.GetErrorView(HttpStatusCode.MethodNotAllowed, "methodnotallowed");
-            Logger.Info("Returning MethodNotAllowed view or partial view.");
-            return result;
+            return this.GetErrorView(HttpStatusCode.MethodNotAllowed, "methodnotallowed");
         }
 
         /// <summary>
@@ -86,10 +72,7 @@ namespace EImece.Controllers
         /// <returns>The partial or full not found view.</returns>
         public ActionResult NotFound()
         {
-            Logger.Info("Entering NotFound action.");
-            var result = this.GetErrorView(HttpStatusCode.NotFound, "notfound");
-            Logger.Info("Returning NotFound view or partial view.");
-            return result;
+            return this.GetErrorView(HttpStatusCode.NotFound, "notfound");
         }
 
         /// <summary>
@@ -99,10 +82,7 @@ namespace EImece.Controllers
         [CustomOutputCache(CacheProfile = "Unauthorized")]
         public ActionResult Unauthorized()
         {
-            Logger.Info("Entering Unauthorized action.");
-            var result = this.GetErrorView(HttpStatusCode.Unauthorized, "unauthorized");
-            Logger.Info("Returning Unauthorized view or partial view.");
-            return result;
+            return this.GetErrorView(HttpStatusCode.Unauthorized, "unauthorized");
         }
 
         /// <summary>
@@ -112,10 +92,7 @@ namespace EImece.Controllers
         [CustomOutputCache(CacheProfile = "NotFound")]
         public ActionResult Gone()
         {
-            Logger.Info("Entering Gone action.");
-            var result = this.GetErrorView((HttpStatusCode)410, "gone");
-            Logger.Info("Returning Gone view or partial view.");
-            return result;
+            return this.GetErrorView((HttpStatusCode)410, "gone");
         }
 
         #endregion Public Methods
@@ -124,40 +101,31 @@ namespace EImece.Controllers
 
         private ActionResult GetErrorView(HttpStatusCode statusCode, string viewName)
         {
-            Logger.Info($"Entering GetErrorView with statusCode: {statusCode}, viewName: '{viewName}'");
-
             this.Response.StatusCode = (int)statusCode;
-            Logger.Info($"Set Response.StatusCode to: {(int)statusCode}");
-
-            // Don't show IIS custom errors / don't recurse customErrors ResponseRewrite.
             this.Response.TrySkipIisCustomErrors = true;
             if (this.Server != null)
             {
                 this.Server.ClearError();
             }
-            Logger.Info("Set Response.TrySkipIisCustomErrors to true.");
 
             ErrorModel error = new ErrorModel()
             {
                 RequestedUrl = this.Request.Url.ToString(),
                 ReferrerUrl = (this.Request.UrlReferrer == null) ? null : this.Request.UrlReferrer.ToString()
             };
-            Logger.Info($"Created ErrorModel: RequestedUrl='{error.RequestedUrl}', ReferrerUrl='{error.ReferrerUrl}'");
 
-            ActionResult result;
+            Logger.Debug("HTTP {0} {1}. Url={2} Referrer={3}",
+                (int)statusCode,
+                viewName,
+                error.RequestedUrl,
+                error.ReferrerUrl);
+
             if (this.Request.IsAjaxRequest())
             {
-                Logger.Info("Request is AJAX. Returning partial view.");
-                result = this.PartialView(viewName, error);
-            }
-            else
-            {
-                Logger.Info("Request is not AJAX. Returning full view.");
-                result = this.View(viewName, error);
+                return this.PartialView(viewName, error);
             }
 
-            Logger.Info($"Returning result for viewName: '{viewName}' with statusCode: {statusCode}");
-            return result;
+            return this.View(viewName, error);
         }
 
         #endregion Private Methods

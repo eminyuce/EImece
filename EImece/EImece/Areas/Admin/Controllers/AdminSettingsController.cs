@@ -137,7 +137,7 @@ namespace EImece.Areas.Admin.Controllers
         [HttpGet]
         public async Task<ActionResult> ExportBackup(CancellationToken cancellationToken)
         {
-            Logger.Info("Full database JSON backup export requested.");
+            Logger.Debug("Full database JSON backup export requested.");
             var exportRequest = new DataExportRequest
             {
                 ExportedBy = $"{User?.Identity?.Name ?? "Admin"}"

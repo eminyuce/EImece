@@ -84,6 +84,18 @@ namespace EImece.Domain.Observability.Configuration
 
         public static ObservabilityOptions FromAppConfig()
         {
+            return CachedOptions.Value;
+        }
+
+        internal static void ResetForTests()
+        {
+            CachedOptions = new Lazy<ObservabilityOptions>(BuildFromAppConfig);
+        }
+
+        private static Lazy<ObservabilityOptions> CachedOptions = new Lazy<ObservabilityOptions>(BuildFromAppConfig);
+
+        private static ObservabilityOptions BuildFromAppConfig()
+        {
             var defaultSampling = AppConfig.IsSiteLive ? 0.1d : 1.0d;
             var serviceVersion = typeof(ObservabilityOptions).Assembly.GetName().Version?.ToString() ?? "1.0.0";
 

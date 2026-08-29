@@ -332,6 +332,7 @@
     <Compile Include="Helpers\EntityExtensionQaFixTests.cs" />
     <Compile Include="Helpers\ConnectionStringProviderTests.cs" />
     <Compile Include="Helpers\PaymentGatewayConfigTests.cs" />
+    <Compile Include="Helpers\AppConfigCacheTests.cs" />
     <Compile Include="Helpers\AuthenticatedAesCipherTests.cs" />
     <Compile Include="Helpers\ApplicationCacheClearerTests.cs" />
     <Compile Include="Helpers\ApplicationMetricsTests.cs" />

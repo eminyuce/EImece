@@ -24,7 +24,6 @@ namespace EImece.Domain.Scheduler
 
             try
             {
-                Logger.Info("UserQuartzService scheduling user jobs...");
                 await ExecuteUserTasksAsync().ConfigureAwait(false);
             }
             catch (Exception ex)

@@ -35,14 +35,14 @@ namespace EImece.Domain.Services
 
         public CustomerService(ICustomerRepository repository, IAddressService addressService) : base(repository)
         {
-            Logger.Info("CustomerService initialized.");
+            Logger.Debug("CustomerService initialized.");
             CustomerRepository = repository;
             AddressService = addressService;
         }
 
         public void SaveRegisterViewModel(string userId, RegisterViewModel model)
         {
-            Logger.Info($"Saving RegisterViewModel for user: {userId}");
+            Logger.Debug($"Saving RegisterViewModel for user: {userId}");
             try
             {
                 var item = new Customer
@@ -66,7 +66,7 @@ namespace EImece.Domain.Services
                 };
 
                 CustomerRepository.SaveOrEdit(item);
-                Logger.Info("Customer successfully saved.");
+                Logger.Debug("Customer successfully saved. UserId={0}", userId);
             }
             catch (Exception ex)
             {
@@ -77,7 +77,7 @@ namespace EImece.Domain.Services
 
         public async Task SaveRegisterViewModelAsync(string userId, RegisterViewModel model)
         {
-            Logger.Info($"Saving RegisterViewModel for user: {userId}");
+            Logger.Debug($"Saving RegisterViewModel for user: {userId}");
             try
             {
                 var item = new Customer
@@ -101,7 +101,7 @@ namespace EImece.Domain.Services
                 };
 
                 await CustomerRepository.SaveOrEditAsync(item).ConfigureAwait(false);
-                Logger.Info("Customer successfully saved.");
+                Logger.Debug("Customer successfully saved. UserId={0}", userId);
             }
             catch (Exception ex)
             {
@@ -113,7 +113,7 @@ namespace EImece.Domain.Services
         [Timed("service.customers.get_by_user_sync")]
         public virtual Customer GetUserId(string userId)
         {
-            Logger.Info($"Retrieving customer by userId: {userId}");
+            Logger.Debug($"Retrieving customer by userId: {userId}");
             var item = CustomerRepository.GetUserId(userId);
             GetUserFields(item);
             return item;
@@ -122,7 +122,7 @@ namespace EImece.Domain.Services
         [Timed("service.customers.get_by_user")]
         public virtual async Task<Customer> GetUserIdAsync(string userId)
         {
-            Logger.Info($"Retrieving customer by userId: {userId}");
+            Logger.Debug($"Retrieving customer by userId: {userId}");
             var item = await CustomerRepository.GetUserIdAsync(userId).ConfigureAwait(false);
             await GetUserFieldsAsync(item).ConfigureAwait(false);
             return item;
@@ -142,7 +142,7 @@ namespace EImece.Domain.Services
 
         public void DeleteByUserId(string userId)
         {
-            Logger.Info($"Deleting customer by userId: {userId}");
+            Logger.Debug($"Deleting customer by userId: {userId}");
             var customer = CustomerRepository.GetUserId(userId);
             if (customer != null)
             {
@@ -157,7 +157,7 @@ namespace EImece.Domain.Services
 
         public async Task DeleteByUserIdAsync(string userId)
         {
-            Logger.Info($"Deleting customer by userId: {userId}");
+            Logger.Debug($"Deleting customer by userId: {userId}");
             var customer = await CustomerRepository.GetUserIdAsync(userId).ConfigureAwait(false);
             if (customer != null)
             {
@@ -172,14 +172,14 @@ namespace EImece.Domain.Services
 
         public virtual void SaveCustomerTypeToNormal(string userId)
         {
-            Logger.Info($"Updating customer type to Normal for userId: {userId}");
+            Logger.Debug($"Updating customer type to Normal for userId: {userId}");
             var customer = CustomerRepository.GetUserId(userId);
             if (customer != null)
             {
                 customer.CustomerType = (int)EImeceCustomerType.Normal;
                 customer.GsmNumber = GeneralHelper.CheckGsmNumber(customer.GsmNumber);
                 SaveOrEditEntity(customer);
-                Logger.Info("Customer type updated successfully.");
+                Logger.Debug("Customer type updated successfully.");
             }
             else
             {
@@ -189,12 +189,12 @@ namespace EImece.Domain.Services
 
         public virtual async Task SaveCustomerTypeToNormalAsync(string userId)
         {
-            Logger.Info($"Updating customer type to Normal for userId: {userId}");
+            Logger.Debug($"Updating customer type to Normal for userId: {userId}");
             // Targeted 2-column update — no full-entity load/save round trip
             var updated = await CustomerRepository.PromoteCustomerToNormalTypeAsync(userId, (int)EImeceCustomerType.Normal).ConfigureAwait(false);
             if (updated)
             {
-                Logger.Info("Customer type updated successfully.");
+                Logger.Debug("Customer type updated successfully.");
             }
             else
             {
@@ -204,7 +204,7 @@ namespace EImece.Domain.Services
 
         public List<Customer> GetCustomerServices(string search)
         {
-            Logger.Info($"Retrieving customer services with search term: {search}");
+            Logger.Debug($"Retrieving customer services with search term: {search}");
             search = search.ToStr().Trim();
 
             // AsNoTracking avoids change-tracker overhead for read-only admin grid.
@@ -266,13 +266,13 @@ namespace EImece.Domain.Services
                 resultList = customers.OrderByDescending(r => r.OrderLatestDate).ThenByDescending(r => r.CreatedDate).ToList();
             }
 
-            Logger.Info("Customer services retrieved successfully. Customers={0} OrdersRows={1}", customers.Count, orderRows.Count);
+            Logger.Debug("Customer services retrieved successfully. Customers={0} OrdersRows={1}", customers.Count, orderRows.Count);
             return resultList;
         }
 
         public async Task<List<Customer>> GetCustomerServicesAsync(string search)
         {
-            Logger.Info($"Retrieving customer services with search term: {search}");
+            Logger.Debug($"Retrieving customer services with search term: {search}");
             search = search.ToStr().Trim();
 
             var customers = await CustomerRepository.GetAll().AsNoTracking()
@@ -331,7 +331,7 @@ namespace EImece.Domain.Services
                 resultList = customers.OrderByDescending(r => r.OrderLatestDate).ThenByDescending(r => r.CreatedDate).ToList();
             }
 
-            Logger.Info("Customer services retrieved successfully. Customers={0} OrdersRows={1}", customers.Count, orderRows.Count);
+            Logger.Debug("Customer services retrieved successfully. Customers={0} OrdersRows={1}", customers.Count, orderRows.Count);
             return resultList;
         }
 
@@ -384,14 +384,14 @@ namespace EImece.Domain.Services
                 Logger.Warn("GetUserFields called with a null item.");
                 return;
             }
-            Logger.Info($"Fetching user fields for userId: {item.UserId}");
+            Logger.Debug($"Fetching user fields for userId: {item.UserId}");
             var user = UsersService.GetUser(item.UserId);
             if (user != null)
             {
                 item.Email = user.Email;
                 item.Name = user.FirstName;
                 item.Surname = user.LastName;
-                Logger.Info("User fields populated successfully.");
+                Logger.Debug("User fields populated successfully.");
             }
             else
             {
@@ -406,14 +406,14 @@ namespace EImece.Domain.Services
                 Logger.Warn("GetUserFields called with a null item.");
                 return;
             }
-            Logger.Info($"Fetching user fields for userId: {item.UserId}");
+            Logger.Debug($"Fetching user fields for userId: {item.UserId}");
             var user = await UsersService.GetUserAsync(item.UserId).ConfigureAwait(false);
             if (user != null)
             {
                 item.Email = user.Email;
                 item.Name = user.FirstName;
                 item.Surname = user.LastName;
-                Logger.Info("User fields populated successfully.");
+                Logger.Debug("User fields populated successfully.");
             }
             else
             {
@@ -434,7 +434,7 @@ namespace EImece.Domain.Services
                 return deleted;
             }
 
-            Logger.Info($"DeleteCustomersAsync called for {userIds.Count} userIds");
+            Logger.Debug($"DeleteCustomersAsync called for {userIds.Count} userIds");
             foreach (var userId in userIds.Where(v => !string.IsNullOrWhiteSpace(v)).Distinct(StringComparer.OrdinalIgnoreCase))
             {
                 if (!string.IsNullOrEmpty(currentUserId)

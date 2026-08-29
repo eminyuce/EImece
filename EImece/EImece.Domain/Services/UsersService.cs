@@ -199,7 +199,7 @@ namespace EImece.Domain.Services
                 return deleted;
             }
 
-            Logger.Info($"DeleteUsersAsync called for {userIds.Count} userIds");
+            Logger.Debug($"DeleteUsersAsync called for {userIds.Count} userIds");
             foreach (var userId in userIds.Where(v => !string.IsNullOrWhiteSpace(v)).Distinct(StringComparer.OrdinalIgnoreCase))
             {
                 if (!string.IsNullOrEmpty(currentUserId)
