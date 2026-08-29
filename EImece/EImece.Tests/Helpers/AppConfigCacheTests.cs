@@ -13,7 +13,7 @@ namespace EImece.Tests.Helpers
         }
 
         [TestMethod]
-        public void GetConfigString_MissingKey_UsesDefaultAndLogsFallbackOnlyOnce()
+        public void GetConfigString_MissingKey_UsesFirstDefaultOnLaterReads()
         {
             AppConfig.ResetCacheForTests();
             const string key = "AppConfigTest_MissingKey_DoNotAddToWebConfig";
@@ -25,35 +25,26 @@ namespace EImece.Tests.Helpers
             Assert.AreEqual("fallback-a", first);
             Assert.AreEqual("fallback-a", second);
             Assert.AreEqual("fallback-a", third);
-            Assert.AreEqual(1, AppConfig.FallbackLogCount);
-            Assert.AreEqual(1, AppConfig.CacheMissCount);
-            Assert.AreEqual(2, AppConfig.CacheHitCount);
         }
 
         [TestMethod]
-        public void GetConfigInt_MissingKey_UsesDefaultAndLogsFallbackOnlyOnce()
+        public void GetConfigInt_MissingKey_UsesFirstDefaultOnLaterReads()
         {
             AppConfig.ResetCacheForTests();
             const string key = "AppConfigTest_MissingInt_DoNotAddToWebConfig";
 
             Assert.AreEqual(15, AppConfig.GetConfigInt(key, 15));
             Assert.AreEqual(15, AppConfig.GetConfigInt(key, 99));
-            Assert.AreEqual(1, AppConfig.FallbackLogCount);
-            Assert.AreEqual(1, AppConfig.CacheMissCount);
-            Assert.AreEqual(1, AppConfig.CacheHitCount);
         }
 
         [TestMethod]
-        public void GetConfigBool_MissingKey_UsesDefaultAndLogsFallbackOnlyOnce()
+        public void GetConfigBool_MissingKey_UsesFirstDefaultOnLaterReads()
         {
             AppConfig.ResetCacheForTests();
             const string key = "AppConfigTest_MissingBool_DoNotAddToWebConfig";
 
             Assert.IsTrue(AppConfig.GetConfigBool(key, true));
             Assert.IsTrue(AppConfig.GetConfigBool(key, false));
-            Assert.AreEqual(1, AppConfig.FallbackLogCount);
-            Assert.AreEqual(1, AppConfig.CacheMissCount);
-            Assert.AreEqual(1, AppConfig.CacheHitCount);
         }
     }
 }

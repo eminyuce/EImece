@@ -59,7 +59,7 @@ namespace EImece
             MvcHandler.DisableMvcResponseHeader = true;
 
             ObservabilityBootstrap.Configure();
-            AppConfig.LogStartupSnapshot();
+            AppConfig.WarmCache();
             using (DependencyInjectionConfig.BeginAmbientScope())
             {
                 var metrics = DependencyResolver.Current.GetService<EImece.Domain.Observability.Metrics.IApplicationMetrics>();
