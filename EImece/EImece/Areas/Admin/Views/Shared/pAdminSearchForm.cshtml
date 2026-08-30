@@ -33,7 +33,7 @@
 
     <div class="eg-search-field">
         <span class="eg-search-icon" aria-hidden="true">
-            <i class="fa fa-search"></i>
+            <i class="fa-solid fa-magnifying-glass"></i>
         </span>
         <label class="visually-hidden" for="searchTxtInput">@AdminResource.Search</label>
         <input type="text"
@@ -49,7 +49,7 @@
                 @Html.ActionLink(clear, action, controller, new { search = "", id = IdValueExists ? idValue : "" }, new { @class = "btn btn-secondary eg-search-clear" })
             }
             <button class="btn btn-primary" id="SearchButton" type="submit">
-                <i class="fa fa-search" aria-hidden="true"></i>
+                <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
                 <span>@gridSearchButtonText</span>
             </button>
         </div>

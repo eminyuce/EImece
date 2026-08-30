@@ -160,7 +160,7 @@
                 })"
                    title="Kategori filtresini temizle"
                    aria-label="Kategori filtresini temizle">
-                    <i class="fa fa-times" aria-hidden="true"></i>
+                    <i class="fa-solid fa-xmark" aria-hidden="true"></i>
                 </a>
             </div>
         }
@@ -171,7 +171,7 @@
                  aria-expanded="@(hasAdvancedFilter ? "true" : "false")" aria-controls="productAdminFiltersBody">
                 <div class="product-admin-filters-heading-main">
                     <span class="product-admin-filters-title">
-                        <i class="fa fa-filter" aria-hidden="true"></i>
+                        <i class="fa-solid fa-filter" aria-hidden="true"></i>
                         Filtreler
                     </span>
                     @if (activeFilterChips.Count > 0)
@@ -183,7 +183,7 @@
                         <span class="product-admin-filters-hint">Marka, durum, fiyat…</span>
                     }
                 </div>
-                <span class="product-admin-filters-chevron fa @(hasAdvancedFilter ? "fa fa-chevron-up" : "fa fa-chevron-down")" aria-hidden="true"></span>
+                <span class="product-admin-filters-chevron @(hasAdvancedFilter ? "fa-solid fa-chevron-up" : "fa-solid fa-chevron-down")" aria-hidden="true"></span>
             </button>
 
             @if (activeFilterChips.Count > 0)
@@ -209,7 +209,7 @@
                         <span class="label text-bg-info product-admin-filter-chip">@chipText</span>
                     }
                     <a class="product-admin-filters-clear-link" href="@clearFiltersUrl" title="@AdminResource.Clear">
-                        <i class="fa fa-times" aria-hidden="true"></i> @AdminResource.Clear
+                        <i class="fa-solid fa-xmark" aria-hidden="true"></i> @AdminResource.Clear
                     </a>
                 </div>
             }
@@ -323,10 +323,10 @@
 
                         <div class="product-admin-filter-actions">
                             <button type="submit" class="btn btn-primary btn-sm">
-                                <i class="fa fa-check" aria-hidden="true"></i> Filtrele
+                                <i class="fa-solid fa-check" aria-hidden="true"></i> Filtrele
                             </button>
                             <a class="btn btn-secondary btn-sm" href="@clearFiltersUrl">
-                                <i class="fa fa-times" aria-hidden="true"></i> @AdminResource.Clear
+                                <i class="fa-solid fa-xmark" aria-hidden="true"></i> @AdminResource.Clear
                             </a>
                         </div>
                     }
@@ -396,7 +396,7 @@
 
         <div class="eg-products-toolbar-gap">
             <a class="eg-admin-move-link eg-products-move-link" href="@Url.Action("MoveProductsInTrees")">
-                <i class="fa fa-exchange" aria-hidden="true"></i>
+                <i class="fa-solid fa-right-left" aria-hidden="true"></i>
                 <span>@AdminResource.MoveProductsInTrees</span>
             </a>
         </div>
@@ -428,11 +428,11 @@
 
             $body.on('show.bs.collapse', function () {
                 $panel.removeClass('is-collapsed').addClass('is-open');
-                $chevron.removeClass('fa fa-chevron-down').addClass('fa fa-chevron-up');
+                $chevron.removeClass('fa-solid fa-chevron-down').addClass('fa-solid fa-chevron-up');
                 $heading.attr('aria-expanded', 'true');
             }).on('hide.bs.collapse', function () {
                 $panel.removeClass('is-open').addClass('is-collapsed');
-                $chevron.removeClass('fa fa-chevron-up').addClass('fa fa-chevron-down');
+                $chevron.removeClass('fa-solid fa-chevron-up').addClass('fa-solid fa-chevron-down');
                 $heading.attr('aria-expanded', 'false');
             });
 

@@ -33,10 +33,10 @@
             </div>
             <div class="eg-grid-scroll-controls" title="Tabloyu Sağa/Sola Kaydır">
                 <button type="button" class="btn btn-sm eg-scroll-nav-btn eg-scroll-nav-left" title="Sola Kaydır" aria-label="Sola Kaydır">
-                    <i class="fa fa-chevron-left"></i>
+                    <i class="fa-solid fa-chevron-left"></i>
                 </button>
                 <button type="button" class="btn btn-sm eg-scroll-nav-btn eg-scroll-nav-right" title="Sağa Kaydır" aria-label="Sağa Kaydır">
-                    <i class="fa fa-chevron-right"></i>
+                    <i class="fa-solid fa-chevron-right"></i>
                 </button>
             </div>
         </output>
@@ -55,7 +55,7 @@
 
 @helper FlagIcon(int id, bool isOn, string field)
 {
-    var iconClass = isOn ? "eg-status-icon gridActiveIcon fa fa-check-circle" : "eg-status-icon gridNotActiveIcon fa fa-times-circle";
+    var iconClass = isOn ? "eg-status-icon gridActiveIcon fa-solid fa-circle-check" : "eg-status-icon gridNotActiveIcon fa-solid fa-circle-xmark";
     var value = isOn ? "True" : "False";
     var label = isOn ? "Evet" : "Hayır";
     <span class="eg-flag-cell @(isOn ? "is-on" : "is-off")" title="@label">

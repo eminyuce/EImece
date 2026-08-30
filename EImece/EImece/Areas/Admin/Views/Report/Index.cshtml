@@ -62,13 +62,13 @@
 
     var categoryIcons = new Dictionary<string, string>
     {
-        { AdminResource.ReportCatAudit, "fa fa-users" },
-        { AdminResource.ReportCatSales, "fa fa-bar-chart" },
-        { AdminResource.ReportCatPayment, "fa fa-credit-card" },
-        { AdminResource.ReportCatProduct, "fa fa-tags" },
-        { AdminResource.ReportCatRisk, "fa fa-exclamation-triangle" },
-        { AdminResource.ReportCatMarketing, "fa fa-paper-plane" },
-        { AdminResource.ReportCatFinance, "fa fa-briefcase" }
+        { AdminResource.ReportCatAudit, "fa-solid fa-users" },
+        { AdminResource.ReportCatSales, "fa-solid fa-chart-column" },
+        { AdminResource.ReportCatPayment, "fa-solid fa-credit-card" },
+        { AdminResource.ReportCatProduct, "fa-solid fa-tags" },
+        { AdminResource.ReportCatRisk, "fa-solid fa-triangle-exclamation" },
+        { AdminResource.ReportCatMarketing, "fa-solid fa-paper-plane" },
+        { AdminResource.ReportCatFinance, "fa-solid fa-briefcase" }
     };
 
     var allActions = new List<string> {
@@ -330,10 +330,10 @@
     <div class="d-none d-sm-block">
         @foreach (var category in reportCategories)
         {
-            var icon = categoryIcons.ContainsKey(category.Key) ? categoryIcons[category.Key] : "fa fa-list-alt";
+            var icon = categoryIcons.ContainsKey(category.Key) ? categoryIcons[category.Key] : "fa-solid fa-rectangle-list";
             <div class="report-category">
                 <h3 class="report-category-title">
-                    <i class="fa @icon" aria-hidden="true"></i>
+                    <i class="@icon" aria-hidden="true"></i>
                     <span>@category.Key</span>
                 </h3>
                 <div class="report-grid">

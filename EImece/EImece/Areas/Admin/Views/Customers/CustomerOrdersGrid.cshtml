@@ -32,10 +32,10 @@
             </div>
             <div class="eg-grid-scroll-controls" title="Tabloyu Sağa/Sola Kaydır">
                 <button type="button" class="btn btn-sm eg-scroll-nav-btn eg-scroll-nav-left" title="Sola Kaydır" aria-label="Sola Kaydır">
-                    <i class="fa fa-chevron-left"></i>
+                    <i class="fa-solid fa-chevron-left"></i>
                 </button>
                 <button type="button" class="btn btn-sm eg-scroll-nav-btn eg-scroll-nav-right" title="Sağa Kaydır" aria-label="Sağa Kaydır">
-                    <i class="fa fa-chevron-right"></i>
+                    <i class="fa-solid fa-chevron-right"></i>
                 </button>
             </div>
         </output>
@@ -126,7 +126,7 @@
                 data-company="@(order.ShipmentCompanyName ?? "")"
                 data-tracking="@(order.ShipmentTrackingNumber ?? "")"
                 title="@AdminResource.Administrator notunu düzenle">
-            <i class="fa fa-pencil" aria-hidden="true"></i>
+            <i class="fa-solid fa-pencil" aria-hidden="true"></i>
             <span>Düzenle</span>
         </button>
     </div>
@@ -195,13 +195,13 @@
                 data-bs-display="static"
                 aria-haspopup="true"
                 aria-expanded="false">
-            <i class="fa fa-cog" aria-hidden="true"></i>
+            <i class="fa-solid fa-gear" aria-hidden="true"></i>
             <span>İşlemler</span>
         </button>
         <ul class="dropdown-menu dropdown-menu-end eg-actions-menu">
             <li>
                 <a class="dropdown-item" href="@detailUrl">
-                    <i class="fa fa-info-circle"></i> Detay
+                    <i class="fa-solid fa-circle-info"></i> Detay
                 </a>
             </li>
             <li>
@@ -213,7 +213,7 @@
                         data-note="@(order.AdminOrderNote ?? "")"
                         data-company="@(order.ShipmentCompanyName ?? "")"
                         data-tracking="@(order.ShipmentTrackingNumber ?? "")">
-                    <i class="fa fa-pencil"></i> Not
+                    <i class="fa-solid fa-pencil"></i> Not
                 </button>
             </li>
         </ul>

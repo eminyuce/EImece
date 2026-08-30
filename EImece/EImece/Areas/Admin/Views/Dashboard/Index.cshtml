@@ -24,7 +24,7 @@
         </div>
         <div class="admin-home__hero-aside">
             <a class="admin-home__guide-link" href="@Url.Action("OurSiteFeatures", "Dashboard", new { area = "admin" })">
-                <i class="fa fa-book" aria-hidden="true"></i>
+                <i class="fa-solid fa-book" aria-hidden="true"></i>
                 @AdminResource.OurSiteFeatures
             </a>
         </div>
@@ -33,7 +33,7 @@
     <form class="admin-home__search" action="@Url.Action("SearchContent", "Dashboard", new { area = "admin" })" method="get" role="search">
         <label class="visually-hidden" for="searchTxt">@AdminResource.AdminMainSeachPlaceHolder</label>
         <div class="admin-home__search-box">
-            <span class="admin-home__search-icon" aria-hidden="true"><i class="fa fa-search"></i></span>
+            <span class="admin-home__search-icon" aria-hidden="true"><i class="fa-solid fa-magnifying-glass"></i></span>
             <input type="text"
                    name="searchContent"
                    value="@searchValue"
@@ -44,7 +44,7 @@
                    placeholder="@AdminResource.AdminMainSeachPlaceHolder"
                    autocomplete="off" />
             <button type="submit" class="btn btn-primary admin-home__search-btn" title="@AdminResource.Search" aria-label="@AdminResource.Search">
-                <i class="fa fa-search admin-home__search-btn-icon" aria-hidden="true"></i>
+                <i class="fa-solid fa-magnifying-glass admin-home__search-btn-icon" aria-hidden="true"></i>
                 <span class="admin-home__search-btn-label">@AdminResource.Search</span>
             </button>
         </div>
@@ -62,20 +62,20 @@
         <h2 id="admin-home-content" class="admin-home__section-title">@AdminResource.ContentAndShowcase</h2>
         <div class="admin-home__grid">
             <a class="admin-home__tile" href="@Url.Action("Index", "MainPageImages", new { area = "admin" })">
-                <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa fa-picture-o"></i></span>
+                <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa-regular fa-image"></i></span>
                 <span class="admin-home__tile-body">
                     <span class="admin-home__tile-title">@AdminResource.MainPageImages</span>
                     <span class="admin-home__tile-desc">@AdminResource.MainPageImagesDesc</span>
                 </span>
-                <span class="admin-home__tile-chevron" aria-hidden="true"><i class="fa fa-angle-right"></i></span>
+                <span class="admin-home__tile-chevron" aria-hidden="true"><i class="fa-solid fa-angle-right"></i></span>
             </a>
             <a class="admin-home__tile" href="@Url.Action("Index", "Menus", new { area = "admin" })">
-                <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa fa-bars"></i></span>
+                <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa-solid fa-bars"></i></span>
                 <span class="admin-home__tile-body">
                     <span class="admin-home__tile-title">@AdminResource.Menus</span>
                     <span class="admin-home__tile-desc">@AdminResource.MenusDesc</span>
                 </span>
-                <span class="admin-home__tile-chevron" aria-hidden="true"><i class="fa fa-angle-right"></i></span>
+                <span class="admin-home__tile-chevron" aria-hidden="true"><i class="fa-solid fa-angle-right"></i></span>
             </a>
         </div>
     </section>
@@ -84,28 +84,28 @@
         <h2 id="admin-home-catalog" class="admin-home__section-title">@AdminResource.Catalog</h2>
         <div class="admin-home__grid">
             <a class="admin-home__tile" href="@Url.Action("Index", "Products", new { area = "admin" })">
-                <span class="admin-home__tile-icon admin-home__tile-icon--accent" aria-hidden="true"><i class="fa fa-cube"></i></span>
+                <span class="admin-home__tile-icon admin-home__tile-icon--accent" aria-hidden="true"><i class="fa-solid fa-cube"></i></span>
                 <span class="admin-home__tile-body">
                     <span class="admin-home__tile-title">@AdminResource.Products</span>
                     <span class="admin-home__tile-desc">@(productPriceEnabled ? AdminResource.ProductsDesc : AdminResource.ProductsDescNoPrice)</span>
                 </span>
-                <span class="admin-home__tile-chevron" aria-hidden="true"><i class="fa fa-angle-right"></i></span>
+                <span class="admin-home__tile-chevron" aria-hidden="true"><i class="fa-solid fa-angle-right"></i></span>
             </a>
             <a class="admin-home__tile" href="@Url.Action("Index", "ProductCategories", new { area = "admin" })">
-                <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa fa-sitemap"></i></span>
+                <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa-solid fa-sitemap"></i></span>
                 <span class="admin-home__tile-body">
                     <span class="admin-home__tile-title">@AdminResource.ProductCategories</span>
                     <span class="admin-home__tile-desc">@AdminResource.ProductCategoriesDesc</span>
                 </span>
-                <span class="admin-home__tile-chevron" aria-hidden="true"><i class="fa fa-angle-right"></i></span>
+                <span class="admin-home__tile-chevron" aria-hidden="true"><i class="fa-solid fa-angle-right"></i></span>
             </a>
             <a class="admin-home__tile" href="@Url.Action("Index", "Brands", new { area = "admin" })">
-                <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa fa-tags"></i></span>
+                <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa-solid fa-tags"></i></span>
                 <span class="admin-home__tile-body">
                     <span class="admin-home__tile-title">@AdminResource.Brands</span>
                     <span class="admin-home__tile-desc">@AdminResource.BrandsDesc</span>
                 </span>
-                <span class="admin-home__tile-chevron" aria-hidden="true"><i class="fa fa-angle-right"></i></span>
+                <span class="admin-home__tile-chevron" aria-hidden="true"><i class="fa-solid fa-angle-right"></i></span>
             </a>
         </div>
     </section>
@@ -116,36 +116,36 @@
             <h2 id="admin-home-sales" class="admin-home__section-title">@AdminResource.Sales</h2>
             <div class="admin-home__grid">
                 <a class="admin-home__tile" href="@Url.Action("Index", "Orders", new { area = "admin" })">
-                    <span class="admin-home__tile-icon admin-home__tile-icon--accent" aria-hidden="true"><i class="fa fa-shopping-bag"></i></span>
+                    <span class="admin-home__tile-icon admin-home__tile-icon--accent" aria-hidden="true"><i class="fa-solid fa-bag-shopping"></i></span>
                     <span class="admin-home__tile-body">
                         <span class="admin-home__tile-title">@AdminResource.Orders</span>
                         <span class="admin-home__tile-desc">@AdminResource.OrdersDesc</span>
                     </span>
-                    <span class="admin-home__tile-chevron" aria-hidden="true"><i class="fa fa-angle-right"></i></span>
+                    <span class="admin-home__tile-chevron" aria-hidden="true"><i class="fa-solid fa-angle-right"></i></span>
                 </a>
                 <a class="admin-home__tile" href="@Url.Action("Index", "Customers", new { area = "admin" })">
-                    <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa fa-users"></i></span>
+                    <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa-solid fa-users"></i></span>
                     <span class="admin-home__tile-body">
                         <span class="admin-home__tile-title">@AdminResource.Customers</span>
                         <span class="admin-home__tile-desc">@AdminResource.CustomersDesc</span>
                     </span>
-                    <span class="admin-home__tile-chevron" aria-hidden="true"><i class="fa fa-angle-right"></i></span>
+                    <span class="admin-home__tile-chevron" aria-hidden="true"><i class="fa-solid fa-angle-right"></i></span>
                 </a>
                 <a class="admin-home__tile" href="@Url.Action("Index", "AdminSettings", new { area = "admin" })">
-                    <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa fa-truck"></i></span>
+                    <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa-solid fa-truck"></i></span>
                     <span class="admin-home__tile-body">
                         <span class="admin-home__tile-title">@AdminResource.ShippingAndStore</span>
                         <span class="admin-home__tile-desc">@AdminResource.ShippingAndStoreDesc</span>
                     </span>
-                    <span class="admin-home__tile-chevron" aria-hidden="true"><i class="fa fa-angle-right"></i></span>
+                    <span class="admin-home__tile-chevron" aria-hidden="true"><i class="fa-solid fa-angle-right"></i></span>
                 </a>
                 <a class="admin-home__tile" href="https://merchant.iyzipay.com/auth/login" target="_blank" rel="noopener noreferrer">
-                    <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa fa-credit-card"></i></span>
+                    <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa-solid fa-credit-card"></i></span>
                     <span class="admin-home__tile-body">
                         <span class="admin-home__tile-title">iyzico</span>
                         <span class="admin-home__tile-desc">@AdminResource.IyzicoPanelDesc</span>
                     </span>
-                    <span class="admin-home__tile-chevron" aria-hidden="true"><i class="fa fa-angle-right"></i></span>
+                    <span class="admin-home__tile-chevron" aria-hidden="true"><i class="fa-solid fa-angle-right"></i></span>
                 </a>
             </div>
         </section>
@@ -155,36 +155,36 @@
         <h2 id="admin-home-system" class="admin-home__section-title">@AdminResource.System</h2>
         <div class="admin-home__grid">
             <a class="admin-home__tile" href="@Url.Action("Index", "AdminSettings", new { area = "admin" })">
-                <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa fa-sliders"></i></span>
+                <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa-solid fa-sliders"></i></span>
                 <span class="admin-home__tile-body">
                     <span class="admin-home__tile-title">@AdminResource.AdminSettingsTitle</span>
                     <span class="admin-home__tile-desc">@AdminResource.AdminSettingsDesc</span>
                 </span>
-                <span class="admin-home__tile-chevron" aria-hidden="true"><i class="fa fa-angle-right"></i></span>
+                <span class="admin-home__tile-chevron" aria-hidden="true"><i class="fa-solid fa-angle-right"></i></span>
             </a>
             <a class="admin-home__tile" href="@Url.Action("SystemSettings", "AdminSettings", new { area = "admin" })">
-                <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa fa-cogs"></i></span>
+                <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa-solid fa-gears"></i></span>
                 <span class="admin-home__tile-body">
                     <span class="admin-home__tile-title">@AdminResource.SystemSettings</span>
                     <span class="admin-home__tile-desc">@(productPriceEnabled ? AdminResource.SystemSettingsDesc : AdminResource.SystemSettingsDescNoPrice)</span>
                 </span>
-                <span class="admin-home__tile-chevron" aria-hidden="true"><i class="fa fa-angle-right"></i></span>
+                <span class="admin-home__tile-chevron" aria-hidden="true"><i class="fa-solid fa-angle-right"></i></span>
             </a>
             <a class="admin-home__tile" href="@Url.Action("Index", "MailTemplates", new { area = "admin" })">
-                <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa fa-envelope-o"></i></span>
+                <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa-regular fa-envelope"></i></span>
                 <span class="admin-home__tile-body">
                     <span class="admin-home__tile-title">@AdminResource.MailTemplates</span>
                     <span class="admin-home__tile-desc">@AdminResource.MailTemplatesDesc</span>
                 </span>
-                <span class="admin-home__tile-chevron" aria-hidden="true"><i class="fa fa-angle-right"></i></span>
+                <span class="admin-home__tile-chevron" aria-hidden="true"><i class="fa-solid fa-angle-right"></i></span>
             </a>
             <a class="admin-home__tile" href="@Url.Action("Index", "Users", new { area = "admin" })">
-                <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa fa-user"></i></span>
+                <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa-solid fa-user"></i></span>
                 <span class="admin-home__tile-body">
                     <span class="admin-home__tile-title">@AdminResource.Users</span>
                     <span class="admin-home__tile-desc">@AdminResource.UsersDesc</span>
                 </span>
-                <span class="admin-home__tile-chevron" aria-hidden="true"><i class="fa fa-angle-right"></i></span>
+                <span class="admin-home__tile-chevron" aria-hidden="true"><i class="fa-solid fa-angle-right"></i></span>
             </a>
         </div>
     </section>
@@ -202,7 +202,7 @@
                 @Html.AntiForgeryToken()
                 <input type="hidden" name="target" value="products" />
                 <button type="submit" class="admin-home__tile" style="border:none;cursor:pointer;text-align:inherit;width:100%;">
-                    <span class="admin-home__tile-icon admin-home__tile-icon--accent" aria-hidden="true"><i class="fa fa-refresh"></i></span>
+                    <span class="admin-home__tile-icon admin-home__tile-icon--accent" aria-hidden="true"><i class="fa-solid fa-arrows-rotate"></i></span>
                     <span class="admin-home__tile-body">
                         <span class="admin-home__tile-title">@AdminResource.ProductPriceCache</span>
                         <span class="admin-home__tile-desc">@AdminResource.ProductPriceCacheDesc</span>
@@ -214,7 +214,7 @@
                 @Html.AntiForgeryToken()
                 <input type="hidden" name="target" value="categories" />
                 <button type="submit" class="admin-home__tile" style="border:none;cursor:pointer;text-align:inherit;width:100%;">
-                    <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa fa-sitemap"></i></span>
+                    <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa-solid fa-sitemap"></i></span>
                     <span class="admin-home__tile-body">
                         <span class="admin-home__tile-title">@AdminResource.CategoryCache</span>
                         <span class="admin-home__tile-desc">@AdminResource.CategoryCacheDesc</span>
@@ -226,7 +226,7 @@
                 @Html.AntiForgeryToken()
                 <input type="hidden" name="target" value="settings" />
                 <button type="submit" class="admin-home__tile" style="border:none;cursor:pointer;text-align:inherit;width:100%;">
-                    <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa fa-sliders"></i></span>
+                    <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa-solid fa-sliders"></i></span>
                     <span class="admin-home__tile-body">
                         <span class="admin-home__tile-title">@AdminResource.SettingCache</span>
                         <span class="admin-home__tile-desc">@AdminResource.SettingCacheDesc</span>
@@ -238,7 +238,7 @@
                 @Html.AntiForgeryToken()
                 <input type="hidden" name="target" value="content" />
                 <button type="submit" class="admin-home__tile" style="border:none;cursor:pointer;text-align:inherit;width:100%;">
-                    <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa fa-file-text-o"></i></span>
+                    <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa-regular fa-file-lines"></i></span>
                     <span class="admin-home__tile-body">
                         <span class="admin-home__tile-title">@AdminResource.ContentCache</span>
                         <span class="admin-home__tile-desc">@AdminResource.ContentCacheDesc</span>
@@ -251,7 +251,7 @@
             @Html.AntiForgeryToken()
             <input type="hidden" name="target" value="all" />
             <button type="submit" class="btn btn-danger">
-                <i class="fa fa-bomb" aria-hidden="true"></i>
+                <i class="fa-solid fa-bomb" aria-hidden="true"></i>
                 @AdminResource.ClearAllStorefrontCache
             </button>
             <span style="color:#829ab1;font-size:0.85rem;margin-left:0.5rem;">

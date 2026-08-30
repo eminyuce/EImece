@@ -42,7 +42,7 @@
     <form class="admin-search__form" action="@Url.Action("SearchContent", "Dashboard", new { area = "admin" })" method="get" role="search">
         <label class="visually-hidden" for="searchTxt">@AdminResource.AdminMainSeachPlaceHolder</label>
         <div class="admin-search__form-box">
-            <span class="admin-search__form-icon" aria-hidden="true"><i class="fa fa-search"></i></span>
+            <span class="admin-search__form-icon" aria-hidden="true"><i class="fa-solid fa-magnifying-glass"></i></span>
             <input type="text"
                    name="searchContent"
                    id="searchTxt"
@@ -55,7 +55,7 @@
             <a class="btn btn-secondary admin-search__clear"
                href="@Url.Action("Index", "Dashboard", new { area = "admin" })"
                title="@AdminResource.Clear">
-                <i class="fa fa-times" aria-hidden="true"></i>
+                <i class="fa-solid fa-xmark" aria-hidden="true"></i>
                 @AdminResource.Clear
             </a>
         </div>
@@ -73,7 +73,7 @@
     else
     {
         <output class="admin-search__empty" style="display:block">
-            <i class="fa fa-search" aria-hidden="true"></i>
+            <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
             <p>Farklı bir anahtar kelime deneyin veya panele dönün.</p>
             <a class="btn btn-secondary" href="@Url.Action("Index", "Dashboard", new { area = "admin" })">@AdminResource.AdminHome</a>
         </output>

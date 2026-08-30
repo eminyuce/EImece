@@ -244,42 +244,42 @@
         </div>
         <div class="btn-group">
             <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" aria-label="@AdminResource.ExportToExcel">
-                <i class="fa fa-download" aria-hidden="true"></i> @AdminResource.ExportToExcel
+                <i class="fa-solid fa-download" aria-hidden="true"></i> @AdminResource.ExportToExcel
             </button>
             <ul class="dropdown-menu dropdown-menu-end">
                 <li><h6 class="dropdown-header">@AdminResource.ReportByUser</h6></li>
                 <li>
                     <a class="dropdown-item" href="@Url.Action("Export", "Report", new { area = "Admin", reportKey = "UserAuditSummary", format = "excel", startDate = startVal, endDate = endVal, userId = Model.UserId, tableName = Model.TableName })">
-                        <i class="fa fa-file-excel-o text-success me-1"></i> Excel (.xls)
+                        <i class="fa-regular fa-file-excel text-success me-1"></i> Excel (.xls)
                     </a>
                 </li>
                 <li>
                     <a class="dropdown-item" href="@Url.Action("Export", "Report", new { area = "Admin", reportKey = "UserAuditSummary", format = "csv", startDate = startVal, endDate = endVal, userId = Model.UserId, tableName = Model.TableName })">
-                        <i class="fa fa-file-text-o text-primary me-1"></i> CSV (.csv)
+                        <i class="fa-regular fa-file-lines text-primary me-1"></i> CSV (.csv)
                     </a>
                 </li>
                 <li><hr class="dropdown-divider"></li>
                 <li><h6 class="dropdown-header">@AdminResource.MonthlyBreakdown</h6></li>
                 <li>
                     <a class="dropdown-item" href="@Url.Action("Export", "Report", new { area = "Admin", reportKey = "UserAuditMonthlyBreakdown", format = "excel", startDate = startVal, endDate = endVal, userId = Model.UserId, tableName = Model.TableName })">
-                        <i class="fa fa-file-excel-o text-success me-1"></i> Excel (.xls)
+                        <i class="fa-regular fa-file-excel text-success me-1"></i> Excel (.xls)
                     </a>
                 </li>
                 <li>
                     <a class="dropdown-item" href="@Url.Action("Export", "Report", new { area = "Admin", reportKey = "UserAuditMonthlyBreakdown", format = "csv", startDate = startVal, endDate = endVal, userId = Model.UserId, tableName = Model.TableName })">
-                        <i class="fa fa-file-text-o text-primary me-1"></i> CSV (.csv)
+                        <i class="fa-regular fa-file-lines text-primary me-1"></i> CSV (.csv)
                     </a>
                 </li>
                 <li><hr class="dropdown-divider"></li>
                 <li><h6 class="dropdown-header">@AdminResource.DetailedRecords</h6></li>
                 <li>
                     <a class="dropdown-item" href="@Url.Action("Export", "Report", new { area = "Admin", reportKey = "UserAuditDetailed", format = "excel", startDate = startVal, endDate = endVal, userId = Model.UserId, tableName = Model.TableName, actionType = Model.ActionType })">
-                        <i class="fa fa-file-excel-o text-success me-1"></i> Excel (.xls)
+                        <i class="fa-regular fa-file-excel text-success me-1"></i> Excel (.xls)
                     </a>
                 </li>
                 <li>
                     <a class="dropdown-item" href="@Url.Action("Export", "Report", new { area = "Admin", reportKey = "UserAuditDetailed", format = "csv", startDate = startVal, endDate = endVal, userId = Model.UserId, tableName = Model.TableName, actionType = Model.ActionType })">
-                        <i class="fa fa-file-text-o text-primary me-1"></i> CSV (.csv)
+                        <i class="fa-regular fa-file-lines text-primary me-1"></i> CSV (.csv)
                     </a>
                 </li>
             </ul>
@@ -323,10 +323,10 @@
                 </div>
                 <div class="col-md-9 col-sm-6 d-flex align-items-end gap-2">
                     <button type="submit" class="btn btn-primary btn-sm px-4">
-                        <i class="fa fa-filter me-1"></i> @AdminResource.Filter
+                        <i class="fa-solid fa-filter me-1"></i> @AdminResource.Filter
                     </button>
                     <a href="@Url.Action("UserAudit", "Report", new { area = "Admin" })" class="btn btn-outline-secondary btn-sm px-3">
-                        <i class="fa fa-refresh me-1"></i> @AdminResource.Clear
+                        <i class="fa-solid fa-arrows-rotate me-1"></i> @AdminResource.Clear
                     </a>
                 </div>
             </div>
@@ -337,7 +337,7 @@
     <div class="audit-kpi-grid">
         <div class="audit-kpi-card">
             <div class="audit-kpi-icon blue">
-                <i class="fa fa-users" aria-hidden="true"></i>
+                <i class="fa-solid fa-users" aria-hidden="true"></i>
             </div>
             <div class="audit-kpi-info">
                 <h5>@AdminResource.AllUsers</h5>
@@ -346,7 +346,7 @@
         </div>
         <div class="audit-kpi-card">
             <div class="audit-kpi-icon green">
-                <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                <i class="fa-solid fa-circle-plus" aria-hidden="true"></i>
             </div>
             <div class="audit-kpi-info">
                 <h5>@AdminResource.CreatedCount</h5>
@@ -355,7 +355,7 @@
         </div>
         <div class="audit-kpi-card">
             <div class="audit-kpi-icon amber">
-                <i class="fa fa-edit" aria-hidden="true"></i>
+                <i class="fa-solid fa-pen-to-square" aria-hidden="true"></i>
             </div>
             <div class="audit-kpi-info">
                 <h5>@AdminResource.UpdatedCount</h5>
@@ -364,7 +364,7 @@
         </div>
         <div class="audit-kpi-card">
             <div class="audit-kpi-icon purple">
-                <i class="fa fa-history" aria-hidden="true"></i>
+                <i class="fa-solid fa-clock-rotate-left" aria-hidden="true"></i>
             </div>
             <div class="audit-kpi-info">
                 <h5>@AdminResource.TotalActivity</h5>
@@ -377,17 +377,17 @@
     <ul class="nav nav-tabs audit-nav-tabs" id="auditTabs" role="tablist">
         <li class="nav-item">
             <button class="nav-link @(Model.ActiveTab == "summary" || string.IsNullOrEmpty(Model.ActiveTab) ? "active" : "")" id="summary-tab" data-bs-toggle="tab" data-bs-target="#tab-summary" type="button" role="tab" aria-controls="tab-summary" aria-selected="true" data-tab-name="summary">
-                <i class="fa fa-user" aria-hidden="true"></i> @AdminResource.ReportByUser
+                <i class="fa-solid fa-user" aria-hidden="true"></i> @AdminResource.ReportByUser
             </button>
         </li>
         <li class="nav-item">
             <button class="nav-link @(Model.ActiveTab == "monthly" ? "active" : "")" id="monthly-tab" data-bs-toggle="tab" data-bs-target="#tab-monthly" type="button" role="tab" aria-controls="tab-monthly" aria-selected="false" data-tab-name="monthly">
-                <i class="fa fa-calendar" aria-hidden="true"></i> @AdminResource.MonthlyBreakdown
+                <i class="fa-solid fa-calendar" aria-hidden="true"></i> @AdminResource.MonthlyBreakdown
             </button>
         </li>
         <li class="nav-item">
             <button class="nav-link @(Model.ActiveTab == "detailed" ? "active" : "")" id="detailed-tab" data-bs-toggle="tab" data-bs-target="#tab-detailed" type="button" role="tab" aria-controls="tab-detailed" aria-selected="false" data-tab-name="detailed">
-                <i class="fa fa-list-alt" aria-hidden="true"></i> @AdminResource.DetailedRecords
+                <i class="fa-solid fa-rectangle-list" aria-hidden="true"></i> @AdminResource.DetailedRecords
             </button>
         </li>
     </ul>
@@ -459,7 +459,7 @@
                             {
                                 <tr>
                                     <td colspan="5" class="text-center py-4 text-muted">
-                                        <i class="fa fa-info-circle me-1"></i> @AdminResource.EmptyTable
+                                        <i class="fa-solid fa-circle-info me-1"></i> @AdminResource.EmptyTable
                                     </td>
                                 </tr>
                             }
@@ -522,7 +522,7 @@
                             {
                                 <tr>
                                     <td colspan="5" class="text-center py-4 text-muted">
-                                        <i class="fa fa-info-circle me-1"></i> @AdminResource.EmptyTable
+                                        <i class="fa-solid fa-circle-info me-1"></i> @AdminResource.EmptyTable
                                     </td>
                                 </tr>
                             }
@@ -583,7 +583,7 @@
                                         <td>
                                             @if (!string.IsNullOrWhiteSpace(creatorFullName) && creatorFullName != "Unknown")
                                             {
-                                                <span class="text-success"><i class="fa fa-user me-1"></i>@creatorFullName</span>
+                                                <span class="text-success"><i class="fa-solid fa-user me-1"></i>@creatorFullName</span>
                                             }
                                             else if (!string.IsNullOrWhiteSpace(addUserId))
                                             {
@@ -600,7 +600,7 @@
                                         <td>
                                             @if (!string.IsNullOrWhiteSpace(updaterFullName) && updaterFullName != "Unknown")
                                             {
-                                                <span class="text-warning-emphasis"><i class="fa fa-pencil me-1"></i>@updaterFullName</span>
+                                                <span class="text-warning-emphasis"><i class="fa-solid fa-pencil me-1"></i>@updaterFullName</span>
                                             }
                                             else if (!string.IsNullOrWhiteSpace(updateUserId))
                                             {
@@ -618,7 +618,7 @@
                             {
                                 <tr>
                                     <td colspan="7" class="text-center py-4 text-muted">
-                                        <i class="fa fa-info-circle me-1"></i> @AdminResource.EmptyTable
+                                        <i class="fa-solid fa-circle-info me-1"></i> @AdminResource.EmptyTable
                                     </td>
                                 </tr>
                             }
@@ -653,7 +653,7 @@
     var showSub = hasName && hasUser && userName != fullName;
     var primaryName = hasName ? fullName : (hasUser ? userName : null);
     <div class="user-pill">
-        <i class="fa fa-user-circle-o"></i>
+        <i class="fa-regular fa-circle-user"></i>
         <span>
             @if (primaryName != null && showSub)
             {

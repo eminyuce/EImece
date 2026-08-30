@@ -48,7 +48,7 @@
                 </select>
             </div>
             <button type="submit" class="btn btn-primary">
-                <span class="fa fa-filter"></span> Filtrele
+                <span class="fa-solid fa-filter"></span> Filtrele
             </button>
             @if (!string.IsNullOrEmpty(currentEventLevel) || !string.IsNullOrEmpty(currentSearch))
             {
@@ -61,7 +61,7 @@
                 <legend class="visually-hidden">İndir</legend>
                 <a class="btn btn-success"
                    href="@Url.Action("Download", controllerName, new { search = currentSearch, eventLevel = currentEventLevel })">
-                    <span class="fa fa-download"></span>
+                    <span class="fa-solid fa-download"></span>
                     İndir (.txt)@(string.IsNullOrEmpty(currentEventLevel) ? "" : " — " + currentEventLevel)
                 </a>
                 <a class="btn btn-secondary"

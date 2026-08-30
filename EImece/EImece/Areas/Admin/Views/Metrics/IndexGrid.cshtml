@@ -33,10 +33,10 @@
             </div>
             <div class="eg-grid-scroll-controls" title="@AdminResource.ScrollTableLeftRight">
                 <button type="button" class="btn btn-sm eg-scroll-nav-btn eg-scroll-nav-left" title="@AdminResource.ScrollLeft" aria-label="@AdminResource.ScrollLeft">
-                    <i class="fa fa-chevron-left"></i>
+                    <i class="fa-solid fa-chevron-left"></i>
                 </button>
                 <button type="button" class="btn btn-sm eg-scroll-nav-btn eg-scroll-nav-right" title="@AdminResource.ScrollRight" aria-label="@AdminResource.ScrollRight">
-                    <i class="fa fa-chevron-right"></i>
+                    <i class="fa-solid fa-chevron-right"></i>
                 </button>
             </div>
         </output>
@@ -58,7 +58,7 @@
                     data-p90="@item.P90DurationMs"
                     data-p95="@item.P95DurationMs"
                     data-p99="@item.P99DurationMs">
-                <span class="fa fa-question-circle"></span> @AdminResource.Explain
+                <span class="fa-solid fa-circle-question"></span> @AdminResource.Explain
             </button>
         </text>, className: "eg-col-explain", width: "90px")
         .Column(x => x.Name, caption: AdminResource.MetricName, className: "metric-name eg-col-name", width: "280px")

@@ -48,7 +48,7 @@
     margin-right: 8px;
 }
 
-.report-export-bar .btn .fa {
+.report-export-bar .btn :is(.fa-solid, .fa-regular, .fa-brands) {
     margin-right: 6px;
 }
 

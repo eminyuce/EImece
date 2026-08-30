@@ -12,7 +12,7 @@
         <div class="card shadow-sm">
             <div class="card-header">
                 <h3 class="card-title mb-0">
-                    <i class="fa fa-qrcode me-1" aria-hidden="true"></i>
+                    <i class="fa-solid fa-qrcode me-1" aria-hidden="true"></i>
                     @AdminResource.SetupAuthenticatorApp
                 </h3>
             </div>
@@ -27,7 +27,7 @@
 
                     <div class="alert alert-info text-start" role="alert">
                         <div class="fw-semibold mb-1">
-                            <i class="fa fa-info-circle me-1" aria-hidden="true"></i>
+                            <i class="fa-solid fa-circle-info me-1" aria-hidden="true"></i>
                             Yardım
                         </div>
                         <ul class="mb-0 ps-3">
@@ -79,12 +79,12 @@
                 {
                     @Html.AntiForgeryToken()
                     <button type="submit" class="btn btn-secondary">
-                        <i class="fa fa-sign-out me-1" aria-hidden="true"></i>
+                        <i class="fa-solid fa-right-from-bracket me-1" aria-hidden="true"></i>
                         @AdminResource.Logout
                     </button>
                 }
                 <button type="submit" form="enableAuthenticatorForm" class="btn btn-primary">
-                    <i class="fa fa-check me-1" aria-hidden="true"></i>
+                    <i class="fa-solid fa-check me-1" aria-hidden="true"></i>
                     @AdminResource.Activate
                 </button>
             </div>

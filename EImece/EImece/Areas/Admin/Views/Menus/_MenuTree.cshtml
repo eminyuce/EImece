@@ -39,16 +39,16 @@
                 aria-controls="@treePanelId"
                 title="Menü listesini aç/kapat">
             <span class="eg-category-tree-title">
-                <i class="fa fa-list-alt" aria-hidden="true"></i>
+                <i class="fa-solid fa-rectangle-list" aria-hidden="true"></i>
                 <span>@treeTitle</span>
             </span>
-            <i class="fa fa-chevron-down eg-category-tree-chevron" aria-hidden="true"></i>
+            <i class="fa-solid fa-chevron-down eg-category-tree-chevron" aria-hidden="true"></i>
         </button>
     </div>
     <div class="eg-category-tree-panel" id="@treePanelId">
         <div class="eg-category-tree-tools">
             <div class="eg-category-tree-search">
-                <i class="fa fa-search" aria-hidden="true"></i>
+                <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
                 <input type="search"
                        class="eg-tree-search"
                        placeholder="@AdminResource.Search"
@@ -81,7 +81,7 @@
                     @if (hasChildren)
                     {
                         <button type="button" class="eg-tree-toggle" aria-expanded="true" aria-label="Alt menüleri aç/kapat" title="Alt menüleri aç/kapat">
-                            <i class="fa fa-chevron-down" aria-hidden="true"></i>
+                            <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
                         </button>
                     }
                     else

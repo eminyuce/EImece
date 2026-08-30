@@ -1630,6 +1630,12 @@
     <Content Include="Content\admin-vendor\bootstrap\bootstrap.min.css" />
     <Content Include="Content\admin-vendor\bootstrap\bootstrap.css.map" />
     <Content Include="Content\admin-vendor\bootstrap\bootstrap.min.css.map" />
+    <Content Include="Content\admin-vendor\fontawesome\css\all.min.css" />
+    <Content Include="Content\admin-vendor\fontawesome\webfonts\fa-solid-900.woff2" />
+    <Content Include="Content\admin-vendor\fontawesome\webfonts\fa-regular-400.woff2" />
+    <Content Include="Content\admin-vendor\fontawesome\webfonts\fa-brands-400.woff2" />
+    <Content Include="Content\admin-vendor\fontawesome\webfonts\fa-v4compatibility.woff2" />
+    <Content Include="Content\admin-vendor\fontawesome\LICENSE.txt" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />

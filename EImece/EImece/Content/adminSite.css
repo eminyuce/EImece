@@ -1056,7 +1056,7 @@ label[for^="ImageState"]:not(.col-form-label) {
     font-size: 18px;
 }
 
-.generate-password-panel > .card-header .fa {
+.generate-password-panel > .card-header :is(.fa-solid, .fa-regular, .fa-brands) {
     margin-right: 6px;
 }
 
@@ -1097,7 +1097,7 @@ label[for^="ImageState"]:not(.col-form-label) {
     font-size: 14px;
 }
 
-.generate-password-user-email .fa {
+.generate-password-user-email :is(.fa-solid, .fa-regular, .fa-brands) {
     margin-right: 4px;
 }
 
@@ -1165,7 +1165,7 @@ label[for^="ImageState"]:not(.col-form-label) {
     font-size: 18px;
 }
 
-.user-roles-panel > .card-header .fa {
+.user-roles-panel > .card-header :is(.fa-solid, .fa-regular, .fa-brands) {
     margin-right: 6px;
 }
 
@@ -1211,7 +1211,7 @@ label[for^="ImageState"]:not(.col-form-label) {
     font-size: 14px;
 }
 
-.user-roles-user-email .fa {
+.user-roles-user-email :is(.fa-solid, .fa-regular, .fa-brands) {
     margin-right: 4px;
 }
 
@@ -1407,7 +1407,7 @@ label[for^="ImageState"]:not(.col-form-label) {
     font-size: 18px;
 }
 
-.forgot-password-panel > .card-header .fa {
+.forgot-password-panel > .card-header :is(.fa-solid, .fa-regular, .fa-brands) {
     margin-right: 6px;
 }
 
@@ -1453,7 +1453,7 @@ label[for^="ImageState"]:not(.col-form-label) {
     font-size: 14px;
 }
 
-.forgot-password-user-email .fa {
+.forgot-password-user-email :is(.fa-solid, .fa-regular, .fa-brands) {
     margin-right: 4px;
 }
 
@@ -1473,7 +1473,7 @@ label[for^="ImageState"]:not(.col-form-label) {
     font-size: 15px;
 }
 
-.forgot-password-help-title .fa {
+.forgot-password-help-title :is(.fa-solid, .fa-regular, .fa-brands) {
     margin-right: 4px;
 }
 
@@ -1697,9 +1697,9 @@ label[for^="ImageState"]:not(.col-form-label) {
     font-weight: 600;
 }
 
-.admin-edit-toolbar-actions .admin-edit-save-btn .fa,
-.admin-edit-toolbar-actions .admin-edit-save-close-btn .fa,
-.admin-edit-toolbar-actions .admin-edit-gallery-btn .fa {
+.admin-edit-toolbar-actions .admin-edit-save-btn :is(.fa-solid, .fa-regular, .fa-brands),
+.admin-edit-toolbar-actions .admin-edit-save-close-btn :is(.fa-solid, .fa-regular, .fa-brands),
+.admin-edit-toolbar-actions .admin-edit-gallery-btn :is(.fa-solid, .fa-regular, .fa-brands) {
     font-size: 13px;
     line-height: 1;
 }
@@ -1924,7 +1924,7 @@ label[for^="ImageState"]:not(.col-form-label) {
     color: #1f2937;
 }
 
-.product-admin-filters-title .fa {
+.product-admin-filters-title :is(.fa-solid, .fa-regular, .fa-brands) {
     margin-right: 4px;
     color: #3b6ea5;
 }
@@ -2133,7 +2133,7 @@ label[for^="ImageState"]:not(.col-form-label) {
     max-width: 320px;
 }
 
-.admin-tag-picker__search-wrap .fa {
+.admin-tag-picker__search-wrap :is(.fa-solid, .fa-regular, .fa-brands) {
     position: absolute;
     left: 10px;
     top: 50%;
@@ -2314,7 +2314,7 @@ label[for^="ImageState"]:not(.col-form-label) {
     text-decoration: none;
 }
 
-.admin-image-size-override__toggle .fa {
+.admin-image-size-override__toggle :is(.fa-solid, .fa-regular, .fa-brands) {
     font-size: 12px;
 }
 
@@ -3515,7 +3515,7 @@ body.admin-app .admin-content .osf-guide .osf-guide__section-head h2,
     outline: none;
 }
 
-.admin-field-tip .fa {
+.admin-field-tip :is(.fa-solid, .fa-regular, .fa-brands) {
     font-size: 13px;
 }
 
@@ -3658,7 +3658,7 @@ body.admin-app .admin-content .osf-guide .osf-guide__section-head h2,
     color: #163a5c;
 }
 
-.tb-palette__item .fa {
+.tb-palette__item :is(.fa-solid, .fa-regular, .fa-brands) {
     font-size: 12px;
 }
 
@@ -4071,7 +4071,7 @@ body.admin-app .admin-content .admin-home h2::after {
     pointer-events: none;
 }
 
-.admin-home__search-icon .fa {
+.admin-home__search-icon :is(.fa-solid, .fa-regular, .fa-brands) {
     display: block;
     line-height: 1;
     width: auto;
@@ -4732,7 +4732,7 @@ body.admin-app .admin-content .admin-home h2::after {
     cursor: not-allowed;
 }
 
-.admin-tree-picker__root-btn .fa {
+.admin-tree-picker__root-btn :is(.fa-solid, .fa-regular, .fa-brands) {
     margin-right: 4px;
     top: 1px;
 }
@@ -5070,7 +5070,7 @@ body.admin-app .form-check-input[type="checkbox"]:disabled {
     border-color: #adb5bd;
     color: #1e293b;
 }
-.admin-brand-combobox__btn .fa {
+.admin-brand-combobox__btn :is(.fa-solid, .fa-regular, .fa-brands) {
     font-size: 12px;
     transition: transform 0.15s ease;
 }
@@ -5122,7 +5122,7 @@ body.admin-app .form-check-input[type="checkbox"]:disabled {
     border-bottom: 1px solid #e2e8f0;
     background: #fff;
 }
-.admin-brand-combobox__search-wrap .fa-search {
+.admin-brand-combobox__search-wrap .fa-magnifying-glass {
     position: absolute;
     left: 18px;
     top: 50%;
@@ -5232,7 +5232,7 @@ body.admin-app .form-check-input[type="checkbox"]:disabled {
     color: #64748b;
     font-size: 13px;
 }
-.admin-brand-combobox__empty .fa {
+.admin-brand-combobox__empty :is(.fa-solid, .fa-regular, .fa-brands) {
     display: block;
     margin: 0 auto 8px;
     font-size: 18px;

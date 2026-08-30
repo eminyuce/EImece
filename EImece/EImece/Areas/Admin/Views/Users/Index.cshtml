@@ -86,11 +86,11 @@
         </div>
         <div class="users-admin-header-actions">
             <a href="@Url.Action("CustomerRoles", controllerName)" class="btn btn-secondary btn-sm">
-                <i class="fa fa-user" aria-hidden="true"></i>
+                <i class="fa-solid fa-user" aria-hidden="true"></i>
                 @AdminResource.CustomersWithAccounts
             </a>
             <a href="@Url.Action("Register", controllerName)" class="btn btn-primary btn-sm">
-                <i class="fa fa-plus" aria-hidden="true"></i>
+                <i class="fa-solid fa-plus" aria-hidden="true"></i>
                 @AdminResource.NewUserInsert
             </a>
         </div>
@@ -114,7 +114,7 @@
             }
             <div class="eg-search-field">
                 <span class="eg-search-icon" aria-hidden="true">
-                    <i class="fa fa-search"></i>
+                    <i class="fa-solid fa-magnifying-glass"></i>
                 </span>
                 <label class="visually-hidden" for="usersSearch">@AdminResource.Search</label>
                 <input type="search"
@@ -132,7 +132,7 @@
                            title="@AdminResource.ClearSearch">@AdminResource.Clear</a>
                     }
                     <button class="btn btn-primary" id="usersSearchButton" type="submit">
-                        <i class="fa fa-search" aria-hidden="true"></i>
+                        <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
                         <span>@AdminResource.GridSearchButtonText</span>
                     </button>
                 </div>
@@ -164,7 +164,7 @@
                 <span class="users-admin-quick-label">@AdminResource.Status</span>
                 <a class="eg-quick-chip @(lockedOn ? "is-active" : "")"
                    href="@filterUrl(search, selectedRole, selectedTwoFactor, lockedOn ? null : "yes")">
-                    <i class="fa fa-lock" aria-hidden="true"></i>
+                    <i class="fa-solid fa-lock" aria-hidden="true"></i>
                     @AdminResource.Locked
                 </a>
             </div>
@@ -177,32 +177,32 @@
                 {
                     <a class="users-admin-active-chip" href="@filterUrl(null, selectedRole, selectedTwoFactor, selectedLocked)" title="@AdminResource.ClearSearch">
                         <span>@AdminResource.Search: @search</span>
-                        <i class="fa fa-times" aria-hidden="true"></i>
+                        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
                     </a>
                 }
                 @if (!string.IsNullOrWhiteSpace(selectedRole))
                 {
                     <a class="users-admin-active-chip" href="@filterUrl(search, null, selectedTwoFactor, selectedLocked)">
                         <span>@AdminResource.Roles: @roleLabel(selectedRole)</span>
-                        <i class="fa fa-times" aria-hidden="true"></i>
+                        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
                     </a>
                 }
                 @if (twoFactorOn || twoFactorOff)
                 {
                     <a class="users-admin-active-chip" href="@filterUrl(search, selectedRole, null, selectedLocked)">
                         <span>@AdminResource.Authenticator2FA: @(twoFactorOn ? AdminResource.Active : AdminResource.None)</span>
-                        <i class="fa fa-times" aria-hidden="true"></i>
+                        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
                     </a>
                 }
                 @if (lockedOn)
                 {
                     <a class="users-admin-active-chip" href="@filterUrl(search, selectedRole, selectedTwoFactor, null)">
                         <span>@AdminResource.Locked</span>
-                        <i class="fa fa-times" aria-hidden="true"></i>
+                        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
                     </a>
                 }
                 <a class="users-admin-filters-clear" href="@clearFiltersUrl">
-                    <i class="fa fa-times" aria-hidden="true"></i> @AdminResource.Clear
+                    <i class="fa-solid fa-xmark" aria-hidden="true"></i> @AdminResource.Clear
                 </a>
             </div>
         }

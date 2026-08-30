@@ -26,7 +26,7 @@ namespace EImece.Domain.Helpers.HtmlHelpers
             sb.Append("<nav aria-label=\"breadcrumb\" class=\"admin-breadcrumb\">");
             sb.Append("<ol class=\"breadcrumb\">");
             sb.AppendFormat(
-                "<li class=\"breadcrumb-item\"><a href=\"{0}\"><i class=\"fa fa-home\"></i><span> {1}</span></a></li>",
+                "<li class=\"breadcrumb-item\"><a href=\"{0}\"><i class=\"fa-solid fa-house\"></i><span> {1}</span></a></li>",
                 Encode(homeUrl),
                 Encode(homeLabel));
 

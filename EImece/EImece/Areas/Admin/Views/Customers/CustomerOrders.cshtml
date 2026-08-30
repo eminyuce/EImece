@@ -26,7 +26,7 @@
 <div class="admin-customer-orders">
     <div class="admin-co-identity">
         <a class="btn btn-secondary btn-sm admin-co-back" href="@Url.Action("Index", "Customers")">
-            <i class="fa fa-arrow-left" aria-hidden="true"></i>
+            <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
             customers Dön
         </a>
         <div class="admin-co-identity-main">
@@ -44,21 +44,21 @@
                 @if (!string.IsNullOrWhiteSpace(customerEmail))
                 {
                     <a href="mailto:@customerEmail" class="admin-co-meta-item">
-                        <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                        <i class="fa-regular fa-envelope" aria-hidden="true"></i>
                         @customerEmail
                     </a>
                 }
                 @if (!string.IsNullOrWhiteSpace(customerPhone))
                 {
                     <a href="tel:@customerPhone" class="admin-co-meta-item">
-                        <i class="fa fa-phone" aria-hidden="true"></i>
+                        <i class="fa-solid fa-phone" aria-hidden="true"></i>
                         @customerPhone
                     </a>
                 }
                 @if (!string.IsNullOrWhiteSpace(cityLine))
                 {
                     <span class="admin-co-meta-item text-muted">
-                        <i class="fa fa-map-marker" aria-hidden="true"></i>
+                        <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
                         @cityLine
                     </span>
                 }

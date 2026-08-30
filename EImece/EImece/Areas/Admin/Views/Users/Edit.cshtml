@@ -29,7 +29,7 @@
         </div>
         <div class="col-md-3">
             <button type="submit" class="btn btn-success w-100 btn-lg">
-                <i class="fa fa-save"></i> @saveButtonText
+                <i class="fa-solid fa-floppy-disk"></i> @saveButtonText
             </button>
         </div>
     </div>
@@ -76,7 +76,7 @@
                                 </p>
                                 <button type="button" class="btn btn-warning btn-sm"
                                         onclick="if (confirm('@AdminResource.UnlockAccountConfirm')) { document.getElementById('unlockAccountForm').submit(); }">
-                                    <i class="fa fa-unlock"></i> @AdminResource.UnlockAccount
+                                    <i class="fa-solid fa-unlock"></i> @AdminResource.UnlockAccount
                                 </button>
                             }
                             else
@@ -113,7 +113,7 @@
                 </div>
                 <div class="card-footer text-end">
                     <a href="@Url.Action("Index")" class="btn btn-secondary">
-                        <i class="fa fa-arrow-left"></i> @AdminResource.BackToList
+                        <i class="fa-solid fa-arrow-left"></i> @AdminResource.BackToList
                     </a>
                 </div>
             </div>

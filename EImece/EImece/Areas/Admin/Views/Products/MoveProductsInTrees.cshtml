@@ -47,14 +47,14 @@
         {
             <div class="eg-move-selected-card">
                 <div class="eg-move-selected-content">
-                    <span class="eg-move-selected-icon"><i class="fa fa-folder-open"></i></span>
+                    <span class="eg-move-selected-icon"><i class="fa-solid fa-folder-open"></i></span>
                     <div class="eg-move-selected-text">
                         <span class="eg-move-selected-label">@AdminResource.SelectedCategory</span>
                         <strong class="eg-move-selected-title">@selectedCategory.Name</strong>
                     </div>
                 </div>
                 <a href="@Url.Action("MoveProductsInTrees", "Products", new { id = 0 })" class="btn btn-sm btn-outline-danger eg-move-clear-btn" title="Kategori seçimini temizle">
-                    <i class="fa fa-times"></i> Seçimi Temizle
+                    <i class="fa-solid fa-xmark"></i> Seçimi Temizle
                 </a>
                 <input type="hidden" id="selectedCategory" value="@selectedCategory.Id" />
             </div>
@@ -63,7 +63,7 @@
             {
                 <div class="alert alert-success eg-move-success-alert d-flex align-items-center justify-content-between" role="alert">
                     <div class="d-flex align-items-center gap-2">
-                        <i class="fa fa-check-circle fa-lg eg-move-success-icon" aria-hidden="true"></i>
+                        <i class="fa-solid fa-circle-check fa-lg eg-move-success-icon" aria-hidden="true"></i>
                         <span>@ViewBag.MoveProductsMessage</span>
                     </div>
                 </div>
@@ -72,7 +72,7 @@
         else
         {
             <div class="alert alert-info eg-move-guide-alert d-flex align-items-center gap-3">
-                <i class="fa fa-info-circle fa-2x text-primary" aria-hidden="true"></i>
+                <i class="fa-solid fa-circle-info fa-2x text-primary" aria-hidden="true"></i>
                 <div>
                     <h6 class="mb-1 fw-bold text-dark">Kaynak Kategori Seçilmedi</h6>
                     <p class="mb-0 text-muted small">Ürünlerini listelemek ve taşımak için soldaki <strong>1. Kaynak Kategori</strong> ağacından bir kategoriye tıklayın.</p>
@@ -83,7 +83,7 @@
             {
                 <div class="alert alert-success eg-move-success-alert d-flex align-items-center justify-content-between" role="alert">
                     <div class="d-flex align-items-center gap-2">
-                        <i class="fa fa-check-circle fa-lg eg-move-success-icon" aria-hidden="true"></i>
+                        <i class="fa-solid fa-circle-check fa-lg eg-move-success-icon" aria-hidden="true"></i>
                         <span>@ViewBag.MoveProductsMessage</span>
                     </div>
                 </div>
@@ -93,28 +93,28 @@
         <div class="eg-move-toolbar">
             <div class="d-flex align-items-center flex-wrap gap-2">
                 <a href="@Url.Action("Index", "Products")" class="btn btn-sm btn-outline-secondary eg-move-back-btn" id="btnBackToProducts">
-                    <i class="fa fa-arrow-left"></i> Ürün Listesine Dön
+                    <i class="fa-solid fa-arrow-left"></i> Ürün Listesine Dön
                 </a>
                 <button type="button" id="btnSelectAll" class="btn btn-sm btn-outline-primary">
-                    <i class="fa fa-check-square-o"></i> allü Seç
+                    <i class="fa-regular fa-square-check"></i> allü Seç
                 </button>
                 <button type="button" id="btnDeselectAll" class="btn btn-sm btn-outline-secondary">
-                    <i class="fa fa-square-o"></i> Seçimi Kaldır
+                    <i class="fa-regular fa-square"></i> Seçimi Kaldır
                 </button>
             </div>
             <div id="selectedCountBadgeContainer" style="display:none;">
                 <span class="badge bg-primary text-white eg-move-selected-counter">
-                    <i class="fa fa-check-circle"></i> <span id="selectedProductCount">0</span> ürün seçildi
+                    <i class="fa-solid fa-circle-check"></i> <span id="selectedProductCount">0</span> ürün seçildi
                 </span>
             </div>
         </div>
 
         <div class="eg-move-search-card">
             <div class="eg-move-search-inner">
-                <i class="fa fa-search eg-move-search-icon" aria-hidden="true"></i>
+                <i class="fa-solid fa-magnifying-glass eg-move-search-icon" aria-hidden="true"></i>
                 <input type="text" id="egMoveSearchInput" class="form-control form-control-sm eg-move-search-field" placeholder="Ürün adı, ürün kodu veya ID ile ara..." value="@ViewBag.Search" autocomplete="off" />
                 <button type="button" id="egBtnClearSearch" class="btn btn-sm eg-move-search-clear" title="Aramayı temizle" style="@(string.IsNullOrEmpty(ViewBag.Search as string) ? "display:none;" : "")">
-                    <i class="fa fa-times"></i>
+                    <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
         </div>
@@ -170,10 +170,10 @@
             if ($rows.length > 0 && matches === 0 && query.length > 0) {
                 if (!$noMatchRow.length) {
                     var safeQuery = $("<div>").text(query).html();
-                    $(".eg-move-products-grid tbody").append('<tr id="egNoSearchResultRow"><td colspan="5" class="text-center text-muted py-4"><i class="fa fa-search fa-2x mb-2 d-block text-secondary"></i>"<strong>' + safeQuery + '</strong>" ile eşleşen ürün bulunamadı.</td></tr>');
+                    $(".eg-move-products-grid tbody").append('<tr id="egNoSearchResultRow"><td colspan="5" class="text-center text-muted py-4"><i class="fa-solid fa-magnifying-glass fa-2x mb-2 d-block text-secondary"></i>"<strong>' + safeQuery + '</strong>" ile eşleşen ürün bulunamadı.</td></tr>');
                 } else {
                     var safeQuery = $("<div>").text(query).html();
-                    $noMatchRow.html('<td colspan="5" class="text-center text-muted py-4"><i class="fa fa-search fa-2x mb-2 d-block text-secondary"></i>"<strong>' + safeQuery + '</strong>" ile eşleşen ürün bulunamadı.</td>').show();
+                    $noMatchRow.html('<td colspan="5" class="text-center text-muted py-4"><i class="fa-solid fa-magnifying-glass fa-2x mb-2 d-block text-secondary"></i>"<strong>' + safeQuery + '</strong>" ile eşleşen ürün bulunamadı.</td>').show();
                 }
             } else {
                 if ($noMatchRow.length) {

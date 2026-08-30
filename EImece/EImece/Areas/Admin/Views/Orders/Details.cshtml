@@ -92,7 +92,7 @@
     <div class="clearfix order-details-header">
         <div class="float-end">
             <a href="@Url.Action("Index", "Orders", new { area = "Admin" })" class="btn btn-secondary btn-sm">
-                <i class="fa fa-arrow-left"></i> @AdminResource.BackToOrders
+                <i class="fa-solid fa-arrow-left"></i> @AdminResource.BackToOrders
             </a>
         </div>
         <h2>
@@ -430,7 +430,7 @@
                                     <a class="btn btn-secondary"
                                        href="@string.Format("{0}/{1}", Constants.ShipmentTrackingCompanyLink, HttpUtility.UrlEncode(Model.ShipmentTrackingNumber.ToStr()))"
                                        target="_blank" title="@AdminResource.OpenTracking">
-                                        <i class="fa fa-external-link"></i>
+                                        <i class="fa-solid fa-up-right-from-square"></i>
                                     </a>
                                 </span>
                             }
@@ -438,7 +438,7 @@
                     </div>
 
                     <button type="button" class="btn btn-success w-100" data-save-admin-order-note="@Model.Id">
-                        <i class="fa fa-save"></i> @AdminResource.SaveNoteAndShipment
+                        <i class="fa-solid fa-floppy-disk"></i> @AdminResource.SaveNoteAndShipment
                     </button>
                     <p class="text-success" style="margin-top:8px;" data-changed-order-result="@Model.Id"></p>
                 </div>
