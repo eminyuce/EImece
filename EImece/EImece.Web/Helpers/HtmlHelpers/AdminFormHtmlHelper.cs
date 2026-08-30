@@ -31,7 +31,7 @@ namespace EImece.Web.Helpers.HtmlHelpers
                 return label;
             }
 
-            return MvcHtmlString.Create(label.ToHtmlString() + " " + BuildRequiredMarkerHtml());
+            return MvcHtmlString.Create(AppendRequiredMarkerToLabel(label.ToHtmlString()));
         }
 
         public static MvcHtmlString AdminRequiredMarker(this HtmlHelper html)
@@ -60,6 +60,53 @@ namespace EImece.Web.Helpers.HtmlHelpers
         internal static string BuildRequiredMarkerHtml()
         {
             return "<span class=\"" + RequiredMarkerCssClass + "\" aria-hidden=\"true\">*</span>";
+        }
+
+        /// <summary>
+        /// Inserts the required marker inside the label so it stays inline with label text
+        /// and does not become a separate Bootstrap grid column sibling.
+        /// </summary>
+        internal static string AppendRequiredMarkerToLabel(string labelHtml)
+        {
+            if (string.IsNullOrEmpty(labelHtml))
+            {
+                return labelHtml;
+            }
+
+            if (labelHtml.IndexOf(RequiredMarkerCssClass, StringComparison.Ordinal) >= 0)
+            {
+                return labelHtml;
+            }
+
+            var closeTag = "</label>";
+            var closeIndex = labelHtml.LastIndexOf(closeTag, StringComparison.OrdinalIgnoreCase);
+            if (closeIndex < 0)
+            {
+                return labelHtml + " " + BuildRequiredMarkerHtml();
+            }
+
+            var beforeClose = labelHtml.Substring(0, closeIndex);
+            if (EndsWithRequiredAsterisk(beforeClose))
+            {
+                return labelHtml;
+            }
+
+            return beforeClose + " " + BuildRequiredMarkerHtml() + closeTag;
+        }
+
+        private static bool EndsWithRequiredAsterisk(string labelInnerHtml)
+        {
+            if (string.IsNullOrWhiteSpace(labelInnerHtml))
+            {
+                return false;
+            }
+
+            var gtIndex = labelInnerHtml.LastIndexOf('>');
+            var innerText = gtIndex >= 0
+                ? labelInnerHtml.Substring(gtIndex + 1)
+                : labelInnerHtml;
+
+            return innerText.TrimEnd().EndsWith("*", StringComparison.Ordinal);
         }
     }
 }

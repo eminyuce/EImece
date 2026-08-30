@@ -678,6 +678,8 @@ input[name='checkboxGrid'] {
     color: #dc3545;
     font-weight: 700;
     margin-left: 0.15rem;
+    display: inline;
+    white-space: nowrap;
 }
 
 /*
