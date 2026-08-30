@@ -149,7 +149,7 @@
                 </div>
                 <div class="form-group">
                     @Html.LabelFor(model => model.Country, htmlAttributes: new { @class = "col-form-label" })
-                    @Html.DropDownListFor(model => model.Country, EImece.Helpers.WebGeneralHelper.GetStaticCountries(), new { @class = "form-control" })
+                    @Html.DropDownListFor(model => model.Country, EImece.Web.Helpers.WebGeneralHelper.GetStaticCountries(), new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.Country, "", new { @class = "text-danger" })
                 </div>
             </div>
