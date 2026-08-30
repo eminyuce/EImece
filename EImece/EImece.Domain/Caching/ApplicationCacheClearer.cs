@@ -1,7 +1,5 @@
+using EImece.Domain.Abstractions;
 using NLog;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Caching;
 
@@ -18,43 +16,6 @@ namespace EImece.Domain.Caching
     public static class ApplicationCacheClearer
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
-        /// <summary>
-        /// Clears ASP.NET <c>HttpRuntime.Cache</c> (OutputCache profiles, child-action caches, etc.).
-        /// </summary>
-        public static int ClearHttpRuntimeCache()
-        {
-            var keys = new List<string>();
-            try
-            {
-                var httpRuntimeType = Type.GetType("System.Web.HttpRuntime, System.Web");
-                if (httpRuntimeType == null) return 0;
-
-                var cacheProp = httpRuntimeType.GetProperty("Cache");
-                var cache = cacheProp?.GetValue(null) as IEnumerable;
-                if (cache == null) return 0;
-
-                var removeMethod = cache.GetType().GetMethod("Remove", new[] { typeof(string) });
-                foreach (DictionaryEntry entry in cache)
-                {
-                    if (entry.Key is string k)
-                    {
-                        keys.Add(k);
-                    }
-                }
-
-                foreach (var key in keys)
-                {
-                    removeMethod?.Invoke(cache, new object[] { key });
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.Warn(ex, "ClearHttpRuntimeCache failed after removing {0} keys", keys.Count);
-            }
-
-            return keys.Count;
-        }
 
         /// <summary>
         /// Clears <see cref="MemoryCache.Default"/> (RssHelper and any direct Runtime.Caching writers).
@@ -76,9 +37,11 @@ namespace EImece.Domain.Caching
         /// Full process-wide wipe used by Admin Refresh: HttpRuntime + MemoryCache.Default.
         /// Callers must also clear their own provider store (LazyCache keys / MemoryCacheProvider entries).
         /// </summary>
-        public static void ClearAspNetCaches(out int httpRuntimeRemoved, out int memoryCacheRemoved)
+        public static void ClearAspNetCaches(IHttpRuntimeCacheClearer httpRuntimeCacheClearer, out int httpRuntimeRemoved, out int memoryCacheRemoved)
         {
-            httpRuntimeRemoved = ClearHttpRuntimeCache();
+            httpRuntimeRemoved = httpRuntimeCacheClearer != null
+                ? httpRuntimeCacheClearer.ClearHttpRuntimeCache()
+                : 0;
             memoryCacheRemoved = ClearMemoryCacheDefault();
             Logger.Info(
                 "ApplicationCacheClearer removed {0} HttpRuntime + {1} MemoryCache.Default entries",

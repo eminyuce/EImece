@@ -1,3 +1,4 @@
+using EImece.Domain.Abstractions;
 using LazyCache;
 using Microsoft.Extensions.Caching.Memory;
 using NLog;
@@ -13,6 +14,12 @@ namespace EImece.Domain.Caching
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private const string PhysicalKeyPrefix = "Memory:";
         private readonly IAppCache _lazyCache = new CachingService();
+        private readonly IHttpRuntimeCacheClearer _httpRuntimeCacheClearer;
+
+        public LazyCacheProvider(IHttpRuntimeCacheClearer httpRuntimeCacheClearer = null)
+        {
+            _httpRuntimeCacheClearer = httpRuntimeCacheClearer;
+        }
 
         // ConcurrentDictionary replaces a HashSet that was only locked on writes: ClearAll()
         // used to enumerate it without the lock, which races with concurrent Set() calls.
@@ -64,7 +71,7 @@ namespace EImece.Domain.Caching
             // ProductsController/[CustomOutputCache] keeps serving stale pages after data eviction.
             int httpRuntimeRemoved;
             int memoryCacheRemoved;
-            ApplicationCacheClearer.ClearAspNetCaches(out httpRuntimeRemoved, out memoryCacheRemoved);
+            ApplicationCacheClearer.ClearAspNetCaches(_httpRuntimeCacheClearer, out httpRuntimeRemoved, out memoryCacheRemoved);
             Logger.Info(
                 "LazyCacheProvider.ClearAll removed {0} data keys (+ {1} HttpRuntime, {2} MemoryCache.Default)",
                 keys.Count,

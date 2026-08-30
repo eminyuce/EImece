@@ -921,6 +921,7 @@
     <Compile Include="Services\ExportImport\IDataExportService.cs" />
     <Compile Include="Services\ExportImport\IDataImportService.cs" />
     <Compile Include="Services\ExportImport\DataExportService.cs" />
+    <Compile Include="Abstractions\IHttpRuntimeCacheClearer.cs" />
     <Compile Include="Abstractions\IBackgroundWorkQueue.cs" />
     <Compile Include="Abstractions\ICurrentUserContext.cs" />
     <Compile Include="Abstractions\ISiteUrlProvider.cs" />
