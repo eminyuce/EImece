@@ -66,7 +66,7 @@
             <div class="report-filter-row">
                 <div class="report-filter-field">
                     <div class="form-group row mb-3">
-                        @Html.LabelFor(m => m.State, "Durum")
+                        @Html.AdminLabelFor(m => m.State, "Durum")
                         @Html.TextBoxFor(m => m.State, new { @class = "form-control", placeholder = "Örn. Active" })
                         @Html.ValidationMessageFor(m => m.State, "", new { @class = "text-danger" })
                     </div>

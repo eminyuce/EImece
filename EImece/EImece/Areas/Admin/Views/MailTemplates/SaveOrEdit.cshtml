@@ -60,7 +60,7 @@
                     <div class="tab-content">
                         <div id="admin-edit-tab-fields" class="tab-pane fade show active" role="tabpanel">
 <div class="form-group row mb-3">
-                        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "col-form-label col-md-2" })
+                        @Html.AdminLabelFor(model => model.Name, htmlAttributes: new { @class = "col-form-label col-md-2" })
                         <div class="col-md-10">
                             @if (Model.Id > 0)
                             {
@@ -78,7 +78,7 @@
                         </div>
                     </div>
                     <div class="form-group row mb-3">
-                        @Html.LabelFor(model => model.Subject, htmlAttributes: new { @class = "col-form-label col-md-2" })
+                        @Html.AdminLabelFor(model => model.Subject, htmlAttributes: new { @class = "col-form-label col-md-2" })
                         <div class="col-md-10">
                             @Html.EditorFor(model => model.Subject, new { htmlAttributes = new { @class = "form-control" } })
                             @Html.ValidationMessageFor(model => model.Subject, "", new { @class = "text-danger" })
@@ -88,14 +88,14 @@
                         <div class="col-md-3">
                         </div>
                         <div class="col-md-3">
-                            @Html.LabelFor(model => model.IsActive)
+                            @Html.AdminLabelFor(model => model.IsActive)
                             @Html.EditorFor(model => model.IsActive)
                             @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
                         </div>
                     </div>
 
                     <div class="form-group row mb-3">
-                        @Html.LabelFor(model => model.Position, htmlAttributes: new { @class = "col-form-label col-md-2" })
+                        @Html.AdminLabelFor(model => model.Position, htmlAttributes: new { @class = "col-form-label col-md-2" })
                         <div class="col-md-10">
                             @Html.EditorFor(model => model.Position, new { htmlAttributes = new { @class = "form-control" } })
                             @Html.ValidationMessageFor(model => model.Position, "", new { @class = "text-danger" })

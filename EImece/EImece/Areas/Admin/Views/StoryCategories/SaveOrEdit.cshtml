@@ -45,7 +45,7 @@
                     <div class="tab-content">
                         <div id="admin-edit-tab-fields" class="tab-pane fade show active" role="tabpanel">
 <div class="form-group row mb-3">
-                        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "col-form-label col-md-2" })
+                        @Html.AdminLabelFor(model => model.Name, htmlAttributes: new { @class = "col-form-label col-md-2" })
                         <div class="col-md-10">
                             @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
                             @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
@@ -53,7 +53,7 @@
                     </div>
 
                     <div class="form-group row mb-3">
-                        @Html.LabelFor(model => model.MetaKeywords, htmlAttributes: new { @class = "col-form-label col-md-2" })
+                        @Html.AdminLabelFor(model => model.MetaKeywords, htmlAttributes: new { @class = "col-form-label col-md-2" })
                         <div class="col-md-10">
                             @Html.TextAreaFor(model => model.MetaKeywords, 2, 20, new { @class = "form-control" })
                             @Html.ValidationMessageFor(model => model.MetaKeywords, "", new { @class = "text-danger" })
@@ -64,14 +64,14 @@
                         <div class="col-md-3">
                         </div>
                         <div class="col-md-3">
-                            @Html.LabelFor(model => model.IsActive)
+                            @Html.AdminLabelFor(model => model.IsActive)
                             @Html.EditorFor(model => model.IsActive)
                             @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
                         </div>
                     </div>
 
                     <div class="form-group row mb-3">
-                        @Html.LabelFor(model => model.Position, htmlAttributes: new { @class = "col-form-label col-md-2" })
+                        @Html.AdminLabelFor(model => model.Position, htmlAttributes: new { @class = "col-form-label col-md-2" })
                         <div class="col-md-10">
                             @Html.EditorFor(model => model.Position, new { htmlAttributes = new { @class = "form-control" } })
                             @Html.ValidationMessageFor(model => model.Position, "", new { @class = "text-danger" })
@@ -82,14 +82,14 @@
                         <div class="col-md-3">
                         </div>
                         <div class="col-md-3">
-                            @Html.LabelFor(model => model.ImageState)
+                            @Html.AdminLabelFor(model => model.ImageState)
                             @Html.EditorFor(model => model.ImageState)
                             @Html.ValidationMessageFor(model => model.ImageState, "", new { @class = "text-danger" })
                         </div>
                     </div>
 
                     <div class="form-group row mb-3">
-                        @Html.LabelFor(model => model.MainImageId, htmlAttributes: new { @class = "col-form-label col-md-2" })
+                        @Html.AdminLabelFor(model => model.MainImageId, htmlAttributes: new { @class = "col-form-label col-md-2" })
                         <div class="col-md-5">
                             <input type="file" name="postedImage" accept="image/gif,image/jpeg,image/jpg,image/png" />
                             @Html.ValidationMessageFor(model => model.MainImageId, "", new { @class = "text-danger" })
@@ -103,7 +103,7 @@
                     @Html.Partial("pSliderResizing", (BaseContent)Model)
 
                     <div id="pageThemeWrapper" class="form-group row mb-3">
-                        @Html.LabelFor(model => model.PageTheme, htmlAttributes: new { @class = "col-form-label col-md-2" })
+                        @Html.AdminLabelFor(model => model.PageTheme, htmlAttributes: new { @class = "col-form-label col-md-2" })
                         <div class="col-md-10">
                             @Html.Partial("pPageThemes", Model)
                             @Html.ValidationMessageFor(model => model.PageTheme, "", new { @class = "text-danger" })

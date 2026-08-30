@@ -1581,6 +1581,7 @@
     <Content Include="Scripts\codemirror\xml\test.js" />
     <Content Include="Scripts\codemirror\xml\xml.js" />
     <Content Include="Scripts\adminEimece.js" />
+    <Content Include="Scripts\adminRequiredLabels.js" />
     <Content Include="Scripts\adminGridModern.js" />
     <Content Include="Scripts\adminMailTemplateTest.js" />
     <Content Include="Scripts\adminTemplateBuilder.js" />
