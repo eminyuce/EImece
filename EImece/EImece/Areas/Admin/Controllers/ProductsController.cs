@@ -253,6 +253,8 @@ namespace EImece.Areas.Admin.Controllers
                     //      }
                     else
                     {
+                        var isEdit = product.Id > 0;
+
                         FilesHelper.SaveFileFromHttpPostedFileBase(
                              postedImage,
                              product.ImageHeight,
@@ -268,7 +270,7 @@ namespace EImece.Areas.Admin.Controllers
 
                         await ProductService.SaveProductTagsAsync(product.Id, tags);
 
-                        if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText, StringComparison.InvariantCultureIgnoreCase))
+                        if (isEdit || (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText, StringComparison.InvariantCultureIgnoreCase)))
                         {
                             return RedirectToProductIndex(product.ProductCategoryId);
                         }
