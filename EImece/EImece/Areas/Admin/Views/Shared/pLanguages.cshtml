@@ -1,14 +1,17 @@
 @using Resources
-@using EImece.Domain.Helpers;
 @model List<SelectListItem>
 @{
-    var listItems = Model;
-    var selected = listItems.FirstOrDefault(l => l.Selected);
-    var selectedValue = selected != null ? selected.Value : "";
+    var listItems = Model ?? new List<SelectListItem>();
+    var selected = listItems.FirstOrDefault(l => l.Selected) ?? listItems.FirstOrDefault();
+    var isBilingual = listItems.Count > 1;
+    var selectedValue = selected != null ? selected.Value : "1";
+    var isEnglish = selectedValue == "2";
+    var selectedName = isEnglish ? AdminResource.ContentLanguageEnglishName : AdminResource.ContentLanguageTurkishName;
+    var selectedFlag = isEnglish ? "🇺🇸" : "🇹🇷";
 }
-@if (listItems.Count() > 1)
-{
 <li class="admin-topbar-data-lang" title="@AdminResource.DataEntryLanguageTooltip">
+    @if (isBilingual)
+    {
     <label for="CookieLanguage" class="admin-topbar-data-lang__label">
         <i class="fa fa-pencil-square-o" style="color:#6366f1; font-size:13px;" aria-hidden="true"></i>
         <span>@AdminResource.DataEntryLanguageShort</span>
@@ -22,8 +25,8 @@
             @foreach (var l in listItems)
             {
                 var v = l.Value;
-                var flag = v == "1" ? "🇹🇷" : v == "2" ? "🇬🇧" : v == "3" ? "🇷🇺" : v == "4" ? "🇩🇪" : "🏳️";
-                var name = string.IsNullOrWhiteSpace(l.Text) ? (v == "1" ? "Türkçe" : v == "2" ? "English" : v) : l.Text;
+                var flag = v == "2" ? "🇺🇸" : "🇹🇷";
+                var name = v == "2" ? AdminResource.ContentLanguageEnglishName : AdminResource.ContentLanguageTurkishName;
                 if (l.Selected)
                 {
             <option selected="selected" value="@l.Value">@flag @name</option>
@@ -36,5 +39,13 @@
         </select>
         <i class="fa fa-chevron-down" aria-hidden="true" style="position:absolute; right:8px; top:50%; transform:translateY(-50%); font-size:9px; color:#94a3b8; pointer-events:none;"></i>
     </div>
+    }
+    else
+    {
+    <span class="admin-topbar-data-lang__active">
+        @AdminResource.DataEntryLanguageShort:
+        <span aria-hidden="true">@selectedFlag</span>
+        <strong class="admin-topbar-data-lang__name">@selectedName</strong>
+    </span>
+    }
 </li>
-}

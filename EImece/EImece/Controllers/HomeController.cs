@@ -345,9 +345,17 @@ namespace EImece.Controllers
 
         public ActionResult Language(string id)
         {
-            SetLanguage(id);
-            MemoryCacheProvider.ClearAll();
-            HomeLogger.Info("Language set and cache cleared. Language={0}", id);
+            var contentLanguages = ContentLanguageSettingsHelper.GetCurrent();
+            if (contentLanguages.IsBilingual)
+            {
+                var parsed = EnumHelper.ParseLanguage(id);
+                if (parsed.HasValue && contentLanguages.IsLanguageEnabled(parsed.Value))
+                {
+                    SetLanguage(id);
+                    MemoryCacheProvider.ClearAll();
+                    HomeLogger.Info("Language set and cache cleared. Language={0}", id);
+                }
+            }
             return RedirectToAction("Index", "Home");
         }
 

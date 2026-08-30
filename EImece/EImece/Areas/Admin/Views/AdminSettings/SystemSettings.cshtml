@@ -492,7 +492,7 @@
                                         @Html.DropDownListFor(model => model.AdminPanelLanguage, new List<SelectListItem>
                                         {
                                             new SelectListItem { Text = "🇹🇷 Türkçe (Turkish)", Value = "tr-TR" },
-                                            new SelectListItem { Text = "🇬🇧 English", Value = "en-US" }
+                                            new SelectListItem { Text = "🇺🇸 English (en-US)", Value = "en-US" }
                                         }, new { @class = "form-select", id = "AdminPanelLanguage" })
                                         <button type="button" class="btn btn-primary" id="btnChangeAdminLanguage" title="@AdminResource.ApplyAndRefresh">
                                             <i class="fa fa-refresh me-1" aria-hidden="true"></i> @AdminResource.ApplyAndRefresh
@@ -502,6 +502,58 @@
                                         <i class="fa fa-info-circle me-1 text-primary"></i>@AdminResource.AdminPanelUILanguageHelp
                                     </div>
                                     @Html.ValidationMessageFor(model => model.AdminPanelLanguage, "", new { @class = "text-danger small" })
+                                </div>
+                                <!-- Content languages (storefront / data-entry) — independent of Admin Panel UI language -->
+                                <div class="setting-item mb-0 p-3 border rounded bg-light" data-setting-name="SupportedContentLanguages" data-setting-label="@AdminResource.ContentLanguagesTitle" data-setting-desc="@AdminResource.ContentLanguagesHelp" data-keywords="içerik dili content language turkish english tr en bilingual veri giriş">
+                                    <div class="d-flex align-items-center justify-content-between mb-2">
+                                        <label class="form-label fw-bold small m-0 d-flex align-items-center gap-2">
+                                            <span class="badge bg-success text-uppercase"><i class="fa fa-language me-1"></i>DATA</span>
+                                            <span>@AdminResource.ContentLanguagesTitle</span>
+                                            @Html.Partial("_AdminFieldTip", null, new ViewDataDictionary { { "TipText", AdminResource.ContentLanguagesHelp } })
+                                        </label>
+                                    </div>
+                                    @Html.HiddenFor(model => model.SupportedContentLanguages)
+                                    <div class="d-flex flex-wrap gap-3 mb-2">
+                                        <div class="form-check">
+                                            @Html.CheckBoxFor(model => model.ContentLanguageTurkish, new { @class = "form-check-input content-language-checkbox", id = "ContentLanguageTurkish", data_lang = "tr" })
+                                            <label class="form-check-label" for="ContentLanguageTurkish">
+                                                <span class="content-lang-flag" title="tr-TR" aria-hidden="true">
+                                                    <svg viewBox="0 0 36 24" width="18" height="12" focusable="false"><rect width="36" height="24" fill="#E30A17"/><circle cx="12.6" cy="12" r="7.2" fill="#fff"/><circle cx="14.7" cy="12" r="5.76" fill="#E30A17"/><polygon fill="#fff" points="20.5,12 16.9,13.17 19.22,9.9 19.22,14.1 16.9,10.83"/></svg>
+                                                </span>
+                                                @AdminResource.ContentLanguageTurkish
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            @Html.CheckBoxFor(model => model.ContentLanguageEnglish, new { @class = "form-check-input content-language-checkbox", id = "ContentLanguageEnglish", data_lang = "en" })
+                                            <label class="form-check-label" for="ContentLanguageEnglish">
+                                                <span class="content-lang-flag" title="en-US" aria-hidden="true">
+                                                    <svg viewBox="0 0 36 24" width="18" height="12" focusable="false"><rect width="36" height="24" fill="#BF0A30"/><rect y="1.85" width="36" height="1.85" fill="#fff"/><rect y="5.54" width="36" height="1.85" fill="#fff"/><rect y="9.23" width="36" height="1.85" fill="#fff"/><rect y="12.92" width="36" height="1.85" fill="#fff"/><rect y="16.62" width="36" height="1.85" fill="#fff"/><rect y="20.31" width="36" height="1.85" fill="#fff"/><rect width="14.4" height="13.1" fill="#002868"/></svg>
+                                                </span>
+                                                @AdminResource.ContentLanguageEnglish
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div id="contentLanguageSingleHint" class="form-text small mb-1" style="display:none;"
+                                         data-name-tr="@AdminResource.ContentLanguageTurkishName"
+                                         data-name-en="@AdminResource.ContentLanguageEnglishName"
+                                         data-at-least-one="@AdminResource.ContentLanguagesAtLeastOne">
+                                        <i class="fa fa-flag text-success me-1" aria-hidden="true"></i>
+                                        @AdminResource.DataEntryLanguageShort:
+                                        <span id="contentLanguageFlagTr" class="content-lang-flag" title="tr-TR" aria-hidden="true">
+                                            <svg viewBox="0 0 36 24" width="18" height="12" focusable="false"><rect width="36" height="24" fill="#E30A17"/><circle cx="12.6" cy="12" r="7.2" fill="#fff"/><circle cx="14.7" cy="12" r="5.76" fill="#E30A17"/><polygon fill="#fff" points="20.5,12 16.9,13.17 19.22,9.9 19.22,14.1 16.9,10.83"/></svg>
+                                        </span>
+                                        <span id="contentLanguageFlagUs" class="content-lang-flag" title="en-US" aria-hidden="true" style="display:none;">
+                                            <svg viewBox="0 0 36 24" width="18" height="12" focusable="false"><rect width="36" height="24" fill="#BF0A30"/><rect y="1.85" width="36" height="1.85" fill="#fff"/><rect y="5.54" width="36" height="1.85" fill="#fff"/><rect y="9.23" width="36" height="1.85" fill="#fff"/><rect y="12.92" width="36" height="1.85" fill="#fff"/><rect y="16.62" width="36" height="1.85" fill="#fff"/><rect y="20.31" width="36" height="1.85" fill="#fff"/><rect width="14.4" height="13.1" fill="#002868"/></svg>
+                                        </span>
+                                        <strong class="text-success fw-bold" id="contentLanguageActiveName"></strong>
+                                    </div>
+                                    <div id="contentLanguageBilingualHint" class="form-text small mb-1" style="display:none;">
+                                        <i class="fa fa-exchange me-1 text-success"></i>@AdminResource.ContentLanguagesBilingualMode
+                                    </div>
+                                    <div class="form-text small text-muted">
+                                        <i class="fa fa-info-circle me-1 text-primary"></i>@AdminResource.ContentLanguagesHelp
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.SupportedContentLanguages, "", new { @class = "text-danger small" })
                                 </div>
                             </div>
                         </div>
@@ -2099,6 +2151,35 @@
                     window.location.reload();
                 }
             });
+
+            function syncContentLanguageHints() {
+                var tr = $('#ContentLanguageTurkish').is(':checked');
+                var en = $('#ContentLanguageEnglish').is(':checked');
+                var $single = $('#contentLanguageSingleHint');
+                var $bilingual = $('#contentLanguageBilingualHint');
+                if (tr && en) {
+                    $single.hide();
+                    $bilingual.show();
+                } else {
+                    var name = en ? $single.attr('data-name-en') : $single.attr('data-name-tr');
+                    $('#contentLanguageActiveName').text(name);
+                    $('#contentLanguageFlagTr').toggle(!en);
+                    $('#contentLanguageFlagUs').toggle(en);
+                    $bilingual.hide();
+                    $single.show();
+                }
+            }
+
+            $('.content-language-checkbox').on('click', function (e) {
+                if ($('.content-language-checkbox:checked').length === 0) {
+                    e.preventDefault();
+                    $(this).prop('checked', true);
+                    alert($('#contentLanguageSingleHint').attr('data-at-least-one'));
+                    return false;
+                }
+            });
+            $('.content-language-checkbox').on('change', syncContentLanguageHints);
+            syncContentLanguageHints();
 
             // Quick change Admin Panel Language button
             $('#btnChangeAdminLanguage').on('click', function () {

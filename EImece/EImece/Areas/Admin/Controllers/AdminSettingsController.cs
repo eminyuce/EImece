@@ -84,12 +84,24 @@ namespace EImece.Areas.Admin.Controllers
                 }
             }
 
+            if (!settingModel.ContentLanguageTurkish && !settingModel.ContentLanguageEnglish)
+            {
+                ModelState.AddModelError(nameof(settingModel.SupportedContentLanguages), AdminResource.ContentLanguagesAtLeastOne);
+            }
+            else
+            {
+                settingModel.SupportedContentLanguages = ContentLanguageSettingsHelper.Serialize(
+                    settingModel.ContentLanguageTurkish,
+                    settingModel.ContentLanguageEnglish);
+            }
+
             if (!ModelState.IsValid)
             {
                 return View(settingModel);
             }
 
             await SettingService.SaveSystemSettingModelAsync(settingModel);
+            _memoryCacheProvider.ClearAll();
             SetSuccessMessage(AdminResource.SuccessfullySavedCompleted);
             ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
             return View(await SettingService.GetSystemSettingModelAsync(cancellationToken));

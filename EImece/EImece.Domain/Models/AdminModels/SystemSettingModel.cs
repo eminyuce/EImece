@@ -142,6 +142,19 @@ namespace EImece.Domain.Models.AdminModels
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.AdminPanelLanguage))]
         public string AdminPanelLanguage { get; set; }
 
+        /// <summary>
+        /// Persisted content-language setting (tr-TR, en-US, or tr-TR,en-US).
+        /// Independent of <see cref="AdminPanelLanguage"/>.
+        /// </summary>
+        [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.ContentLanguagesTitle))]
+        public string SupportedContentLanguages { get; set; }
+
+        /// <summary>UI-only checkbox; not stored as its own setting key.</summary>
+        public bool ContentLanguageTurkish { get; set; }
+
+        /// <summary>UI-only checkbox; not stored as its own setting key.</summary>
+        public bool ContentLanguageEnglish { get; set; }
+
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.GridPageSizeNumber))]
         [Range(1, 1000, ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.Range1To1000ErrorMessage))]
         public int GridPageSizeNumber { get; set; }

@@ -200,17 +200,12 @@ namespace EImece.Controllers
 
         protected override void Initialize(System.Web.Routing.RequestContext requestContext)
         {
-            var cookie = requestContext?.HttpContext?.Request?.Cookies["Language"]
-                ?? requestContext?.HttpContext?.Request?.Cookies[Constants.CultureCookieName];
-
-            if (cookie != null && !string.IsNullOrWhiteSpace(cookie.Value))
-            {
-                SetCurrentCulture(cookie.Value);
-            }
-            else
-            {
-                SetCurrentCulture(Constants.TR);
-            }
+            var languageCookie = requestContext?.HttpContext?.Request?.Cookies["Language"];
+            var cultureCookie = requestContext?.HttpContext?.Request?.Cookies[Constants.CultureCookieName];
+            var cultureName = ContentLanguageSettingsHelper.ResolveStorefrontCulture(
+                languageCookie != null ? languageCookie.Value : null,
+                cultureCookie != null ? cultureCookie.Values[Constants.ELanguage] : null);
+            SetCurrentCulture(cultureName);
 
             base.Initialize(requestContext);
         }
@@ -338,7 +333,7 @@ namespace EImece.Controllers
 
         protected void SetLanguage(string id)
         {
-            // Accept either enum numeric id ("1") or culture description ("tr-TR").
+            var contentLanguages = ContentLanguageSettingsHelper.GetCurrent();
             EImeceLanguage selectedLanguage;
             int langId;
             if (int.TryParse(id, out langId) && Enum.IsDefined(typeof(EImeceLanguage), langId))
@@ -348,6 +343,11 @@ namespace EImece.Controllers
             else
             {
                 selectedLanguage = (EImeceLanguage)EnumHelper.GetEnumFromDescription(id, typeof(EImeceLanguage));
+            }
+
+            if (!contentLanguages.IsLanguageEnabled(selectedLanguage))
+            {
+                selectedLanguage = contentLanguages.DefaultLanguage;
             }
 
             String cultureName = EnumHelper.GetEnumDescription(selectedLanguage);

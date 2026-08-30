@@ -690,6 +690,35 @@ body.admin-app.sidebar-collapsed .admin-sidebar-toggle .admin-toggle-icon-expand
     box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
 }
 
+.admin-topbar-data-lang__active {
+    font-size: 12px;
+    font-weight: 600;
+    color: #334155;
+    white-space: nowrap;
+    padding-right: 8px;
+}
+
+.admin-topbar-data-lang__name {
+    color: #16a34a;
+    font-weight: 700;
+}
+
+.content-lang-flag {
+    display: inline-block;
+    width: 18px;
+    height: 12px;
+    vertical-align: -1px;
+    margin: 0 4px 0 2px;
+    border-radius: 2px;
+    box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.15);
+    overflow: hidden;
+    line-height: 0;
+}
+
+.content-lang-flag svg {
+    display: block;
+}
+
 .admin-logout-form {
     display: none;
 }

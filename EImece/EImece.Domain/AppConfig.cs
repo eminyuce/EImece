@@ -245,19 +245,26 @@ namespace EImece.Domain
             }
         }
 
+        /// <summary>
+        /// Enabled content-language cultures (tr-TR and/or en-US), from the SupportedContentLanguages system setting.
+        /// Defaults to Turkish only when the setting is missing.
+        /// </summary>
         public static string ApplicationLanguages
         {
             get
             {
-                return GetConfigString("ApplicationLanguages", "1,2");
+                return ContentLanguageSettingsHelper.GetCurrent().SerializedCultures;
             }
         }
 
+        /// <summary>
+        /// Default content language id. English-only sites return English; otherwise Turkish.
+        /// </summary>
         public static int MainLanguage
         {
             get
             {
-                return GetConfigInt("MainLanguage", 1);
+                return ContentLanguageSettingsHelper.GetCurrent().DefaultLanguageId;
             }
         }
 
