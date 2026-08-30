@@ -61,6 +61,8 @@ namespace EImece.Controllers
   -f ^
   -fixednames ^
   "C:\Publish\EImece"
+
+        "C:\Windows\Microsoft.NET\Framework64\v4.0.30319\aspnet_compiler.exe" -p "C:\Users\eminy\source\repos\EImece\EImece\EImece" -v / -f -fixednames "C:\Publish\EImece"
          * "C:\Windows\Microsoft.NET\Framework64\v4.0.30319\aspnet_compiler.exe" -p "C:\Users\eminy\source\repos\EImece\EImece\EImece" -v / -f "C:\Publish\EImece"
          * PS C:\Users\eminy\source\repos\EImece\EImece> & "C:\Windows\Microsoft.NET\Framework64\v4.0.30319\aspnet_compiler.exe" -p "C:\Users\eminy\source\repos\EImece\EImece\EImece" -v / -f "C:\Publish\EImece"
          */
