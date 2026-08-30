@@ -37,7 +37,7 @@ namespace EImece.Web.Helpers
                 return query;
             }
 
-            return query.OrderByDescending(x => x.UpdatedDate).ThenByDescending(x => x.Id);
+            return query.OrderByDescending(x => x.UpdatedDate);
         }
     }
 }

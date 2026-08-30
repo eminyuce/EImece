@@ -200,7 +200,7 @@ namespace EImece.Domain.Repositories
                 products = products.Where(r => r.ProductCategoryId == categoryId);
             }
 
-            products = products.OrderByDescending(r => r.UpdatedDate).ThenByDescending(r => r.Id);
+            products = products.OrderByDescending(r => r.UpdatedDate);
 
             if (categoryId <= 0)
             {
