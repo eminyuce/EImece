@@ -3,7 +3,7 @@ using System.IO;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using EImece.Infrastructure.Designs;
+using EImece.Web.Infrastructure.Designs;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace EImece.Tests.Infrastructure

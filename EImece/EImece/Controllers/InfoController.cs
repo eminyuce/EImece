@@ -1,3 +1,4 @@
+using EImece.Web.Controllers;
 using EImece.Domain;
 using EImece.Domain.Helpers;
 using EImece.Domain.Models.DTOs;

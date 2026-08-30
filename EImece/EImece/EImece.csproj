@@ -432,9 +432,7 @@
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminSettingsController.cs" />
     <Compile Include="Areas\Admin\Controllers\AjaxController.cs" />
-    <Compile Include="Areas\Admin\Controllers\AppLogsController.cs" />
-    <Compile Include="Areas\Admin\Controllers\BaseAdminController.cs" />
-    <Compile Include="Areas\Admin\Controllers\BrandsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\AppLogsController.cs" />    <Compile Include="Areas\Admin\Controllers\BrandsController.cs" />
     <Compile Include="Areas\Admin\Controllers\MetricsController.cs" />
     <Compile Include="Areas\Admin\Controllers\OrdersController.cs" />
     <Compile Include="Areas\Admin\Controllers\PerfController.cs" />
@@ -471,9 +469,7 @@
     <Compile Include="Areas\Customers\Controllers\HomeController.cs" />
     <Compile Include="Areas\Customers\CustomersAreaRegistration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\AjaxController.cs" />
-    <Compile Include="Controllers\BaseController.cs" />
-    <Compile Include="Controllers\ErrorController.cs" />
+    <Compile Include="Controllers\AjaxController.cs" />    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HealthController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ImagesController.cs" />
@@ -489,62 +485,13 @@
     <Compile Include="Controllers\SiteMapController.cs" />
     <Compile Include="Controllers\StoriesController.cs" />
     <Compile Include="Controllers\UnderConstructionController.cs" />
-    <Compile Include="Controllers\UrlController.cs" />
-    <Compile Include="Filters\MetricsActionFilter.cs" />
-    <Compile Include="Filters\TelemetryActionFilter.cs" />
-    <Compile Include="Filters\TimedActionFilterAttribute.cs" />
-    <Compile Include="Filters\RequestLoggingActionFilter.cs" />
-    <Compile Include="Filters\RobotsNoIndexAttribute.cs" />
-    <Compile Include="Filters\InMemoryRateLimiter.cs" />
-    <Compile Include="Filters\RateLimitAttribute.cs" />
-    <Compile Include="Filters\StructuredExceptionFilter.cs" />
-    <Compile Include="Filters\WebApiExceptionFilter.cs" />
-    <Compile Include="App_Start\DesignConfig.cs" />
-    <Compile Include="App_Start\ViewEngineConfig.cs" />
-    <Compile Include="Infrastructure\Designs\ConfigDesignProvider.cs" />
-    <Compile Include="Infrastructure\Designs\DesignAwareRazorViewEngine.cs" />
-    <Compile Include="Infrastructure\Designs\DesignHtmlHelpers.cs" />
-    <Compile Include="Infrastructure\Designs\DesignPathResolver.cs" />
-    <Compile Include="Infrastructure\Designs\DesignValidationException.cs" />
-    <Compile Include="Infrastructure\Designs\DesignValidator.cs" />
-    <Compile Include="Infrastructure\Designs\IDesignProvider.cs" />
-    <Compile Include="Infrastructure\Designs\MissingDesignViewException.cs" />
-    <Compile Include="Infrastructure\CorrelationIdHttpModule.cs" />
-    <Compile Include="Infrastructure\SecurityHeadersHttpModule.cs" />
-    <Compile Include="Global.asax.cs">
+    <Compile Include="Controllers\UrlController.cs" />    <Compile Include="App_Start\DesignConfig.cs" />
+    <Compile Include="App_Start\ViewEngineConfig.cs" />    <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs" />
     <Compile Include="Startup.cs" />
-    <Compile Include="Infrastructure\Security\WebCurrentUserContext.cs" />
-    <Compile Include="Infrastructure\WebSiteUrlProvider.cs" />
-    <Compile Include="Infrastructure\HostingEnvironmentBackgroundWorkQueue.cs" />
-    <Compile Include="Helpers\WebGeneralHelper.cs" />
-    <Compile Include="Helpers\WebFilesHelper.cs" />
-    <Compile Include="Helpers\EnumWebExtensions.cs" />
-    <Compile Include="Helpers\PartialViewToString.cs" />
-    <Compile Include="Helpers\HtmlRequestHelper.cs" />
-    <Compile Include="Helpers\SeoUrlHelper.cs" />
-    <Compile Include="Helpers\HtmlRenderExtensions.cs" />
-    <Compile Include="Helpers\HtmlHelpers\AdminBreadcrumbHtmlHelper.cs" />
-    <Compile Include="Helpers\HtmlHelpers\AdminGridHtmlHelpers.cs" />
-    <Compile Include="Helpers\HtmlHelpers\CaptchaHtmlHelper.cs" />
-    <Compile Include="Helpers\HtmlHelpers\HtmlHelperExtensions.cs" />
-    <Compile Include="Helpers\HtmlHelpers\MVCHtmlHelpers.cs" />
-    <Compile Include="Filters\AuthorizationAttribute.cs" />
-    <Compile Include="Filters\AuthorizeRolesAttribute.cs" />
-    <Compile Include="Filters\CustomOutputCacheAttribute.cs" />
-    <Compile Include="Filters\DeleteAuthorizeAttribute.cs" />
-    <Compile Include="Filters\NoCacheAttribute.cs" />
-    <Compile Include="Filters\UnderConstAttribute.cs" />
-    <Compile Include="Filters\ValidateCaptchaAttribute.cs" />
-    <Compile Include="Filters\ValidateJsonAntiForgeryTokenAttribute.cs" />
-    <Compile Include="Infrastructure\WebLoggingHelper.cs" />
-    <Compile Include="Infrastructure\ActionResults\FeedResult.cs" />
-    <Compile Include="Infrastructure\ActionResults\SitemapResult.cs" />
-    <Compile Include="Services\CaptchaService.cs" />
-    <Compile Include="Services\RecaptchaService.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Areas\Admin\Models\UserAuditReportViewModel.cs" />
   </ItemGroup>
@@ -1935,6 +1882,10 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\EImece.Web\EImece.Web.csproj">
+      <Project>{A2BDA8B7-91B5-4AA1-9D41-73A17ADDB684}</Project>
+      <Name>EImece.Web</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EImece.Domain\EImece.Domain.csproj">
       <Project>{c46d80dd-554f-4fec-8523-df5c9ca84d70}</Project>
       <Name>EImece.Domain</Name>

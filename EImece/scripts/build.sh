@@ -29,6 +29,7 @@ fi
 echo "Build succeeded."
 echo "  Resources     -> ${ROOT}/Resources/bin/Release/Resources.dll"
 echo "  EImece.Domain -> ${ROOT}/EImece.Domain/bin/Release/EImece.Domain.dll"
+echo "  EImece.Web    -> ${ROOT}/EImece.Web/bin/Release/EImece.Web.dll"
 echo "  EImece        -> ${ROOT}/EImece/bin/EImece.dll"
 echo ""
 echo "See docs/BUILD_AND_RUN.md for run and verification steps."

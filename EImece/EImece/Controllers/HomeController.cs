@@ -1,5 +1,6 @@
+using EImece.Web.Controllers;
 using EImece.Domain;
-using EImece.Services;
+using EImece.Web.Services;
 using EImece.Domain.Caching;
 using EImece.Domain.Entities;
 using EImece.Domain.DependencyInjection;
@@ -10,8 +11,8 @@ using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Repositories;
 using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
-using EImece.Filters;
-using EImece.Helpers;
+using EImece.Web.Filters;
+using EImece.Web.Helpers;
 using NLog;
 using Resources;
 using System;

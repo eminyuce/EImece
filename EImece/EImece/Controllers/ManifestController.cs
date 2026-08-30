@@ -1,5 +1,5 @@
 using EImece.Domain;
-using EImece.Filters;
+using EImece.Web.Filters;
 using EImece.Domain.Services.IServices;
 using System;
 using System.Text;

@@ -8,7 +8,7 @@ using EImece.Domain.Models.Enums;
 using EImece.Domain.Repositories;
 using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
-using EImece.Infrastructure.Designs;
+using EImece.Web.Infrastructure.Designs;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;

@@ -1,7 +1,8 @@
+using EImece.Web.Controllers;
 using EImece.Domain;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
-using EImece.Filters;
+using EImece.Web.Filters;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Services.IServices;

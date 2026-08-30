@@ -1,5 +1,5 @@
 using EImece.Domain;
-using EImece.Filters;
+using EImece.Web.Filters;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Reflection;

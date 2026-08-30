@@ -392,6 +392,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\EImece.Web\EImece.Web.csproj">
+      <Project>{A2BDA8B7-91B5-4AA1-9D41-73A17ADDB684}</Project>
+      <Name>EImece.Web</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EImece.Domain\EImece.Domain.csproj">
       <Project>{c46d80dd-554f-4fec-8523-df5c9ca84d70}</Project>
       <Name>EImece.Domain</Name>

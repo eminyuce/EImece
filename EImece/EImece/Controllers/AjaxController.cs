@@ -1,9 +1,10 @@
+using EImece.Web.Controllers;
 using System;
-using EImece.Helpers;
+using EImece.Web.Helpers;
 using EImece.Domain;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
-using EImece.Filters;
+using EImece.Web.Filters;
 using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
 using EImece.Domain.DependencyInjection;

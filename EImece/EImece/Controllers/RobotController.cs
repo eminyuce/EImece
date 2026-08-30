@@ -1,7 +1,7 @@
 using EImece.Domain;
 using EImece.Domain.DependencyInjection;
 using EImece.Domain.Helpers;
-using EImece.Filters;
+using EImece.Web.Filters;
 using EImece.Domain.Services.IServices;
 using NLog;
 using System;

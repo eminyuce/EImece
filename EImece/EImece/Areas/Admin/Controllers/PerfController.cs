@@ -1,5 +1,6 @@
+using EImece.Web.Areas.Admin.Controllers;
 using EImece.Areas.Admin.Models;
-using EImece.Filters;
+using EImece.Web.Filters;
 using EImece.Domain.Observability.Metrics;
 using EImece.Domain.Services.IServices;
 using Griddly.Mvc;

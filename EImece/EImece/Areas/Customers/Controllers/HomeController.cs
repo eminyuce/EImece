@@ -1,7 +1,7 @@
 using EImece.Domain;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
-using EImece.Filters;
+using EImece.Web.Filters;
 using EImece.Domain.Helpers.EmailHelper;
 using EImece.Domain.Models.DTOs;
 using EImece.Domain.Models.Enums;
@@ -12,7 +12,7 @@ using EImece.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using EImece.Domain.DependencyInjection;
-using EImece.Filters;
+using EImece.Web.Filters;
 using NLog;
 using Resources;
 using System;
