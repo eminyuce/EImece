@@ -1,4 +1,5 @@
 using EImece.Domain.Entities;
+using Newtonsoft.Json;
 using EImece.Helpers;
 using EImece.Domain.Helpers;
 using EImece.Filters;
@@ -262,7 +263,8 @@ namespace EImece.Areas.Admin.Controllers
         public async Task<ActionResult> GetMenus(CancellationToken cancellationToken)
         {
             var treelist = await MenuService.BuildTreeAsync(null, CurrentLanguage, cancellationToken);
-            return new JsonResult { Data = new { treeList = treelist }, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+            var json = JsonConvert.SerializeObject(new { treeList = treelist }, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
+            return Content(json, "application/json");
         }
 
         [HttpGet]

@@ -64,6 +64,7 @@ namespace EImece.App_Start
             ConfigureServices(services);
             ServiceProvider = services.BuildServiceProvider(validateScopes: true);
             DomainServiceProvider.Instance = ServiceProvider;
+            DomainServiceProvider.RequestProvider = GetRequestServiceProvider;
 
             DependencyResolver.SetResolver(new MsDiDependencyResolver(ServiceProvider));
             GlobalConfiguration.Configuration.DependencyResolver =

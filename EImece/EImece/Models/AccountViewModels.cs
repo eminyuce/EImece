@@ -1,9 +1,11 @@
 using EImece.Domain.Entities;
+using EImece.Domain.Services;
 using EImece.Domain.Models.DTOs;
 using Resources;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
+using Compare = System.ComponentModel.DataAnnotations.CompareAttribute;
 
 namespace EImece.Models
 {
