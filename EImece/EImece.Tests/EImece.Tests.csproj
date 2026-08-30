@@ -317,6 +317,7 @@
   <ItemGroup>
     <Compile Include="Infrastructure\DesignSystemTests.cs" />
     <Compile Include="Infrastructure\ResilientHttpClientLifetimeTests.cs" />
+    <Compile Include="Infrastructure\TestDomainAbstractions.cs" />
     <Compile Include="Services\CompressedImageExportServiceTests.cs" />
     <Compile Include="Services\DataExportServiceTests.cs" />
     <Compile Include="Services\ProductDeletionAndHistoricalOrderTests.cs" />
@@ -372,6 +373,7 @@
     <Compile Include="Helpers\PerfStatsTests.cs" />
     <Compile Include="Controllers\HomeControllerTest.cs" />
     <Compile Include="Controllers\RssFeedsControllerTests.cs" />
+    <Compile Include="Controllers\AdminHtmlInputValidationTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App.config" />
@@ -391,6 +393,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\EImece.Web\EImece.Web.csproj">
+      <Project>{A2BDA8B7-91B5-4AA1-9D41-73A17ADDB684}</Project>
+      <Name>EImece.Web</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EImece.Domain\EImece.Domain.csproj">
       <Project>{c46d80dd-554f-4fec-8523-df5c9ca84d70}</Project>
       <Name>EImece.Domain</Name>

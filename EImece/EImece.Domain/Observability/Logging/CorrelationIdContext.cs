@@ -1,6 +1,6 @@
 using System;
 using System.Diagnostics;
-using System.Web;
+using System.Threading;
 
 namespace EImece.Domain.Observability.Logging
 {
@@ -9,64 +9,29 @@ namespace EImece.Domain.Observability.Logging
         public const string HeaderName = "X-Correlation-Id";
         public const string TraceParentHeaderName = "traceparent";
         public const string TraceStateHeaderName = "tracestate";
-        public const string HttpContextItemKey = "CorrelationId";
-        public const string TraceParentItemKey = "TraceParent";
-        public const string TraceStateItemKey = "TraceState";
+        /// <summary>NLog/Serilog scope property name for the active correlation id (not HttpContext-specific).</summary>
+        public const string ScopeContextPropertyName = "CorrelationId";
+
+        private static readonly AsyncLocal<string> _current = new AsyncLocal<string>();
+        private static readonly AsyncLocal<string> _traceParent = new AsyncLocal<string>();
+        private static readonly AsyncLocal<string> _traceState = new AsyncLocal<string>();
 
         public static string Current
         {
-            get
-            {
-                var context = HttpContext.Current;
-                if (context == null)
-                {
-                    return null;
-                }
-
-                return context.Items[HttpContextItemKey] as string;
-            }
-            set
-            {
-                var context = HttpContext.Current;
-                if (context != null)
-                {
-                    context.Items[HttpContextItemKey] = value;
-                }
-            }
+            get => _current.Value;
+            set => _current.Value = value;
         }
 
         public static string TraceParent
         {
-            get
-            {
-                var context = HttpContext.Current;
-                return context?.Items[TraceParentItemKey] as string;
-            }
-            set
-            {
-                var context = HttpContext.Current;
-                if (context != null)
-                {
-                    context.Items[TraceParentItemKey] = value;
-                }
-            }
+            get => _traceParent.Value;
+            set => _traceParent.Value = value;
         }
 
         public static string TraceState
         {
-            get
-            {
-                var context = HttpContext.Current;
-                return context?.Items[TraceStateItemKey] as string;
-            }
-            set
-            {
-                var context = HttpContext.Current;
-                if (context != null)
-                {
-                    context.Items[TraceStateItemKey] = value;
-                }
-            }
+            get => _traceState.Value;
+            set => _traceState.Value = value;
         }
 
         public static string Ensure()

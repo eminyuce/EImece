@@ -1,3 +1,4 @@
+using EImece.Web.Areas.Admin.Controllers;
 using EImece.Domain.DependencyInjection;
 using EImece.Domain.Helpers;
 using EImece.Domain.Services.IServices;

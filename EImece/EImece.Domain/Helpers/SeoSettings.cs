@@ -1,5 +1,5 @@
+using EImece.Domain.DependencyInjection;
 using EImece.Domain.Services.IServices;
-using System.Web.Mvc;
 
 namespace EImece.Domain.Helpers
 {
@@ -13,7 +13,7 @@ namespace EImece.Domain.Helpers
         {
             get
             {
-                var settingService = DependencyResolver.Current?.GetService(typeof(ISettingService)) as ISettingService;
+                var settingService = DomainServiceProvider.GetService<ISettingService>();
                 return settingService?.GetSettingByKey(Constants.AllowSearchEngineIndexing).ToBool(Constants.DefaultAllowSearchEngineIndexing)
                        ?? Constants.DefaultAllowSearchEngineIndexing;
             }

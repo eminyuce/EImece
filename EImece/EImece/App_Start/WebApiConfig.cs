@@ -1,4 +1,5 @@
-﻿using System.Web.Http;
+﻿using EImece.Web.Filters;
+using System.Web.Http;
 
 namespace EImece
 {
@@ -7,7 +8,7 @@ namespace EImece
         public static void Register(HttpConfiguration config)
         {
             config.MapHttpAttributeRoutes();
-            config.Filters.Add(new Filters.WebApiExceptionFilter());
+            config.Filters.Add(new WebApiExceptionFilter());
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",

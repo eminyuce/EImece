@@ -5,8 +5,6 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
-using System.Web;
-using System.Web.Mvc;
 
 namespace EImece.Domain.Helpers
 {
@@ -68,56 +66,6 @@ namespace EImece.Domain.Helpers
             return en.ToString();
         }
 
-        public static List<SelectListItem> ToSelectList(this Enum enumValue)
-        {
-            return (from Enum e in Enum.GetValues(enumValue.GetType())
-                    select new SelectListItem
-                    {
-                        Selected = e.Equals(enumValue),
-                        Text = e.ToDescription(),
-                        Value = e.ToString()
-                    }).ToList();
-        }
-
-        public static List<SelectListItem> ToSelectList3(string cookieName)
-        {
-            var cultureCookie = HttpContext.Current.Request.Cookies[cookieName];
-            string selected = cultureCookie == null ? "" : cultureCookie.Values[Constants.ELanguage];
-            if (String.IsNullOrEmpty(selected))
-            {
-                selected = AppConfig.MainLanguage + "";
-            }
-
-            var values = ConfigureLanguagesFromAppConfigs();
-            if (selected.ToInt() > 0)
-            {
-                // Admin Panel Dil DropDown icin Dil ENUM degerini (int) kullanmisiz.
-                return (from EImeceLanguage e in values
-                        select new SelectListItem
-                        {
-                            Selected = selected.ToInt().Equals((int)e),
-                            Text = e.GetDisplayValue(),
-                            Value = ((int)e).ToStr()
-                        }).ToList();
-            }
-            else
-            {
-                // Son kullanici ekrani Dil secenekleri icin Dil ENUM Description (ulke kodu) kullanmisiz.
-                return (from EImeceLanguage e in values
-                        select new SelectListItem
-                        {
-                            Selected = GetEnumDescription(e).Equals(selected),
-                            Text = e.GetDisplayValue(),
-                            Value = ((int)e).ToStr()
-                        }).ToList();
-            }
-        }
-
-        private static List<EImeceLanguage> ConfigureLanguagesFromAppConfigs()
-        {
-            return GetLanguageEnumListFromWebConfig();
-        }
-
         public static string GetDisplayValue(this Enum value)
         {
             try
@@ -170,17 +118,6 @@ namespace EImece.Domain.Helpers
             {
                 return String.Empty;
             }
-        }
-
-        public static IEnumerable<SelectListItem> ToSelectListWithId(this Enum enumValue)
-        {
-            return from Enum e in Enum.GetValues(enumValue.GetType())
-                   select new SelectListItem
-                   {
-                       Selected = e.Equals(enumValue),
-                       Text = e.ToDescription(),
-                       Value = e.ToStr()
-                   };
         }
 
         public static EImeceLanguage? ParseLanguage(string lang)

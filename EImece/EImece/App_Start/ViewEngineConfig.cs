@@ -1,5 +1,5 @@
 using System.Web.Mvc;
-using EImece.Infrastructure.Designs;
+using EImece.Web.Infrastructure.Designs;
 
 namespace EImece.App_Start
 {

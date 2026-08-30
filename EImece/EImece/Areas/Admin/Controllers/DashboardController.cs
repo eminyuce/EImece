@@ -1,7 +1,10 @@
+using EImece.Web.Areas.Admin.Controllers;
 using EImece.Domain;
+using EImece.Domain.Abstractions;
 using EImece.Domain.Caching;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
+using EImece.Web.Helpers;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Services;
@@ -37,6 +40,7 @@ namespace EImece.Areas.Admin.Controllers
         protected IStoryCategoryService StoryCategoryService { get; }
         protected IMenuService MenuService { get; }
         protected IEimeceCacheProvider MemoryCacheProvider { get; }
+        private readonly IHttpRuntimeCacheClearer _httpRuntimeCacheClearer;
 
         public DashboardController(
             ISettingService settingService,
@@ -45,7 +49,8 @@ namespace EImece.Areas.Admin.Controllers
             IStoryService storyService,
             IStoryCategoryService storyCategoryService,
             IMenuService menuService,
-            IEimeceCacheProvider memoryCacheProvider)
+            IEimeceCacheProvider memoryCacheProvider,
+            IHttpRuntimeCacheClearer httpRuntimeCacheClearer)
             : base(settingService)
         {
             ProductService = productService ?? throw new ArgumentNullException(nameof(productService));
@@ -54,6 +59,7 @@ namespace EImece.Areas.Admin.Controllers
             StoryCategoryService = storyCategoryService ?? throw new ArgumentNullException(nameof(storyCategoryService));
             MenuService = menuService ?? throw new ArgumentNullException(nameof(menuService));
             MemoryCacheProvider = memoryCacheProvider ?? throw new ArgumentNullException(nameof(memoryCacheProvider));
+            _httpRuntimeCacheClearer = httpRuntimeCacheClearer;
         }
 
         // GET: Admin/Dashboard
@@ -230,7 +236,7 @@ namespace EImece.Areas.Admin.Controllers
             {
                 int htmlRemoved;
                 int memoryDefaultRemoved;
-                ApplicationCacheClearer.ClearAspNetCaches(out htmlRemoved, out memoryDefaultRemoved);
+                ApplicationCacheClearer.ClearAspNetCaches(_httpRuntimeCacheClearer, out htmlRemoved, out memoryDefaultRemoved);
             }
 
             Logger.Info(
@@ -316,7 +322,7 @@ namespace EImece.Areas.Admin.Controllers
 
         public PartialViewResult Languages()
         {
-            List<SelectListItem> listItems = EnumHelper.ToSelectList3(Domain.Constants.AdminCultureCookieName);
+            List<SelectListItem> listItems = EnumWebExtensions.ToSelectList3(Domain.Constants.AdminCultureCookieName);
             return PartialView("pLanguages", listItems);
         }
 

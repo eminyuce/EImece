@@ -1,6 +1,5 @@
 using Resources;
 using System.ComponentModel.DataAnnotations;
-using System.Web.Mvc;
 
 namespace EImece.Domain.Models.AdminModels
 {
@@ -37,56 +36,44 @@ namespace EImece.Domain.Models.AdminModels
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.DefaultImageWidth))]
         public int DefaultImageWidth { get; set; }
 
-        [AllowHtml]
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.GoogleAnalyticsTrackingScript))]
         public string GoogleAnalyticsTrackingScript { get; set; }
 
-        [AllowHtml]
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.WhatsAppCommunicationScript))]
         public string WhatsAppCommunicationScript { get; set; }
 
-        [AllowHtml]
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.WhatsAppCommunicationLink))]
         public string WhatsAppCommunicationLink { get; set; }
 
-        [AllowHtml]
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.GoogleMapScript))]
         public string GoogleMapScript { get; set; }
 
-        [AllowHtml]
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.FacebookWebSiteLink))]
         public string FacebookWebSiteLink { get; set; }
 
-        [AllowHtml]
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.LinkedinWebSiteLink))]
         public string LinkedinWebSiteLink { get; set; }
 
-        [AllowHtml]
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.TwitterWebSiteLink))]
         public string TwitterWebSiteLink { get; set; }
 
-        [AllowHtml]
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.InstagramWebSiteLink))]
         public string InstagramWebSiteLink { get; set; }
 
-        [AllowHtml]
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.PinterestWebSiteLink))]
         public string PinterestWebSiteLink { get; set; }
 
         // Property name is the SettingKey. Keep the historical typo "YotubeWebSiteLink"
         // so admin save/load matches Constants / seed / storefront HomeController.
-        [AllowHtml]
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.YoutubeWebSiteLink))]
         public string YotubeWebSiteLink { get; set; }
 
-        [AllowHtml]
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.Zopim))]
         public string Zopim { get; set; }
 
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.IsProductPriceEnable))]
         public bool IsProductPriceEnable { get; set; }
 
-        [AllowHtml]
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.PaymentDetailHtml))]
         public string PaymentDetailHtml { get; set; }
 
@@ -103,7 +90,6 @@ namespace EImece.Domain.Models.AdminModels
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.IsSiteUnderConstruction))]
         public bool IsSiteUnderConstruction { get; set; }
 
-        [AllowHtml]
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.UnderConstructionHtml))]
         public string UnderConstructionHtml { get; set; }
 

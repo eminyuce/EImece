@@ -1,6 +1,7 @@
+using EImece.Web.Areas.Admin.Controllers;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
-using EImece.Domain.Helpers.AttributeHelper;
+using EImece.Web.Filters;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Services.IServices;
 using EImece.Domain.DependencyInjection;
@@ -46,7 +47,7 @@ namespace EImece.Areas.Admin.Controllers
             }
 
             var items = await ShoppingCartService.GetAdminPageListAsync(search, CurrentLanguage, cancellationToken);
-            return new QueryableResult<ShoppingCart>(items.AsQueryable());
+            return AdminGridResult(items);
         }
 
         [HttpGet, ActionName("ExportExcel")]

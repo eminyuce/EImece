@@ -32,7 +32,7 @@ namespace EImece.Domain.Repositories
             {
                 items = items.Where(r => r.Name.Contains(search));
             }
-            items = items.OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate);
+            items = items.OrderByDescending(r => r.UpdatedDate).ThenByDescending(r => r.Id);
 
             return items.ToList();
         }
@@ -45,7 +45,7 @@ namespace EImece.Domain.Repositories
             {
                 items = items.Where(r => r.Name.Contains(search));
             }
-            items = items.OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate);
+            items = items.OrderByDescending(r => r.UpdatedDate).ThenByDescending(r => r.Id);
 
             return await items.ToListAsync(cancellationToken).ConfigureAwait(false);
         }

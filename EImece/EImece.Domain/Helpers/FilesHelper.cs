@@ -6,7 +6,6 @@ using EImece.Domain.Services.IServices;
 using ImageProcessor;
 using ImageProcessor.Imaging.Formats;
 using ImageProcessor.Plugins.WebP.Imaging.Formats;
-using EImece.Domain.DependencyInjection;
 using EImece.Domain.Observability.Telemetry;
 using NLog;
 using System;
@@ -19,18 +18,18 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Web;
-using System.Web.Hosting;
 
 namespace EImece.Domain.Helpers
 {
     public class FilesHelper : IDisposable
     {
-        private readonly IFileStorageService FileStorageService;
+        internal readonly IFileStorageService FileStorageService;
+        private readonly ISettingService _settingService;
 
-        public FilesHelper(IFileStorageService fileStorageService = null)
+        public FilesHelper(IFileStorageService fileStorageService = null, ISettingService settingService = null)
         {
             FileStorageService = fileStorageService;
+            _settingService = settingService;
         }
 
         private const string THUMBS = "thumbs";
@@ -136,7 +135,7 @@ namespace EImece.Domain.Helpers
                     Size thumbTarget = ResolveThumbnailTargetSize(0, 0, originalWidth, originalHeight);
                     var thumbOpt = ImageUploadOptimizer.Optimize(
                         originalBytes,
-                        ImageUploadOptimizeOptions.ForThumbnail(fileName, null, thumbTarget.Width, thumbTarget.Height, Path.GetExtension(fileName)));
+                        ImageUploadOptimizeOptions.ForThumbnail(fileName, null, thumbTarget.Width, thumbTarget.Height, Path.GetExtension(fileName), _settingService));
                     SaveBytesToFilePath(thumbOpt.Bytes, partThumb2);
                     thumpBitmapWidth = thumbOpt.Width;
                     thumpBitmapHeight = thumbOpt.Height;
@@ -202,7 +201,9 @@ namespace EImece.Domain.Helpers
         [Timed("service.files.delete_files_sync")]
         public virtual void DeleteFiles(String pathToDelete)
         {
-            string path = HostingEnvironment.MapPath(pathToDelete);
+            string path = Path.IsPathRooted(pathToDelete)
+                ? pathToDelete
+                : Path.Combine(AppDomain.CurrentDomain.BaseDirectory, pathToDelete.TrimStart('~', '/').Replace('/', Path.DirectorySeparatorChar));
 
             if (Directory.Exists(path))
             {
@@ -214,19 +215,6 @@ namespace EImece.Domain.Helpers
 
                 di.Delete(true);
             }
-        }
-
-        [Timed("service.files.delete_file_context_sync")]
-        public virtual String DeleteFile(String file, HttpContextBase ContentBase)
-        {
-            var request = ContentBase.Request;
-            int contentId = request.QueryString["contentId"].ToInt();
-            var imageType = EnumHelper.Parse<EImeceImageType>(request.QueryString["imageType"].ToStr());
-            var mod = EnumHelper.Parse<MediaModType>(request.QueryString["mod"].ToStr());
-
-            FileStorageService.DeleteUploadImage(file, contentId, imageType, mod);
-
-            return "OK";
         }
 
         [Timed("service.files.delete_thumb_file_sync")]
@@ -426,111 +414,6 @@ namespace EImece.Domain.Helpers
             }
         }
 
-        [Timed("service.files.get_file_list_sync")]
-        public virtual JsonFiles GetFileList(HttpContextBase ContentBase)
-        {
-            var request = ContentBase.Request;
-            int Id = request.QueryString["contentId"].ToInt();
-            var imageType = EnumHelper.Parse<EImeceImageType>(request.QueryString["imageType"].ToStr());
-            var mod = EnumHelper.Parse<MediaModType>(request.QueryString["mod"].ToStr());
-
-            var r = new List<ViewDataUploadFilesResult>();
-
-            String fullPath = Path.Combine(StorageRoot);
-            if (Directory.Exists(fullPath))
-            {
-                DirectoryInfo dir = new DirectoryInfo(fullPath);
-                foreach (FileInfo file in dir.GetFiles())
-                {
-                    int SizeInt = unchecked((int)file.Length);
-                    r.Add(UploadResult(file.Name, SizeInt, file.FullName, ContentBase));
-                }
-            }
-            JsonFiles files = new JsonFiles(r);
-
-            return files;
-        }
-
-        [Timed("service.files.upload_and_show_results_sync")]
-        public virtual void UploadAndShowResults(HttpContextBase ContentBase, List<ViewDataUploadFilesResult> resultList)
-        {
-            if (ContentBase?.Request == null || resultList == null)
-            {
-                return;
-            }
-
-            EnsureStorageInitialized();
-            UploadWholeFile(ContentBase, resultList);
-        }
-
-        private void UploadWholeFile(HttpContextBase requestContext, List<ViewDataUploadFilesResult> statuses)
-        {
-            var request = requestContext.Request;
-            int height = request.Form["imageHeight"].ToInt();
-            int width = request.Form["imageWidth"].ToInt();
-
-            for (int i = 0; i < request.Files.Count; i++)
-            {
-                var file = request.Files[i];
-                var ext = Path.GetExtension(file.FileName);
-                if (IsImage(ext))
-                {
-                    var result = SaveImageByte(width, height, file);
-                    var newFileName = result.NewFileName;
-                    var k = UploadResult(newFileName, result.ImageSize, newFileName, requestContext);
-                    k.imageHash = result.FileHash;
-                    statuses.Add(k);
-                }
-            }
-        }
-
-        [Timed("service.files.upload_result_sync")]
-        public virtual ViewDataUploadFilesResult UploadResult(String FileName, int fileSize, String FileFullPath, HttpContextBase requestContext)
-        {
-            var request = requestContext.Request;
-            int contentId = request.Form["contentId"].ToInt();
-            var imageType = EnumHelper.Parse<EImeceImageType>(request.Form["imageType"].ToStr());
-            var mod = EnumHelper.Parse<MediaModType>(request.Form["mod"].ToStr());
-
-            String getType = MimeMapping.GetMimeMapping(FileFullPath);
-            if (string.Equals(Path.GetExtension(FileName), ".webp", StringComparison.OrdinalIgnoreCase))
-            {
-                getType = ImageUploadOptimizer.MimeWebP;
-            }
-
-            String patchOnServer = Path.Combine(StorageRoot);
-            var fullName = Path.Combine(patchOnServer, Path.GetFileName(FileName));
-            int storedWidth = 0;
-            int storedHeight = 0;
-            try
-            {
-                using (Bitmap img = LoadImage(fullName))
-                {
-                    storedWidth = img.Width;
-                    storedHeight = img.Height;
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.Debug(ex, "Could not read stored image dimensions for upload JSON: {0}", fullName);
-            }
-
-            var result = new ViewDataUploadFilesResult()
-            {
-                name = FileName,
-                size = fileSize,
-                type = getType,
-                width = storedWidth,
-                height = storedHeight,
-                mimeType = getType,
-                url = UrlBase + FileName,
-                deleteUrl = String.Format(DeleteURL, FileName, contentId, mod, imageType),
-                thumbnailUrl = CheckThumb(getType, FileName),
-                deleteType = DeleteType,
-            };
-            return result;
-        }
-
         [Timed("service.files.check_thumb_sync")]
         public virtual String CheckThumb(String type, String FileName)
         {
@@ -568,7 +451,7 @@ namespace EImece.Domain.Helpers
         public virtual List<String> FilesList()
         {
             List<String> Filess = new List<String>();
-            string path = HostingEnvironment.MapPath(ServerMapPath);
+            string path = StorageRoot;
             System.Diagnostics.Debug.WriteLine(path);
             if (Directory.Exists(path))
             {
@@ -613,73 +496,7 @@ namespace EImece.Domain.Helpers
             return fileStorage;
         }
 
-        [Timed("service.files.save_from_posted_file_sync")]
-        public virtual void SaveFileFromHttpPostedFileBase(HttpPostedFileBase httpPostedFileBase,
-            int height = 0,
-            int width = 0,
-            EImeceImageType imageType = EImeceImageType.NONE,
-            BaseContent baseContent = null)
-        {
-            if (httpPostedFileBase != null)
-            {
-                if (baseContent.MainImageId.HasValue)
-                {
-                    String deleted = FileStorageService.DeleteFileStorage(baseContent.MainImageId.Value);
-                }
-                SavedImage result = SaveImageByte(width, height, httpPostedFileBase);
-                FileStorage fileStorage = createFileStorageFromSavedImage(imageType, result);
-                FileStorageService.SaveOrEditEntity(fileStorage);
-                baseContent.MainImageId = fileStorage.Id;
-                baseContent.ImageState = true;
-            }
-            else if (baseContent.MainImageId.HasValue)
-            {
-                var mainImage = FileStorageService.GetFileStorage(baseContent.MainImageId.Value);
-                if (mainImage != null)
-                {
-                    var imageSize = GetThumbnailImageSize(mainImage);
-                    int mainImageHeight = imageSize.ThumpBitmapHeight;
-                    int mainImageWidth = imageSize.ThumpBitmapWidth;
-                    if (mainImageHeight != height && mainImageWidth != width) //Resize thumb image with new dimension.
-                    {
-                        var root = GetRequiredStorageRoot();
-                        String fullPath = Path.Combine(root, mainImage.FileName);
-                        String candidatePathThb = Path.Combine(Path.Combine(root, THUMBS), THB + mainImage.FileName);
-                        try
-                        {
-                            var fileByte = File.ReadAllBytes(fullPath);
-                            int origW = imageSize.OriginalWidth;
-                            int origH = imageSize.OriginalHeight;
-                            if (origW <= 0 || origH <= 0)
-                            {
-                                using (Bitmap src = ByteArrayToBitmap(fileByte))
-                                {
-                                    origW = src.Width;
-                                    origH = src.Height;
-                                }
-                            }
-
-                            Size thumbSize = ResolveThumbnailTargetSize(width, height, origW, origH);
-                            string forceExt = Path.GetExtension(mainImage.FileName);
-                            var thumbOpt = ImageUploadOptimizer.Optimize(fileByte, ImageUploadOptimizeOptions.ForThumbnail(
-                                mainImage.FileName, mainImage.MimeType, thumbSize.Width, thumbSize.Height, forceExt));
-
-                            DeleteThumbFile(mainImage.FileName);
-                            SaveBytesToFilePath(thumbOpt.Bytes, candidatePathThb);
-                            baseContent.ImageState = true;
-                            Logger.Info("Regenerated compressed thumb for {0}: {1} bytes ({2}x{3})",
-                                mainImage.FileName, thumbOpt.Bytes.Length, thumbOpt.Width, thumbOpt.Height);
-                        }
-                        catch (Exception ex)
-                        {
-                            Logger.Error(ex, "Thumb regeneration failed for {0}", mainImage.FileName);
-                        }
-                    }
-                }
-            }
-        }
-
-        private FileStorage createFileStorageFromSavedImage(EImeceImageType imageType, SavedImage result)
+        internal FileStorage createFileStorageFromSavedImage(EImeceImageType imageType, SavedImage result)
         {
             var fileStorage = new FileStorage();
             fileStorage.Name = result.FileName;
@@ -800,7 +617,7 @@ namespace EImece.Domain.Helpers
                 thumbTarget = ImageUploadOptimizer.FitWithin(thumbTarget.Width, thumbTarget.Height, fullOpt.Width, fullOpt.Height);
                 var thumbOpt = ImageUploadOptimizer.Optimize(
                     fileByte,
-                    ImageUploadOptimizeOptions.ForThumbnail(fileName, contentType, thumbTarget.Width, thumbTarget.Height, fullOpt.Extension));
+                    ImageUploadOptimizeOptions.ForThumbnail(fileName, contentType, thumbTarget.Width, thumbTarget.Height, fullOpt.Extension, _settingService));
                 SaveBytesToFilePath(thumbOpt.Bytes, candidatePathThb);
 
                 if (GetSettingBool(Constants.ImageUploadSaveWebPSidecar, Constants.DefaultImageUploadSaveWebPSidecar) && !fullOpt.IsWebP)
@@ -845,17 +662,15 @@ namespace EImece.Domain.Helpers
             return new SavedImage(newFileName, width, height, imageSize, contentType, fileName, fileHash);
         }
 
-        private static int GetSettingInt(string key, int defaultValue)
+        private int GetSettingInt(string key, int defaultValue)
         {
-            var settingService = System.Web.Mvc.DependencyResolver.Current?.GetService(typeof(EImece.Domain.Services.IServices.ISettingService)) as EImece.Domain.Services.IServices.ISettingService;
-            var val = settingService?.GetSettingByKey(key);
+            var val = _settingService?.GetSettingByKey(key);
             return !string.IsNullOrWhiteSpace(val) ? val.ToInt(defaultValue) : defaultValue;
         }
 
-        private static bool GetSettingBool(string key, bool defaultValue)
+        private bool GetSettingBool(string key, bool defaultValue)
         {
-            var settingService = System.Web.Mvc.DependencyResolver.Current?.GetService(typeof(EImece.Domain.Services.IServices.ISettingService)) as EImece.Domain.Services.IServices.ISettingService;
-            var val = settingService?.GetSettingByKey(key);
+            var val = _settingService?.GetSettingByKey(key);
             return !string.IsNullOrWhiteSpace(val) ? val.ToBool(defaultValue) : defaultValue;
         }
 
@@ -866,7 +681,7 @@ namespace EImece.Domain.Helpers
         {
             try
             {
-                return ImageUploadOptimizer.Optimize(source, ImageUploadOptimizeOptions.ForFullImage(fileName, contentType));
+                return ImageUploadOptimizer.Optimize(source, ImageUploadOptimizeOptions.ForFullImage(fileName, contentType, _settingService));
             }
             catch (Exception ex)
             {
@@ -886,7 +701,7 @@ namespace EImece.Domain.Helpers
             }
         }
 
-        private static Size ResolveThumbnailTargetSize(int requestedWidth, int requestedHeight, int originalWidth, int originalHeight)
+        private Size ResolveThumbnailTargetSize(int requestedWidth, int requestedHeight, int originalWidth, int originalHeight)
         {
             int thumbMaxW = GetSettingInt(Constants.ImageUploadThumbMaxWidth, Constants.DefaultImageUploadThumbMaxWidth);
             int thumbMaxH = GetSettingInt(Constants.ImageUploadThumbMaxHeight, Constants.DefaultImageUploadThumbMaxHeight);
@@ -954,13 +769,6 @@ namespace EImece.Domain.Helpers
                                 .Save(webPFileStream);
                 }
             }
-        }
-
-        [Timed("service.files.save_image_byte_posted_sync")]
-        public virtual SavedImage SaveImageByte(int width, int height, HttpPostedFileBase file)
-        {
-            var fileByte = GeneralHelper.ReadFully(file.InputStream);
-            return SaveImageByte(width, height, file.FileName, file.ContentType, fileByte);
         }
 
         public ImageFormat GetImageFormat(String extension)
@@ -1411,16 +1219,12 @@ namespace EImece.Domain.Helpers
 
         public static Bitmap ConvertAndSaveBitmap(Bitmap bitmap, String fileName, ImageFormat imageFormat, long quality = 100L)
         {
-            string contentType = HttpContext.Current.Response.ContentType;
             var extension = Path.GetExtension(fileName);
             using (var encoderParameters = new EncoderParameters(1))
             using (encoderParameters.Param[0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, quality))
             {
-                ImageCodecInfo[] codecs = ImageCodecInfo.GetImageDecoders();
-                HttpContext.Current.Response.ContentType = codecs[1].MimeType;
                 bitmap.Save(fileName, GetImageCodecInfo(extension), encoderParameters);
             }
-            HttpContext.Current.Response.ContentType = contentType;
 
             return bitmap;
         }

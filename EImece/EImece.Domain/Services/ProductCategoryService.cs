@@ -7,6 +7,7 @@ using EImece.Domain.Models.DTOs.Storefront;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
+using EImece.Domain.Abstractions;
 using EImece.Domain.DependencyInjection;
 using EImece.Domain.Observability.Telemetry;
 using NLog;
@@ -16,8 +17,6 @@ using System.Data.Entity.Validation;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-
-using EImece.Domain.Factories.IFactories;
 
 namespace EImece.Domain.Services
 {
@@ -35,12 +34,12 @@ namespace EImece.Domain.Services
             IEimeceCacheProvider dataCachingProvider,
             ISettingService settingService,
             IFileStorageService fileStorageService,
-            IHttpContextFactory httpContextFactory,
+            ICurrentUserContext currentUserContext,
             FilesHelper filesHelper,
             IBrandService brandService,
             IProductRepository productRepository,
             IMenuService menuService)
-            : base(repository, dataCachingProvider, settingService, fileStorageService, httpContextFactory, filesHelper)
+            : base(repository, dataCachingProvider, settingService, fileStorageService, currentUserContext, filesHelper)
         {
             ProductCategoryRepository = repository ?? throw new ArgumentNullException(nameof(repository));
             BrandService = brandService ?? throw new ArgumentNullException(nameof(brandService));

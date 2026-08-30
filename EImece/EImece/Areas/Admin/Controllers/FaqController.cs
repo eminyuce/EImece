@@ -1,6 +1,7 @@
+using EImece.Web.Areas.Admin.Controllers;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
-using EImece.Domain.Helpers.AttributeHelper;
+using EImece.Web.Filters;
 using Griddly.Mvc;
 using Griddly.Mvc.Results;
 using Microsoft.AspNet.Identity;
@@ -55,7 +56,7 @@ namespace EImece.Areas.Admin.Controllers
 
             Expression<Func<Faq, bool>> whereLambda = r => r.Name.Contains(search);
             var result = await FaqService.SearchEntitiesAsync(whereLambda, search, CurrentLanguage);
-            return new QueryableResult<Faq>(result.AsQueryable());
+            return AdminGridResult(result);
         }
 
         public async Task<ActionResult> SaveOrEdit(CancellationToken cancellationToken, int id = 0)
@@ -73,7 +74,7 @@ namespace EImece.Areas.Admin.Controllers
             return View(item);
         }
 
-        [HttpPost]
+        [HttpPost, ValidateInput(false)]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> SaveOrEdit(Faq faq, String saveButton = null)
         {

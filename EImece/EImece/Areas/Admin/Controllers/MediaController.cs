@@ -1,7 +1,9 @@
+using EImece.Web.Areas.Admin.Controllers;
 using EImece.Domain;
+using EImece.Web.Helpers;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
-using EImece.Domain.Helpers.AttributeHelper;
+using EImece.Web.Filters;
 using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.HelperModels;
@@ -158,11 +160,16 @@ namespace EImece.Areas.Admin.Controllers
             ViewBag.ContentId = id;
             ViewBag.MediaMod = enumMod.Value;
             ViewBag.ImageType = enumImageType.Value;
-            return new QueryableResult<FileStorage>((fileStorages ?? new List<FileStorage>()).AsQueryable());
+            return AdminGridResult(fileStorages ?? new List<FileStorage>());
         }
 
-        public ActionResult Show(int id, String mod, String imageType)
+        public ActionResult Show(int? id, String mod, String imageType)
         {
+            if (!id.HasValue || id.Value <= 0 || string.IsNullOrWhiteSpace(mod) || string.IsNullOrWhiteSpace(imageType))
+            {
+                return RedirectToAction(IndexAction, "Dashboard");
+            }
+
             var CurrentContext = HttpContext;
             JsonFiles ListOfFiles = filesHelper.GetFileList(CurrentContext);
             var model = new FilesViewModel()

@@ -66,7 +66,7 @@ namespace EImece.Domain.Helpers
                     || (r.Product != null && r.Product.ProductCode != null && r.Product.ProductCode.Contains(search)));
             }
 
-            return query.OrderByDescending(r => r.UpdatedDate);
+            return query.OrderByDescending(r => r.UpdatedDate).ThenByDescending(r => r.Id);
         }
 
         public static List<int> ParseRatings(IEnumerable<int> ratingValues, string ratingsCsv)

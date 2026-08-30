@@ -1,6 +1,7 @@
+using EImece.Web.Areas.Admin.Controllers;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
-using EImece.Domain.Helpers.AttributeHelper;
+using EImece.Web.Filters;
 using EImece.Domain.Helpers.EmailHelper;
 using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Services.IServices;
@@ -69,7 +70,7 @@ namespace EImece.Areas.Admin.Controllers
 
             Expression<Func<MailTemplate, bool>> whereLambda = r => r.Name.Contains(search);
             var result = await MailTemplateService.SearchEntitiesAsync(whereLambda, search, CurrentLanguage);
-            return new QueryableResult<MailTemplate>(result.AsQueryable());
+            return AdminGridResult(result);
         }
 
         public async Task<ActionResult> CreateBackup(CancellationToken cancellationToken, int id = 0)
@@ -159,7 +160,7 @@ namespace EImece.Areas.Admin.Controllers
             return View(item);
         }
 
-        [HttpPost]
+        [HttpPost, ValidateInput(false)]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> SaveOrEdit(MailTemplate MailTemplate, String saveButton = null)
         {

@@ -1,6 +1,6 @@
-﻿using System;
+using System;
+using System.Net;
 using System.Text;
-using System.Web;
 
 namespace EImece.Domain.Helpers
 {
@@ -61,7 +61,7 @@ namespace EImece.Domain.Helpers
             sb.AppendLine("<p>");
 
             // HTML encode text
-            s = HttpUtility.HtmlEncode(s);
+            s = WebUtility.HtmlEncode(s);
 
             // Convert single newlines to <br>
             s = s.Replace(Environment.NewLine, "<br />\r\n");

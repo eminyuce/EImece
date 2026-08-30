@@ -6,8 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Web;
-using System.Web.Mvc;
 
 namespace EImece.Domain.Entities
 {
@@ -33,7 +31,6 @@ namespace EImece.Domain.Entities
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.MainPage))]
         public Boolean MainPage { get; set; }
 
-        [AllowHtml]
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.ProductShortDescription))]
         public string ShortDescription { get; set; }
 
@@ -59,7 +56,6 @@ namespace EImece.Domain.Entities
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.ProductCode))]
         public string ProductCode { get; set; }
 
-        [AllowHtml]
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.VideoUrl))]
         public string VideoUrl { get; set; }
 

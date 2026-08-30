@@ -7,7 +7,7 @@
 @{
     var dic = Model;
     var currentLanguage = Thread.CurrentThread.CurrentUICulture.ToString();
-    List<SelectListItem> listItems = EImece.Domain.Helpers.EnumHelper.ToSelectList3("Language");
+    List<SelectListItem> listItems = EImece.Web.Helpers.EnumWebExtensions.ToSelectList3("Language");
 }
 
 <ul class="top-social-icon ps-0 mb-0">

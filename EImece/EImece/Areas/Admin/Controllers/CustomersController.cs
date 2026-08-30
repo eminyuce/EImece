@@ -1,5 +1,6 @@
+using EImece.Web.Areas.Admin.Controllers;
 using EImece.Domain.Entities;
-using EImece.Domain.Helpers.AttributeHelper;
+using EImece.Web.Filters;
 using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
 using EImece.Domain.DependencyInjection;
@@ -49,7 +50,7 @@ namespace EImece.Areas.Admin.Controllers
             }
 
             var model = await CustomerService.GetCustomerServicesAsync(search);
-            return new QueryableResult<Customer>(model.AsQueryable());
+            return AdminGridResult(model);
         }
 
         [HttpGet, ActionName("ExportExcel")]
@@ -79,7 +80,7 @@ namespace EImece.Areas.Admin.Controllers
             var customer = await CustomerService.GetUserIdAsync(id);
             orders.ForEach(r => r.Customer = customer);
             ViewBag.Customer = customer;
-            return View(orders.OrderByDescending(r => r.UpdatedDate).ToList());
+            return View(orders.OrderByDescending(r => r.UpdatedDate).ThenByDescending(r => r.Id).ToList());
         }
 
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
@@ -94,7 +95,7 @@ namespace EImece.Areas.Admin.Controllers
             var customer = await CustomerService.GetUserIdAsync(id);
             orders.ForEach(r => r.Customer = customer);
             ViewBag.Customer = customer;
-            return new QueryableResult<Order>(orders.OrderByDescending(r => r.UpdatedDate).AsQueryable());
+            return AdminGridResult(orders);
         }
 
         [HttpPost, ActionName("Delete")]

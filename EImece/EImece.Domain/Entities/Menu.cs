@@ -1,4 +1,4 @@
-﻿using EImece.Domain.Helpers;
+using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
 using Resources;
 using System;
@@ -6,8 +6,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using System.Web;
-using System.Web.Mvc;
 
 namespace EImece.Domain.Entities
 {
@@ -99,9 +97,16 @@ namespace EImece.Domain.Entities
                 return "";
             }
 
-            var pageController = HtmlRequestHelper.Controller();
-            var pageAction = HtmlRequestHelper.Action();
-            var routeId = HtmlRequestHelper.Id() ?? string.Empty;
+            var pageController = string.Empty;
+            var pageAction = string.Empty;
+            var routeId = string.Empty;
+            if (!string.IsNullOrEmpty(currentPath))
+            {
+                var segments = currentPath.Trim('/').Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+                if (segments.Length > 0) pageController = segments[0];
+                if (segments.Length > 1) pageAction = segments[1];
+                if (segments.Length > 2) routeId = segments[2];
+            }
 
             string routeResult;
             if (TryMatchPagesDetail(pageController, pageAction, controller, routeId, currentPath, out routeResult))
@@ -129,12 +134,7 @@ namespace EImece.Domain.Entities
 
         private static string TryGetCurrentAppPath()
         {
-            if (HttpContext.Current == null || HttpContext.Current.Request == null || HttpContext.Current.Request.Url == null)
-            {
-                return "";
-            }
-
-            return NormalizeAppPath(HttpContext.Current.Request.Url.AbsolutePath);
+            return "";
         }
 
         private bool TryMatchActiveLink(string currentPath, out string result)
@@ -143,14 +143,6 @@ namespace EImece.Domain.Entities
             if (!LinkIsActive || string.IsNullOrWhiteSpace(Link))
             {
                 return false;
-            }
-
-            // External / absolute Link targets: only active when browsing that exact URL.
-            if (Uri.TryCreate(Link, UriKind.Absolute, out var absolute) &&
-                string.Equals(absolute.Host, HttpContext.Current.Request.Url.Host, StringComparison.OrdinalIgnoreCase))
-            {
-                result = PathsMatch(currentPath, NormalizeAppPath(absolute.AbsolutePath)) ? Constants.ActiveCssClass : "";
-                return true;
             }
 
             if (Link.StartsWith("/", StringComparison.Ordinal))
@@ -328,7 +320,6 @@ namespace EImece.Domain.Entities
             return currentPath.Equals(candidatePath, StringComparison.OrdinalIgnoreCase);
         }
 
-        // Needed for Admin panel — admin menu grid links to the storefront page for preview.
         [NotMapped]
         public string DetailPageLink
         {
@@ -344,19 +335,18 @@ namespace EImece.Domain.Entities
                     return "#";
                 }
 
-                var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
                 if (controller.Equals("pages", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    return urlHelper.Action("detail", controller, new { id = this.GetSeoUrl() });
+                    return $"/pages/detail/{this.GetSeoUrl()}";
                 }
 
                 if (controller.Equals("stories", StringComparison.InvariantCultureIgnoreCase)
                     && action.Equals("categories", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    return urlHelper.Action(action, controller, new { id = mid });
+                    return $"/stories/categories/{mid}";
                 }
 
-                return urlHelper.Action(action, controller);
+                return $"/{controller}/{action}";
             }
         }
     }

@@ -48,9 +48,7 @@ namespace EImece.Domain.Helpers.EmailHelper
             configuration.Namespaces.Add("EImece.Domain.Models.FrontModels");
             configuration.Namespaces.Add("EImece.Domain.Helpers.RazorCustomRssTemplate");
             configuration.Namespaces.Add("System.Xml");
-            configuration.Namespaces.Add("System.Web.Mvc");
             configuration.Namespaces.Add("System.Text");
-            configuration.Namespaces.Add("System.Web.Mvc.Html");
             configuration.Namespaces.Add("System.Xml.Linq");
             configuration.Namespaces.Add("System.Linq");
             configuration.Namespaces.Add("Resources");

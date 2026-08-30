@@ -1,13 +1,5 @@
-﻿using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
-using EImece.Domain.Models.Enums;
-using Resources;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Web;
-using System.Web.Mvc;
 
 namespace EImece.Domain.Entities
 {
@@ -23,7 +15,6 @@ namespace EImece.Domain.Entities
 
         public string ImageFullPath(int width, int height, bool isThump = false)
         {
-            // Must tolerate null HttpContext.Current after ConfigureAwait(false) in async services.
             var baseurl = EntityExtension.GetAbsoluteApplicationBaseUrl();
             var fileStorageId = FileStorage != null ? FileStorage.Id : 0;
             var result = this.GetCroppedImageUrl(fileStorageId, width, height, true, isThump) ?? string.Empty;

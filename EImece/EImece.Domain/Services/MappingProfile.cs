@@ -2,8 +2,6 @@ using AutoMapper;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.DTOs;
-using System.Web;
-using System.Web.Mvc;
 
 namespace EImece.Domain.Services
 {
@@ -50,38 +48,22 @@ namespace EImece.Domain.Services
             CreateMapTemplate();
         }
 
-        // Helper to safely get UrlHelper only when HttpContext is available
-        private UrlHelper GetUrlHelper()
-        {
-            return HttpContext.Current?.Request?.RequestContext != null
-                ? new UrlHelper(HttpContext.Current.Request.RequestContext)
-                : null;
-        }
-
         private void CreateMapTag()
         {
             CreateMap<Tag, TagDto>()
                 .ForMember(d => d.DetailPageRelativeUrlForProducts,
-                    o => o.MapFrom(s => GetUrlHelper() != null
-                        ? GetUrlHelper().Action("Tag", "products", new { id = s.GetSeoUrl() })
-                        : string.Empty))
+                    o => o.MapFrom(s => s.GetDetailPageUrl("Tag", "Products", "", "", "")))
                 .ForMember(d => d.DetailPageRelativeUrlForStories,
-                    o => o.MapFrom(s => GetUrlHelper() != null
-                        ? GetUrlHelper().Action("tag", "stories", new { id = s.GetSeoUrl() })
-                        : string.Empty));
+                    o => o.MapFrom(s => s.GetDetailPageUrl("Tag", "Stories", "", "", "")));
         }
 
         private void CreateMapStoryCategory()
         {
             CreateMap<StoryCategory, StoryCategoryDto>()
                 .ForMember(d => d.DetailPageAbsoluteUrl,
-                    o => o.MapFrom(s => GetUrlHelper() != null
-                        ? GetUrlHelper().Action("categories", "stories", new { id = s.GetSeoUrl() }, EImece.Domain.AppConfig.HttpProtocol)
-                        : string.Empty))
+                    o => o.MapFrom(s => s.GetDetailPageUrl("Categories", "Stories", "", EImece.Domain.AppConfig.HttpProtocol, "")))
                 .ForMember(d => d.DetailPageRelativeUrl,
-                    o => o.MapFrom(s => GetUrlHelper() != null
-                        ? GetUrlHelper().Action("categories", "stories", new { id = s.GetSeoUrl() })
-                        : string.Empty));
+                    o => o.MapFrom(s => s.GetDetailPageUrl("Categories", "Stories", "", "", "")));
         }
 
         private void CreateMapProduct()
@@ -98,15 +80,11 @@ namespace EImece.Domain.Services
         {
             CreateMap<ProductCategory, ProductCategoryDto>()
                 .ForMember(d => d.MainImageUrl,
-                    o => o.MapFrom(s => HttpContext.Current != null
-                        ? s.GetCroppedImageUrl(s.MainImageId, 100, 100, false, false)
-                        : string.Empty))
+                    o => o.MapFrom(s => s.GetCroppedImageUrl(s.MainImageId, 100, 100, false, false)))
                 .ForMember(d => d.MainImageThumbnailUrl,
-                    o => o.MapFrom(s => HttpContext.Current != null
-                        ? s.GetCroppedImageUrl(s.MainImageId, 100, 100, true, false)
-                        : string.Empty))
+                    o => o.MapFrom(s => s.GetCroppedImageUrl(s.MainImageId, 100, 100, true, false)))
                 .ForMember(d => d.DetailPageUrl,
-                    o => o.MapFrom(s => HttpContext.Current != null ? s.GetDetailPageUrl("Category", "ProductCategories", "", "", "") : string.Empty))
+                    o => o.MapFrom(s => s.GetDetailPageUrl("Category", "ProductCategories", "", "", "")))
                 .ForMember(d => d.SeoUrl,
                     o => o.MapFrom(s => s.GetSeoUrl()))
                 .ForMember(d => d.DiscountPercentage,
@@ -121,7 +99,7 @@ namespace EImece.Domain.Services
         private void CreateMapStoryTag() => CreateMap<StoryTag, StoryTagDto>();
         private void CreateMapStoryFile() => CreateMap<StoryFile, StoryFileDto>();
         private void CreateMapStory() => CreateMap<Story, StoryDto>()
-            .ForMember(d => d.DetailPageUrl, o => o.MapFrom(s => HttpContext.Current != null ? s.GetDetailPageUrl("Detail", "Stories", "no_category", "", "") : string.Empty));
+            .ForMember(d => d.DetailPageUrl, o => o.MapFrom(s => s.GetDetailPageUrl("Detail", "Stories", "no_category", "", "")));
         private void CreateMapShortUrl() => CreateMap<ShortUrl, ShortUrlDto>();
         private void CreateMapShoppingCart() => CreateMap<ShoppingCart, ShoppingCartDto>();
         private void CreateMapSetting() => CreateMap<Setting, SettingDto>();

@@ -1,5 +1,6 @@
+using EImece.Web.Areas.Admin.Controllers;
 using EImece.Domain.Entities;
-using EImece.Domain.Helpers.AttributeHelper;
+using EImece.Web.Filters;
 using EImece.Domain.Helpers.Extensions;
 using Griddly.Mvc;
 using Griddly.Mvc.Results;
@@ -55,7 +56,7 @@ namespace EImece.Areas.Admin.Controllers
 
             Expression<Func<List, bool>> whereLambda = r => r.Name.Contains(search);
             var tags = await ListService.SearchEntitiesAsync(whereLambda, search, CurrentLanguage);
-            return new QueryableResult<List>(tags.AsQueryable());
+            return AdminGridResult(tags);
         }
 
         public async Task<ActionResult> SaveOrEdit(CancellationToken cancellationToken, int id = 0)

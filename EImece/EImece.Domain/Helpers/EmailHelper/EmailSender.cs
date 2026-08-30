@@ -1,3 +1,4 @@
+using EImece.Domain.Abstractions;
 using EImece.Domain.Entities;
 using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Observability.Telemetry;
@@ -10,7 +11,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
-using System.Web.Hosting;
+using System.Threading.Tasks;
 
 namespace EImece.Domain.Helpers.EmailHelper
 {
@@ -20,10 +21,12 @@ namespace EImece.Domain.Helpers.EmailHelper
     public class EmailSender : IEmailSender
     {
         private readonly ISettingService SettingService;
+        private readonly IBackgroundWorkQueue BackgroundWorkQueue;
 
-        public EmailSender(ISettingService settingService)
+        public EmailSender(ISettingService settingService, IBackgroundWorkQueue backgroundWorkQueue = null)
         {
             SettingService = settingService ?? throw new ArgumentNullException(nameof(settingService));
+            BackgroundWorkQueue = backgroundWorkQueue;
         }
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -178,11 +181,11 @@ namespace EImece.Domain.Helpers.EmailHelper
         /// unavailable, so it falls back to a synchronous send. Exceptions are logged, never
         /// propagated, because the caller has already returned to the user.
         /// </summary>
-        private static void QueueOrRunSend(Action sendAction, string subjectForLog)
+        private void QueueOrRunSend(Action sendAction, string subjectForLog)
         {
-            if (HostingEnvironment.IsHosted)
+            if (BackgroundWorkQueue != null)
             {
-                HostingEnvironment.QueueBackgroundWorkItem(cancellationToken =>
+                BackgroundWorkQueue.QueueBackgroundWorkItem(cancellationToken =>
                 {
                     try
                     {
@@ -196,14 +199,17 @@ namespace EImece.Domain.Helpers.EmailHelper
             }
             else
             {
-                try
+                Task.Run(() =>
                 {
-                    sendAction();
-                }
-                catch (Exception ex)
-                {
-                    Logger.Error(ex, "Email send failed. Subject: " + subjectForLog);
-                }
+                    try
+                    {
+                        sendAction();
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Error(ex, "Background email send failed. Subject: " + subjectForLog);
+                    }
+                });
             }
         }
 

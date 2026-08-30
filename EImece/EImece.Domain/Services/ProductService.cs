@@ -1,6 +1,7 @@
+using EImece.Domain.Abstractions;
 using EImece.Domain.Caching;
-using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
+using EImece.Domain.Factories.IFactories;
 using EImece.Domain.GenericRepository;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
@@ -11,24 +12,19 @@ using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Observability.Telemetry;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
-using EImece.Domain.DependencyInjection;
 using NLog;
 using System;
 using System.Collections.Generic;
-using System.Data;
+using System.Collections.Specialized;
 using System.Data.Entity;
 using System.Data.Entity.Validation;
-using System.Data.SqlClient;
+using System.Globalization;
 using System.Linq;
 using System.ServiceModel.Syndication;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Web;
-using System.Web.Mvc;
 using System.Xml;
 using System.Xml.Linq;
-
-using EImece.Domain.Factories.IFactories;
 
 namespace EImece.Domain.Services
 {
@@ -53,7 +49,7 @@ namespace EImece.Domain.Services
             IEimeceCacheProvider dataCachingProvider,
             ISettingService settingService,
             IFileStorageService fileStorageService,
-            IHttpContextFactory httpContextFactory,
+            ICurrentUserContext currentUserContext,
             FilesHelper filesHelper,
             IProductCategoryService productCategoryService,
             IProductCommentRepository productCommentRepository,
@@ -65,7 +61,7 @@ namespace EImece.Domain.Services
             IEntityFactory entityFactory,
             IMenuService menuService,
             ITagCategoryService tagCategoryService)
-            : base(repository, dataCachingProvider, settingService, fileStorageService, httpContextFactory, filesHelper)
+            : base(repository, dataCachingProvider, settingService, fileStorageService, currentUserContext, filesHelper)
         {
             ProductRepository = repository ?? throw new ArgumentNullException(nameof(repository));
             ProductCategoryService = productCategoryService;
@@ -929,8 +925,8 @@ namespace EImece.Domain.Services
         public Rss20FeedFormatter GetProductsRss(RssParams rssParams)
         {
             var items = ProductRepository.GetActiveProductsForRss(rssParams.Language, rssParams.Take);
-            var request = HttpContextFactory.Create().Request;
-            var builder = new UriBuilder(AppConfig.HttpProtocol, request.Url.Host);
+            var host = !string.IsNullOrEmpty(AppConfig.Domain) ? AppConfig.Domain : "localhost";
+            var builder = new UriBuilder(AppConfig.HttpProtocol, host);
             var url = String.Format("{0}", builder.Uri.ToString().TrimEnd('/'));
 
             String title = SettingService.GetSettingByKey(Constants.CompanyName);
@@ -941,28 +937,24 @@ namespace EImece.Domain.Services
                 Language = lang
             };
 
-            var urlHelper = new UrlHelper(request.RequestContext);
-            String atomSelfHref = urlHelper.Action("products", "rss", new { rssParams.Take, rssParams.Language }, AppConfig.HttpProtocol);
+            String atomSelfHref = $"{url}/rss/products?take={rssParams.Take}&language={rssParams.Language}";
 
             feed.Items = items.Select(s => s.GetProductSyndicationItem(url, rssParams));
             var formatter = new Rss20FeedFormatter(feed);
             formatter.SerializeExtensionsAsAtom = false;
             XNamespace atom = "http://www.w3.org/2005/Atom";
             formatter.Feed.AttributeExtensions.Add(new XmlQualifiedName("atom", XNamespace.Xmlns.NamespaceName), atom.NamespaceName);
-            formatter.Feed.ElementExtensions.Add(new XElement(atom + "link", new XAttribute("href", atomSelfHref.ToString()), new XAttribute("rel", "self"), new XAttribute("type", "application/rss+xml")));
+            formatter.Feed.ElementExtensions.Add(new XElement(atom + "link", new XAttribute("href", atomSelfHref), new XAttribute("rel", "self"), new XAttribute("type", "application/rss+xml")));
 
             return formatter;
         }
 
         public async Task<Rss20FeedFormatter> GetProductsRssAsync(RssParams rssParams, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var request = HttpContextFactory.Create()?.Request;
-            var host = request?.Url?.Host ?? "localhost";
+            var host = !string.IsNullOrEmpty(AppConfig.Domain) ? AppConfig.Domain : "localhost";
             var builder = new UriBuilder(AppConfig.HttpProtocol, host);
             var url = String.Format("{0}", builder.Uri.ToString().TrimEnd('/'));
-            var urlHelper = request?.RequestContext != null ? new UrlHelper(request.RequestContext) : null;
-            String atomSelfHref = urlHelper?.Action("products", "rss", new { rssParams.Take, rssParams.Language }, AppConfig.HttpProtocol)
-                ?? $"{url}/rss/products?take={rssParams.Take}&language={rssParams.Language}";
+            String atomSelfHref = $"{url}/rss/products?take={rssParams.Take}&language={rssParams.Language}";
 
             var items = await ProductRepository.GetActiveProductsForRssAsync(rssParams.Language, rssParams.Take, null, cancellationToken).ConfigureAwait(false);
 
@@ -990,8 +982,7 @@ namespace EImece.Domain.Services
                 ? ProductCategoryService.GetSingle(rssParams.CategoryId)
                 : null;
             var items = ProductRepository.GetActiveProductsForRss(rssParams.Language, rssParams.Take, rssParams.CategoryId > 0 ? (int?)rssParams.CategoryId : null);
-            var request = HttpContextFactory.Create()?.Request;
-            var host = request?.Url?.Host ?? "localhost";
+            var host = !string.IsNullOrEmpty(AppConfig.Domain) ? AppConfig.Domain : "localhost";
             var builder = new UriBuilder(AppConfig.HttpProtocol, host);
             var url = String.Format("{0}", builder.Uri.ToString().TrimEnd('/'));
 
@@ -1004,9 +995,7 @@ namespace EImece.Domain.Services
                 Language = lang
             };
 
-            var urlHelper = request?.RequestContext != null ? new UrlHelper(request.RequestContext) : null;
-            String atomSelfHref = urlHelper?.Action("productcategories", "rss", new { rssParams.Take, rssParams.Language, rssParams.CategoryId }, AppConfig.HttpProtocol)
-                ?? $"{url}/rss/productcategories?categoryId={rssParams.CategoryId}&take={rssParams.Take}&language={rssParams.Language}";
+            String atomSelfHref = $"{url}/rss/productcategories?categoryId={rssParams.CategoryId}&take={rssParams.Take}&language={rssParams.Language}";
 
             feed.Items = items.Select(s => s.GetProductSyndicationItem(url, rssParams));
             var formatter = new Rss20FeedFormatter(feed);
@@ -1020,13 +1009,10 @@ namespace EImece.Domain.Services
 
         public async Task<Rss20FeedFormatter> GetProductCategoriesRssAsync(RssParams rssParams, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var request = HttpContextFactory.Create()?.Request;
-            var host = request?.Url?.Host ?? "localhost";
+            var host = !string.IsNullOrEmpty(AppConfig.Domain) ? AppConfig.Domain : "localhost";
             var builder = new UriBuilder(AppConfig.HttpProtocol, host);
             var url = String.Format("{0}", builder.Uri.ToString().TrimEnd('/'));
-            var urlHelper = request?.RequestContext != null ? new UrlHelper(request.RequestContext) : null;
-            String atomSelfHref = urlHelper?.Action("productcategories", "rss", new { rssParams.Take, rssParams.Language, rssParams.CategoryId }, AppConfig.HttpProtocol)
-                ?? $"{url}/rss/productcategories?categoryId={rssParams.CategoryId}&take={rssParams.Take}&language={rssParams.Language}";
+            String atomSelfHref = $"{url}/rss/productcategories?categoryId={rssParams.CategoryId}&take={rssParams.Take}&language={rssParams.Language}";
 
             var productCategory = rssParams.CategoryId > 0
                 ? await ProductCategoryService.GetSingleAsync(rssParams.CategoryId).ConfigureAwait(false)
@@ -1075,7 +1061,7 @@ namespace EImece.Domain.Services
             return await ProductRepository.GetProductsSearchResultAsync(search, filters, top, skip, language, cancellationToken).ConfigureAwait(false);
         }
 
-        public void ParseTemplateAndSaveProductSpecifications(int productId, int templateId, int currentLanguage, HttpRequestBase request)
+        public void ParseTemplateAndSaveProductSpecifications(int productId, int templateId, int currentLanguage, NameValueCollection formValues)
         {
             var template = TemplateService.GetTemplate(templateId);
             XDocument xdoc = XDocument.Parse(template.TemplateXml);
@@ -1099,7 +1085,7 @@ namespace EImece.Domain.Services
                     var name = field.Attribute("name");
                     var unit = field.Attribute("unit");
 
-                    var value = ReadSpecFormValue(request, field, name != null ? name.Value : null);
+                    var value = ReadSpecFormValue(formValues, field, name != null ? name.Value : null);
 
                     if (name != null)
                     {
@@ -1118,7 +1104,7 @@ namespace EImece.Domain.Services
             SaveProductSpecifications(Specifications, productId);
         }
 
-        public async Task ParseTemplateAndSaveProductSpecificationsAsync(int productId, int templateId, int currentLanguage, HttpRequestBase request, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task ParseTemplateAndSaveProductSpecificationsAsync(int productId, int templateId, int currentLanguage, NameValueCollection formValues, CancellationToken cancellationToken = default(CancellationToken))
         {
             var template = await TemplateService.GetTemplateAsync(templateId, cancellationToken).ConfigureAwait(false);
             XDocument xdoc = XDocument.Parse(template.TemplateXml);
@@ -1142,7 +1128,7 @@ namespace EImece.Domain.Services
                     var name = field.Attribute("name");
                     var unit = field.Attribute("unit");
 
-                    var value = ReadSpecFormValue(request, field, name != null ? name.Value : null);
+                    var value = ReadSpecFormValue(formValues, field, name != null ? name.Value : null);
 
                     if (name != null)
                     {
@@ -1161,16 +1147,16 @@ namespace EImece.Domain.Services
             await SaveProductSpecificationsAsync(Specifications, productId).ConfigureAwait(false);
         }
 
-        private static string ReadSpecFormValue(HttpRequestBase request, XElement field, string fieldName)
+        private static string ReadSpecFormValue(NameValueCollection formValues, XElement field, string fieldName)
         {
-            if (string.IsNullOrEmpty(fieldName) || request == null)
+            if (string.IsNullOrEmpty(fieldName) || formValues == null)
             {
                 return null;
             }
 
             if (ProductSpecificationFieldHelper.IsMultiSelectField(field))
             {
-                var posted = request.Unvalidated.Form.GetValues(fieldName);
+                var posted = formValues.GetValues(fieldName);
                 if (posted != null && posted.Length > 0)
                 {
                     return ProductSpecificationFieldHelper.NormalizeMultiSelectStorageValue(posted);
@@ -1178,10 +1164,10 @@ namespace EImece.Domain.Services
 
                 // Form.Get joins multi-values with commas when GetValues is unavailable.
                 return ProductSpecificationFieldHelper.NormalizeMultiSelectStorageValue(
-                    request.Unvalidated.Form.Get(fieldName));
+                    formValues.Get(fieldName));
             }
 
-            return request.Unvalidated.Form.Get(fieldName);
+            return formValues.Get(fieldName);
         }
 
         private static string NormalizeSpecFieldValue(XElement field, string value)

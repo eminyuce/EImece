@@ -1,6 +1,6 @@
+using EImece.Domain.DependencyInjection;
 using EImece.Domain.Services.IServices;
 using System;
-using System.Web.Mvc;
 
 namespace EImece.Domain.Helpers
 {
@@ -13,7 +13,7 @@ namespace EImece.Domain.Helpers
         {
             get
             {
-                var settingService = DependencyResolver.Current?.GetService(typeof(ISettingService)) as ISettingService;
+                var settingService = DomainServiceProvider.GetService<ISettingService>();
                 var val = settingService?.GetSettingByKey(Constants.GridPageSizeNumber);
                 return !string.IsNullOrWhiteSpace(val) ? val.ToInt(Constants.DefaultGridPageSizeNumber) : Constants.DefaultGridPageSizeNumber;
             }
@@ -23,7 +23,7 @@ namespace EImece.Domain.Helpers
         {
             get
             {
-                var settingService = DependencyResolver.Current?.GetService(typeof(ISettingService)) as ISettingService;
+                var settingService = DomainServiceProvider.GetService<ISettingService>();
                 var val = settingService?.GetSettingByKey(Constants.ProductShortDescriptionPreviewLength);
                 return !string.IsNullOrWhiteSpace(val) ? val.ToInt(Constants.DefaultProductShortDescriptionPreviewLength) : Constants.DefaultProductShortDescriptionPreviewLength;
             }

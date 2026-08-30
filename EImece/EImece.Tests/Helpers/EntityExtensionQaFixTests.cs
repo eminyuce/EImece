@@ -25,6 +25,23 @@ namespace EImece.Tests.Helpers
         }
 
         [TestMethod]
+        public void BuildMenuLinkRelativePath_UsesCanonicalStorefrontRoutes()
+        {
+            var menu = new Menu { Id = 9, Name = "Blog" };
+
+            Assert.AreEqual("/s/", EntityExtension.BuildMenuLinkRelativePath("stories", "index", null));
+            Assert.AreEqual("/p/", EntityExtension.BuildMenuLinkRelativePath("products", "index", null));
+            Assert.AreEqual("/", EntityExtension.BuildMenuLinkRelativePath("home", "index", null));
+            Assert.AreEqual("/s/sc/my-category-abc123", EntityExtension.BuildMenuLinkRelativePath("stories", "categories", "my-category-abc123"));
+            Assert.AreEqual("/c/pc/cat-xyz789", EntityExtension.BuildMenuLinkRelativePath("productcategories", "category", "cat-xyz789"));
+            Assert.AreEqual("/info/aboutus", EntityExtension.BuildMenuLinkRelativePath("info", "aboutus", null));
+            StringAssert.Contains(
+                EntityExtension.BuildMenuLinkRelativePath("pages", "detail", null, menu),
+                "/i/blog-");
+            Assert.AreEqual(string.Empty, EntityExtension.BuildMenuLinkRelativePath("pages", "index", null));
+        }
+
+        [TestMethod]
         public void NormalizeImageDimensions_FillsZeroSide()
         {
             int w = 0;

@@ -1,7 +1,5 @@
+using EImece.Domain.Abstractions;
 using NLog;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Caching;
 
@@ -18,36 +16,6 @@ namespace EImece.Domain.Caching
     public static class ApplicationCacheClearer
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
-        /// <summary>
-        /// Clears ASP.NET <c>HttpRuntime.Cache</c> (OutputCache profiles, child-action caches, etc.).
-        /// </summary>
-        public static int ClearHttpRuntimeCache()
-        {
-            var keys = new List<string>();
-            try
-            {
-                IDictionaryEnumerator enumerator = System.Web.HttpRuntime.Cache.GetEnumerator();
-                while (enumerator.MoveNext())
-                {
-                    if (enumerator.Key != null)
-                    {
-                        keys.Add((string)enumerator.Key);
-                    }
-                }
-
-                foreach (var key in keys)
-                {
-                    System.Web.HttpRuntime.Cache.Remove(key);
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.Warn(ex, "ClearHttpRuntimeCache failed after removing {0} keys", keys.Count);
-            }
-
-            return keys.Count;
-        }
 
         /// <summary>
         /// Clears <see cref="MemoryCache.Default"/> (RssHelper and any direct Runtime.Caching writers).
@@ -69,9 +37,11 @@ namespace EImece.Domain.Caching
         /// Full process-wide wipe used by Admin Refresh: HttpRuntime + MemoryCache.Default.
         /// Callers must also clear their own provider store (LazyCache keys / MemoryCacheProvider entries).
         /// </summary>
-        public static void ClearAspNetCaches(out int httpRuntimeRemoved, out int memoryCacheRemoved)
+        public static void ClearAspNetCaches(IHttpRuntimeCacheClearer httpRuntimeCacheClearer, out int httpRuntimeRemoved, out int memoryCacheRemoved)
         {
-            httpRuntimeRemoved = ClearHttpRuntimeCache();
+            httpRuntimeRemoved = httpRuntimeCacheClearer != null
+                ? httpRuntimeCacheClearer.ClearHttpRuntimeCache()
+                : 0;
             memoryCacheRemoved = ClearMemoryCacheDefault();
             Logger.Info(
                 "ApplicationCacheClearer removed {0} HttpRuntime + {1} MemoryCache.Default entries",

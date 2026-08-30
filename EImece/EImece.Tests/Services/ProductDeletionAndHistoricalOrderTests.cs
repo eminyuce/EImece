@@ -534,7 +534,7 @@ namespace EImece.Tests.Services
         {
             var cache = new FakeRepositoryProxy<IEimeceCacheProvider>(new object()).Instance;
             var settingService = new FakeRepositoryProxy<ISettingService>(new object()).Instance;
-            var httpContextFactory = new FakeRepositoryProxy<IHttpContextFactory>(new object()).Instance;
+            var currentUserContext = new EImece.Tests.Infrastructure.NullCurrentUserContext();
             var filesHelper = (FilesHelper)System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof(FilesHelper));
             var categoryServ = new FakeRepositoryProxy<IProductCategoryService>(new object()).Instance;
             var commentRepo = new FakeRepositoryProxy<IProductCommentRepository>(new object()).Instance;
@@ -551,7 +551,7 @@ namespace EImece.Tests.Services
                 cache,
                 settingService,
                 fileStorageService ?? new FakeRepositoryProxy<IFileStorageService>(new object()).Instance,
-                httpContextFactory,
+                currentUserContext,
                 filesHelper,
                 categoryServ,
                 commentRepo,

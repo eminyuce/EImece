@@ -8,6 +8,7 @@ using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
+using EImece.Domain.Abstractions;
 using EImece.Domain.DependencyInjection;
 using EImece.Domain.Observability.Telemetry;
 using NLog;
@@ -18,8 +19,6 @@ using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-
-using EImece.Domain.Factories.IFactories;
 
 namespace EImece.Domain.Services
 {
@@ -35,10 +34,10 @@ namespace EImece.Domain.Services
             IEimeceCacheProvider dataCachingProvider,
             ISettingService settingService,
             IFileStorageService fileStorageService,
-            IHttpContextFactory httpContextFactory,
+            ICurrentUserContext currentUserContext,
             FilesHelper filesHelper,
             IStoryCategoryService storyCategoryService)
-            : base(repository, dataCachingProvider, settingService, fileStorageService, httpContextFactory, filesHelper)
+            : base(repository, dataCachingProvider, settingService, fileStorageService, currentUserContext, filesHelper)
         {
             MenuRepository = repository ?? throw new ArgumentNullException(nameof(repository));
             StoryCategoryService = storyCategoryService ?? throw new ArgumentNullException(nameof(storyCategoryService));

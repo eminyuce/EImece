@@ -1,6 +1,8 @@
+using EImece.Web.Areas.Admin.Controllers;
 using EImece.Domain.Entities;
+using EImece.Web.Helpers;
 using EImece.Domain.Helpers;
-using EImece.Domain.Helpers.AttributeHelper;
+using EImece.Web.Filters;
 using EImece.Domain.Models.Enums;
 using Griddly.Mvc;
 using Griddly.Mvc.Results;
@@ -63,7 +65,7 @@ namespace EImece.Areas.Admin.Controllers
 
             int categoryId = id;
             var stories = await StoryService.GetAdminPageListAsync(categoryId, search, CurrentLanguage);
-            return new QueryableResult<Story>(stories.AsQueryable());
+            return AdminGridResult(stories);
         }
 
         public async Task<ActionResult> SaveOrEdit(CancellationToken cancellationToken, int id = 0)
@@ -86,7 +88,7 @@ namespace EImece.Areas.Admin.Controllers
             return View(content);
         }
 
-        [HttpPost]
+        [HttpPost, ValidateInput(false)]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> SaveOrEdit(Story story, int[] tags = null, HttpPostedFileBase postedImage = null, String saveButton = null)
         {
@@ -167,9 +169,14 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public ActionResult Media(int id)
+        public ActionResult Media(int? id)
         {
-            return RedirectToAction(IndexAction, "Media", new { contentId = id, mod = MediaModType.Stories, imageType = EImeceImageType.StoryGallery });
+            if (!id.HasValue || id.Value <= 0)
+            {
+                return RedirectToAction(IndexAction);
+            }
+
+            return RedirectToAction(IndexAction, "Media", new { contentId = id.Value, mod = MediaModType.Stories, imageType = EImeceImageType.StoryGallery });
         }
 
         [HttpGet, ActionName("ExportExcel")]

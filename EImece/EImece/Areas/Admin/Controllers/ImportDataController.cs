@@ -1,3 +1,4 @@
+using EImece.Web.Areas.Admin.Controllers;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using System;
@@ -67,6 +68,11 @@ namespace EImece.Areas.Admin.Controllers
 
         public ActionResult DisplayTable(String id)
         {
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                return RedirectToAction("Index");
+            }
+
             String path = "~/App_Data/";
             var root = Server.MapPath(path);
             var pathName = SecurityHelper.GetSafeStorageFilePath(root, id);

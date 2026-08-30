@@ -1,12 +1,10 @@
-﻿using EImece.Domain.Helpers;
+using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
 using Resources;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Web;
-using System.Web.Mvc;
 
 namespace EImece.Domain.Entities
 {
@@ -26,10 +24,8 @@ namespace EImece.Domain.Entities
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.IsFeaturedStory))]
         public bool IsFeaturedStory { get; set; }
 
-        [AllowHtml]
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.ShortDescription))]
         public string ShortDescription { get; set; }
-
 
         public StoryCategory StoryCategory { get; set; }
         public ICollection<StoryTag> StoryTags { get; set; }
@@ -51,11 +47,7 @@ namespace EImece.Domain.Entities
         {
             get
             {
-                if (HttpContext.Current == null)
-                    return "";
-                var categoryName = StoryCategory != null ? StoryCategory.Name : "no_category";
-                var rc = HttpContext.Current.Request.RequestContext;
-                return new UrlHelper(rc).Action("Detail", "Stories", new { categoryName = GeneralHelper.GetUrlSeoString(categoryName), id = this.GetSeoUrl(), area = "" });
+                return this.GetDetailPageUrl("Detail", "Stories", StoryCategory != null ? StoryCategory.Name : "no_category", "", "");
             }
         }
     }

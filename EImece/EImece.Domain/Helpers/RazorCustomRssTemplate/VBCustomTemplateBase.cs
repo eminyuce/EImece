@@ -1,11 +1,11 @@
-﻿using RazorEngine.Templating;
+using RazorEngine.Templating;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Text;
-using System.Web;
 
 namespace EImece.Domain.Helpers.RazorCustomRssTemplate
 {
@@ -77,7 +77,7 @@ namespace EImece.Domain.Helpers.RazorCustomRssTemplate
 
         public string UrlEncode(string url)
         {
-            return HttpUtility.UrlEncode(url);
+            return WebUtility.UrlEncode(url);
         }
 
         public string t(object featuredFilters = null)

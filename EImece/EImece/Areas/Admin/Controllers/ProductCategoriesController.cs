@@ -1,6 +1,8 @@
+using EImece.Web.Areas.Admin.Controllers;
 using EImece.Domain.Entities;
+using EImece.Web.Helpers;
 using EImece.Domain.Helpers;
-using EImece.Domain.Helpers.AttributeHelper;
+using EImece.Web.Filters;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.AdminHelperModels;
 using EImece.Domain.Models.Enums;
@@ -67,7 +69,7 @@ namespace EImece.Areas.Admin.Controllers
 
             ViewBag.ProductCategoryLeaves = await ProductCategoryService.GetProductCategoryLeavesAsync(null, CurrentLanguage, cancellationToken);
             var productCategories = await ProductCategoryService.GetAdminProductCategoriesAsync(search, CurrentLanguage, cancellationToken);
-            return new QueryableResult<ProductCategory>(productCategories.AsQueryable());
+            return AdminGridResult(productCategories);
         }
 
         [HttpGet]
@@ -190,7 +192,7 @@ namespace EImece.Areas.Admin.Controllers
         //
         // POST: /ProductCategory/Create
 
-        [HttpPost]
+        [HttpPost, ValidateInput(false)]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> SaveOrEdit(CancellationToken cancellationToken, ProductCategory productCategory, HttpPostedFileBase postedImage = null, String saveButton = null)
         {

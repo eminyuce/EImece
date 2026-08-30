@@ -40,7 +40,7 @@ namespace EImece.Domain.Repositories
             {
                 stories = stories.Where(r => r.StoryCategoryId == categoryId);
             }
-            stories = stories.OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate);
+            stories = stories.OrderByDescending(r => r.UpdatedDate).ThenByDescending(r => r.Id);
 
             return stories.ToList();
         }
@@ -59,7 +59,7 @@ namespace EImece.Domain.Repositories
             {
                 stories = stories.Where(r => r.StoryCategoryId == categoryId);
             }
-            stories = stories.OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate);
+            stories = stories.OrderByDescending(r => r.UpdatedDate).ThenByDescending(r => r.Id);
 
             return await stories.ToListAsync().ConfigureAwait(false);
         }

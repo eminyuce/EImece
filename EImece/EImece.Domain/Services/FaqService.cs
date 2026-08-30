@@ -6,6 +6,7 @@ using EImece.Domain.Observability.Telemetry;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
 using NLog;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -18,9 +19,10 @@ namespace EImece.Domain.Services
 
         private IFaqRepository FaqRepository { get; set; }
 
-        public FaqService(IFaqRepository repository) : base(repository)
+        public FaqService(IFaqRepository repository, IEimeceCacheProvider dataCachingProvider)
+            : base(repository, dataCachingProvider)
         {
-            FaqRepository = repository;
+            FaqRepository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
         #region Storefront Read Methods (LINQ Projection, AsNoTracking)

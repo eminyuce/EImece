@@ -21,7 +21,7 @@
         PageSize = pageSizeNumber,
         AllowedFilterModes = FilterMode.None,
         RowClass = item => item.IsActive ? string.Empty : "GridIsActive",
-        DefaultSort = new[] { new SortField() { Field = "Position", Direction = SortDirection.Ascending } }
+        DefaultSort = new[] { new SortField() { Field = "UpdatedDate", Direction = SortDirection.Descending } }
     };
 
     settings.HtmlAttributes["data-gridname"] = gridName;

@@ -1,6 +1,7 @@
+using EImece.Web.Areas.Admin.Controllers;
 using EImece.Domain;
 using EImece.Domain.Helpers;
-using EImece.Domain.Helpers.AttributeHelper;
+using EImece.Web.Filters;
 using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Observability.Logging;
 using EImece.Domain.Services.ExportImport;
@@ -50,6 +51,7 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ValidateInput(false)]
         public async Task<ActionResult> Index(CancellationToken cancellationToken, SettingModel settingModel)
         {
             await SettingService.SaveSettingModelAsync(settingModel, CurrentLanguage);
@@ -65,6 +67,7 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ValidateInput(false)]
         public async Task<ActionResult> SystemSettings(CancellationToken cancellationToken, SystemSettingModel settingModel)
         {
             if (!string.IsNullOrWhiteSpace(settingModel.ProductPriceFilterSetting))

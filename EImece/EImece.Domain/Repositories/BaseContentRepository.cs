@@ -102,7 +102,7 @@ namespace EImece.Domain.Repositories
                 match = match.And(whereLambda);
             }
 
-            var result = menus.Where(match).OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate).ToList();
+            var result = menus.Where(match).OrderByDescending(r => r.UpdatedDate).ThenByDescending(r => r.Id).ToList();
             return result;
         }
 
@@ -119,7 +119,7 @@ namespace EImece.Domain.Repositories
                 match = match.And(whereLambda);
             }
 
-            var result = await menus.Where(match).OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate).ToListAsync().ConfigureAwait(false);
+            var result = await menus.Where(match).OrderByDescending(r => r.UpdatedDate).ThenByDescending(r => r.Id).ToListAsync().ConfigureAwait(false);
             return result;
         }
     }

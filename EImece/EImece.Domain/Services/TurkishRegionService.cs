@@ -5,8 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Web;
-using System.Web.Hosting;
 
 namespace EImece.Domain.Services
 {
@@ -20,18 +18,25 @@ namespace EImece.Domain.Services
 
         private static List<City> LoadDataInternal()
         {
+            var dataDir = AppDomain.CurrentDomain.GetData("DataDirectory")?.ToString();
             string filePath = null;
-            if (HostingEnvironment.IsHosted)
+
+            if (!string.IsNullOrEmpty(dataDir))
             {
-                filePath = HostingEnvironment.MapPath("~/App_Data/data.json");
+                var candidate = Path.Combine(dataDir, "data.json");
+                if (File.Exists(candidate))
+                {
+                    filePath = candidate;
+                }
             }
-            else if (HttpContext.Current != null && HttpContext.Current.Server != null)
+
+            if (filePath == null)
             {
-                filePath = HttpContext.Current.Server.MapPath("~/App_Data/data.json");
-            }
-            else
-            {
-                filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "App_Data", "data.json");
+                var candidate = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "App_Data", "data.json");
+                if (File.Exists(candidate))
+                {
+                    filePath = candidate;
+                }
             }
 
             if (filePath != null && File.Exists(filePath))

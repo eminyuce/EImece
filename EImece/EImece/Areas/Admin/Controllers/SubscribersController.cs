@@ -1,3 +1,4 @@
+using EImece.Web.Areas.Admin.Controllers;
 using EImece.Domain.Entities;
 using Griddly.Mvc;
 using Griddly.Mvc.Results;
@@ -42,7 +43,7 @@ namespace EImece.Areas.Admin.Controllers
 
             Expression<Func<Subscriber, bool>> whereLambda = r => r.Name.Contains(search) || r.Email.Contains(search);
             var subs = await SubscriberService.SearchEntitiesAsync(whereLambda, search, null);
-            return new QueryableResult<Subscriber>(subs.AsQueryable());
+            return AdminGridResult(subs);
         }
 
         [HttpGet, ActionName("ExportExcel")]

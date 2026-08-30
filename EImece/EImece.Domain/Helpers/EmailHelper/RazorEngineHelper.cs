@@ -1,6 +1,6 @@
+using EImece.Domain.Abstractions;
 using EImece.Domain.ApiRepositories;
 using EImece.Domain.Entities;
-using EImece.Domain.Factories.IFactories;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Helpers.RazorCustomRssTemplate;
 using EImece.Domain.Models.AdminModels;
@@ -22,14 +22,14 @@ namespace EImece.Domain.Helpers.EmailHelper
     {
         private readonly IMailTemplateService _mailTemplateService;
         private readonly ISettingService _settingService;
-        private readonly IHttpContextFactory _httpContext;
+        private readonly ISiteUrlProvider _siteUrlProvider;
         private readonly IEmailSender _emailSender;
         private readonly BitlyRepository _bitlyRepository;
         private readonly IRazorTemplateEngine _razorTemplateEngine;
 
         public IMailTemplateService MailTemplateService => _mailTemplateService;
         public ISettingService SettingService => _settingService;
-        public IHttpContextFactory HttpContext => _httpContext;
+        public ISiteUrlProvider SiteUrlProvider => _siteUrlProvider;
         public IEmailSender EmailSender => _emailSender;
         public BitlyRepository BitlyRepository => _bitlyRepository;
         public IRazorTemplateEngine RazorTemplateEngine => _razorTemplateEngine;
@@ -37,14 +37,14 @@ namespace EImece.Domain.Helpers.EmailHelper
         public RazorEngineHelper(
             IMailTemplateService mailTemplateService,
             ISettingService settingService,
-            IHttpContextFactory httpContext,
+            ISiteUrlProvider siteUrlProvider,
             IEmailSender emailSender,
             BitlyRepository bitlyRepository,
             IRazorTemplateEngine razorTemplateEngine)
         {
             _mailTemplateService = mailTemplateService ?? throw new ArgumentNullException(nameof(mailTemplateService));
             _settingService = settingService ?? throw new ArgumentNullException(nameof(settingService));
-            _httpContext = httpContext ?? throw new ArgumentNullException(nameof(httpContext));
+            _siteUrlProvider = siteUrlProvider ?? throw new ArgumentNullException(nameof(siteUrlProvider));
             _emailSender = emailSender ?? throw new ArgumentNullException(nameof(emailSender));
             _bitlyRepository = bitlyRepository ?? throw new ArgumentNullException(nameof(bitlyRepository));
             _razorTemplateEngine = razorTemplateEngine ?? throw new ArgumentNullException(nameof(razorTemplateEngine));
@@ -111,25 +111,16 @@ namespace EImece.Domain.Helpers.EmailHelper
 
         private string GetSiteBaseUrl()
         {
-            // Prefer live request URL; fall back when HttpContext.Current is null after
-            // ConfigureAwait(false) continuations (e.g. Register → confirmation email).
-            var baseurl = EntityExtension.GetAbsoluteApplicationBaseUrl();
-            if (!string.IsNullOrEmpty(baseurl))
+            var baseUrl = _siteUrlProvider?.GetSiteBaseUrl();
+            if (!string.IsNullOrEmpty(baseUrl))
             {
-                return baseurl;
+                return baseUrl;
             }
 
-            try
+            baseUrl = EntityExtension.GetAbsoluteApplicationBaseUrl();
+            if (!string.IsNullOrEmpty(baseUrl))
             {
-                var request = HttpContext?.Create()?.Request;
-                if (request?.Url != null)
-                {
-                    return request.Url.Scheme + "://" + request.Url.Authority + request.ApplicationPath.TrimEnd('/');
-                }
-            }
-            catch (ArgumentNullException)
-            {
-                // HttpContextWrapper rejects a null HttpContext.Current
+                return baseUrl;
             }
 
             var scheme = string.IsNullOrEmpty(AppConfig.HttpProtocol) ? "http" : AppConfig.HttpProtocol;

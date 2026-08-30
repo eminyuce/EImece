@@ -1,7 +1,8 @@
+using EImece.Web.Areas.Admin.Controllers;
 using EImece.Domain;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
-using EImece.Domain.Helpers.AttributeHelper;
+using EImece.Web.Filters;
 using Griddly.Mvc;
 using Griddly.Mvc.Results;
 using NLog;
@@ -60,7 +61,7 @@ namespace EImece.Areas.Admin.Controllers
             var result = await TagService.GetAdminPageListAsync(search, CurrentLanguage);
             var isProductPriceEnable = await SettingService.GetSettingObjectByKeyAsync(Constants.IsProductPriceEnable);
             ViewBag.IsProductPriceEnable = isProductPriceEnable;
-            return new QueryableResult<Tag>(result.AsQueryable());
+            return AdminGridResult(result);
         }
 
         private async Task<List<SelectListItem>> GetCategoriesSelectListAsync(CancellationToken cancellationToken)

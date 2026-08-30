@@ -1,7 +1,8 @@
+using EImece.Web.Controllers;
 using EImece.Domain;
 using EImece.Domain.Caching;
 using EImece.Domain.Helpers;
-using EImece.Domain.Helpers.AttributeHelper;
+using EImece.Web.Filters;
 using EImece.Domain.Services.IServices;
 using EImece.Domain.DependencyInjection;
 using NLog;

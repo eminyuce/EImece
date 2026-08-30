@@ -198,7 +198,7 @@ namespace EImece.Domain.Models.DTOs.Storefront
                 {
                     var mainImageUrl = GetCroppedImageUrl(MainImageId.Value, 300, 0, false);
                     var result = string.Format("<img src='{0}' class='d-block mt-n1' alt='{1}'><div class='text-center font-size-sm font-weight-semibold mt-n0 pb-0'>{1}</div>", mainImageUrl, Name);
-                    return System.Web.HttpUtility.HtmlEncode(result);
+                    return System.Net.WebUtility.HtmlEncode(result);
                 }
                 return string.Empty;
             }

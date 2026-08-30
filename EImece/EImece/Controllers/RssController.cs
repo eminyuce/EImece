@@ -1,6 +1,7 @@
+using EImece.Web.Controllers;
 using EImece.Domain;
-using EImece.Domain.Helpers.ActionResultHelpers;
-using EImece.Domain.Helpers.AttributeHelper;
+using EImece.Web.Infrastructure.ActionResults;
+using EImece.Web.Filters;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Services.IServices;
 using EImece.Domain.DependencyInjection;

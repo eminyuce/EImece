@@ -35,7 +35,7 @@
         PageSize = pageSizeNumber,
         AllowedFilterModes = FilterMode.None,
         RowClass = paymentRowClass,
-        DefaultSort = new[] { new SortField() { Field = "CreatedDate", Direction = SortDirection.Descending } }
+        DefaultSort = new[] { new SortField() { Field = "UpdatedDate", Direction = SortDirection.Descending } }
     };
 
     settings.HtmlAttributes["data-gridname"] = gridName;
@@ -63,6 +63,7 @@
         .Column(x => x.OrderNumber, caption: AdminResource.OrderNumber, template: @<text>@Html.Partial("Grid/_GridNameCell", null, new ViewDataDictionary(ViewData) { { "Name", item.OrderNumber }, { "DetailUrl", Url.Action("Details", controllerName, new { id = item.Id }) }, { "StrongName", true } })</text>, className: "eg-col-name", width: "240px")
         .Column(x => x.OrderStatus, caption: AdminResource.OrderStatus, template: @<text>@OrderStatusBadge(item.OrderStatus)</text>, className: "eg-col-state eg-col-order-status", width: "200px")
         .Column(x => x.CreatedDate, caption: AdminResource.CreatedDate, template: @<text>@(item.CreatedDate.ToShortDateString())</text>, className: "gridDateClass eg-col-secondary", width: "120px")
+        .Column(x => x.UpdatedDate, caption: AdminResource.UpdatedDate, template: @<text>@(item.UpdatedDate.ToShortDateString())</text>, className: "gridDateClass eg-col-secondary", width: "120px")
         .Column(x => x.PaidPrice, caption: AdminResource.PaidAmount, template: @<text>@(item.PaidPrice + " " + item.Currency)</text>, className: "eg-col-order-amount", width: "140px")
         .Column(x => x.PaymentStatus, caption: AdminResource.PaymentStatus, template: @<text>@PaymentBadge(item.PaymentStatus)</text>, className: "eg-col-secondary eg-col-payment", width: "130px")
         .Column(x => x.ShipmentCompanyName, caption: AdminResource.CargoCompany, template: @<text>@EmptyDash(item.ShipmentCompanyName)</text>, className: "eg-col-secondary", width: "140px")

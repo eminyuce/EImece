@@ -1,6 +1,6 @@
 @using EImece.Domain.Models.FrontModels;
 @using EImece.Domain.Entities;
-@using EImece.Domain.Helpers.HtmlHelpers;
+@using EImece.Web.Helpers.HtmlHelpers;
 @using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain.Helpers;
 @using EImece.Domain;
@@ -153,7 +153,7 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             @Html.LabelFor(model => customer.Country)
-                            @Html.DropDownListFor(model => customer.Country, GeneralHelper.GetStaticCountries(), new { @class = "form-control" })
+                            @Html.DropDownListFor(model => customer.Country, EImece.Web.Helpers.WebGeneralHelper.GetStaticCountries(), new { @class = "form-control" })
                             @Html.ValidationMessageFor(model => customer.Country, "", new { @class = "text-danger" })
                         </div>
                     </div>

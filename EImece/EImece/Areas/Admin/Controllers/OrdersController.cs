@@ -1,5 +1,6 @@
+using EImece.Web.Areas.Admin.Controllers;
 using EImece.Domain.Entities;
-using EImece.Domain.Helpers.AttributeHelper;
+using EImece.Web.Filters;
 using Griddly.Mvc;
 using Griddly.Mvc.Results;
 using NLog;
@@ -53,7 +54,7 @@ namespace EImece.Areas.Admin.Controllers
             || r.OrderNumber.Contains(search)
               || r.Token.Contains(search);
             var orders = await OrderService.SearchEntitiesAsync(whereLambda, search, CurrentLanguage);
-            return new QueryableResult<Order>(orders.AsQueryable());
+            return AdminGridResult(orders);
         }
 
         public async Task<ActionResult> Details(CancellationToken cancellationToken, int id)

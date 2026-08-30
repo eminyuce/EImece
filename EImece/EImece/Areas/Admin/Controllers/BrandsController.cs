@@ -1,6 +1,8 @@
+using EImece.Web.Areas.Admin.Controllers;
 using EImece.Domain.Entities;
+using EImece.Web.Helpers;
 using EImece.Domain.Helpers;
-using EImece.Domain.Helpers.AttributeHelper;
+using EImece.Web.Filters;
 using EImece.Domain.Models.Enums;
 using Griddly.Mvc;
 using Griddly.Mvc.Results;
@@ -56,7 +58,7 @@ namespace EImece.Areas.Admin.Controllers
             }
 
             var brands = await BrandService.GetAdminPageListAsync(search, CurrentLanguage);
-            return new QueryableResult<Brand>(brands.AsQueryable());
+            return AdminGridResult(brands);
         }
 
         //
@@ -80,7 +82,7 @@ namespace EImece.Areas.Admin.Controllers
         //
         // POST: /Brand/Create
 
-        [HttpPost]
+        [HttpPost, ValidateInput(false)]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> SaveOrEdit(CancellationToken cancellationToken, Brand brand, int[] tags = null, HttpPostedFileBase postedImage = null, String saveButton = null)
         {

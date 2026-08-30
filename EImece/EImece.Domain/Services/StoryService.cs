@@ -8,6 +8,7 @@ using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
+using EImece.Domain.Abstractions;
 using EImece.Domain.DependencyInjection;
 using EImece.Domain.Observability.Telemetry;
 using NLog;
@@ -18,8 +19,6 @@ using System.Linq;
 using System.ServiceModel.Syndication;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Web;
-using System.Web.Mvc;
 using System.Xml;
 using System.Xml.Linq;
 
@@ -43,14 +42,14 @@ namespace EImece.Domain.Services
             IEimeceCacheProvider dataCachingProvider,
             ISettingService settingService,
             IFileStorageService fileStorageService,
-            IHttpContextFactory httpContextFactory,
+            ICurrentUserContext currentUserContext,
             FilesHelper filesHelper,
             ITagService tagService,
             IProductRepository productRepository,
             IStoryCategoryService storyCategoryService,
             IStoryTagRepository storyTagRepository,
             IMenuService menuService)
-            : base(repository, dataCachingProvider, settingService, fileStorageService, httpContextFactory, filesHelper)
+            : base(repository, dataCachingProvider, settingService, fileStorageService, currentUserContext, filesHelper)
         {
             StoryRepository = repository ?? throw new ArgumentNullException(nameof(repository));
             TagService = tagService ?? throw new ArgumentNullException(nameof(tagService));
@@ -599,8 +598,7 @@ namespace EImece.Domain.Services
             var storyCategory = StoryCategoryService.GetSingle(rssParams.CategoryId);
             var items = StoryRepository.GetStoriesByStoryCategoryId(rssParams.CategoryId, rssParams.Language, 1, rssParams.Take).ToList();
 
-            var request = HttpContextFactory.Create()?.Request;
-            var host = request?.Url?.Host ?? "localhost";
+            var host = !string.IsNullOrEmpty(AppConfig.Domain) ? AppConfig.Domain : "localhost";
             var builder = new UriBuilder(AppConfig.HttpProtocol, host);
             var url = String.Format("{0}", builder.Uri.ToString().TrimEnd('/'));
             String title = SettingService.GetSettingByKey(Constants.CompanyName);
@@ -618,8 +616,7 @@ namespace EImece.Domain.Services
 
         public async Task<Rss20FeedFormatter> GetStoryCategoriesRssAsync(RssParams rssParams, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var request = HttpContextFactory.Create()?.Request;
-            var host = request?.Url?.Host ?? "localhost";
+            var host = !string.IsNullOrEmpty(AppConfig.Domain) ? AppConfig.Domain : "localhost";
             var builder = new UriBuilder(AppConfig.HttpProtocol, host);
             var url = String.Format("{0}", builder.Uri.ToString().TrimEnd('/'));
 
@@ -648,8 +645,7 @@ namespace EImece.Domain.Services
                 return null;
             }
             var storyCategory = StoryCategoryService.GetSingle(rssParams.CategoryId);
-            var request = HttpContextFactory.Create()?.Request;
-            var host = request?.Url?.Host ?? "localhost";
+            var host = !string.IsNullOrEmpty(AppConfig.Domain) ? AppConfig.Domain : "localhost";
             var builder = new UriBuilder(AppConfig.HttpProtocol, host);
             var url = String.Format("{0}", builder.Uri.ToString().TrimEnd('/'));
             String title = SettingService.GetSettingByKey(Constants.CompanyName);
@@ -665,9 +661,7 @@ namespace EImece.Domain.Services
             feed.LastUpdatedTime = new DateTimeOffset(items.Max(t => t.UpdatedDate));
             feed.Items = items.Select(s => s.GetStorySyndicationItemFull(storyCategory?.Name ?? "", url, rssParams));
 
-            var urlHelper = request?.RequestContext != null ? new UrlHelper(request.RequestContext) : null;
-            String imagePath = urlHelper?.Action("StoryCategoriesFull", "Rss", null, AppConfig.HttpProtocol)
-                ?? $"{url}/rss/StoryCategoriesFull";
+            String imagePath = $"{url}/rss/StoryCategoriesFull";
 
             var formatter = new Rss20FeedFormatter(feed);
             formatter.SerializeExtensionsAsAtom = false;
@@ -680,13 +674,10 @@ namespace EImece.Domain.Services
 
         public async Task<Rss20FeedFormatter> GetStoryCategoriesRssFullAsync(RssParams rssParams, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var request = HttpContextFactory.Create()?.Request;
-            var host = request?.Url?.Host ?? "localhost";
+            var host = !string.IsNullOrEmpty(AppConfig.Domain) ? AppConfig.Domain : "localhost";
             var builder = new UriBuilder(AppConfig.HttpProtocol, host);
             var url = String.Format("{0}", builder.Uri.ToString().TrimEnd('/'));
-            var urlHelper = request?.RequestContext != null ? new UrlHelper(request.RequestContext) : null;
-            String imagePath = urlHelper?.Action("StoryCategoriesFull", "Rss", null, AppConfig.HttpProtocol)
-                ?? $"{url}/rss/StoryCategoriesFull";
+            String imagePath = $"{url}/rss/StoryCategoriesFull";
 
             var paginated = await StoryRepository.GetStoriesByStoryCategoryIdAsync(rssParams.CategoryId, rssParams.Language, 1, rssParams.Take, cancellationToken).ConfigureAwait(false);
             var items = paginated.ToList();

@@ -1,5 +1,6 @@
+using EImece.Web.Areas.Admin.Controllers;
 using EImece.Domain.Entities;
-using EImece.Domain.Helpers.AttributeHelper;
+using EImece.Web.Filters;
 using Griddly.Mvc;
 using Griddly.Mvc.Results;
 using NLog;

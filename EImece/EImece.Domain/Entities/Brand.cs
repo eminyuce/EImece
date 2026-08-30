@@ -1,10 +1,9 @@
-﻿using EImece.Domain.Helpers.Extensions;
+using EImece.Domain.Helpers.Extensions;
 using Resources;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Web;
-using System.Web.Mvc;
+using System.Net;
 
 namespace EImece.Domain.Entities
 {
@@ -27,22 +26,12 @@ namespace EImece.Domain.Entities
                 return string.Empty;
             }
 
-            var requestContext = HttpContext.Current?.Request?.RequestContext;
-            if (requestContext == null)
-            {
-                return string.Empty;
-            }
-
-            var urlHelper = new UrlHelper(requestContext);
             if (category != null)
             {
-                return urlHelper.Action(
-                    "Category",
-                    "ProductCategories",
-                    new { id = category.GetSeoUrl(), filtreler = "b" + Id });
+                return $"/productcategories/category/{category.GetSeoUrl()}?filtreler=b{Id}";
             }
 
-            return urlHelper.Action("searchproducts", "Products", new { search = Name });
+            return $"/products/searchproducts?search={WebUtility.UrlEncode(Name)}";
         }
     }
 }

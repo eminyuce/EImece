@@ -1,6 +1,7 @@
+using EImece.Web.Areas.Admin.Controllers;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
-using EImece.Domain.Helpers.AttributeHelper;
+using EImece.Web.Filters;
 using Griddly.Mvc;
 using Griddly.Mvc.Results;
 using NLog;
@@ -9,6 +10,7 @@ using System;
 using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -61,7 +63,7 @@ namespace EImece.Areas.Admin.Controllers
 
             Expression<Func<Coupon, bool>> whereLambda = r => r.Name.Contains(search) || r.Code.Contains(search);
             var result = await CouponService.SearchEntitiesAsync(whereLambda, search, CurrentLanguage);
-            return new QueryableResult<Coupon>(result.AsQueryable());
+            return AdminGridResult(result);
         }
 
         public async Task<ActionResult> SaveOrEdit(CancellationToken cancellationToken, int id = 0)
@@ -269,11 +271,17 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> Redemptions(int id, CancellationToken cancellationToken)
+        public async Task<ActionResult> Redemptions(int? id, CancellationToken cancellationToken)
         {
-            var coupon = await CouponService.GetSingleAsync(id).ConfigureAwait(false);
+            if (!id.HasValue || id.Value <= 0)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var couponId = id.Value;
+            var coupon = await CouponService.GetSingleAsync(couponId).ConfigureAwait(false);
             if (coupon == null) return HttpNotFound();
-            var redemptions = await CouponService.GetRedemptionsWithDetailsAsync(id, 100, cancellationToken).ConfigureAwait(false);
+            var redemptions = await CouponService.GetRedemptionsWithDetailsAsync(couponId, 100, cancellationToken).ConfigureAwait(false);
             ViewBag.Coupon = coupon;
             return View(redemptions);
         }

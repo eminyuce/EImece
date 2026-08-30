@@ -1,9 +1,5 @@
-﻿using EImece.Domain.Helpers;
+using EImece.Domain.Helpers;
 using System;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using System.Web.Routing;
 
 namespace EImece.Domain.Models.FrontModels
 {
@@ -78,7 +74,6 @@ namespace EImece.Domain.Models.FrontModels
 
         public Filter(string fieldName, string valueFirst, string valueLast)
         {
-            // TODO: Complete member initialization
             this.FieldName = fieldName;
             this.ValueFirst = valueFirst;
             this.ValueLast = valueLast;
@@ -88,94 +83,5 @@ namespace EImece.Domain.Models.FrontModels
 
         public ItemType OwnerType
         { get { return _ownerType; } set { _ownerType = value; } }
-
-        public string Link(HttpRequestBase httpRequestBase)
-        {
-            string id = (string)httpRequestBase.RequestContext.RouteData.Values["id"];
-            string sFilters = (string)httpRequestBase.RequestContext.RouteData.Values["filters"];
-            var filters = FilterHelper.ParseFiltersFromString(sFilters);
-
-            string urlFilters;
-
-            if (filters != null && filters.Count() > 0)
-            {
-                if (!filters.Any(i => i.FieldName.ToLower() == FieldName.ToLower()))
-                {
-                    filters.Add(this);
-                }
-
-                urlFilters = string.Join("/",
-                                         filters.OrderBy(i => i.FieldName).Select(
-                                             i => (i.FieldName.ToLower() == FieldName.ToLower()) ? Url : i.Url));
-            }
-            else
-            {
-                urlFilters = Url;
-            }
-
-            var rv = new RouteValueDictionary();
-            rv.Add("id", id);
-            rv.Add("filters", urlFilters);
-
-            foreach (var key in httpRequestBase.QueryString.AllKeys)
-            {
-                if (key != null)
-                {
-                    if (key.ToLower() != "page")
-                    {
-                        if (!rv.ContainsKey(key))
-                        {
-                            rv.Add(key, httpRequestBase.QueryString[key]);
-                        }
-                    }
-                }
-            }
-
-            var urlHelper = new UrlHelper(httpRequestBase.RequestContext);
-            return urlHelper.Action(OwnerType.SearchAction, OwnerType.Controller, rv).ToLower();
-        }
-
-        public string LinkExclude(HttpRequestBase httpRequestBase, ItemType ownerType)
-        {
-            //RequestContext
-            string id = (string)httpRequestBase.RequestContext.RouteData.Values["id"];
-            string sFilters = (string)httpRequestBase.RequestContext.RouteData.Values["filters"];
-            var filters = FilterHelper.ParseFiltersFromString(sFilters);
-
-            var rv = new RouteValueDictionary();
-            rv.Add("id", id);
-
-            if (filters != null)
-            {
-                int index = filters.FindIndex(i => i.FieldName.ToLower() == FieldName.ToLower());
-                if (index >= 0)
-                {
-                    filters.RemoveAt(index);
-                }
-
-                string urlFilters = string.Join("/",
-                                        filters.OrderBy(i => i.FieldName).Select(
-                                            i => (i.FieldName.ToLower() == FieldName.ToLower()) ? Url : i.Url));
-
-                rv.Add("filters", urlFilters.ToLower());
-            }
-
-            foreach (var key in httpRequestBase.QueryString.AllKeys)
-            {
-                if (key != null)
-                    if (key.ToLower() != "page")
-                    {
-                        if (!rv.ContainsKey(key))
-                        {
-                            rv.Add(key, httpRequestBase.QueryString[key]);
-                        }
-                    }
-            }
-
-            var urlHelper = new UrlHelper(httpRequestBase.RequestContext);
-
-            //  return urlHelper.Action("BoatsSearch", "Directory", rv);
-            return urlHelper.Action(ownerType.SearchAction, ownerType.Controller, rv).ToLower();
-        }
     }
 }

@@ -2,7 +2,6 @@ using EImece.Domain.Models.Enums;
 using EImece.Domain.Services.IServices;
 using System;
 using System.Collections.Generic;
-using System.Web.Mvc;
 
 namespace EImece.Domain.Helpers
 {
@@ -140,7 +139,7 @@ namespace EImece.Domain.Helpers
         {
             try
             {
-                var settingService = DependencyResolver.Current?.GetService(typeof(ISettingService)) as ISettingService;
+                var settingService = Domain.DependencyInjection.DomainServiceProvider.Instance?.GetService(typeof(ISettingService)) as ISettingService;
                 var raw = settingService?.GetSettingByKey(Constants.SupportedContentLanguages);
                 return Parse(raw);
             }

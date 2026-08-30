@@ -1,6 +1,7 @@
+using EImece.Web.Areas.Admin.Controllers;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
-using EImece.Domain.Helpers.AttributeHelper;
+using EImece.Web.Filters;
 using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
 using EImece.Models;
@@ -385,6 +386,11 @@ namespace EImece.Areas.Admin.Controllers
         [AuthorizeRoles(Domain.Constants.AdministratorRole)]
         public async Task<ActionResult> UserRoles(CancellationToken cancellationToken, string id)
         {
+            if (string.IsNullOrEmpty(id))
+            {
+                return RedirectToAction("Index");
+            }
+
             var model = await UsersService.GetAdminUserRolesViewModelAsync(id);
             return View(model);
         }

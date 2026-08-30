@@ -2,7 +2,7 @@
 @using EImece.Domain.Caching;
 @using EImece.Domain.Entities;
 @using EImece.Domain.Helpers;
-@using EImece.Domain.Helpers.AttributeHelper;
+@using EImece.Web.Filters;
 @using EImece.Domain.Helpers.EmailHelper;
 @using EImece.Domain.Models.Enums;
 @using EImece.Domain.Models.FrontModels;
@@ -13,7 +13,7 @@
 @{
     var dic = Model;
     var currentLanguage = Thread.CurrentThread.CurrentUICulture.ToString();
-    List<SelectListItem> listItems = EImece.Domain.Helpers.EnumHelper.ToSelectList3("Language");
+    List<SelectListItem> listItems = EImece.Web.Helpers.EnumWebExtensions.ToSelectList3("Language");
 }
 <!-- social bar  -->
 <div class="d-flex flex-nowrap">

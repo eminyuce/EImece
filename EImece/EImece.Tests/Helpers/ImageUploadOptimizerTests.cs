@@ -1,10 +1,16 @@
+using EImece.Domain;
 using EImece.Domain.Helpers;
+using EImece.Domain.Services.IServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.Remoting.Messaging;
+using System.Runtime.Remoting.Proxies;
 
 namespace EImece.Tests.Helpers
 {
@@ -169,6 +175,65 @@ namespace EImece.Tests.Helpers
                 result.MimeType == ImageUploadOptimizer.MimeWebP
                 || result.MimeType == ImageUploadOptimizer.MimeJpeg,
                 "expected webp or jpeg fallback, got " + result.MimeType);
+        }
+
+        [TestMethod]
+        public void ForFullImage_UsesInjectedSettingService_NotRootProvider()
+        {
+            var settings = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                { Constants.ImageUploadMaxWidth, "800" },
+                { Constants.ImageUploadMaxHeight, "600" },
+                { Constants.ImageUploadJpegQuality, "75" },
+                { Constants.ImageUploadWebPQuality, "70" },
+                { Constants.ImageUploadPreferWebP, "true" },
+                { Constants.ImageUploadKeepOriginalIfSmaller, "false" }
+            };
+            var settingService = new SettingServiceMockProxy(settings).Service;
+
+            var options = ImageUploadOptimizeOptions.ForFullImage("photo.jpg", "image/jpeg", settingService);
+
+            Assert.AreEqual(800, options.MaxWidth);
+            Assert.AreEqual(600, options.MaxHeight);
+            Assert.AreEqual(75, options.JpegQuality);
+            Assert.AreEqual(70, options.WebPQuality);
+            Assert.IsTrue(options.PreferWebP);
+            Assert.IsFalse(options.KeepOriginalIfSmaller);
+        }
+
+        private class SettingServiceMockProxy : RealProxy
+        {
+            private readonly Dictionary<string, string> _settings;
+
+            public SettingServiceMockProxy(Dictionary<string, string> settings) : base(typeof(ISettingService))
+            {
+                _settings = settings;
+            }
+
+            public ISettingService Service => (ISettingService)GetTransparentProxy();
+
+            public override IMessage Invoke(IMessage msg)
+            {
+                var call = (IMethodCallMessage)msg;
+                if (call.MethodName == "GetSettingByKey" && call.InArgs?.Length > 0)
+                {
+                    var key = call.InArgs[0] as string;
+                    string val;
+                    _settings.TryGetValue(key ?? string.Empty, out val);
+                    return new ReturnMessage(val, null, 0, call.LogicalCallContext, call);
+                }
+
+                object defaultResult = null;
+                if (call.MethodBase is MethodInfo mi && mi.ReturnType != typeof(void))
+                {
+                    if (mi.ReturnType.IsValueType)
+                    {
+                        defaultResult = Activator.CreateInstance(mi.ReturnType);
+                    }
+                }
+
+                return new ReturnMessage(defaultResult, null, 0, call.LogicalCallContext, call);
+            }
         }
 
         private static ImageUploadOptimizeOptions FullOptions(string extension, string mime = "image/jpeg")

@@ -1,5 +1,6 @@
 using AutoMapper;
 using EImece.Domain;
+using EImece.Domain.Abstractions;
 using EImece.Domain.ApiRepositories;
 using EImece.Domain.Caching;
 using EImece.Domain.DbContext;
@@ -8,12 +9,15 @@ using EImece.Domain.Factories;
 using EImece.Domain.Factories.IFactories;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.EmailHelper;
+using EImece.Web.Caching;
+using EImece.Web.Infrastructure;
+using EImece.Web.Infrastructure.Security;
 using EImece.Domain.Observability;
 using EImece.Domain.Observability.Configuration;
 using EImece.Domain.Observability.HealthChecks;
 using EImece.Domain.Observability.Http;
 using EImece.Domain.Observability.Metrics;
-using EImece.Filters;
+using EImece.Web.Filters;
 using EImece.Domain.Observability.Telemetry;
 using EImece.Domain.Repositories;
 using EImece.Domain.Repositories.IRepositories;
@@ -61,6 +65,7 @@ namespace EImece.App_Start
             ConfigureServices(services);
             ServiceProvider = services.BuildServiceProvider(validateScopes: true);
             DomainServiceProvider.Instance = ServiceProvider;
+            DomainServiceProvider.RequestProvider = GetRequestServiceProvider;
 
             DependencyResolver.SetResolver(new MsDiDependencyResolver(ServiceProvider));
             GlobalConfiguration.Configuration.DependencyResolver =
@@ -151,6 +156,7 @@ namespace EImece.App_Start
 
         private static void RegisterCaching(IServiceCollection services)
         {
+            services.AddSingleton<IHttpRuntimeCacheClearer, HttpRuntimeCacheClearer>();
             services.AddSingletonWithProps<IEimeceCacheProvider, LazyCacheProvider>();
             // Single, compile-once Razor engine shared across the app (thread-safe).
             services.AddSingletonWithProps<IRazorTemplateEngine, RazorTemplateEngine>();
@@ -332,9 +338,13 @@ namespace EImece.App_Start
             services.AddScopedWithProps<SiteMapService>();
             services.AddScopedWithProps<IUsersService, UsersService>();
 
-            // Transient matches Ninject default (no scope) for IEntityFactory / IHttpContextFactory.
+            // Domain abstraction bridges
+            services.AddScoped<ICurrentUserContext, WebCurrentUserContext>();
+            services.AddScoped<ISiteUrlProvider, WebSiteUrlProvider>();
+            services.AddSingleton<IBackgroundWorkQueue, HostingEnvironmentBackgroundWorkQueue>();
+
+            // Transient matches Ninject default (no scope) for IEntityFactory.
             services.AddTransientWithProps<IEntityFactory, EntityFactory>();
-            services.AddTransientWithProps<IHttpContextFactory, HttpContextFactory>();
         }
 
         private static void RegisterHelpers(IServiceCollection services)

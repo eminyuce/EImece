@@ -82,9 +82,16 @@ namespace EImece.Domain.Models.DTOs.Storefront
                 return "";
             }
 
-            var pageController = HtmlRequestHelper.Controller();
-            var pageAction = HtmlRequestHelper.Action();
-            var routeId = HtmlRequestHelper.Id() ?? string.Empty;
+            var pageController = string.Empty;
+            var pageAction = string.Empty;
+            var routeId = string.Empty;
+            if (!string.IsNullOrEmpty(currentPath))
+            {
+                var segments = currentPath.Trim('/').Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+                if (segments.Length > 0) pageController = segments[0];
+                if (segments.Length > 1) pageAction = segments[1];
+                if (segments.Length > 2) routeId = segments[2];
+            }
 
             string routeResult;
             if (TryMatchPagesDetail(pageController, pageAction, controller, routeId, currentPath, out routeResult))
@@ -112,12 +119,7 @@ namespace EImece.Domain.Models.DTOs.Storefront
 
         private static string TryGetCurrentAppPath()
         {
-            if (System.Web.HttpContext.Current == null || System.Web.HttpContext.Current.Request == null || System.Web.HttpContext.Current.Request.Url == null)
-            {
-                return "";
-            }
-
-            return NormalizeAppPath(System.Web.HttpContext.Current.Request.Url.AbsolutePath);
+            return "";
         }
 
         private bool TryParseMenuLink(out string controller, out string action, out string mid)
@@ -150,13 +152,6 @@ namespace EImece.Domain.Models.DTOs.Storefront
             if (!LinkIsActive || string.IsNullOrWhiteSpace(Url))
             {
                 return false;
-            }
-
-            if (Uri.TryCreate(Url, UriKind.Absolute, out var absolute) &&
-                string.Equals(absolute.Host, System.Web.HttpContext.Current.Request.Url.Host, StringComparison.OrdinalIgnoreCase))
-            {
-                result = PathsMatch(currentPath, NormalizeAppPath(absolute.AbsolutePath)) ? Constants.ActiveCssClass : "";
-                return true;
             }
 
             if (Url.StartsWith("/", StringComparison.Ordinal))
@@ -433,7 +428,7 @@ namespace EImece.Domain.Models.DTOs.Storefront
 
         public string GetCroppedImageTag(int width = 0, int height = 0)
         {
-            return string.Format("<img src=\"{0}\" alt=\"{1}\" />", GetCroppedImageUrl(null, width, height), System.Web.HttpUtility.HtmlAttributeEncode(Name));
+            return string.Format("<img src=\"{0}\" alt=\"{1}\" />", GetCroppedImageUrl(null, width, height), System.Net.WebUtility.HtmlEncode(Name));
         }
     }
 }

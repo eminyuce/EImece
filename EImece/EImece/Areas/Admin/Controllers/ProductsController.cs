@@ -1,7 +1,9 @@
+using EImece.Web.Areas.Admin.Controllers;
 using EImece.Domain;
+using EImece.Web.Helpers;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
-using EImece.Domain.Helpers.AttributeHelper;
+using EImece.Web.Filters;
 using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Models.Enums;
 using Griddly.Mvc;
@@ -108,7 +110,7 @@ namespace EImece.Areas.Admin.Controllers
             var products = await ProductService.GetAdminPageListAsync(id, query.BrandId, searchParam, CurrentLanguage, filter, cancellationToken).ConfigureAwait(false);
             ViewBag.IsProductPriceEnable = isProductPriceEnable;
             ViewBag.PriceEnabled = priceEnabled;
-            return new QueryableResult<Product>(products.AsQueryable());
+            return AdminGridResult(products);
         }
 
         [HttpGet]
@@ -180,7 +182,7 @@ namespace EImece.Areas.Admin.Controllers
         public async Task<ActionResult> SaveOrEditProductSpecs(CancellationToken cancellationToken, int id, int templateId, String saveButton = null)
         {
             int productId = id;
-            await ProductService.ParseTemplateAndSaveProductSpecificationsAsync(productId, templateId, CurrentLanguage, Request, cancellationToken);
+            await ProductService.ParseTemplateAndSaveProductSpecificationsAsync(productId, templateId, CurrentLanguage, Request.Unvalidated.Form, cancellationToken);
 
             if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText, StringComparison.InvariantCultureIgnoreCase))
             {
@@ -226,7 +228,7 @@ namespace EImece.Areas.Admin.Controllers
         //
         // POST: /Product/Create
 
-        [HttpPost]
+        [HttpPost, ValidateInput(false)]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> SaveOrEdit(CancellationToken cancellationToken, Product product, int[] tags = null, HttpPostedFileBase postedImage = null, String saveButton = null)
         {
@@ -251,6 +253,8 @@ namespace EImece.Areas.Admin.Controllers
                     //      }
                     else
                     {
+                        var isEdit = product.Id > 0;
+
                         FilesHelper.SaveFileFromHttpPostedFileBase(
                              postedImage,
                              product.ImageHeight,
@@ -266,9 +270,9 @@ namespace EImece.Areas.Admin.Controllers
 
                         await ProductService.SaveProductTagsAsync(product.Id, tags);
 
-                        if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText, StringComparison.InvariantCultureIgnoreCase))
+                        if (isEdit || (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText, StringComparison.InvariantCultureIgnoreCase)))
                         {
-                            return RedirectToAction(IndexAction);
+                            return RedirectToProductIndex(product.ProductCategoryId);
                         }
                         else if (!String.IsNullOrEmpty(saveButton) && ModelState.IsValid && saveButton.Equals(AdminResource.SaveButtonText, StringComparison.InvariantCultureIgnoreCase))
                         {
@@ -344,9 +348,14 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public ActionResult Media(int id)
+        public ActionResult Media(int? id)
         {
-            return RedirectToAction(IndexAction, "Media", new { contentId = id, mod = MediaModType.Products, imageType = EImeceImageType.ProductGallery });
+            if (!id.HasValue || id.Value <= 0)
+            {
+                return RedirectToAction(IndexAction);
+            }
+
+            return RedirectToAction(IndexAction, "Media", new { contentId = id.Value, mod = MediaModType.Products, imageType = EImeceImageType.ProductGallery });
         }
 
         [HttpGet, ActionName("ExportExcel")]
@@ -422,13 +431,19 @@ namespace EImece.Areas.Admin.Controllers
                 products = await ProductService.GetAdminPageListAsync(id, search, CurrentLanguage, cancellationToken);
             }
 
-            return new QueryableResult<Product>(products.AsQueryable());
+            return AdminGridResult(products);
         }
 
-        public async Task<ActionResult> MoveProducts(CancellationToken cancellationToken, int id, string productIdList, int oldCategoryId)
+        public async Task<ActionResult> MoveProducts(CancellationToken cancellationToken, int? id, string productIdList, int? oldCategoryId)
         {
-            await ProductService.MoveProductsInTreesAsync(id, productIdList, cancellationToken);
-            return RedirectToAction("MoveProductsInTrees", new { id, productIdList, oldCategoryId });
+            if (!id.HasValue || id.Value <= 0)
+            {
+                return RedirectToAction("MoveProductsInTrees");
+            }
+
+            var categoryId = id.Value;
+            await ProductService.MoveProductsInTreesAsync(categoryId, productIdList, cancellationToken);
+            return RedirectToAction("MoveProductsInTrees", new { id = categoryId, productIdList, oldCategoryId = oldCategoryId.GetValueOrDefault() });
         }
 
         private async Task<List<SelectListItem>> GetBrandsSelectListAsync()
@@ -442,6 +457,13 @@ namespace EImece.Areas.Admin.Controllers
                     Text = r.Name.ToStr(),
                     Value = r.Id.ToStr()
                 }).ToList();
+        }
+
+        private ActionResult RedirectToProductIndex(int productCategoryId)
+        {
+            return productCategoryId > 0
+                ? RedirectToAction(IndexAction, new { id = productCategoryId })
+                : RedirectToAction(IndexAction);
         }
 
         private static void ApplyPostedProductPrices(Product product)

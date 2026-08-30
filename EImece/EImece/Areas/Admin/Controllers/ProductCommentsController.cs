@@ -1,6 +1,7 @@
+using EImece.Web.Areas.Admin.Controllers;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
-using EImece.Domain.Helpers.AttributeHelper;
+using EImece.Web.Filters;
 using Griddly.Mvc;
 using Griddly.Mvc.Results;
 using NLog;
@@ -63,7 +64,7 @@ namespace EImece.Areas.Admin.Controllers
             }
 
             var productComments = await ProductCommentService.GetAdminPageListAsync(productId, search, CurrentLanguage, selectedRatings, startDate, endDate, cancellationToken);
-            return new QueryableResult<ProductComment>(productComments.AsQueryable());
+            return AdminGridResult(productComments);
         }
 
         [HttpGet, ActionName("ExportExcel")]

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 
 using EImece.Domain.Helpers;
-using EImece.Domain.Helpers.AttributeHelper;
+using EImece.Web.Filters;
 
 namespace EImece.Controllers
 {

@@ -4,7 +4,8 @@ using EImece.Domain;
 using EImece.Domain.Helpers;
 using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
-using Microsoft.AspNet.Identity;
+using EImece.Web.Filters;
+using EImece.Web.Infrastructure.Designs;
 using NLog;
 using System;
 using System.Net;
@@ -33,17 +34,18 @@ namespace EImece
             // Fail closed on missing/placeholder DB credentials before any request handling.
             ConnectionStringProvider.Initialize();
             DependencyInjectionConfig.Register();
+            AdminHtmlMetadataConfig.Register();
 
             //System.Net.ServicePointManager.SecurityProtocol
             System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12; // TLS 1.2 only; older protocols (TLS 1.0/1.1) removed for security
 
             ViewEngineConfig.RegisterViewEngines(ViewEngines.Engines);
 
-            string activeDesign = new EImece.Infrastructure.Designs.ConfigDesignProvider().GetActiveDesign();
+            string activeDesign = new ConfigDesignProvider().GetActiveDesign();
             bool validateOnStartup = string.Equals(System.Configuration.ConfigurationManager.AppSettings["ValidateDesignOnStartup"], "true", StringComparison.OrdinalIgnoreCase);
             if (!string.IsNullOrEmpty(activeDesign) && validateOnStartup)
             {
-                EImece.Infrastructure.Designs.DesignValidator.EnsureValidDesign(activeDesign);
+                DesignValidator.EnsureValidDesign(activeDesign);
             }
 
             AreaRegistration.RegisterAllAreas();
@@ -65,8 +67,8 @@ namespace EImece
                 var metrics = DependencyResolver.Current.GetService<EImece.Domain.Observability.Metrics.IApplicationMetrics>();
                 var observabilityOptions = DependencyResolver.Current.GetService<EImece.Domain.Observability.Configuration.ObservabilityOptions>()
                     ?? EImece.Domain.Observability.Configuration.ObservabilityOptions.FromAppConfig();
-                GlobalFilters.Filters.Add(new Filters.TelemetryActionFilter(metrics, observabilityOptions));
-                GlobalFilters.Filters.Add(new Filters.StructuredExceptionFilter());
+                GlobalFilters.Filters.Add(new TelemetryActionFilter(metrics, observabilityOptions));
+                GlobalFilters.Filters.Add(new StructuredExceptionFilter());
 
                 var adresService = DependencyResolver.Current.GetService<AdresService>();
             }

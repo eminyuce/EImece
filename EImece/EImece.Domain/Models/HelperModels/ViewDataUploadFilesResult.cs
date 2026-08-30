@@ -1,6 +1,4 @@
-﻿using System;
-using System.Web;
-using System.Web.Mvc;
+using System;
 
 namespace EImece.Domain.Models.HelperModels
 {
@@ -23,10 +21,8 @@ namespace EImece.Domain.Models.HelperModels
         {
             get
             {
-                var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
                 var imageId = String.Format("{0}.jpg", fileStorageId);
-                String imagePath = urlHelper.Action("Index", "Images", new { area = "admin", id = imageId, width = 150, height = 0 });
-                return imagePath;
+                return $"/admin/images/index/{imageId}?width=150&height=0";
             }
         }
     }

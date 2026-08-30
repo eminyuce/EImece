@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using System.Net;
 using System.Xml.Linq;
 
 namespace EImece.Domain.Models.FrontModels
@@ -54,7 +54,7 @@ namespace EImece.Domain.Models.FrontModels
             {
                 if (ProductDto == null) return "{}";
 
-                string plainDescription = HttpUtility.HtmlDecode(GeneralHelper.RemoveHtmlTags(ProductDto.ShortDescription)) ?? "No description available";
+                string plainDescription = WebUtility.HtmlDecode(GeneralHelper.RemoveHtmlTags(ProductDto.ShortDescription)) ?? "No description available";
                 var productComments = ProductDto.ProductComments.IsNotEmpty() ? ProductDto.ProductComments : new List<StorefrontProductCommentDto>();
                 var productTags = ProductDto.ProductTags;
                 var productFiles = ProductDto.ProductFiles;

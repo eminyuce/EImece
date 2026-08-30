@@ -1,6 +1,8 @@
+using EImece.Web.Areas.Admin.Controllers;
 using EImece.Domain.Entities;
+using EImece.Web.Helpers;
 using EImece.Domain.Helpers;
-using EImece.Domain.Helpers.AttributeHelper;
+using EImece.Web.Filters;
 using EImece.Domain.Models.Enums;
 using Griddly.Mvc;
 using Griddly.Mvc.Results;
@@ -62,7 +64,7 @@ namespace EImece.Areas.Admin.Controllers
 
             Expression<Func<StoryCategory, bool>> whereLambda = r => r.Name.Contains(search);
             var categories = await StoryCategoryService.SearchEntitiesAsync(whereLambda, search, CurrentLanguage);
-            return new QueryableResult<StoryCategory>(categories.AsQueryable());
+            return AdminGridResult(categories);
         }
 
         public async Task<ActionResult> SaveOrEdit(CancellationToken cancellationToken, int id = 0)
@@ -80,7 +82,7 @@ namespace EImece.Areas.Admin.Controllers
             return View(content);
         }
 
-        [HttpPost]
+        [HttpPost, ValidateInput(false)]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> SaveOrEdit(StoryCategory storyCategory, HttpPostedFileBase postedImage = null, String saveButton = null)
         {

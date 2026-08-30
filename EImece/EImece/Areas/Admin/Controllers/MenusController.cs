@@ -1,6 +1,9 @@
+using EImece.Web.Areas.Admin.Controllers;
 using EImece.Domain.Entities;
+using Newtonsoft.Json;
+using EImece.Web.Helpers;
 using EImece.Domain.Helpers;
-using EImece.Domain.Helpers.AttributeHelper;
+using EImece.Web.Filters;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.AdminHelperModels;
 using EImece.Domain.Models.Enums;
@@ -67,7 +70,7 @@ namespace EImece.Areas.Admin.Controllers
             Expression<Func<Menu, bool>> whereLambda = r => r.Name.Contains(search);
             var menus = await MenuService.SearchEntitiesAsync(whereLambda, search, CurrentLanguage);
             ViewBag.MenuLeaves = await MenuService.GetMenuLeavesAsync(null, CurrentLanguage, cancellationToken);
-            return new QueryableResult<Menu>(menus.AsQueryable());
+            return AdminGridResult(menus);
         }
 
         [HttpGet]
@@ -171,7 +174,7 @@ namespace EImece.Areas.Admin.Controllers
             return View(content);
         }
 
-        [HttpPost]
+        [HttpPost, ValidateInput(false)]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> SaveOrEdit(CancellationToken cancellationToken, Menu menu, HttpPostedFileBase postedImage = null, String saveButton = null)
         {
@@ -261,15 +264,21 @@ namespace EImece.Areas.Admin.Controllers
         public async Task<ActionResult> GetMenus(CancellationToken cancellationToken)
         {
             var treelist = await MenuService.BuildTreeAsync(null, CurrentLanguage, cancellationToken);
-            return new JsonResult { Data = new { treeList = treelist }, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+            var json = JsonConvert.SerializeObject(new { treeList = treelist }, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
+            return Content(json, "application/json");
         }
 
         [HttpGet]
-        public ActionResult Media(int id)
+        public ActionResult Media(int? id)
         {
+            if (!id.HasValue || id.Value <= 0)
+            {
+                return RedirectToAction(IndexAction);
+            }
+
             return RedirectToAction(IndexAction, "Media", new
             {
-                contentId = id,
+                contentId = id.Value,
                 mod = MediaModType.Menus,
                 imageType = EImeceImageType.MenuGallery
             });

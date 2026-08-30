@@ -1,3 +1,4 @@
+using EImece.Web.Filters;
 using System.Web.Mvc;
 
 namespace EImece
@@ -7,9 +8,9 @@ namespace EImece
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
             filters.Add(new HandleErrorAttribute());
-            filters.Add(new Filters.RequestLoggingActionFilter());
-            filters.Add(new Filters.RobotsNoIndexAttribute());
-            filters.Add(new EImece.Domain.Helpers.AttributeHelper.UnderConstAttribute());
+            filters.Add(new RequestLoggingActionFilter());
+            filters.Add(new RobotsNoIndexAttribute());
+            filters.Add(new UnderConstAttribute());
         }
     }
 }
