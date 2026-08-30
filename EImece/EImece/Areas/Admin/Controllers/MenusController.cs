@@ -268,16 +268,16 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public ActionResult Media(int id)
+        public ActionResult Media(int? id)
         {
-            if (id <= 0)
+            if (!id.HasValue || id.Value <= 0)
             {
                 return RedirectToAction(IndexAction);
             }
 
             return RedirectToAction(IndexAction, "Media", new
             {
-                contentId = id,
+                contentId = id.Value,
                 mod = MediaModType.Menus,
                 imageType = EImeceImageType.MenuGallery
             });

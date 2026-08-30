@@ -345,14 +345,14 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public ActionResult Media(int id)
+        public ActionResult Media(int? id)
         {
-            if (id <= 0)
+            if (!id.HasValue || id.Value <= 0)
             {
                 return RedirectToAction(IndexAction);
             }
 
-            return RedirectToAction(IndexAction, "Media", new { contentId = id, mod = MediaModType.Products, imageType = EImeceImageType.ProductGallery });
+            return RedirectToAction(IndexAction, "Media", new { contentId = id.Value, mod = MediaModType.Products, imageType = EImeceImageType.ProductGallery });
         }
 
         [HttpGet, ActionName("ExportExcel")]
@@ -431,15 +431,16 @@ namespace EImece.Areas.Admin.Controllers
             return new QueryableResult<Product>(products.AsQueryable());
         }
 
-        public async Task<ActionResult> MoveProducts(CancellationToken cancellationToken, int id, string productIdList, int oldCategoryId)
+        public async Task<ActionResult> MoveProducts(CancellationToken cancellationToken, int? id, string productIdList, int oldCategoryId)
         {
-            if (id <= 0)
+            if (!id.HasValue || id.Value <= 0)
             {
                 return RedirectToAction("MoveProductsInTrees");
             }
 
-            await ProductService.MoveProductsInTreesAsync(id, productIdList, cancellationToken);
-            return RedirectToAction("MoveProductsInTrees", new { id, productIdList, oldCategoryId });
+            var categoryId = id.Value;
+            await ProductService.MoveProductsInTreesAsync(categoryId, productIdList, cancellationToken);
+            return RedirectToAction("MoveProductsInTrees", new { id = categoryId, productIdList, oldCategoryId });
         }
 
         private async Task<List<SelectListItem>> GetBrandsSelectListAsync()

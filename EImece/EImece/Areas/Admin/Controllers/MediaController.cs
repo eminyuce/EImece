@@ -162,9 +162,9 @@ namespace EImece.Areas.Admin.Controllers
             return new QueryableResult<FileStorage>((fileStorages ?? new List<FileStorage>()).AsQueryable());
         }
 
-        public ActionResult Show(int id, String mod, String imageType)
+        public ActionResult Show(int? id, String mod, String imageType)
         {
-            if (id <= 0 || string.IsNullOrWhiteSpace(mod) || string.IsNullOrWhiteSpace(imageType))
+            if (!id.HasValue || id.Value <= 0 || string.IsNullOrWhiteSpace(mod) || string.IsNullOrWhiteSpace(imageType))
             {
                 return RedirectToAction(IndexAction, "Dashboard");
             }

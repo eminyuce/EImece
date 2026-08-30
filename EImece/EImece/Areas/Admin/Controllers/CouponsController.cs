@@ -270,16 +270,17 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> Redemptions(int id, CancellationToken cancellationToken)
+        public async Task<ActionResult> Redemptions(int? id, CancellationToken cancellationToken)
         {
-            if (id <= 0)
+            if (!id.HasValue || id.Value <= 0)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var coupon = await CouponService.GetSingleAsync(id).ConfigureAwait(false);
+            var couponId = id.Value;
+            var coupon = await CouponService.GetSingleAsync(couponId).ConfigureAwait(false);
             if (coupon == null) return HttpNotFound();
-            var redemptions = await CouponService.GetRedemptionsWithDetailsAsync(id, 100, cancellationToken).ConfigureAwait(false);
+            var redemptions = await CouponService.GetRedemptionsWithDetailsAsync(couponId, 100, cancellationToken).ConfigureAwait(false);
             ViewBag.Coupon = coupon;
             return View(redemptions);
         }
