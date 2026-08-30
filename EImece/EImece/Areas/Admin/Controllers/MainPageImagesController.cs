@@ -82,7 +82,7 @@ namespace EImece.Areas.Admin.Controllers
         //
         // POST: /StoryCategory/Create
 
-        [HttpPost]
+        [HttpPost, ValidateInput(false)]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> SaveOrEdit(MainPageImage mainpageimage, HttpPostedFileBase postedImage = null, String saveButton = null)
         {

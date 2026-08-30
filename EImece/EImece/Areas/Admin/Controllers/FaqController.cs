@@ -74,7 +74,7 @@ namespace EImece.Areas.Admin.Controllers
             return View(item);
         }
 
-        [HttpPost]
+        [HttpPost, ValidateInput(false)]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> SaveOrEdit(Faq faq, String saveButton = null)
         {

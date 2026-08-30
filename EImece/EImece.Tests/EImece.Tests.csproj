@@ -373,6 +373,7 @@
     <Compile Include="Helpers\PerfStatsTests.cs" />
     <Compile Include="Controllers\HomeControllerTest.cs" />
     <Compile Include="Controllers\RssFeedsControllerTests.cs" />
+    <Compile Include="Controllers\AdminHtmlInputValidationTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App.config" />

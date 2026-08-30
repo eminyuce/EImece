@@ -160,7 +160,7 @@ namespace EImece.Areas.Admin.Controllers
             return View(item);
         }
 
-        [HttpPost]
+        [HttpPost, ValidateInput(false)]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> SaveOrEdit(MailTemplate MailTemplate, String saveButton = null)
         {

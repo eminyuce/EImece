@@ -82,7 +82,7 @@ namespace EImece.Areas.Admin.Controllers
         //
         // POST: /Brand/Create
 
-        [HttpPost]
+        [HttpPost, ValidateInput(false)]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> SaveOrEdit(CancellationToken cancellationToken, Brand brand, int[] tags = null, HttpPostedFileBase postedImage = null, String saveButton = null)
         {

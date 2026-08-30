@@ -192,7 +192,7 @@ namespace EImece.Areas.Admin.Controllers
         //
         // POST: /ProductCategory/Create
 
-        [HttpPost]
+        [HttpPost, ValidateInput(false)]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> SaveOrEdit(CancellationToken cancellationToken, ProductCategory productCategory, HttpPostedFileBase postedImage = null, String saveButton = null)
         {
