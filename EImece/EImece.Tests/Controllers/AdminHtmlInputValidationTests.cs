@@ -119,6 +119,27 @@ namespace EImece.Tests.Controllers
         }
 
         [TestMethod]
+        public void AdminProductList_SortMustPrecedeTake_ForUnfilteredIndexCap()
+        {
+            var older = new DateTime(2024, 1, 1);
+            var newer = new DateTime(2024, 6, 1);
+            var products = Enumerable.Range(1, 5).Select(id => new Product
+            {
+                Id = id,
+                UpdatedDate = id <= 3 ? older : newer,
+            }).AsQueryable();
+
+            var capped = products
+                .OrderByDescending(p => p.UpdatedDate)
+                .ThenByDescending(p => p.Id)
+                .Take(3)
+                .Select(p => p.Id)
+                .ToList();
+
+            CollectionAssert.AreEqual(new List<int> { 5, 4, 3 }, capped);
+        }
+
+        [TestMethod]
         public void AdminProductIndexGrid_IncludesUpdatedDateColumnForGriddlySort()
         {
             var gridViewPath = System.IO.Path.Combine(

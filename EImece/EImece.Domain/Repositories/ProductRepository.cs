@@ -199,17 +199,20 @@ namespace EImece.Domain.Repositories
             {
                 products = products.Where(r => r.ProductCategoryId == categoryId);
             }
-            else
+
+            products = products.OrderByDescending(r => r.UpdatedDate).ThenByDescending(r => r.Id);
+
+            if (categoryId <= 0)
             {
                 // CategoryId is -1 for excel exporting.
                 // Skip Take(1000) when advanced filters are active so filtered results are complete.
+                // Take must run after UpdatedDate sort so the cap keeps the most recently updated rows.
                 var hasAdvancedFilter = filter != null && filter.HasAnyFilter;
                 if (String.IsNullOrEmpty(search) && categoryId != -1 && !hasAdvancedFilter && brandId <= 0)
                 {
                     products = products.Take(1000);
                 }
             }
-            products = products.OrderByDescending(r => r.UpdatedDate).ThenByDescending(r => r.Id);
 
             return products;
         }
