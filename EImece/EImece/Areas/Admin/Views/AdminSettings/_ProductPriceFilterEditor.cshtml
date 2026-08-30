@@ -13,14 +13,14 @@
     <div class="card" style="border: 1px solid #dcdfe6; box-shadow: 0 1px 3px rgba(0,0,0,0.05); margin-bottom: 5px;">
         <div class="card-header" style="background-color: #f8f9fc; border-bottom: 1px solid #e3e6f0; display:flex; justify-content:space-between; align-items:center; padding: 10px 15px;">
             <strong style="color: #337ab7; font-size: 13px;">
-                <i class="fa fa-sliders" style="margin-right: 5px;"></i> Fiyat Filtresi Aralıkları
+                <i class="fa-solid fa-sliders" style="margin-right: 5px;"></i> Fiyat Filtresi Aralıkları
             </strong>
             <div>
                 <button type="button" class="btn btn-sm btn-secondary" id="btnResetDefaultRanges" title="Varsayılan e-ticaret aralıklarını yükle">
-                    <i class="fa fa-refresh"></i> Varsayılanları Yükle
+                    <i class="fa-solid fa-arrows-rotate"></i> Varsayılanları Yükle
                 </button>
                 <button type="button" class="btn btn-sm btn-primary" id="btnAddPriceRange" style="margin-left: 5px;">
-                    <i class="fa fa-plus-circle"></i> Yeni Aralık Ekle
+                    <i class="fa-solid fa-circle-plus"></i> Yeni Aralık Ekle
                 </button>
             </div>
         </div>
@@ -28,7 +28,7 @@
         <div class="card-body" style="padding: 15px;">
             <!-- Alert / Validation Message Area -->
             <div id="priceRangeValidationAlert" class="alert alert-danger" style="display:none; margin-bottom: 15px; padding: 8px 15px; font-size: 13px;">
-                <i class="fa fa-exclamation-triangle"></i> <span class="msg"></span>
+                <i class="fa-solid fa-triangle-exclamation"></i> <span class="msg"></span>
             </div>
 
             <!-- Table of Ranges -->
@@ -53,7 +53,7 @@
             <!-- Live Storefront Preview -->
             <div class="storefront-preview-box" style="margin-top: 12px; padding: 10px 14px; background-color: #f8fafc; border-radius: 4px; border: 1px dashed #cbd5e1;">
                 <div style="font-size: 11px; font-weight: bold; color: #64748b; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">
-                    <i class="fa fa-eye"></i> Mağaza Kategori Filtresi Önizlemesi
+                    <i class="fa-solid fa-eye"></i> Mağaza Kategori Filtresi Önizlemesi
                 </div>
                 <div id="priceRangePills" style="display: flex; flex-wrap: wrap; gap: 6px; align-items: center;">
                     <!-- Real-time badges rendered here -->
@@ -150,12 +150,12 @@
                     '</td>' +
                     '<td class="text-center" style="vertical-align:middle;">' +
                         '<div class="btn-group btn-group-xs">' +
-                            '<button type="button" class="btn btn-secondary btn-move-up" title="Yukarı Taşı"><i class="fa fa-chevron-up"></i></button>' +
-                            '<button type="button" class="btn btn-secondary btn-move-down" title="Aşağı Taşı"><i class="fa fa-chevron-down"></i></button>' +
+                            '<button type="button" class="btn btn-secondary btn-move-up" title="Yukarı Taşı"><i class="fa-solid fa-chevron-up"></i></button>' +
+                            '<button type="button" class="btn btn-secondary btn-move-down" title="Aşağı Taşı"><i class="fa-solid fa-chevron-down"></i></button>' +
                         '</div>' +
                     '</td>' +
                     '<td class="text-center" style="vertical-align:middle;">' +
-                        '<button type="button" class="btn btn-danger btn-sm btn-remove-range" title="Sil"><i class="fa fa-trash"></i></button>' +
+                        '<button type="button" class="btn btn-danger btn-sm btn-remove-range" title="Sil"><i class="fa-solid fa-trash"></i></button>' +
                     '</td>' +
                 '</tr>';
             }
@@ -229,7 +229,7 @@
 
                     $pills.append(
                         '<span class="preview-pill">' +
-                            '<i class="fa fa-tag"></i> ' + text +
+                            '<i class="fa-solid fa-tag"></i> ' + text +
                         '</span>'
                     );
                 });

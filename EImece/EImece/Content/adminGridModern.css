@@ -213,7 +213,7 @@ body.admin-app .eg-grid table.grid-table > thead > tr > th,
 }
 
 .eg-grid .grid-table > thead > tr > th .grid-sort-arrow,
-.eg-grid .grid-table > thead > tr > th [class*="fa fa-sort"],
+.eg-grid .grid-table > thead > tr > th [class*="fa-solid fa-sort"],
 .eg-grid .grid-table > thead > tr > th .sorted-asc,
 .eg-grid .grid-table > thead > tr > th .sorted-desc {
     color: #2b6cb0;

@@ -13,18 +13,18 @@
         <div>
             @Html.AdminBreadcrumb(AdminResource.SystemHealth, (AdminResource.System, ""))
             <h1 style="font-size: 24px; font-weight: 700; color: #102a43; margin: 0; display: flex; align-items: center; gap: 10px;">
-                <i class="fa fa-heartbeat text-danger" aria-hidden="true"></i> @AdminResource.SystemHealth
+                <i class="fa-solid fa-heart-pulse text-danger" aria-hidden="true"></i> @AdminResource.SystemHealth
             </h1>
         </div>
         <div style="display: flex; align-items: center; gap: 10px;">
             <a href="/health" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm" title="JSON (/health)">
-                <i class="fa fa-code"></i> JSON (/health)
+                <i class="fa-solid fa-code"></i> JSON (/health)
             </a>
             <a href="@Url.Action("Index", "Metrics", new { area = "admin" })" class="btn btn-secondary btn-sm" title="@AdminResource.Metrics">
-                <i class="fa fa-line-chart"></i> @AdminResource.Metrics
+                <i class="fa-solid fa-chart-line"></i> @AdminResource.Metrics
             </a>
             <button type="button" class="btn btn-primary btn-sm" id="btnPageRefreshHealth" style="font-weight: 600;">
-                <i class="fa fa-refresh" id="pageRefreshIcon"></i> @AdminResource.RefreshNow
+                <i class="fa-solid fa-arrows-rotate" id="pageRefreshIcon"></i> @AdminResource.RefreshNow
             </button>
         </div>
     </div>
@@ -33,7 +33,7 @@
     @if (isSiteUnderConstruction)
     {
         <div class="alert alert-warning d-flex align-items-center" style="border-radius: 8px; border: 1px solid #f0b429; background: #fffbea; box-shadow: 0 2px 6px rgba(16,42,67,0.06); margin-bottom: 24px;">
-            <i class="fa fa-exclamation-triangle fa-2x" style="color: #f0b429; margin-right: 16px;" aria-hidden="true"></i>
+            <i class="fa-solid fa-triangle-exclamation fa-2x" style="color: #f0b429; margin-right: 16px;" aria-hidden="true"></i>
             <div>
                 <strong style="display: block; font-size: 15px; color: #822427;">@AdminResource.MaintenanceModeActive</strong>
                 <span style="color: #627d98; font-size: 13px;">@AdminResource.MaintenanceModeSiteOffline</span>
@@ -47,7 +47,7 @@
         <div class="card-body" style="padding: 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;">
             <div style="display: flex; align-items: center; gap: 16px;">
                 <div id="pageOverallStatusIconContainer" style="width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: #f0f4f8; font-size: 24px;">
-                    <i class="fa fa-circle-o-notch fa-spin text-muted" id="pageOverallStatusIcon"></i>
+                    <i class="fa-solid fa-circle-notch fa-spin text-muted" id="pageOverallStatusIcon"></i>
                 </div>
                 <div>
                     <div style="font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: #829ab1;">@AdminResource.GeneralSystemStatus</div>
@@ -70,7 +70,7 @@
     <!-- Component Details Table -->
     <div class="card" style="border-radius: 8px; border: 1px solid #d9e2ec; box-shadow: 0 2px 6px rgba(16,42,67,0.06);">
         <div class="card-header" style="background: #f8fafc; border-bottom: 1px solid #d9e2ec; padding: 14px 20px; font-weight: 700; font-size: 14px; color: #334e68;">
-            <i class="fa fa-server" aria-hidden="true"></i> @AdminResource.SystemComponentsAndHealthChecks
+            <i class="fa-solid fa-server" aria-hidden="true"></i> @AdminResource.SystemComponentsAndHealthChecks
         </div>
         <div class="table-responsive">
             <table class="table table-hover table-striped" style="margin-bottom: 0;">
@@ -85,7 +85,7 @@
                 <tbody id="pageHealthComponentsTableBody" style="font-size: 13px;">
                     <tr>
                         <td colspan="4" class="text-center text-muted" style="padding: 24px;">
-                            <i class="fa fa-spinner fa-spin"></i> @AdminResource.QueryingHealthChecks
+                            <i class="fa-solid fa-spinner fa-spin"></i> @AdminResource.QueryingHealthChecks
                         </td>
                     </tr>
                 </tbody>
@@ -145,7 +145,7 @@
             var statusIcon = $('#pageOverallStatusIcon');
             var statusTitle = $('#pageOverallStatusTitle');
 
-            statusIcon.removeClass('fa-spin fa-circle-o-notch fa-check fa-exclamation-triangle text-muted text-success text-danger');
+            statusIcon.removeClass('fa-spin fa-circle-notch fa-check fa-triangle-exclamation text-muted text-success text-danger');
 
             if (isHealthy) {
                 iconContainer.css('background', '#e3f9e5');
@@ -153,7 +153,7 @@
                 statusTitle.text(txtHealthy).css('color', '#27ab83');
             } else {
                 iconContainer.css('background', '#ffe3e3');
-                statusIcon.addClass('fa-exclamation-triangle').css('color', '#e12d39');
+                statusIcon.addClass('fa-triangle-exclamation').css('color', '#e12d39');
                 statusTitle.text(txtIssue).css('color', '#e12d39');
             }
 
@@ -168,13 +168,13 @@
                 $.each(components, function (key, comp) {
                     var compUp = comp.Status === "UP";
                     var compBadge = compUp
-                        ? '<span class="label text-bg-success" style="font-size: 12px; padding: 4px 10px; border-radius: 10px;"><i class="fa fa-check"></i> UP</span>'
-                        : '<span class="label text-bg-danger" style="font-size: 12px; padding: 4px 10px; border-radius: 10px;"><i class="fa fa-times"></i> DOWN</span>';
+                        ? '<span class="label text-bg-success" style="font-size: 12px; padding: 4px 10px; border-radius: 10px;"><i class="fa-solid fa-check"></i> UP</span>'
+                        : '<span class="label text-bg-danger" style="font-size: 12px; padding: 4px 10px; border-radius: 10px;"><i class="fa-solid fa-xmark"></i> DOWN</span>';
                     var duration = (typeof comp.DurationMs === 'number') ? comp.DurationMs.toFixed(1) + ' ms' : '-';
                     var desc = comp.Description || (compUp ? txtNormal : txtConnError);
 
                     var row = $('<tr></tr>');
-                    row.append('<td style="padding: 14px 20px;"><strong><i class="fa fa-cube text-primary" style="margin-right: 6px;"></i> ' + $('<div>').text(key).html() + '</strong></td>');
+                    row.append('<td style="padding: 14px 20px;"><strong><i class="fa-solid fa-cube text-primary" style="margin-right: 6px;"></i> ' + $('<div>').text(key).html() + '</strong></td>');
                     row.append('<td style="padding: 14px 20px;">' + compBadge + '</td>');
                     row.append('<td style="padding: 14px 20px;"><span class="badge" style="background: #e2e8f0; color: #334e68; font-size: 12px;">' + duration + '</span></td>');
                     row.append('<td style="padding: 14px 20px;"><span style="color: ' + (compUp ? '#486581' : '#e12d39') + ';">' + $('<div>').text(desc).html() + '</span></td>');
@@ -182,7 +182,7 @@
                 });
             } else if (isError) {
                 $('#pageTotalComponentsCount').text('0');
-                tbody.append('<tr><td colspan="4" class="text-danger text-center" style="padding: 24px;"><i class="fa fa-exclamation-triangle"></i> Sağlık kontrol servisine ulaşılamadı. Lütfen sunucu bağlantısını kontrol edin.</td></tr>');
+                tbody.append('<tr><td colspan="4" class="text-danger text-center" style="padding: 24px;"><i class="fa-solid fa-triangle-exclamation"></i> Sağlık kontrol servisine ulaşılamadı. Lütfen sunucu bağlantısını kontrol edin.</td></tr>');
             } else {
                 $('#pageTotalComponentsCount').text('1');
                 tbody.append('<tr><td style="padding: 14px 20px;"><strong>Genel Durum</strong></td><td><span class="label text-bg-success">UP</span></td><td>-</td><td>Uygulama çalışıyor.</td></tr>');

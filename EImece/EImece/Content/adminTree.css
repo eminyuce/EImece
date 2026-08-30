@@ -87,7 +87,7 @@
     align-items: center;
 }
 
-.eg-category-tree-search > .fa {
+.eg-category-tree-search > :is(.fa-solid, .fa-regular, .fa-brands) {
     position: absolute;
     left: 10px;
     color: var(--eg-tree-text-soft);

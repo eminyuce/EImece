@@ -44,10 +44,10 @@
             </div>
             <div class="eg-grid-scroll-controls" title="Tabloyu Sağa/Sola Kaydır">
                 <button type="button" class="btn btn-sm eg-scroll-nav-btn eg-scroll-nav-left" title="Sola Kaydır" aria-label="Sola Kaydır">
-                    <i class="fa fa-chevron-left"></i>
+                    <i class="fa-solid fa-chevron-left"></i>
                 </button>
                 <button type="button" class="btn btn-sm eg-scroll-nav-btn eg-scroll-nav-right" title="Sağa Kaydır" aria-label="Sağa Kaydır">
-                    <i class="fa fa-chevron-right"></i>
+                    <i class="fa-solid fa-chevron-right"></i>
                 </button>
             </div>
         </output>
@@ -78,7 +78,7 @@
     else
     {
         <div class="alert alert-danger p-1 mb-0 text-center" style="font-size:11px;line-height:1.2;">
-            <i class="fa fa-exclamation-circle"></i><br />
+            <i class="fa-solid fa-circle-exclamation"></i><br />
             <strong>@AdminResource.FileNotFound</strong>
         </div>
     }
@@ -105,7 +105,7 @@
         </div>
         <div class="media-file-btn-wrap">
             <button type="button" class="btn btn-sm btn-primary eg-image-preview-btn" data-bs-toggle="modal" data-bs-target="#myModal_@fileStorage.Id">
-                <i class="fa fa-picture-o" aria-hidden="true"></i> @AdminResource.GridMainPageImageText
+                <i class="fa-regular fa-image" aria-hidden="true"></i> @AdminResource.GridMainPageImageText
             </button>
             @Html.Partial("pImagePopUp", fileStorage)
         </div>
@@ -114,7 +114,7 @@
     {
         <div class="mb-1">
             <span class="badge text-bg-danger" title="@AdminResource.MissingFileTooltip">
-                <i class="fa fa-times"></i> @AdminResource.MissingFile
+                <i class="fa-solid fa-xmark"></i> @AdminResource.MissingFile
             </span>
             <span class="text-danger small ms-1">@AdminResource.MissingFileNotFoundOnDisk</span>
         </div>

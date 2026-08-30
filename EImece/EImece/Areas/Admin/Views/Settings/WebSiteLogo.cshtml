@@ -40,7 +40,7 @@
             <div class="card shadow-sm">
                 <div class="card-header">
                     <h3 class="card-title mb-0">
-                        <i class="fa fa-picture-o me-1" aria-hidden="true"></i>
+                        <i class="fa-regular fa-image me-1" aria-hidden="true"></i>
                         Mevcut logo ve yeni yükleme
                     </h3>
                 </div>
@@ -52,7 +52,7 @@
                             {
                                 <img src="@thumbUrl" alt="@AdminResource.WebSiteLogo" class="img-fluid" style="max-height: 168px; object-fit: contain;" onerror="this.classList.add('d-none'); var e=this.parentNode.querySelector('.js-logo-empty'); if(e){ e.classList.remove('d-none'); }" />
                                 <div class="js-logo-empty d-none text-center text-muted">
-                                    <i class="fa fa-picture-o fa-3x d-block mb-3" aria-hidden="true"></i>
+                                    <i class="fa-regular fa-image fa-3x d-block mb-3" aria-hidden="true"></i>
                                     <div class="fw-semibold">Logo önizlemesi gösterilemiyor</div>
                                     <div class="small">Yeni bir dosya yükleyerek güncelleyebilirsiniz.</div>
                                 </div>
@@ -60,7 +60,7 @@
                             else
                             {
                                 <div class="text-center text-muted">
-                                    <i class="fa fa-picture-o fa-3x d-block mb-3" aria-hidden="true"></i>
+                                    <i class="fa-regular fa-image fa-3x d-block mb-3" aria-hidden="true"></i>
                                     <div class="fw-semibold">Henüz logo yüklenmedi</div>
                                     <div class="small">Aşağıdan bir dosya seçip kaydedin.</div>
                                 </div>
@@ -70,7 +70,7 @@
                         {
                             <p class="small text-muted text-center mt-2 mb-0">Kayıtlı dosya: @fileName</p>
                             <div class="text-center mt-2">
-                                <button type="button" class="btn btn-sm btn-primary eg-image-preview-btn" data-bs-toggle="modal" data-bs-target="#websiteLogoPreviewModal"><i class="fa fa-picture-o" aria-hidden="true"></i> @AdminResource.GridMainPageImageText</button>
+                                <button type="button" class="btn btn-sm btn-primary eg-image-preview-btn" data-bs-toggle="modal" data-bs-target="#websiteLogoPreviewModal"><i class="fa-regular fa-image" aria-hidden="true"></i> @AdminResource.GridMainPageImageText</button>
                             </div>
                             <div class="modal fade eg-image-preview-modal" id="websiteLogoPreviewModal" tabindex="-1" aria-labelledby="websiteLogoPreviewLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
@@ -116,7 +116,7 @@
                     <div class="mb-0">
                         <label class="form-label fw-semibold" for="postedImage">@AdminResource.WebSiteLogo dosyası (PNG, JPG)</label>
                         <div class="input-group input-group-lg">
-                            <span class="input-group-text"><i class="fa fa-file-image-o" aria-hidden="true"></i></span>
+                            <span class="input-group-text"><i class="fa-regular fa-file-image" aria-hidden="true"></i></span>
                             <input type="file" id="postedImage" name="postedImage" class="form-control" accept=".png,.jpg,.jpeg,.gif,.webp,.svg,image/*" />
                         </div>
                         <div class="form-text mt-2">
@@ -126,7 +126,7 @@
                 </div>
                 <div class="card-footer bg-light d-flex justify-content-end">
                     <button type="submit" class="btn btn-primary btn-lg px-4">
-                        <i class="fa fa-upload me-1" aria-hidden="true"></i> @saveButtonText
+                        <i class="fa-solid fa-upload me-1" aria-hidden="true"></i> @saveButtonText
                     </button>
                 </div>
             </div>

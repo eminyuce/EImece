@@ -45,14 +45,14 @@
 @if (ViewBag.TotalRedemptions != null)
 {
     <div class="alert alert-info py-2 d-flex flex-wrap align-items-center">
-        <span><i class="fa fa-bar-chart" aria-hidden="true"></i> @AdminResource.TotalRedemptions: <strong>@ViewBag.TotalRedemptions</strong></span>
+        <span><i class="fa-solid fa-chart-column" aria-hidden="true"></i> @AdminResource.TotalRedemptions: <strong>@ViewBag.TotalRedemptions</strong></span>
         @if (ViewBag.RemainingRedemptions != null)
         {
             <span class="ml-3">| @AdminResource.RemainingRedemptions: <strong>@ViewBag.RemainingRedemptions</strong></span>
         }
         @if (Model.Id > 0)
         {
-            <a class="btn btn-sm btn-outline-primary ml-auto" href="@Url.Action("Redemptions", new { id = Model.Id })"><i class="fa fa-list" aria-hidden="true"></i> @AdminResource.ViewRedemptions</a>
+            <a class="btn btn-sm btn-outline-primary ml-auto" href="@Url.Action("Redemptions", new { id = Model.Id })"><i class="fa-solid fa-list" aria-hidden="true"></i> @AdminResource.ViewRedemptions</a>
         }
     </div>
 }
@@ -111,10 +111,10 @@
             <div class="card-header admin-coupon-header">
                 <div class="admin-coupon-tabs-wrap">
                     <ul class="nav nav-tabs" role="tablist">
-                        <li class="nav-item"><a class="nav-link active" id="tab-general-link" href="#tab-general" data-bs-toggle="tab" role="tab" aria-controls="tab-general" aria-selected="true"><i class="fa fa-info-circle" aria-hidden="true"></i> @AdminResource.CouponTabGeneral</a></li>
-                        <li class="nav-item"><a class="nav-link" id="tab-discount-link" href="#tab-discount" data-bs-toggle="tab" role="tab" aria-controls="tab-discount" aria-selected="false"><i class="fa fa-percent" aria-hidden="true"></i> @AdminResource.CouponTabDiscount</a></li>
-                        <li class="nav-item"><a class="nav-link" id="tab-audience-link" href="#tab-audience" data-bs-toggle="tab" role="tab" aria-controls="tab-audience" aria-selected="false"><i class="fa fa-users" aria-hidden="true"></i> @AdminResource.CouponTabAudience</a></li>
-                        <li class="nav-item"><a class="nav-link" id="tab-advanced-link" href="#tab-advanced" data-bs-toggle="tab" role="tab" aria-controls="tab-advanced" aria-selected="false"><i class="fa fa-sliders" aria-hidden="true"></i> @AdminResource.CouponTabAdvanced</a></li>
+                        <li class="nav-item"><a class="nav-link active" id="tab-general-link" href="#tab-general" data-bs-toggle="tab" role="tab" aria-controls="tab-general" aria-selected="true"><i class="fa-solid fa-circle-info" aria-hidden="true"></i> @AdminResource.CouponTabGeneral</a></li>
+                        <li class="nav-item"><a class="nav-link" id="tab-discount-link" href="#tab-discount" data-bs-toggle="tab" role="tab" aria-controls="tab-discount" aria-selected="false"><i class="fa-solid fa-percent" aria-hidden="true"></i> @AdminResource.CouponTabDiscount</a></li>
+                        <li class="nav-item"><a class="nav-link" id="tab-audience-link" href="#tab-audience" data-bs-toggle="tab" role="tab" aria-controls="tab-audience" aria-selected="false"><i class="fa-solid fa-users" aria-hidden="true"></i> @AdminResource.CouponTabAudience</a></li>
+                        <li class="nav-item"><a class="nav-link" id="tab-advanced-link" href="#tab-advanced" data-bs-toggle="tab" role="tab" aria-controls="tab-advanced" aria-selected="false"><i class="fa-solid fa-sliders" aria-hidden="true"></i> @AdminResource.CouponTabAdvanced</a></li>
                     </ul>
                 </div>
                 @Html.Partial("_AdminEditToolbarActions")
@@ -141,7 +141,7 @@
                             </div>
                             <div class="col-sm-3">
                                 <button type="button" class="btn btn-outline-secondary w-100" onclick="document.getElementById('CouponCode').value='CPN'+Math.random().toString(36).substring(2,8).toUpperCase()">
-                                    <i class="fa fa-magic" aria-hidden="true"></i> @AdminResource.GenerateCode
+                                    <i class="fa-solid fa-wand-magic-sparkles" aria-hidden="true"></i> @AdminResource.GenerateCode
                                 </button>
                             </div>
                         </div>
@@ -186,21 +186,21 @@
                             <div class="col-md-4">
                                 <label class="discount-type-card @(initialDiscountType == CouponDiscountType.FixedAmount ? "active" : "")">
                                     @Html.RadioButton("DiscountType", CouponDiscountType.FixedAmount, initialDiscountType == CouponDiscountType.FixedAmount, new { id = "dt-fixed", @class = "form-check-input discount-type-radio" })
-                                    <span class="dtt-title"><i class="fa fa-money" aria-hidden="true"></i> @AdminResource.DiscountTypeFixedAmount</span>
+                                    <span class="dtt-title"><i class="fa-solid fa-money-bill-bill" aria-hidden="true"></i> @AdminResource.DiscountTypeFixedAmount</span>
                                     <span class="dtt-desc">@AdminResource.DiscountTypeFixedDesc</span>
                                 </label>
                             </div>
                             <div class="col-md-4">
                                 <label class="discount-type-card @(initialDiscountType == CouponDiscountType.Percentage ? "active" : "")">
                                     @Html.RadioButton("DiscountType", CouponDiscountType.Percentage, initialDiscountType == CouponDiscountType.Percentage, new { id = "dt-percentage", @class = "form-check-input discount-type-radio" })
-                                    <span class="dtt-title"><i class="fa fa-percent" aria-hidden="true"></i> @AdminResource.DiscountTypePercentage</span>
+                                    <span class="dtt-title"><i class="fa-solid fa-percent" aria-hidden="true"></i> @AdminResource.DiscountTypePercentage</span>
                                     <span class="dtt-desc">@AdminResource.DiscountTypePercentageDesc</span>
                                 </label>
                             </div>
                             <div class="col-md-4">
                                 <label class="discount-type-card @(initialDiscountType == CouponDiscountType.FreeShipping ? "active" : "")">
                                     @Html.RadioButton("DiscountType", CouponDiscountType.FreeShipping, initialDiscountType == CouponDiscountType.FreeShipping, new { id = "dt-freeship", @class = "form-check-input discount-type-radio" })
-                                    <span class="dtt-title"><i class="fa fa-truck" aria-hidden="true"></i> @AdminResource.IsFreeShipping</span>
+                                    <span class="dtt-title"><i class="fa-solid fa-truck" aria-hidden="true"></i> @AdminResource.IsFreeShipping</span>
                                     <span class="dtt-desc">@AdminResource.DiscountTypeFreeShippingDesc</span>
                                 </label>
                             </div>
@@ -258,7 +258,7 @@
 
                     @* ============================ TARGET AUDIENCE ============================ *@
                     <div class="tab-pane fade" id="tab-audience" role="tabpanel" aria-labelledby="tab-audience">
-                        <p class="section-intro"><i class="fa fa-users" aria-hidden="true"></i> @AdminResource.AudienceIntro</p>
+                        <p class="section-intro"><i class="fa-solid fa-users" aria-hidden="true"></i> @AdminResource.AudienceIntro</p>
                         <div class="form-group row mb-3">
                             <div class="col-sm-4">
                                 <div class="form-check">

@@ -24,7 +24,7 @@
         <div class="small fw-semibold mb-1">@AdminResource.ExistingMainImageText</div>
     }
     <span data-main-image-delete-id="@f.Id">
-        <button type="button" class="btn btn-sm btn-primary eg-image-preview-btn" data-bs-toggle="modal" data-bs-target="@modalTarget"><i class="fa fa-picture-o" aria-hidden="true"></i> @gridMainPageImageText</button>
+        <button type="button" class="btn btn-sm btn-primary eg-image-preview-btn" data-bs-toggle="modal" data-bs-target="@modalTarget"><i class="fa-regular fa-image" aria-hidden="true"></i> @gridMainPageImageText</button>
         @Html.Partial("pImagePopUp", f)
         @if (showRemove)
         {

@@ -85,7 +85,7 @@ body.admin-app {
     text-decoration: none;
 }
 
-.admin-sidebar-brand .fa {
+.admin-sidebar-brand :is(.fa-solid, .fa-regular, .fa-brands) {
     font-size: 18px;
     width: 20px;
     text-align: center;
@@ -216,7 +216,7 @@ body.admin-app {
     font-style: italic;
 }
 
-.admin-sidebar-search-empty .fa {
+.admin-sidebar-search-empty :is(.fa-solid, .fa-regular, .fa-brands) {
     margin-right: 4px;
 }
 
@@ -287,8 +287,8 @@ body.sidebar-collapsed .admin-sidebar-search-clear {
     outline: none;
 }
 
-.admin-nav-item .fa,
-.admin-nav-group-toggle > .fa:first-child {
+.admin-nav-item :is(.fa-solid, .fa-regular, .fa-brands),
+.admin-nav-group-toggle > :is(.fa-solid, .fa-regular, .fa-brands):first-child {
     width: 18px;
     text-align: center;
     font-size: 14px;
@@ -338,7 +338,7 @@ body.sidebar-collapsed .admin-sidebar-search-clear {
     font-weight: 700;
 }
 
-.admin-nav-item.active .fa {
+.admin-nav-item.active :is(.fa-solid, .fa-regular, .fa-brands) {
     color: #fff;
     opacity: 1;
 }
@@ -355,7 +355,7 @@ body.admin-app.sidebar-collapsed .admin-nav-item.active:focus {
     color: #fff;
 }
 
-.admin-nav-group.has-active > .admin-nav-group-toggle > .fa:first-child {
+.admin-nav-group.has-active > .admin-nav-group-toggle > :is(.fa-solid, .fa-regular, .fa-brands):first-child {
     color: var(--admin-sidebar-accent);
     opacity: 1;
 }
@@ -474,7 +474,7 @@ body.admin-app .admin-main {
     outline: none;
 }
 
-.admin-menu-trigger .fa {
+.admin-menu-trigger :is(.fa-solid, .fa-regular, .fa-brands) {
     font-size: 13px;
 }
 
@@ -521,7 +521,7 @@ body.admin-app.sidebar-collapsed .admin-sidebar-toggle .admin-toggle-icon-expand
     gap: 6px;
 }
 
-.admin-topbar-panel-short .fa {
+.admin-topbar-panel-short :is(.fa-solid, .fa-regular, .fa-brands) {
     color: #2b6cb0;
 }
 
@@ -565,7 +565,7 @@ body.admin-app.sidebar-collapsed .admin-sidebar-toggle .admin-toggle-icon-expand
     text-decoration: none;
 }
 
-.admin-topbar-overflow-menu .fa {
+.admin-topbar-overflow-menu :is(.fa-solid, .fa-regular, .fa-brands) {
     width: 16px;
     text-align: center;
     color: #627d98;
@@ -922,8 +922,8 @@ body.admin-app .table-responsive {
         padding-left: 0;
     }
 
-    body.admin-app.sidebar-collapsed .admin-nav-item .fa,
-    body.admin-app.sidebar-collapsed .admin-nav-group-toggle > .fa:first-child {
+    body.admin-app.sidebar-collapsed .admin-nav-item :is(.fa-solid, .fa-regular, .fa-brands),
+    body.admin-app.sidebar-collapsed .admin-nav-group-toggle > :is(.fa-solid, .fa-regular, .fa-brands):first-child {
         width: 100%;
         font-size: 16px;
     }
@@ -1927,18 +1927,18 @@ body.admin-app.admin-mega-open .admin-sidebar-overlay {
     box-shadow: inset 4px 0 0 #dc2626, 0 0 0 2px rgba(220, 38, 38, 0.22);
 }
 
-.admin-mega-item .fa {
+.admin-mega-item :is(.fa-solid, .fa-regular, .fa-brands) {
     width: 16px;
     text-align: center;
     color: #64748b;
 }
 
-.admin-mega-item:hover .fa,
-.admin-mega-item:focus .fa {
+.admin-mega-item:hover :is(.fa-solid, .fa-regular, .fa-brands),
+.admin-mega-item:focus :is(.fa-solid, .fa-regular, .fa-brands) {
     color: #059669;
 }
 
-.admin-mega-item.active .fa {
+.admin-mega-item.active :is(.fa-solid, .fa-regular, .fa-brands) {
     color: #dc2626;
 }
 
@@ -1975,7 +1975,7 @@ body.admin-app.admin-mega-open .admin-sidebar-overlay {
     white-space: nowrap;
 }
 
-.admin-mega-logout .fa {
+.admin-mega-logout :is(.fa-solid, .fa-regular, .fa-brands) {
     color: #fff;
 }
 

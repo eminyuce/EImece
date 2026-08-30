@@ -39,10 +39,10 @@
             return;
         }
         if (isOn) {
-            $span.attr('class', 'eg-status-icon gridActiveIcon fa fa-check-circle');
+            $span.attr('class', 'eg-status-icon gridActiveIcon fa-solid fa-circle-check');
             $span.attr('grid-data-value', 'True');
         } else {
-            $span.attr('class', 'eg-status-icon gridNotActiveIcon fa fa-times-circle');
+            $span.attr('class', 'eg-status-icon gridNotActiveIcon fa-solid fa-circle-xmark');
             $span.attr('grid-data-value', 'False');
         }
     }
@@ -192,8 +192,8 @@
                 $span.attr('grid-data-value', isOn ? 'True' : 'False');
                 // Preserve eg-status-icon when present / always add for toggle wrappers
                 var cls = isOn
-                    ? 'eg-status-icon gridActiveIcon fa fa-check-circle'
-                    : 'eg-status-icon gridNotActiveIcon fa fa-times-circle';
+                    ? 'eg-status-icon gridActiveIcon fa-solid fa-circle-check'
+                    : 'eg-status-icon gridNotActiveIcon fa-solid fa-circle-xmark';
                 $span.attr('class', cls);
                 var $toggle = $span.closest('[data-eg-status-toggle]');
                 if ($toggle.length) {

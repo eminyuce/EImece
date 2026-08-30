@@ -91,21 +91,21 @@
             @if (!isAllProducts)
             {
                 <a class="btn btn-secondary btn-sm" href="@Url.Action("Index", "ProductComments")">
-                    <i class="fa fa-comments" aria-hidden="true"></i>
+                    <i class="fa-solid fa-comments" aria-hidden="true"></i>
                     @AdminResource.ShowAll
                 </a>
                 <a class="btn btn-secondary btn-sm" href="@Url.Action("Index", "Products", new { search = productName })">
-                    <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                    <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
                     @AdminResource.BackToList
                 </a>
                 <a class="btn btn-secondary btn-sm" href="@Url.Action("SaveOrEdit", "Products", new { id = productId })">
-                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                    <i class="fa-solid fa-pencil" aria-hidden="true"></i>
                     Ürünü düzenle
                 </a>
                 if (!string.IsNullOrEmpty(storefrontUrl))
                 {
                     <a class="btn btn-secondary btn-sm" href="@storefrontUrl" target="_blank" rel="noopener">
-                        <i class="fa fa-external-link" aria-hidden="true"></i>
+                        <i class="fa-solid fa-up-right-from-square" aria-hidden="true"></i>
                         Sitede gör
                     </a>
                 }
@@ -120,7 +120,7 @@
                 aria-expanded="@(hasAdvancedFilter ? "true" : "false")" aria-controls="commentAdminFiltersBody">
             <div class="product-admin-filters-heading-main">
                 <span class="product-admin-filters-title">
-                    <i class="fa fa-filter" aria-hidden="true"></i>
+                    <i class="fa-solid fa-filter" aria-hidden="true"></i>
                     Filtreler
                 </span>
                 @if (activeFilterChips.Count > 0)
@@ -132,7 +132,7 @@
                     <span class="product-admin-filters-hint">@AdminResource.Rating, @AdminResource.UpdatedDate…</span>
                 }
             </div>
-            <span class="product-admin-filters-chevron fa @(hasAdvancedFilter ? "fa fa-chevron-up" : "fa fa-chevron-down")" aria-hidden="true"></span>
+            <span class="product-admin-filters-chevron @(hasAdvancedFilter ? "fa-solid fa-chevron-up" : "fa-solid fa-chevron-down")" aria-hidden="true"></span>
         </button>
 
         @if (activeFilterChips.Count > 0)
@@ -144,7 +144,7 @@
                     <span class="label text-bg-info product-admin-filter-chip">@chipText</span>
                 }
                 <a class="product-admin-filters-clear-link" href="@clearFiltersUrl" title="@AdminResource.Clear">
-                    <i class="fa fa-times" aria-hidden="true"></i> @AdminResource.Clear
+                    <i class="fa-solid fa-xmark" aria-hidden="true"></i> @AdminResource.Clear
                 </a>
             </div>
         }
@@ -208,10 +208,10 @@
 
                     <div class="product-admin-filter-actions">
                         <button type="submit" class="btn btn-primary btn-sm">
-                            <i class="fa fa-check" aria-hidden="true"></i> @AdminResource.Filtrele
+                            <i class="fa-solid fa-check" aria-hidden="true"></i> @AdminResource.Filtrele
                         </button>
                         <a class="btn btn-secondary btn-sm" href="@clearFiltersUrl">
-                            <i class="fa fa-times" aria-hidden="true"></i> @AdminResource.Clear
+                            <i class="fa-solid fa-xmark" aria-hidden="true"></i> @AdminResource.Clear
                         </a>
                     </div>
                 }
@@ -244,11 +244,11 @@
 
             $body.on('show.bs.collapse', function () {
                 $panel.removeClass('is-collapsed').addClass('is-open');
-                $chevron.removeClass('fa fa-chevron-down').addClass('fa fa-chevron-up');
+                $chevron.removeClass('fa-solid fa-chevron-down').addClass('fa-solid fa-chevron-up');
                 $heading.attr('aria-expanded', 'true');
             }).on('hide.bs.collapse', function () {
                 $panel.removeClass('is-open').addClass('is-collapsed');
-                $chevron.removeClass('fa fa-chevron-up').addClass('fa fa-chevron-down');
+                $chevron.removeClass('fa-solid fa-chevron-up').addClass('fa-solid fa-chevron-down');
                 $heading.attr('aria-expanded', 'false');
             });
 

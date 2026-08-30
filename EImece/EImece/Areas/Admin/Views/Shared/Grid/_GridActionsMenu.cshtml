@@ -68,7 +68,7 @@
     var deleteCompactVd = new ViewDataDictionary(ViewData);
     deleteCompactVd["ItemId"] = itemId;
     deleteCompactVd["controllerName"] = controllerName;
-    deleteCompactVd["DeleteIcon"] = "btn btn-danger btn-sm fa fa-times-circle";
+    deleteCompactVd["DeleteIcon"] = "btn btn-danger btn-sm fa-solid fa-circle-xmark";
     deleteCompactVd["ItemDescription"] = itemName;
     deleteCompactVd["gridDeleteText"] = ViewData["gridDeleteText"].ToStr(AdminResource.GridDeleteText);
 }
@@ -83,7 +83,7 @@ if (!isSingleAction)
             data-bs-display="static"
             aria-haspopup="true"
             aria-expanded="false">
-        <i class="fa fa-cog" aria-hidden="true"></i>
+        <i class="fa-solid fa-gear" aria-hidden="true"></i>
         <span>@AdminResource.Actions</span>
     </button>
     <ul class="dropdown-menu dropdown-menu-end eg-actions-menu">
@@ -91,7 +91,7 @@ if (!isSingleAction)
         {
             <li>
                 <a class="dropdown-item" href="@detailUrl">
-                    <i class="fa fa-info-circle"></i> @detailText
+                    <i class="fa-solid fa-circle-info"></i> @detailText
                 </a>
             </li>
         }
@@ -99,7 +99,7 @@ if (!isSingleAction)
         {
             <li>
                 <a class="dropdown-item" href="@ordersUrl">
-                    <i class="fa fa-shopping-cart"></i> @ordersText
+                    <i class="fa-solid fa-cart-shopping"></i> @ordersText
                 </a>
             </li>
         }
@@ -107,7 +107,7 @@ if (!isSingleAction)
         {
             <li>
                 <a class="dropdown-item" href="@Url.Action("Media", controllerName, new { Id = itemId })">
-                    <i class="fa fa-camera"></i> @AdminResource.GridImagesText
+                    <i class="fa-solid fa-camera"></i> @AdminResource.GridImagesText
                 </a>
             </li>
         }
@@ -115,7 +115,7 @@ if (!isSingleAction)
         {
             <li>
                 <a class="dropdown-item" href="@editUrl">
-                    <i class="fa fa-pencil"></i> @AdminResource.GridEditText
+                    <i class="fa-solid fa-pencil"></i> @AdminResource.GridEditText
                 </a>
             </li>
         }
@@ -124,7 +124,7 @@ if (!isSingleAction)
             <li>
                 <a class="dropdown-item" href="@Url.Action("SaveOrEditProductSpecs", controllerName, new { Id = itemId })"
                    title="@AdminResource.ProductSpecs">
-                    <i class="fa fa-plus"></i> @AdminResource.ProductSpecs
+                    <i class="fa-solid fa-plus"></i> @AdminResource.ProductSpecs
                 </a>
             </li>
         }
@@ -132,7 +132,7 @@ if (!isSingleAction)
         {
             <li>
                 <a class="dropdown-item" href="@Url.Action("Index", "ProductComments", new { Id = itemId })">
-                    <i class="fa fa-user"></i> @AdminResource.Comments
+                    <i class="fa-solid fa-user"></i> @AdminResource.Comments
                 </a>
             </li>
         }
@@ -140,7 +140,7 @@ if (!isSingleAction)
         {
             <li>
                 <a class="dropdown-item" href="@forgotPasswordUrl">
-                    <i class="fa fa-envelope"></i> @AdminResource.ForgotPassword
+                    <i class="fa-solid fa-envelope"></i> @AdminResource.ForgotPassword
                 </a>
             </li>
         }
@@ -148,7 +148,7 @@ if (!isSingleAction)
         {
             <li>
                 <a class="dropdown-item" href="@newPasswordUrl">
-                    <i class="fa fa-lock"></i> @AdminResource.NewPassword
+                    <i class="fa-solid fa-lock"></i> @AdminResource.NewPassword
                 </a>
             </li>
         }
@@ -156,7 +156,7 @@ if (!isSingleAction)
         {
             <li>
                 <a class="dropdown-item" href="@rolesUrl">
-                    <i class="fa fa-user"></i> @AdminResource.Roles
+                    <i class="fa-solid fa-user"></i> @AdminResource.Roles
                 </a>
             </li>
         }
@@ -168,7 +168,7 @@ if (!isSingleAction)
                     <button type="submit"
                             class="dropdown-item text-warning"
                             onclick="return confirm('@AdminResource.UnlockAccountConfirm');">
-                        <i class="fa fa-unlock"></i> @AdminResource.UnlockAccount
+                        <i class="fa-solid fa-unlock"></i> @AdminResource.UnlockAccount
                     </button>
                 </form>
             </li>
@@ -187,26 +187,26 @@ if (!isSingleAction)
     @if (!string.IsNullOrEmpty(detailUrl))
     {
         <a href="@detailUrl" class="btn btn-info btn-sm" title="@detailText">
-            <i class="fa fa-info-circle"></i>
+            <i class="fa-solid fa-circle-info"></i>
         </a>
     }
     @if (!string.IsNullOrEmpty(ordersUrl))
     {
         <a href="@ordersUrl" class="btn btn-success btn-sm" title="@ordersText">
-            <i class="fa fa-shopping-cart"></i>
+            <i class="fa-solid fa-cart-shopping"></i>
         </a>
     }
     @if (showMedia)
     {
         <a href="@Url.Action("Media", controllerName, new { Id = itemId })"
            class="btn btn-secondary btn-sm" title="@AdminResource.GridImagesText">
-            <i class="fa fa-camera"></i>
+            <i class="fa-solid fa-camera"></i>
         </a>
     }
     @if (hasEdit)
     {
         <a href="@editUrl" class="btn btn-primary btn-sm" title="@AdminResource.GridEditText">
-            <i class="fa fa-pencil"></i>
+            <i class="fa-solid fa-pencil"></i>
             @if (isSingleAction)
             {
                 <span>@AdminResource.GridEditText</span>
@@ -217,7 +217,7 @@ if (!isSingleAction)
     {
         <a href="@Url.Action("SaveOrEditProductSpecs", controllerName, new { Id = itemId })"
            class="btn btn-secondary btn-sm" title="@AdminResource.ProductSpecs">
-            <i class="fa fa-plus"></i>
+            <i class="fa-solid fa-plus"></i>
         </a>
     }
     @if (hasDelete)
@@ -228,7 +228,7 @@ if (!isSingleAction)
     {
         <a href="@Url.Action("Index", "ProductComments", new { Id = itemId })"
            class="btn btn-secondary btn-sm" title="@AdminResource.Comments">
-            <i class="fa fa-user"></i>
+            <i class="fa-solid fa-user"></i>
         </a>
     }
 </div>

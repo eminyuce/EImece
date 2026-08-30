@@ -19,18 +19,18 @@
 @Html.AdminBreadcrumb(AdminResource.PerformanceStatistics)
 <div class="d-flex justify-content-between align-items-center mb-3">
     <div>
-        <h2 class="admin-page-title mb-1"><i class="fa fa-tachometer text-primary me-2"></i>@AdminResource.PerformanceStatistics</h2>
+        <h2 class="admin-page-title mb-1"><i class="fa-solid fa-gauge text-primary me-2"></i>@AdminResource.PerformanceStatistics</h2>
         <p class="text-muted mb-0 small">@AdminResource.PerfStatsSubtitle</p>
     </div>
     <div class="d-flex gap-2">
         <a href="@Url.Action("SystemSettings", "AdminSettings", new { area = "admin" })#tab-tools" class="btn btn-outline-primary btn-sm" title="@AdminResource.PerfStatsRetentionConfigTitle">
-            <i class="fa fa-cog me-1"></i> @AdminResource.PerfStatsRetentionBadge: @(retentionHours > 0 ? $"{retentionHours} {AdminResource.PerfStatsHoursSuffix}" : AdminResource.PerfStatsDisabledBadge)
+            <i class="fa-solid fa-gear me-1"></i> @AdminResource.PerfStatsRetentionBadge: @(retentionHours > 0 ? $"{retentionHours} {AdminResource.PerfStatsHoursSuffix}" : AdminResource.PerfStatsDisabledBadge)
         </a>
         <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#clearPerfStatsModal">
-            <i class="fa fa-trash me-1"></i> @AdminResource.ClearStats
+            <i class="fa-solid fa-trash me-1"></i> @AdminResource.ClearStats
         </button>
         <a href="@Url.Action("Index", "Perf", new { area = "admin" })" class="btn btn-outline-secondary btn-sm" title="@AdminResource.Refresh">
-            <i class="fa fa-refresh me-1"></i> @AdminResource.Refresh
+            <i class="fa-solid fa-arrows-rotate me-1"></i> @AdminResource.Refresh
         </a>
     </div>
 </div>
@@ -39,7 +39,7 @@
 @if (retentionHours <= 0)
 {
     <div class="alert alert-warning d-flex align-items-start gap-2 py-2 mb-4" role="alert">
-        <i class="fa fa-exclamation-triangle fa-lg mt-1 text-warning"></i>
+        <i class="fa-solid fa-triangle-exclamation fa-lg mt-1 text-warning"></i>
         <div class="small">
             <strong>@AdminResource.PerfStatsDisabledAlertTitle</strong> @AdminResource.PerfStatsDisabledAlertText <a href="@Url.Action("SystemSettings", "AdminSettings", new { area = "admin" })#tab-tools" class="alert-link">@AdminResource.AdminSettings</a>. @AdminResource.PerfStatsDisabledAlertAction
         </div>
@@ -48,7 +48,7 @@
 else
 {
     <div class="alert alert-info d-flex align-items-start gap-2 py-2 mb-4" role="alert">
-        <i class="fa fa-info-circle fa-lg mt-1 text-info"></i>
+        <i class="fa-solid fa-circle-info fa-lg mt-1 text-info"></i>
         <div class="small">
             <strong>@AdminResource.PerfStatsInfoAlertTitle</strong> @AdminResource.PerfStatsInfoAlertText
         </div>
@@ -106,7 +106,7 @@ else
                     <input type="hidden" name="type" value="@currentType" />
                     <div class="eg-search-field">
                         <span class="eg-search-icon" aria-hidden="true">
-                            <i class="fa fa-search"></i>
+                            <i class="fa-solid fa-magnifying-glass"></i>
                         </span>
                         <label class="visually-hidden" for="searchTxtInput">@AdminResource.Search</label>
                         <input type="text"
@@ -122,7 +122,7 @@ else
                                 <a href="@Url.Action("Index", "Perf", new { area = "admin", type = currentType })" class="btn btn-secondary eg-search-clear">@AdminResource.Clear</a>
                             }
                             <button class="btn btn-primary" id="SearchButton" type="submit">
-                                <i class="fa fa-search" aria-hidden="true"></i>
+                                <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
                                 <span>@AdminResource.GridSearchButtonText</span>
                             </button>
                         </div>
@@ -149,11 +149,11 @@ else
             <fieldset class="eg-ops-export" style="border:0;padding:0;margin:0;min-width:0">
                 <legend class="visually-hidden">@AdminResource.Excel</legend>
                 <a class="btn btn-secondary btn-sm eg-ops-btn eg-ops-btn-export" href="@Url.Action("ExportExcel", "Perf", new { area = "admin", format = "excel", search = currentSearch, type = currentType })" title="@AdminResource.Excel">
-                    <i class="fa fa-upload" aria-hidden="true"></i>
+                    <i class="fa-solid fa-upload" aria-hidden="true"></i>
                     <span>@AdminResource.Excel</span>
                 </a>
                 <a class="btn btn-secondary btn-sm eg-ops-btn eg-ops-btn-export" href="@Url.Action("ExportExcel", "Perf", new { area = "admin", format = "csv", search = currentSearch, type = currentType })" title="@AdminResource.Csv">
-                    <i class="fa fa-download" aria-hidden="true"></i>
+                    <i class="fa-solid fa-download" aria-hidden="true"></i>
                     <span>@AdminResource.Csv</span>
                 </a>
             </fieldset>
@@ -170,7 +170,7 @@ else
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title text-danger" id="clearPerfStatsModalLabel"><i class="fa fa-trash me-2"></i>@AdminResource.ClearPerfStatsTitle</h5>
+                <h5 class="modal-title text-danger" id="clearPerfStatsModalLabel"><i class="fa-solid fa-trash me-2"></i>@AdminResource.ClearPerfStatsTitle</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             @using (Html.BeginForm("ClearStats", "Perf", new { area = "admin" }, FormMethod.Post))
@@ -179,12 +179,12 @@ else
                 <div class="modal-body">
                     <p>@AdminResource.ClearPerfStatsConfirm</p>
                     <div class="alert alert-warning py-2 small mb-0">
-                        <i class="fa fa-exclamation-triangle me-1"></i> @AdminResource.ClearPerfStatsWarning
+                        <i class="fa-solid fa-triangle-exclamation me-1"></i> @AdminResource.ClearPerfStatsWarning
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">@AdminResource.Cancel</button>
-                    <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-trash me-1"></i> @AdminResource.ClearStatsNow</button>
+                    <button type="submit" class="btn btn-danger btn-sm"><i class="fa-solid fa-trash me-1"></i> @AdminResource.ClearStatsNow</button>
                 </div>
             }
         </div>

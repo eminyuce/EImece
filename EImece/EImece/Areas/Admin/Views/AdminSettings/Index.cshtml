@@ -40,7 +40,7 @@
         </div>
         <div class="col-md-3">
             <button type="submit" class="btn btn-success w-100">
-                <i class="fa fa-save"></i> @AdminResource.SaveButtonText
+                <i class="fa-solid fa-floppy-disk"></i> @AdminResource.SaveButtonText
             </button>
         </div>
     </div>
@@ -51,25 +51,25 @@
             <ul class="nav nav-pills flex-column admin-settings-pills" id="settingsTabs" role="tablist">
                 <li class="nav-item">
                     <a class="nav-link @(activeTab == "company" ? "active" : "")" data-bs-toggle="pill" href="#tab-company" role="tab" aria-selected="@(activeTab == "company" ? "true" : "false")">
-                        <i class="fa fa-building-o me-2" aria-hidden="true"></i> @AdminResource.CompanyAndContactInfo
+                        <i class="fa-regular fa-building me-2" aria-hidden="true"></i> @AdminResource.CompanyAndContactInfo
                     </a>
                 </li>
                 @if (productPriceEnabled)
                 {
                     <li class="nav-item">
                         <a class="nav-link @(activeTab == "cargo" ? "active" : "")" data-bs-toggle="pill" href="#tab-cargo" role="tab" aria-selected="@(activeTab == "cargo" ? "true" : "false")">
-                            <i class="fa fa-paper-plane me-2" aria-hidden="true"></i> @AdminResource.CargoSettings
+                            <i class="fa-solid fa-paper-plane me-2" aria-hidden="true"></i> @AdminResource.CargoSettings
                         </a>
                     </li>
                 }
                 <li class="nav-item">
                     <a class="nav-link @(activeTab == "seo" ? "active" : "")" data-bs-toggle="pill" href="#tab-seo" role="tab" aria-selected="@(activeTab == "seo" ? "true" : "false")">
-                        <i class="fa fa-search me-2" aria-hidden="true"></i> @AdminResource.SeoSettings
+                        <i class="fa-solid fa-magnifying-glass me-2" aria-hidden="true"></i> @AdminResource.SeoSettings
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" data-bs-toggle="pill" href="#tab-footer" role="tab" aria-selected="false">
-                        <i class="fa fa-list-alt me-2" aria-hidden="true"></i> @AdminResource.FooterSettings
+                        <i class="fa-solid fa-rectangle-list me-2" aria-hidden="true"></i> @AdminResource.FooterSettings
                     </a>
                 </li>
             </ul>

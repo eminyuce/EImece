@@ -826,10 +826,10 @@ function changeStateSuccess(data) {
     data.values.forEach(function (entry) {
         var $span = $('span[name=span' + data.checkbox + ']').filter('[gridkey-id="' + entry.Id + '"]');
         if (entry.IsActive) {
-            $span.attr('class', 'eg-status-icon gridActiveIcon fa fa-check-circle');
+            $span.attr('class', 'eg-status-icon gridActiveIcon fa-solid fa-circle-check');
             $span.attr('grid-data-value', 'True');
         } else {
-            $span.attr('class', 'eg-status-icon gridNotActiveIcon fa fa-times-circle');
+            $span.attr('class', 'eg-status-icon gridNotActiveIcon fa-solid fa-circle-xmark');
             $span.attr('grid-data-value', 'False');
         }
         // Sync modern pill/switch wrappers when present (Products reference + reusable toggles).
@@ -1029,13 +1029,13 @@ function adminTreeMarkPicked(id) {
 
 function adminTreeSetIcon($picker, state) {
     var $icon = $picker.find("[data-tree-picker-icon]");
-    $icon.removeClass("fa fa-home fa fa-folder-open fa fa-exclamation-circle");
+    $icon.removeClass("fa-solid fa-house fa-solid fa-folder-open fa-solid fa-circle-exclamation");
     if (state === "child") {
-        $icon.addClass("fa fa-folder-open");
+        $icon.addClass("fa-solid fa-folder-open");
     } else if (state === "empty") {
-        $icon.addClass("fa fa-exclamation-circle");
+        $icon.addClass("fa-solid fa-circle-exclamation");
     } else {
-        $icon.addClass("fa fa-home");
+        $icon.addClass("fa-solid fa-house");
     }
 }
 

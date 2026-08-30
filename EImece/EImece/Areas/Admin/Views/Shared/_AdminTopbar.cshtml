@@ -16,14 +16,14 @@
                 title="@AdminResource.OpenMenu"
                 data-label-open="@AdminResource.OpenMenu"
                 data-label-close="@AdminResource.CloseMenu">
-            <i class="fa fa-th" aria-hidden="true"></i>
+            <i class="fa-solid fa-table-cells" aria-hidden="true"></i>
             <span class="admin-menu-trigger-label">@AdminResource.OpenMenu</span>
         </button>
         <div class="admin-topbar-title">
             <span class="admin-topbar-panel">
                 <span class="admin-topbar-panel-full">@String.Format(AdminResource.AdminPanelTitleFormat, companyNameSetting)</span>
                 <span class="admin-topbar-panel-short">
-                    <i class="fa fa-tachometer" aria-hidden="true"></i>
+                    <i class="fa-solid fa-gauge" aria-hidden="true"></i>
                     <span>@AdminResource.Admin</span>
                 </span>
             </span>
@@ -44,13 +44,13 @@
                    aria-haspopup="true"
                    aria-expanded="false"
                    title="@AdminResource.OtherLinks">
-                    <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                    <i class="fa-solid fa-ellipsis-vertical" aria-hidden="true"></i>
                     <span class="visually-hidden">@AdminResource.OtherLinks</span>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end admin-topbar-overflow-menu">
                     <li>
                         <a class="dropdown-item" href="@Url.Action("ClearCache", "Dashboard", new { area = "admin" })">
-                            <i class="fa fa-refresh" aria-hidden="true"></i>
+                            <i class="fa-solid fa-arrows-rotate" aria-hidden="true"></i>
                             @AdminResource.Refresh
                         </a>
                     </li>
@@ -58,19 +58,19 @@
             </li>
             <li class="admin-topbar-action--secondary">
                 <a href="@Url.Action("ClearCache", "Dashboard", new { area = "admin" })" title="@AdminResource.Refresh">
-                    <i class="fa fa-refresh" aria-hidden="true"></i>
+                    <i class="fa-solid fa-arrows-rotate" aria-hidden="true"></i>
                     <span class="admin-topbar-label">@AdminResource.Refresh</span>
                 </a>
             </li>
             <li class="admin-topbar-user admin-topbar-action--essential">
                 <a href="@Url.Action("changepassword", "Users", new { area = "admin" })" title="Manage">
-                    <i class="fa fa-user" aria-hidden="true"></i>
+                    <i class="fa-solid fa-user" aria-hidden="true"></i>
                     <span class="admin-topbar-label">@AdminResource.Hello @userName!</span>
                 </a>
             </li>
             <li class="admin-topbar-action--essential">
                 <a href="javascript:document.getElementById('logoutForm').submit()" title="@AdminResource.Logout">
-                    <i class="fa fa-sign-out" aria-hidden="true"></i>
+                    <i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i>
                     <span class="admin-topbar-label">@AdminResource.Logout</span>
                 </a>
                 @using (Html.BeginForm("LogOff", "DashBoard", FormMethod.Post, new { id = "logoutForm", @class = "admin-logout-form" }))

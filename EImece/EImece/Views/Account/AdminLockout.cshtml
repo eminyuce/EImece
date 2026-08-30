@@ -30,7 +30,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:wght@500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="~/Content/admin-vendor/fontawesome/css/all.min.css?v=7.3.1">
     <style>
         :root {
             --ink: #15202b;
@@ -361,7 +361,7 @@
         <div class="admin-login__shell">
             <aside class="admin-login__guide" aria-labelledby="admin-lockout-brand">
                 <div class="admin-login__badge">
-                    <i class="fas fa-shield-alt" aria-hidden="true"></i>
+                    <i class="fa-solid fa-shield-halved" aria-hidden="true"></i>
                     @AdminResource.SecureAdminLogin
                 </div>
                 <h1 class="admin-login__brand" id="admin-lockout-brand">@Resource.AdminPanelLoginPage</h1>
@@ -390,14 +390,14 @@
                     </li>
                 </ol>
                 <p class="admin-login__guide-note">
-                    <i class="fas fa-lock mr-1" aria-hidden="true"></i>
+                    <i class="fa-solid fa-lock mr-1" aria-hidden="true"></i>
                     @AdminResource.JustOpenForAdmin
                 </p>
             </aside>
 
             <section class="admin-login__panel" aria-labelledby="admin-lockout-title" role="alert">
                 <div class="admin-lockout__icon" aria-hidden="true">
-                    <i class="fas fa-lock"></i>
+                    <i class="fa-solid fa-lock"></i>
                 </div>
                 <h2 class="admin-login__panel-title" id="admin-lockout-title">@Resource.LockoutTitle</h2>
                 <p class="admin-login__panel-sub">@Resource.LockoutWhy</p>
@@ -407,12 +407,12 @@
                     <span class="admin-lockout__wait-text" id="lockout-wait-text">@(remainingSeconds <= 0 ? Resource.LockoutReady : string.Format(Resource.LockoutWaitMinutes, minutes))</span>
                 </div>
                 <a class="admin-login__submit" href="@Url.Action("AdminLogin", "Account")">
-                    <i class="fas fa-sign-in-alt" aria-hidden="true"></i>
+                    <i class="fa-solid fa-right-to-bracket" aria-hidden="true"></i>
                     @Resource.LockoutTryAgain
                 </a>
                 <div class="admin-login__back">
                     <a href="@Url.Action("Index", "Home", new { area = "" })">
-                        <i class="fas fa-arrow-left mr-1" aria-hidden="true"></i>
+                        <i class="fa-solid fa-arrow-left mr-1" aria-hidden="true"></i>
                         @AdminResource.BackToSite
                     </a>
                 </div>

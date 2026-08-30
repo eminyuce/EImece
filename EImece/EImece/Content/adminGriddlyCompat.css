@@ -170,7 +170,7 @@ body.admin-app table.eg-grid-table > tbody > tr > td {
     border-right: 1px solid #eef2f6;
 }
 
-body.admin-app .eg-actions-toggle .fa fa-cog {
+body.admin-app .eg-actions-toggle .fa-gear {
     font-size: 12px;
     color: #607487;
 }

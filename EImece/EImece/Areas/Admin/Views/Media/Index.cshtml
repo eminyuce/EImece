@@ -119,7 +119,7 @@
                 credits: false,
                 // Modern, friendly Turkish microcopy
                 labelIdle: '<div class="filepond-hero-label">' +
-                           '<div class="filepond-hero-icon"><i class="fa fa-cloud-upload"></i></div>' +
+                           '<div class="filepond-hero-icon"><i class="fa-solid fa-cloud-arrow-up"></i></div>' +
                            '<div class="filepond-hero-title">Fotoğrafları buraya sürükleyip bırakın</div>' +
                            '<div class="filepond-hero-subtitle">veya <span class="filepond--label-action">Dosyalara Göz Atın</span></div>' +
                            '<div class="filepond-hero-badges">' +
@@ -310,7 +310,7 @@
                 }
                 <div class="media-clean-actions" style="margin-bottom: 12px; display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: 8px;">
                     <button type="button" class="btn btn-info btn-sm btn-refresh-grid" onclick="sessionStorage.setItem('adminMediaActiveTab', '#tab2default'); window.location.href = window.location.pathname + window.location.search + '#tab2default'; window.location.reload(true);" title="Veritabanındaki resimleri ve tabloyu yenile">
-                        <i class="fa fa-refresh"></i> Veritabanından Yenile
+                        <i class="fa-solid fa-arrows-rotate"></i> Veritabanından Yenile
                     </button>
                     @if (hasMissingFiles)
                     {
@@ -320,7 +320,7 @@
                             <input type="hidden" name="mod" value="@Model.MediaMod" />
                             <input type="hidden" name="imageType" value="@Model.ImageType" />
                             <button type="submit" class="btn btn-danger btn-sm" id="btnDeleteMissingFiles" title="@AdminResource.DeleteMissingFilesTooltip">
-                                <i class="fa fa-trash"></i> @AdminResource.DeleteMissingFilesButtonText
+                                <i class="fa-solid fa-trash"></i> @AdminResource.DeleteMissingFilesButtonText
                             </button>
                         </form>
                     }

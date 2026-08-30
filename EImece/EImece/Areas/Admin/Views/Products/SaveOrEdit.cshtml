@@ -378,33 +378,33 @@ function initBrandSearchableCombobox() {
                     var $control = $('<div class="admin-brand-combobox__control"></div>');
                     var $display = $('<button type="button" class="form-select admin-brand-combobox__display d-flex justify-content-between align-items-center" aria-haspopup="listbox" aria-expanded="false"></button>');
                     var $displayText = $('<span class="admin-brand-combobox__display-text text-truncate"></span>');
-                    var $displayIcon = $('<i class="fa fa-chevron-down ms-2 flex-shrink-0"></i>');
+                    var $displayIcon = $('<i class="fa-solid fa-chevron-down ms-2 flex-shrink-0"></i>');
                     $display.append($displayText).append($displayIcon);
                     $control.append($display);
                     var $dropdown = $('<div class="admin-brand-combobox__dropdown" role="listbox"></div>');
                     var $searchWrap = $('<div class="admin-brand-combobox__search-wrap"></div>');
                     var $search = $('<input type="text" class="form-control admin-brand-combobox__search" autocomplete="off" />');
                     $search.attr("placeholder", searchPlaceholder); $search.attr("aria-label", searchPlaceholder);
-                    var $searchIcon = $('<i class="fa fa-search" aria-hidden="true"></i>');
-                    var $clearFilter = $('<button type="button" class="admin-brand-combobox__search-clear" tabindex="-1" aria-label="Filtreyi temizle" title="Filtreyi temizle"><i class="fa fa-times"></i></button>');
+                    var $searchIcon = $('<i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>');
+                    var $clearFilter = $('<button type="button" class="admin-brand-combobox__search-clear" tabindex="-1" aria-label="Filtreyi temizle" title="Filtreyi temizle"><i class="fa-solid fa-xmark"></i></button>');
                     $searchWrap.append($searchIcon).append($search).append($clearFilter);
                     var $meta = $('<div class="admin-brand-combobox__meta"><span class="admin-brand-combobox__count"></span><span class="admin-brand-combobox__hint">Yazarak filtrele</span></div>');
                     var $list = $('<div class="admin-brand-combobox__list"></div>');
-                    var $empty = $('<div class="admin-brand-combobox__empty d-none"><i class="fa fa-search"></i><div>' + emptyText + '</div></div>');
+                    var $empty = $('<div class="admin-brand-combobox__empty d-none"><i class="fa-solid fa-magnifying-glass"></i><div>' + emptyText + '</div></div>');
                     $dropdown.append($searchWrap).append($meta).append($list).append($empty);
                     $combo.append($control).append($dropdown);
                     if (placeholderOpt) {
                         var $phItem = $('<button type="button" class="admin-brand-combobox__item admin-brand-combobox__item--placeholder" role="option"></button>');
                         $phItem.attr("data-value", placeholderOpt.value); $phItem.attr("data-text", placeholderOpt.text); $phItem.attr("data-norm", simpleNormalize(placeholderOpt.text));
                         $phItem.append($('<span class="admin-brand-combobox__item-label"></span>').text(placeholderOpt.text));
-                        $phItem.append($('<i class="fa fa-times admin-brand-combobox__item-check" aria-hidden="true"></i>'));
+                        $phItem.append($('<i class="fa-solid fa-xmark admin-brand-combobox__item-check" aria-hidden="true"></i>'));
                         $list.append($phItem);
                     }
                     brandOptions.forEach(function (opt) {
                         var $item = $('<button type="button" class="admin-brand-combobox__item" role="option"></button>');
                         $item.attr("data-value", opt.value); $item.attr("data-text", opt.text); $item.attr("data-norm", simpleNormalize(opt.text));
                         $item.append($('<span class="admin-brand-combobox__item-label"></span>').text(opt.text));
-                        $item.append($('<i class="fa fa-check admin-brand-combobox__item-check" aria-hidden="true"></i>'));
+                        $item.append($('<i class="fa-solid fa-check admin-brand-combobox__item-check" aria-hidden="true"></i>'));
                         $list.append($item);
                     });
                     var $items = $list.find(".admin-brand-combobox__item");
