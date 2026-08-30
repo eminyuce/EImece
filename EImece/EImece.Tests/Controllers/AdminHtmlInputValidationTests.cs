@@ -1,3 +1,4 @@
+using EImece.App_Start;
 using EImece.Areas.Admin.Controllers;
 using EImece.Domain.Entities;
 using EImece.Domain.Models.AdminModels;
@@ -13,6 +14,12 @@ namespace EImece.Tests.Controllers
     [TestClass]
     public class AdminHtmlInputValidationTests
     {
+        [TestInitialize]
+        public void RegisterHtmlMetadata()
+        {
+            AdminHtmlMetadataConfig.Register();
+        }
+
         [TestMethod]
         public void AdminHtmlSaveControllers_UseValidateInputFalsePattern()
         {
@@ -51,6 +58,29 @@ namespace EImece.Tests.Controllers
             Assert.IsFalse(validateInput.EnableValidation, controllerType.Name + "." + actionName + " POST must set ValidateInput(false).");
         }
 
+        [TestMethod]
+        public void HtmlBoundProperties_HaveAllowHtmlMetadata()
+        {
+            AssertPropertyAllowsHtml(typeof(Product), nameof(Product.Description));
+            AssertPropertyAllowsHtml(typeof(Product), nameof(Product.ShortDescription));
+            AssertPropertyAllowsHtml(typeof(ProductCategory), nameof(ProductCategory.Description));
+            AssertPropertyAllowsHtml(typeof(ProductCategory), nameof(ProductCategory.ShortDescription));
+            AssertPropertyAllowsHtml(typeof(Brand), nameof(Brand.Description));
+            AssertPropertyAllowsHtml(typeof(Menu), nameof(Menu.Description));
+            AssertPropertyAllowsHtml(typeof(Story), nameof(Story.Description));
+            AssertPropertyAllowsHtml(typeof(Story), nameof(Story.ShortDescription));
+            AssertPropertyAllowsHtml(typeof(StoryCategory), nameof(StoryCategory.Description));
+            AssertPropertyAllowsHtml(typeof(MainPageImage), nameof(MainPageImage.Description));
+            AssertPropertyAllowsHtml(typeof(Faq), nameof(Faq.Question));
+            AssertPropertyAllowsHtml(typeof(Faq), nameof(Faq.Answer));
+            AssertPropertyAllowsHtml(typeof(MailTemplate), nameof(MailTemplate.Body));
+            AssertPropertyAllowsHtml(typeof(Setting), nameof(Setting.Description));
+            AssertPropertyAllowsHtml(typeof(Setting), nameof(Setting.SettingValue));
+            AssertPropertyAllowsHtml(typeof(Customer), nameof(Customer.Description));
+            AssertPropertyAllowsHtml(typeof(SettingModel), nameof(SettingModel.FooterHtmlDescription));
+            AssertPropertyAllowsHtml(typeof(SystemSettingModel), nameof(SystemSettingModel.UnderConstructionHtml));
+            AssertPropertyAllowsHtml(typeof(SystemSettingModel), nameof(SystemSettingModel.PaymentDetailHtml));
+        }
 
         [TestMethod]
         public void AdminProductList_DefaultSort_IsUpdatedDateDescending()
@@ -76,6 +106,13 @@ namespace EImece.Tests.Controllers
                     m.Name == actionName
                     && m.GetCustomAttributes(typeof(HttpPostAttribute), inherit: false).Any()
                     && m.GetParameters().Any(p => p.ParameterType == modelType));
+        }
+
+        private static void AssertPropertyAllowsHtml(Type modelType, string propertyName)
+        {
+            var metadata = ModelMetadataProviders.Current.GetMetadataForProperty(() => null, modelType, propertyName);
+            Assert.IsFalse(metadata.RequestValidationEnabled,
+                modelType.Name + "." + propertyName + " must allow HTML input via [AllowHtml] metadata.");
         }
     }
 }

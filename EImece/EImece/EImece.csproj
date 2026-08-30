@@ -493,6 +493,8 @@
     <Compile Include="Properties\Settings.Designer.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Admin\AdminHtmlFieldMetadata.cs" />
+    <Compile Include="App_Start\AdminHtmlMetadataConfig.cs" />
     <Compile Include="Areas\Admin\Models\UserAuditReportViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
