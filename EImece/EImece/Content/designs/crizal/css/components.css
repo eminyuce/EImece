@@ -2899,6 +2899,12 @@ body[data-design="crizal"] .crizal-tags {
     gap: 0.45rem;
 }
 
+body[data-design="crizal"] .crizal-tags--stacked {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+}
+
 body[data-design="crizal"] .crizal-tag,
 body[data-design="crizal"] a.crizal-tag {
     display: inline-flex;
