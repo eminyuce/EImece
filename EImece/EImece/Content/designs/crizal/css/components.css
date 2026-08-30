@@ -2899,10 +2899,12 @@ body[data-design="crizal"] .crizal-tags {
     gap: 0.45rem;
 }
 
-body[data-design="crizal"] .crizal-tags--stacked {
-    flex-direction: column;
-    flex-wrap: nowrap;
-    align-items: flex-start;
+body[data-design="crizal"] #productPanels #tagCloud .card-body {
+    padding: 0.85rem 1.25rem 1.35rem;
+}
+
+body[data-design="crizal"] #productPanels .crizal-tags {
+    gap: 0.5rem 0.55rem;
 }
 
 body[data-design="crizal"] .crizal-tag,

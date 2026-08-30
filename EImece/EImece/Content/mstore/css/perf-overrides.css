@@ -372,3 +372,11 @@
   border-color: rgba(92, 119, 252, 0.35);
   color: #5c77fc;
 }
+
+/* Product detail Etiketler — flowing tag chips with comfortable spacing */
+#productPanels #tagCloud .product-detail-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.55rem;
+  padding: 0.85rem 1.15rem 1.25rem;
+}
