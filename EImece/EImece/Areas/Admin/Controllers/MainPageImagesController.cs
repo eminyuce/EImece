@@ -61,7 +61,7 @@ namespace EImece.Areas.Admin.Controllers
 
             Expression<Func<MainPageImage, bool>> whereLambda = r => r.Name.Contains(search);
             var mainPageImages = await MainPageImageService.SearchEntitiesAsync(whereLambda, search, CurrentLanguage);
-            return new QueryableResult<MainPageImage>(mainPageImages.AsQueryable());
+            return AdminGridResult(mainPageImages);
         }
 
         public async Task<ActionResult> SaveOrEdit(CancellationToken cancellationToken, int id = 0)

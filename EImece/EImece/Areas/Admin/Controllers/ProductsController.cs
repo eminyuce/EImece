@@ -110,7 +110,7 @@ namespace EImece.Areas.Admin.Controllers
             var products = await ProductService.GetAdminPageListAsync(id, query.BrandId, searchParam, CurrentLanguage, filter, cancellationToken).ConfigureAwait(false);
             ViewBag.IsProductPriceEnable = isProductPriceEnable;
             ViewBag.PriceEnabled = priceEnabled;
-            return new QueryableResult<Product>(products.AsQueryable());
+            return AdminGridResult(products);
         }
 
         [HttpGet]
@@ -431,7 +431,7 @@ namespace EImece.Areas.Admin.Controllers
                 products = await ProductService.GetAdminPageListAsync(id, search, CurrentLanguage, cancellationToken);
             }
 
-            return new QueryableResult<Product>(products.AsQueryable());
+            return AdminGridResult(products);
         }
 
         public async Task<ActionResult> MoveProducts(CancellationToken cancellationToken, int? id, string productIdList, int? oldCategoryId)

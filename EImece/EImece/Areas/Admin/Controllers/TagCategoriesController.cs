@@ -55,7 +55,7 @@ namespace EImece.Areas.Admin.Controllers
 
             Expression<Func<TagCategory, bool>> whereLambda = r => r.Name.Contains(search);
             var tags = await TagCategoryService.SearchEntitiesAsync(whereLambda, search, CurrentLanguage);
-            return new QueryableResult<TagCategory>(tags.AsQueryable());
+            return AdminGridResult(tags);
         }
 
         public async Task<ActionResult> SaveOrEdit(CancellationToken cancellationToken, int id = 0)

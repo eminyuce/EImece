@@ -130,6 +130,7 @@
     <Compile Include="Filters\ValidateCaptchaAttribute.cs" />
     <Compile Include="Filters\ValidateJsonAntiForgeryTokenAttribute.cs" />
     <Compile Include="Filters\WebApiExceptionFilter.cs" />
+    <Compile Include="Helpers\AdminGridQueryableHelper.cs" />
     <Compile Include="Helpers\EnumWebExtensions.cs" />
     <Compile Include="Helpers\HtmlHelpers\AdminBreadcrumbHtmlHelper.cs" />
     <Compile Include="Helpers\HtmlHelpers\AdminGridHtmlHelpers.cs" />

@@ -2,6 +2,7 @@ using EImece.App_Start;
 using EImece.Areas.Admin.Controllers;
 using EImece.Domain.Entities;
 using EImece.Domain.Models.AdminModels;
+using EImece.Web.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -137,6 +138,24 @@ namespace EImece.Tests.Controllers
                 .ToList();
 
             CollectionAssert.AreEqual(new List<int> { 5, 4, 3 }, capped);
+        }
+
+        [TestMethod]
+        public void AdminGridQueryableHelper_AppliesUpdatedDateSortWhenNoGriddlySortFields()
+        {
+            var older = new DateTime(2024, 1, 1);
+            var newer = new DateTime(2024, 6, 1);
+            var products = new List<Product>
+            {
+                new Product { Id = 179392, UpdatedDate = older },
+                new Product { Id = 179533, UpdatedDate = newer },
+            }.AsQueryable();
+
+            var sorted = AdminGridQueryableHelper.EnsureUpdatedDateSort(products, request: null)
+                .Select(p => p.Id)
+                .ToList();
+
+            CollectionAssert.AreEqual(new List<int> { 179533, 179392 }, sorted);
         }
 
         [TestMethod]

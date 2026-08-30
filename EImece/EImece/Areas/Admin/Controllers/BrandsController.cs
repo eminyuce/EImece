@@ -58,7 +58,7 @@ namespace EImece.Areas.Admin.Controllers
             }
 
             var brands = await BrandService.GetAdminPageListAsync(search, CurrentLanguage);
-            return new QueryableResult<Brand>(brands.AsQueryable());
+            return AdminGridResult(brands);
         }
 
         //

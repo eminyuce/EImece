@@ -65,7 +65,7 @@ namespace EImece.Areas.Admin.Controllers
 
             int categoryId = id;
             var stories = await StoryService.GetAdminPageListAsync(categoryId, search, CurrentLanguage);
-            return new QueryableResult<Story>(stories.AsQueryable());
+            return AdminGridResult(stories);
         }
 
         public async Task<ActionResult> SaveOrEdit(CancellationToken cancellationToken, int id = 0)

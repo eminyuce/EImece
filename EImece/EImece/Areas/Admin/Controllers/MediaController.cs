@@ -160,7 +160,7 @@ namespace EImece.Areas.Admin.Controllers
             ViewBag.ContentId = id;
             ViewBag.MediaMod = enumMod.Value;
             ViewBag.ImageType = enumImageType.Value;
-            return new QueryableResult<FileStorage>((fileStorages ?? new List<FileStorage>()).AsQueryable());
+            return AdminGridResult(fileStorages ?? new List<FileStorage>());
         }
 
         public ActionResult Show(int? id, String mod, String imageType)

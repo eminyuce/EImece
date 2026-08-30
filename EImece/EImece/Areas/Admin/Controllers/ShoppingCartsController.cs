@@ -47,7 +47,7 @@ namespace EImece.Areas.Admin.Controllers
             }
 
             var items = await ShoppingCartService.GetAdminPageListAsync(search, CurrentLanguage, cancellationToken);
-            return new QueryableResult<ShoppingCart>(items.AsQueryable());
+            return AdminGridResult(items);
         }
 
         [HttpGet, ActionName("ExportExcel")]

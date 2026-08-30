@@ -61,7 +61,7 @@ namespace EImece.Areas.Admin.Controllers
             var result = await TagService.GetAdminPageListAsync(search, CurrentLanguage);
             var isProductPriceEnable = await SettingService.GetSettingObjectByKeyAsync(Constants.IsProductPriceEnable);
             ViewBag.IsProductPriceEnable = isProductPriceEnable;
-            return new QueryableResult<Tag>(result.AsQueryable());
+            return AdminGridResult(result);
         }
 
         private async Task<List<SelectListItem>> GetCategoriesSelectListAsync(CancellationToken cancellationToken)

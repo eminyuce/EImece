@@ -63,7 +63,7 @@ namespace EImece.Areas.Admin.Controllers
 
             Expression<Func<Coupon, bool>> whereLambda = r => r.Name.Contains(search) || r.Code.Contains(search);
             var result = await CouponService.SearchEntitiesAsync(whereLambda, search, CurrentLanguage);
-            return new QueryableResult<Coupon>(result.AsQueryable());
+            return AdminGridResult(result);
         }
 
         public async Task<ActionResult> SaveOrEdit(CancellationToken cancellationToken, int id = 0)

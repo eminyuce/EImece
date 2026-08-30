@@ -64,7 +64,7 @@ namespace EImece.Areas.Admin.Controllers
 
             Expression<Func<StoryCategory, bool>> whereLambda = r => r.Name.Contains(search);
             var categories = await StoryCategoryService.SearchEntitiesAsync(whereLambda, search, CurrentLanguage);
-            return new QueryableResult<StoryCategory>(categories.AsQueryable());
+            return AdminGridResult(categories);
         }
 
         public async Task<ActionResult> SaveOrEdit(CancellationToken cancellationToken, int id = 0)

@@ -69,7 +69,7 @@ namespace EImece.Areas.Admin.Controllers
 
             ViewBag.ProductCategoryLeaves = await ProductCategoryService.GetProductCategoryLeavesAsync(null, CurrentLanguage, cancellationToken);
             var productCategories = await ProductCategoryService.GetAdminProductCategoriesAsync(search, CurrentLanguage, cancellationToken);
-            return new QueryableResult<ProductCategory>(productCategories.AsQueryable());
+            return AdminGridResult(productCategories);
         }
 
         [HttpGet]

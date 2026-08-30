@@ -56,7 +56,7 @@ namespace EImece.Areas.Admin.Controllers
 
             Expression<Func<Faq, bool>> whereLambda = r => r.Name.Contains(search);
             var result = await FaqService.SearchEntitiesAsync(whereLambda, search, CurrentLanguage);
-            return new QueryableResult<Faq>(result.AsQueryable());
+            return AdminGridResult(result);
         }
 
         public async Task<ActionResult> SaveOrEdit(CancellationToken cancellationToken, int id = 0)

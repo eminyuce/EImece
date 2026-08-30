@@ -70,7 +70,7 @@ namespace EImece.Areas.Admin.Controllers
             Expression<Func<Menu, bool>> whereLambda = r => r.Name.Contains(search);
             var menus = await MenuService.SearchEntitiesAsync(whereLambda, search, CurrentLanguage);
             ViewBag.MenuLeaves = await MenuService.GetMenuLeavesAsync(null, CurrentLanguage, cancellationToken);
-            return new QueryableResult<Menu>(menus.AsQueryable());
+            return AdminGridResult(menus);
         }
 
         [HttpGet]

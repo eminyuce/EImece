@@ -64,7 +64,7 @@ namespace EImece.Areas.Admin.Controllers
             }
 
             var productComments = await ProductCommentService.GetAdminPageListAsync(productId, search, CurrentLanguage, selectedRatings, startDate, endDate, cancellationToken);
-            return new QueryableResult<ProductComment>(productComments.AsQueryable());
+            return AdminGridResult(productComments);
         }
 
         [HttpGet, ActionName("ExportExcel")]

@@ -1,5 +1,6 @@
 using EImece.Domain;
 using EImece.Domain.Caching;
+using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Web.Filters;
 using EImece.Domain.Models.Enums;
@@ -20,6 +21,8 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using Griddly.Mvc;
+using Griddly.Mvc.Results;
+using EImece.Web.Helpers;
 using DomainConstants = EImece.Domain.Constants;
 
 namespace EImece.Web.Areas.Admin.Controllers
@@ -313,6 +316,16 @@ namespace EImece.Web.Areas.Admin.Controllers
             if (Request != null && Request.IsAjaxRequest()) return true;
             if (Request?.Headers != null && !string.IsNullOrEmpty(Request.Headers["X-Requested-With"])) return true;
             return string.Equals(Request?["gridembed"], "1", StringComparison.OrdinalIgnoreCase);
+        }
+
+        protected QueryableResult<T> AdminGridResult<T>(IQueryable<T> query) where T : BaseEntity
+        {
+            return new QueryableResult<T>(AdminGridQueryableHelper.EnsureUpdatedDateSort(query, Request));
+        }
+
+        protected QueryableResult<T> AdminGridResult<T>(System.Collections.Generic.IEnumerable<T> items) where T : BaseEntity
+        {
+            return AdminGridResult(items.AsQueryable());
         }
 
         protected ActionResult RequestReturn(RedirectToRouteResult returnDefault)

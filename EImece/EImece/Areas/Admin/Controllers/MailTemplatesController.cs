@@ -70,7 +70,7 @@ namespace EImece.Areas.Admin.Controllers
 
             Expression<Func<MailTemplate, bool>> whereLambda = r => r.Name.Contains(search);
             var result = await MailTemplateService.SearchEntitiesAsync(whereLambda, search, CurrentLanguage);
-            return new QueryableResult<MailTemplate>(result.AsQueryable());
+            return AdminGridResult(result);
         }
 
         public async Task<ActionResult> CreateBackup(CancellationToken cancellationToken, int id = 0)
