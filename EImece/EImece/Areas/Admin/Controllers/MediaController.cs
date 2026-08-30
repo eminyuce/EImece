@@ -164,6 +164,11 @@ namespace EImece.Areas.Admin.Controllers
 
         public ActionResult Show(int id, String mod, String imageType)
         {
+            if (id <= 0 || string.IsNullOrWhiteSpace(mod) || string.IsNullOrWhiteSpace(imageType))
+            {
+                return RedirectToAction(IndexAction, "Dashboard");
+            }
+
             var CurrentContext = HttpContext;
             JsonFiles ListOfFiles = filesHelper.GetFileList(CurrentContext);
             var model = new FilesViewModel()

@@ -347,6 +347,11 @@ namespace EImece.Areas.Admin.Controllers
         [HttpGet]
         public ActionResult Media(int id)
         {
+            if (id <= 0)
+            {
+                return RedirectToAction(IndexAction);
+            }
+
             return RedirectToAction(IndexAction, "Media", new { contentId = id, mod = MediaModType.Products, imageType = EImeceImageType.ProductGallery });
         }
 
@@ -428,6 +433,11 @@ namespace EImece.Areas.Admin.Controllers
 
         public async Task<ActionResult> MoveProducts(CancellationToken cancellationToken, int id, string productIdList, int oldCategoryId)
         {
+            if (id <= 0)
+            {
+                return RedirectToAction("MoveProductsInTrees");
+            }
+
             await ProductService.MoveProductsInTreesAsync(id, productIdList, cancellationToken);
             return RedirectToAction("MoveProductsInTrees", new { id, productIdList, oldCategoryId });
         }

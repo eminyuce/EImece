@@ -385,6 +385,11 @@ namespace EImece.Areas.Admin.Controllers
         [AuthorizeRoles(Domain.Constants.AdministratorRole)]
         public async Task<ActionResult> UserRoles(CancellationToken cancellationToken, string id)
         {
+            if (string.IsNullOrEmpty(id))
+            {
+                return RedirectToAction("Index");
+            }
+
             var model = await UsersService.GetAdminUserRolesViewModelAsync(id);
             return View(model);
         }

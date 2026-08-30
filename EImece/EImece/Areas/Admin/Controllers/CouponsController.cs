@@ -9,6 +9,7 @@ using System;
 using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -271,6 +272,11 @@ namespace EImece.Areas.Admin.Controllers
         [HttpGet]
         public async Task<ActionResult> Redemptions(int id, CancellationToken cancellationToken)
         {
+            if (id <= 0)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
             var coupon = await CouponService.GetSingleAsync(id).ConfigureAwait(false);
             if (coupon == null) return HttpNotFound();
             var redemptions = await CouponService.GetRedemptionsWithDetailsAsync(id, 100, cancellationToken).ConfigureAwait(false);

@@ -270,6 +270,11 @@ namespace EImece.Areas.Admin.Controllers
         [HttpGet]
         public ActionResult Media(int id)
         {
+            if (id <= 0)
+            {
+                return RedirectToAction(IndexAction);
+            }
+
             return RedirectToAction(IndexAction, "Media", new
             {
                 contentId = id,
