@@ -263,11 +263,11 @@ namespace EImece.Domain.Services
                 resultList = customers.Where(r =>
                     (r.Email != null && r.Email.IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0) ||
                     string.Format("{0} {1}", r.Name, r.Surname).IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0)
-                    .OrderByDescending(r => r.OrderLatestDate).ThenByDescending(r => r.CreatedDate).ToList();
+                    .OrderByDescending(r => r.UpdatedDate).ThenByDescending(r => r.Id).ToList();
             }
             else
             {
-                resultList = customers.OrderByDescending(r => r.OrderLatestDate).ThenByDescending(r => r.CreatedDate).ToList();
+                resultList = customers.OrderByDescending(r => r.UpdatedDate).ThenByDescending(r => r.Id).ToList();
             }
 
             Logger.Debug("Customer services retrieved successfully. Customers={0} OrdersRows={1}", customers.Count, orderRows.Count);
@@ -328,11 +328,11 @@ namespace EImece.Domain.Services
                 resultList = customers.Where(r =>
                     (r.Email != null && r.Email.IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0) ||
                     string.Format("{0} {1}", r.Name, r.Surname).IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0)
-                    .OrderByDescending(r => r.OrderLatestDate).ThenByDescending(r => r.CreatedDate).ToList();
+                    .OrderByDescending(r => r.UpdatedDate).ThenByDescending(r => r.Id).ToList();
             }
             else
             {
-                resultList = customers.OrderByDescending(r => r.OrderLatestDate).ThenByDescending(r => r.CreatedDate).ToList();
+                resultList = customers.OrderByDescending(r => r.UpdatedDate).ThenByDescending(r => r.Id).ToList();
             }
 
             Logger.Debug("Customer services retrieved successfully. Customers={0} OrdersRows={1}", customers.Count, orderRows.Count);

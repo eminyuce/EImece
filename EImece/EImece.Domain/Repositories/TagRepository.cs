@@ -216,7 +216,7 @@ namespace EImece.Domain.Repositories
             {
                 tags = tags.Where(r => r.Name.ToLower().Contains(search.Trim().ToLower()));
             }
-            var result = tags.OrderBy(r => r.Position).ThenByDescending(r => r.Id).ToList();
+            var result = tags.OrderByDescending(r => r.UpdatedDate).ThenByDescending(r => r.Id).ToList();
 
             return result;
         }
@@ -230,7 +230,7 @@ namespace EImece.Domain.Repositories
             {
                 tags = tags.Where(r => r.Name.ToLower().Contains(search.Trim().ToLower()));
             }
-            var result = await tags.OrderBy(r => r.Position).ThenByDescending(r => r.Id).ToListAsync().ConfigureAwait(false);
+            var result = await tags.OrderByDescending(r => r.UpdatedDate).ThenByDescending(r => r.Id).ToListAsync().ConfigureAwait(false);
 
             return result;
         }

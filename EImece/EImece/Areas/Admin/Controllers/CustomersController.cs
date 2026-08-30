@@ -80,7 +80,7 @@ namespace EImece.Areas.Admin.Controllers
             var customer = await CustomerService.GetUserIdAsync(id);
             orders.ForEach(r => r.Customer = customer);
             ViewBag.Customer = customer;
-            return View(orders.OrderByDescending(r => r.UpdatedDate).ToList());
+            return View(orders.OrderByDescending(r => r.UpdatedDate).ThenByDescending(r => r.Id).ToList());
         }
 
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
@@ -95,7 +95,7 @@ namespace EImece.Areas.Admin.Controllers
             var customer = await CustomerService.GetUserIdAsync(id);
             orders.ForEach(r => r.Customer = customer);
             ViewBag.Customer = customer;
-            return new QueryableResult<Order>(orders.OrderByDescending(r => r.UpdatedDate).AsQueryable());
+            return new QueryableResult<Order>(orders.OrderByDescending(r => r.UpdatedDate).ThenByDescending(r => r.Id).AsQueryable());
         }
 
         [HttpPost, ActionName("Delete")]

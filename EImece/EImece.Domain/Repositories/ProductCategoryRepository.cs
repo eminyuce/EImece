@@ -240,8 +240,8 @@ namespace EImece.Domain.Repositories
                 Expression<Func<ProductCategory, bool>> match2 = r => r.Name.Contains(search);
                 match = match.And(match2);
             }
-            var result = FindAllIncluding(match,
-                r => r.Position, OrderByType.Ascending, null, null, includeProperties.ToArray());
+            var result = GetAllIncluding(includeProperties.ToArray()).Where(match)
+                .OrderByDescending(r => r.UpdatedDate).ThenByDescending(r => r.Id);
 
             return result.ToList();
         }
@@ -259,8 +259,8 @@ namespace EImece.Domain.Repositories
                 Expression<Func<ProductCategory, bool>> match2 = r => r.Name.Contains(search);
                 match = match.And(match2);
             }
-            var result = FindAllIncluding(match,
-                r => r.Position, OrderByType.Ascending, null, null, includeProperties.ToArray());
+            var result = GetAllIncluding(includeProperties.ToArray()).Where(match)
+                .OrderByDescending(r => r.UpdatedDate).ThenByDescending(r => r.Id);
 
             return await result.ToListAsync(cancellationToken).ConfigureAwait(false);
         }

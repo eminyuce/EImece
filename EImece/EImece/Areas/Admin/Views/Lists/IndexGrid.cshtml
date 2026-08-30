@@ -20,7 +20,7 @@
         PageSize = pageSizeNumber,
         AllowedFilterModes = FilterMode.None,
         RowClass = item => item.Id % 2 == 0 ? "warning" : string.Empty,
-        DefaultSort = new[] { new SortField() { Field = "Name", Direction = SortDirection.Ascending } }
+        DefaultSort = new[] { new SortField() { Field = "UpdatedDate", Direction = SortDirection.Descending } }
     };
 
     settings.HtmlAttributes["data-gridname"] = gridName;
@@ -48,6 +48,7 @@
         .Column(x => x.Name, caption: AdminResource.Title, template: @<text>@Html.Partial("Grid/_GridNameCell", null, new ViewDataDictionary(ViewData) { { "Name", item.Name }, { "ItemId", item.Id.ToString() } })</text>, className: "eg-col-name", width: "240px")
         .Column(x => x.IsService, caption: AdminResource.IsService, template: @<text>@FlagIcon(item.Id, item.IsService, "IsService")</text>, className: "smallGridColumn eg-col-isservice", width: "140px")
         .Column(x => x.IsValues, caption: AdminResource.IsValues, template: @<text>@FlagIcon(item.Id, item.IsValues, "IsValues")</text>, className: "smallGridColumn eg-col-isvalues", width: "140px")
+        .Column(x => x.UpdatedDate, caption: AdminResource.UpdatedDate, template: @<text>@(item.UpdatedDate.ToShortDateString())</text>, className: "gridDateClass", width: "130px")
         .Column(caption: AdminResource.Actions, template: @<text>@Html.Partial("Grid/_GridActionsMenu", null, new ViewDataDictionary(ViewData) { { "ItemId", item.Id }, { "ItemName", item.Name }, { "controllerName", controllerName }, { "ShowMedia", false }, { "ShowEdit", true }, { "ShowDelete", true } })</text>, className: "eg-sticky-right eg-col-actions", width: "60px");
 }
 

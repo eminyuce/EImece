@@ -552,7 +552,7 @@ namespace EImece.Domain.Services
                     Expression<Func<StoryFile, bool>> match = r => r.StoryId == contentId && r.FileStorage.Type.Equals(typeStr, StringComparison.InvariantCultureIgnoreCase);
 
                     var item = StoryFileRepository.FindAllIncluding(match, r => r.FileStorageId, OrderByType.Ascending, null, null, includeProperties).ToList();
-                    return item.Select(r => r.FileStorage).OrderByDescending(r => r.UpdatedDate).ToList();
+                    return item.Select(r => r.FileStorage).OrderByDescending(r => r.UpdatedDate).ThenByDescending(r => r.Id).ToList();
 
                 case MediaModType.Products:
                     Expression<Func<ProductFile, object>> includeProperty1 = r => r.FileStorage;
@@ -560,7 +560,7 @@ namespace EImece.Domain.Services
                     Expression<Func<ProductFile, bool>> match1 = r => r.ProductId == contentId && r.FileStorage.Type.Equals(typeStr, StringComparison.InvariantCultureIgnoreCase);
 
                     var item1 = ProductFileRepository.FindAllIncluding(match1, r => r.FileStorageId, OrderByType.Ascending, null, null, includeProperties1).ToList();
-                    return item1.Select(r => r.FileStorage).OrderByDescending(r => r.UpdatedDate).ToList();
+                    return item1.Select(r => r.FileStorage).OrderByDescending(r => r.UpdatedDate).ThenByDescending(r => r.Id).ToList();
 
                 case MediaModType.Menus:
                     Expression<Func<MenuFile, object>> includeProperty2 = r => r.FileStorage;
@@ -568,7 +568,7 @@ namespace EImece.Domain.Services
                     Expression<Func<MenuFile, bool>> match2 = r => r.MenuId == contentId && r.FileStorage.Type.Equals(typeStr, StringComparison.InvariantCultureIgnoreCase);
 
                     var item2 = MenuFileRepository.FindAllIncluding(match2, r => r.FileStorageId, OrderByType.Ascending, null, null, includeProperties2).ToList();
-                    return item2.Select(r => r.FileStorage).OrderByDescending(r => r.UpdatedDate).ToList();
+                    return item2.Select(r => r.FileStorage).OrderByDescending(r => r.UpdatedDate).ThenByDescending(r => r.Id).ToList();
 
                 default:
                     break;
@@ -588,7 +588,7 @@ namespace EImece.Domain.Services
                     Expression<Func<StoryFile, bool>> match = r => r.StoryId == contentId && r.FileStorage.Type.Equals(typeStr, StringComparison.InvariantCultureIgnoreCase);
 
                     var item = await StoryFileRepository.FindAllIncluding(match, r => r.FileStorageId, OrderByType.Ascending, null, null, includeProperties).ToListAsync(cancellationToken).ConfigureAwait(false);
-                    return item.Select(r => r.FileStorage).OrderByDescending(r => r.UpdatedDate).ToList();
+                    return item.Select(r => r.FileStorage).OrderByDescending(r => r.UpdatedDate).ThenByDescending(r => r.Id).ToList();
 
                 case MediaModType.Products:
                     Expression<Func<ProductFile, object>> includeProperty1 = r => r.FileStorage;
@@ -596,7 +596,7 @@ namespace EImece.Domain.Services
                     Expression<Func<ProductFile, bool>> match1 = r => r.ProductId == contentId && r.FileStorage.Type.Equals(typeStr, StringComparison.InvariantCultureIgnoreCase);
 
                     var item1 = await ProductFileRepository.FindAllIncluding(match1, r => r.FileStorageId, OrderByType.Ascending, null, null, includeProperties1).ToListAsync(cancellationToken).ConfigureAwait(false);
-                    return item1.Select(r => r.FileStorage).OrderByDescending(r => r.UpdatedDate).ToList();
+                    return item1.Select(r => r.FileStorage).OrderByDescending(r => r.UpdatedDate).ThenByDescending(r => r.Id).ToList();
 
                 case MediaModType.Menus:
                     Expression<Func<MenuFile, object>> includeProperty2 = r => r.FileStorage;
@@ -604,7 +604,7 @@ namespace EImece.Domain.Services
                     Expression<Func<MenuFile, bool>> match2 = r => r.MenuId == contentId && r.FileStorage.Type.Equals(typeStr, StringComparison.InvariantCultureIgnoreCase);
 
                     var item2 = await MenuFileRepository.FindAllIncluding(match2, r => r.FileStorageId, OrderByType.Ascending, null, null, includeProperties2).ToListAsync(cancellationToken).ConfigureAwait(false);
-                    return item2.Select(r => r.FileStorage).OrderByDescending(r => r.UpdatedDate).ToList();
+                    return item2.Select(r => r.FileStorage).OrderByDescending(r => r.UpdatedDate).ThenByDescending(r => r.Id).ToList();
 
                 default:
                     break;

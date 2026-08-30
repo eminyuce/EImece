@@ -19,7 +19,7 @@
         PageSize = pageSizeNumber,
         AllowedFilterModes = FilterMode.None,
         RowClass = item => item.IsActive ? string.Empty : "GridIsActive",
-        DefaultSort = new[] { new SortField() { Field = "CreatedDate", Direction = SortDirection.Descending } }
+        DefaultSort = new[] { new SortField() { Field = "UpdatedDate", Direction = SortDirection.Descending } }
     };
 
     settings.HtmlAttributes["data-gridname"] = gridName;
@@ -50,6 +50,7 @@
         .Column(x => x.PaymentId, caption: AdminResource.Payment, template: @<text>@PaymentCell(item)</text>, className: "eg-col-payment", width: "128px")
         .Column(x => x.Price, caption: AdminResource.Amount, template: @<text><span class="eg-co-amount">@item.PaidPriceDecimal.CurrencySign()</span></text>, className: "eg-col-order-amount", width: "96px")
         .Column(x => x.ShipmentCompanyName, caption: AdminResource.Shipment, template: @<text>@CargoCell(item)</text>, className: "eg-col-cargo", width: "140px")
+        .Column(x => x.UpdatedDate, caption: AdminResource.UpdatedDate, template: @<text>@(item.UpdatedDate.ToShortDateString())</text>, className: "gridDateClass", width: "120px")
         .Column(caption: AdminResource.Actions, template: @<text>@ActionsCell(item)</text>, className: "eg-sticky-right eg-col-actions", width: "118px");
 }
 

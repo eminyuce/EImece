@@ -115,7 +115,7 @@ namespace EImece.Domain.Repositories
             {
                 brands = brands.Where(r => r.Name.Contains(search));
             }
-            brands = brands.OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate);
+            brands = brands.OrderByDescending(r => r.UpdatedDate).ThenByDescending(r => r.Id);
 
             return brands.ToList();
         }
@@ -129,7 +129,7 @@ namespace EImece.Domain.Repositories
             {
                 brands = brands.Where(r => r.Name.Contains(search));
             }
-            brands = brands.OrderBy(r => r.Position).ThenByDescending(r => r.UpdatedDate);
+            brands = brands.OrderByDescending(r => r.UpdatedDate).ThenByDescending(r => r.Id);
 
             return await brands.ToListAsync().ConfigureAwait(false);
         }

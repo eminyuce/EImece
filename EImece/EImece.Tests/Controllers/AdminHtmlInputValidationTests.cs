@@ -102,6 +102,23 @@ namespace EImece.Tests.Controllers
         }
 
         [TestMethod]
+        public void AdminEntitySearch_DefaultSort_IsUpdatedDateDescendingThenId()
+        {
+            var older = new DateTime(2024, 1, 1);
+            var newer = new DateTime(2024, 6, 1);
+            var entities = new List<Faq>
+            {
+                new Faq { Id = 1, UpdatedDate = older },
+                new Faq { Id = 2, UpdatedDate = newer },
+                new Faq { Id = 3, UpdatedDate = newer },
+            };
+
+            var orderedIds = entities.OrderByDescending(e => e.UpdatedDate).ThenByDescending(e => e.Id).Select(e => e.Id).ToList();
+
+            CollectionAssert.AreEqual(new List<int> { 3, 2, 1 }, orderedIds);
+        }
+
+        [TestMethod]
         public void AdminProductIndexGrid_IncludesUpdatedDateColumnForGriddlySort()
         {
             var gridViewPath = System.IO.Path.Combine(
