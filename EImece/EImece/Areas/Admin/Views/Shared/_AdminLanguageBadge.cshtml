@@ -3,7 +3,7 @@
 @{
     var langValue = Model ?? 1;
     var isTR = langValue == 1;
-    var flag = isTR ? "🇹🇷" : langValue == 2 ? "🇬🇧" : "🏳️";
+    var flag = isTR ? "🇹🇷" : langValue == 2 ? "🇺🇸" : "🏳️";
     var code = isTR ? "tr-TR" : langValue == 2 ? "en-US" : langValue.ToString();
     var native = isTR ? "Türkçe" : langValue == 2 ? "English" : "Lang " + langValue;
 }

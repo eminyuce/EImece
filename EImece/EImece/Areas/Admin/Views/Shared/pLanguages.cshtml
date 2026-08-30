@@ -1,24 +1,22 @@
 @using Resources
-@using EImece.Domain.Helpers;
 @model List<SelectListItem>
 @{
     var listItems = Model ?? new List<SelectListItem>();
     var selected = listItems.FirstOrDefault(l => l.Selected) ?? listItems.FirstOrDefault();
     var isBilingual = listItems.Count > 1;
     var selectedValue = selected != null ? selected.Value : "1";
-    var selectedName = selected != null && !string.IsNullOrWhiteSpace(selected.Text)
-        ? selected.Text
-        : (selectedValue == "2" ? AdminResource.ContentLanguageEnglishName : AdminResource.ContentLanguageTurkishName);
-    var selectedFlag = selectedValue == "2" ? "🇬🇧" : "🇹🇷";
+    var isEnglish = selectedValue == "2";
+    var selectedName = isEnglish ? AdminResource.ContentLanguageEnglishName : AdminResource.ContentLanguageTurkishName;
+    var selectedFlag = isEnglish ? "🇺🇸" : "🇹🇷";
 }
 <li class="admin-topbar-data-lang" title="@AdminResource.DataEntryLanguageTooltip">
-    <label @(isBilingual ? "for=CookieLanguage" : null) class="admin-topbar-data-lang__label">
+    @if (isBilingual)
+    {
+    <label for="CookieLanguage" class="admin-topbar-data-lang__label">
         <i class="fa fa-pencil-square-o" style="color:#6366f1; font-size:13px;" aria-hidden="true"></i>
         <span>@AdminResource.DataEntryLanguageShort</span>
         <span class="admin-topbar-data-lang__badge">DATA</span>
     </label>
-    @if (isBilingual)
-    {
     <div style="position:relative; display:inline-flex; align-items:center;">
         <select id="CookieLanguage" name="CookieLanguage" onchange="setlanguage(this.value)"
                 class="admin-topbar-data-lang__select"
@@ -27,8 +25,8 @@
             @foreach (var l in listItems)
             {
                 var v = l.Value;
-                var flag = v == "1" ? "🇹🇷" : v == "2" ? "🇬🇧" : "🏳️";
-                var name = string.IsNullOrWhiteSpace(l.Text) ? (v == "1" ? AdminResource.ContentLanguageTurkishName : v == "2" ? AdminResource.ContentLanguageEnglishName : v) : l.Text;
+                var flag = v == "2" ? "🇺🇸" : "🇹🇷";
+                var name = v == "2" ? AdminResource.ContentLanguageEnglishName : AdminResource.ContentLanguageTurkishName;
                 if (l.Selected)
                 {
             <option selected="selected" value="@l.Value">@flag @name</option>
@@ -44,8 +42,10 @@
     }
     else
     {
-    <span class="admin-topbar-data-lang__active" aria-label="@AdminResource.DataEntryLanguage">
-        @selectedFlag @string.Format(AdminResource.ActiveContentLanguageLabel, selectedName)
+    <span class="admin-topbar-data-lang__active">
+        @AdminResource.DataEntryLanguageShort:
+        <span aria-hidden="true">@selectedFlag</span>
+        <strong class="admin-topbar-data-lang__name">@selectedName</strong>
     </span>
     }
 </li>
