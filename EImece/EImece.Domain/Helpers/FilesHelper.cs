@@ -135,7 +135,7 @@ namespace EImece.Domain.Helpers
                     Size thumbTarget = ResolveThumbnailTargetSize(0, 0, originalWidth, originalHeight);
                     var thumbOpt = ImageUploadOptimizer.Optimize(
                         originalBytes,
-                        ImageUploadOptimizeOptions.ForThumbnail(fileName, null, thumbTarget.Width, thumbTarget.Height, Path.GetExtension(fileName)));
+                        ImageUploadOptimizeOptions.ForThumbnail(fileName, null, thumbTarget.Width, thumbTarget.Height, Path.GetExtension(fileName), _settingService));
                     SaveBytesToFilePath(thumbOpt.Bytes, partThumb2);
                     thumpBitmapWidth = thumbOpt.Width;
                     thumpBitmapHeight = thumbOpt.Height;
@@ -617,7 +617,7 @@ namespace EImece.Domain.Helpers
                 thumbTarget = ImageUploadOptimizer.FitWithin(thumbTarget.Width, thumbTarget.Height, fullOpt.Width, fullOpt.Height);
                 var thumbOpt = ImageUploadOptimizer.Optimize(
                     fileByte,
-                    ImageUploadOptimizeOptions.ForThumbnail(fileName, contentType, thumbTarget.Width, thumbTarget.Height, fullOpt.Extension));
+                    ImageUploadOptimizeOptions.ForThumbnail(fileName, contentType, thumbTarget.Width, thumbTarget.Height, fullOpt.Extension, _settingService));
                 SaveBytesToFilePath(thumbOpt.Bytes, candidatePathThb);
 
                 if (GetSettingBool(Constants.ImageUploadSaveWebPSidecar, Constants.DefaultImageUploadSaveWebPSidecar) && !fullOpt.IsWebP)
@@ -681,7 +681,7 @@ namespace EImece.Domain.Helpers
         {
             try
             {
-                return ImageUploadOptimizer.Optimize(source, ImageUploadOptimizeOptions.ForFullImage(fileName, contentType));
+                return ImageUploadOptimizer.Optimize(source, ImageUploadOptimizeOptions.ForFullImage(fileName, contentType, _settingService));
             }
             catch (Exception ex)
             {
