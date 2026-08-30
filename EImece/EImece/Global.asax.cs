@@ -447,7 +447,7 @@ namespace EImece
                 httpContext.Response.StatusCode = statusCode;
                 httpContext.Response.TrySkipIisCustomErrors = true;
 
-                var controller = new ErrorController();
+                var controller = (DependencyResolver.Current?.GetService<ErrorController>()) ?? new ErrorController();
                 var routeData = new RouteData();
                 routeData.Values["controller"] = "Error";
                 routeData.Values["action"] = action;

@@ -1,4 +1,4 @@
-﻿using EImece.Domain;
+using EImece.Domain;
 using EImece.Domain.Entities;
 using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Helpers;
@@ -42,52 +42,54 @@ namespace EImece.Controllers
         private const string LastCompletedOrderIdKey = "LastCompletedOrderId";
         private const string ThankYouForYourOrderAction = "ThankYouForYourOrder";
 
-        [Inject]
-        public IMailTemplateService MailTemplateService { get; set; }
-
-        [Inject]
-        public IEmailSender EmailSender { get; set; }
-
-        [Inject]
-        public ICouponService CouponService { get; set; }
-
-        [Inject]
-        public ICouponValidationService CouponValidationService { get; set; }
-
-        [Inject]
-        public IRazorEngineHelper RazorEngineHelper { get; set; }
-
-        [Inject]
-        public IOrderService OrderService { get; set; }
-
-        [Inject]
-        public IAddressService AddressService { get; set; }
-
-        [Inject]
-        public ICustomerService CustomerService { get; set; }
-
-        [Inject]
-        public PaymentContext PaymentContext { get; set; }
-
-        [Inject]
-        public IShoppingCartService ShoppingCartService { get; set; }
-
-        [Inject]
-        public IAuthenticationManager AuthenticationManager { get; set; }
-
-        [Inject]
-        public IProductService ProductService { get; set; }
-
-        public ApplicationSignInManager SignInManager { get; set; }
-
-        public ApplicationUserManager UserManager { get; set; }
+        private readonly IMailTemplateService MailTemplateService;
+        private readonly IEmailSender EmailSender;
+        private readonly ICouponService CouponService;
+        private readonly ICouponValidationService CouponValidationService;
+        private readonly IRazorEngineHelper RazorEngineHelper;
+        private readonly IOrderService OrderService;
+        private readonly IAddressService AddressService;
+        private readonly ICustomerService CustomerService;
+        private readonly PaymentContext PaymentContext;
+        private readonly IShoppingCartService ShoppingCartService;
+        private readonly IAuthenticationManager AuthenticationManager;
+        private readonly IProductService ProductService;
+        private readonly ApplicationSignInManager SignInManager;
+        private readonly ApplicationUserManager UserManager;
 
         public PaymentController(
+            ISettingService settingService,
+            AutoMapper.IMapper mapper,
             ApplicationUserManager userManager,
-            ApplicationSignInManager signInManager)
+            ApplicationSignInManager signInManager,
+            IMailTemplateService mailTemplateService,
+            IEmailSender emailSender,
+            ICouponService couponService,
+            ICouponValidationService couponValidationService,
+            IRazorEngineHelper razorEngineHelper,
+            IOrderService orderService,
+            IAddressService addressService,
+            ICustomerService customerService,
+            PaymentContext paymentContext,
+            IShoppingCartService shoppingCartService,
+            IAuthenticationManager authenticationManager,
+            IProductService productService)
+            : base(settingService, mapper)
         {
-            UserManager = userManager;
-            SignInManager = signInManager;
+            UserManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
+            SignInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
+            MailTemplateService = mailTemplateService ?? throw new ArgumentNullException(nameof(mailTemplateService));
+            EmailSender = emailSender ?? throw new ArgumentNullException(nameof(emailSender));
+            CouponService = couponService ?? throw new ArgumentNullException(nameof(couponService));
+            CouponValidationService = couponValidationService ?? throw new ArgumentNullException(nameof(couponValidationService));
+            RazorEngineHelper = razorEngineHelper ?? throw new ArgumentNullException(nameof(razorEngineHelper));
+            OrderService = orderService ?? throw new ArgumentNullException(nameof(orderService));
+            AddressService = addressService ?? throw new ArgumentNullException(nameof(addressService));
+            CustomerService = customerService ?? throw new ArgumentNullException(nameof(customerService));
+            PaymentContext = paymentContext ?? throw new ArgumentNullException(nameof(paymentContext));
+            ShoppingCartService = shoppingCartService ?? throw new ArgumentNullException(nameof(shoppingCartService));
+            AuthenticationManager = authenticationManager ?? throw new ArgumentNullException(nameof(authenticationManager));
+            ProductService = productService ?? throw new ArgumentNullException(nameof(productService));
         }
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)

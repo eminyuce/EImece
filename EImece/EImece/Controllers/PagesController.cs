@@ -19,8 +19,16 @@ namespace EImece.Controllers
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        [Inject]
-        public IMenuService MenuService { get; set; }
+        private readonly IMenuService MenuService;
+
+        public PagesController(
+            ISettingService settingService,
+            AutoMapper.IMapper mapper,
+            IMenuService menuService)
+            : base(settingService, mapper)
+        {
+            MenuService = menuService ?? throw new ArgumentNullException(nameof(menuService));
+        }
 
         // Old hashed contact slugs (hash changes when the CMS page is re-saved).
         private static readonly HashSet<string> LegacyContactSlugs = new HashSet<string>(StringComparer.OrdinalIgnoreCase)

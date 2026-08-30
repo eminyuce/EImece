@@ -6,6 +6,8 @@ using System;
 using System.Net;
 using System.Web.Mvc;
 
+using EImece.Domain.Services.IServices;
+
 namespace EImece.Controllers
 {
     /// <summary>
@@ -14,6 +16,11 @@ namespace EImece.Controllers
     public class ErrorController : BaseController
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
+        public ErrorController(ISettingService settingService = null, AutoMapper.IMapper mapper = null)
+            : base(settingService, mapper)
+        {
+        }
 
         #region Public Methods
 

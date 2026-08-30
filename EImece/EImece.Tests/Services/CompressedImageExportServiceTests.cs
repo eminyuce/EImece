@@ -267,10 +267,10 @@ namespace EImece.Tests.Services
         public async Task ImagesController_DownloadCompressedImages_ReturnsFileContentResult()
         {
             // Arrange
-            var controller = new ImagesController(
+            var controller = new EImece.Areas.Admin.Controllers.ImagesController(
                 new FakeSettingServiceProxy().Service,
                 new FakeImageExportService(),
-                new FilesHelper());
+                new FilesHelper(null));
 
             // Act
             var actionResult = await controller.DownloadCompressedImages(CancellationToken.None);

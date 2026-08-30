@@ -25,52 +25,19 @@ namespace EImece.Domain.Services
         /// </summary>
         protected const string AsyncCacheKeySuffix = "-async";
 
-        [Inject]
-        public IHttpContextFactory HttpContextFactory { get; set; }
-        [Inject]
-        public IMapper Mapper { get; set; }
-
-        private IEimeceCacheProvider _dataCacheProvider { get; set; }
-
         public bool IsCachingActivated { get; set; } = true;
 
-        /// <summary>
-        /// Canonical cache-key family used by the base classes' cached active entity/content
-        /// lists (<c>GetActiveBaseEntitiesFromCache</c>, <c>GetActiveBaseContentsFromCache</c>).
-        /// The former keys embedded <c>this.GetType().FullName</c>, which no ClearByPrefix
-        /// invalidation routine ever matched, so those entries stayed stale until TTL expiry.
-        /// Storefront services override this to their hierarchical CacheKeys family
-        /// (product:, category:, menu:, ...) so existing invalidators evict them.
-        /// </summary>
-        protected virtual string ActiveListCachePrefix
-        {
-            get { return "activelist:" + GetType().Name + ":"; }
-        }
-
-        [Inject]
-        public IEimeceCacheProvider DataCachingProvider
-        {
-            get
-            {
-                return _dataCacheProvider;
-            }
-            set
-            {
-                _dataCacheProvider = value;
-            }
-        }
-
-        private IBaseRepository<T> baseRepository { get; set; }
+        private readonly IBaseRepository<T> baseRepository;
 
         protected BaseService(IBaseRepository<T> baseRepository)
         {
-            this.baseRepository = baseRepository;
+            this.baseRepository = baseRepository ?? throw new ArgumentNullException(nameof(baseRepository));
         }
 
-        protected BaseService(IBaseRepository<T> baseRepository, bool IsCachingActivated)
+        protected BaseService(IBaseRepository<T> baseRepository, bool isCachingActivated)
         {
-            this.baseRepository = baseRepository;
-            this.IsCachingActivated = IsCachingActivated;
+            this.baseRepository = baseRepository ?? throw new ArgumentNullException(nameof(baseRepository));
+            this.IsCachingActivated = isCachingActivated;
         }
 
         public virtual List<T> LoadEntites(Expression<Func<T, bool>> whereLambda)
@@ -141,45 +108,5 @@ namespace EImece.Domain.Services
         {
             return await baseRepository.GetAll().ToListAsync().ConfigureAwait(false);
         }
-
-        [Inject]
-        public IProductTagRepository ProductTagRepository { get; set; }
-
-        [Inject]
-        public IStoryTagRepository StoryTagRepository { get; set; }
-
-        [Inject]
-        public IStoryFileRepository StoryFileRepository { get; set; }
-
-        [Inject]
-        public IProductFileRepository ProductFileRepository { get; set; }
-
-        [Inject]
-        public IMenuFileRepository MenuFileRepository { get; set; }
-
-        [Inject]
-        public IProductSpecificationRepository ProductSpecificationRepository { get; set; }
-
-        [Inject]
-        public IFileStorageTagRepository FileStorageTagRepository { get; set; }
-
-        private FilesHelper _filesHelper { get; set; }
-
-        [Inject]
-        public FilesHelper FilesHelper
-        {
-            get
-            {
-                _filesHelper.InitFilesMediaFolder();
-                return _filesHelper;
-            }
-            set
-            {
-                _filesHelper = value;
-            }
-        }
-
-        [Inject]
-        public IEntityFactory EntityFactory { get; set; }
     }
 }

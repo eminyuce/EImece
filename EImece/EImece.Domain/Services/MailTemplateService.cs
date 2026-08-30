@@ -1,3 +1,4 @@
+using EImece.Domain.Caching;
 using EImece.Domain.Entities;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Observability.Telemetry;
@@ -11,26 +12,31 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 
+using EImece.Domain.Factories.IFactories;
+
 namespace EImece.Domain.Services
 {
     public class MailTemplateService : BaseEntityService<MailTemplate>, IMailTemplateService
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private IMailTemplateRepository MailTemplateRepository { get; set; }
+        private readonly IMailTemplateRepository MailTemplateRepository;
+        private readonly IOrderService OrderService;
+        private readonly ISettingService SettingService;
+        private readonly IHttpContextFactory HttpContextFactory;
 
-        [Inject]
-        public ICustomerService CustomerService { get; set; }
-
-        [Inject]
-        public IOrderService OrderService { get; set; }
-
-        [Inject]
-        public ISettingService SettingService { get; set; }
-
-        public MailTemplateService(IMailTemplateRepository repository) : base(repository)
+        public MailTemplateService(
+            IMailTemplateRepository repository,
+            IEimeceCacheProvider dataCachingProvider,
+            IOrderService orderService,
+            ISettingService settingService,
+            IHttpContextFactory httpContextFactory)
+            : base(repository, dataCachingProvider)
         {
-            MailTemplateRepository = repository;
+            MailTemplateRepository = repository ?? throw new ArgumentNullException(nameof(repository));
+            OrderService = orderService ?? throw new ArgumentNullException(nameof(orderService));
+            SettingService = settingService ?? throw new ArgumentNullException(nameof(settingService));
+            HttpContextFactory = httpContextFactory ?? throw new ArgumentNullException(nameof(httpContextFactory));
         }
 
         [Timed("service.mail_template.get_by_name_sync")]

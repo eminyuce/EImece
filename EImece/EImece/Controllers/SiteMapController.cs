@@ -1,8 +1,10 @@
+using System;
 using EImece.Domain;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.AttributeHelper;
 using EImece.Domain.Helpers.SiteMap;
 using EImece.Domain.Services;
+using EImece.Domain.Services.IServices;
 using EImece.Domain.DependencyInjection;
 using System.Net.Mime;
 using System.Threading.Tasks;
@@ -13,8 +15,16 @@ namespace EImece.Controllers
 {
     public class SiteMapController : BaseController
     {
-        [Inject]
-        public SiteMapService SiteMapService { get; set; }
+        private readonly SiteMapService SiteMapService;
+
+        public SiteMapController(
+            ISettingService settingService,
+            AutoMapper.IMapper mapper,
+            SiteMapService siteMapService)
+            : base(settingService, mapper)
+        {
+            SiteMapService = siteMapService ?? throw new ArgumentNullException(nameof(siteMapService));
+        }
 
         [CustomOutputCache(CacheProfile = Constants.Cache1Hour)]
         [Route("sitemap.xml")]

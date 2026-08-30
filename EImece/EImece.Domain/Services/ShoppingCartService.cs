@@ -38,15 +38,10 @@ namespace EImece.Domain.Services
 
         private readonly IProductService ProductService;
 
-        private IShoppingCartRepository ShoppingCartRepository { get; set; }
-
-        public ApplicationUserManager UserManager { get; set; }
-
-        [Inject]
-        public ICouponValidationService CouponValidationService { get; set; }
-
-        [Inject]
-        public ICouponRedemptionRepository CouponRedemptionRepository { get; set; }
+        private readonly IShoppingCartRepository ShoppingCartRepository;
+        public ApplicationUserManager UserManager { get; }
+        private readonly ICouponValidationService CouponValidationService;
+        private readonly ICouponRedemptionRepository CouponRedemptionRepository;
 
         public ShoppingCartService(
             ApplicationUserManager userManager,
@@ -55,16 +50,20 @@ namespace EImece.Domain.Services
             ICustomerService customerService,
             IAddressService addressService,
             IOrderProductService orderProductService,
-            IProductService productService = null) : base(repository)
+            IProductService productService,
+            ICouponValidationService couponValidationService = null,
+            ICouponRedemptionRepository couponRedemptionRepository = null) : base(repository)
         {
             Logger.Debug("ShoppingCartService initialized");
-            this.ShoppingCartRepository = repository;
+            this.ShoppingCartRepository = repository ?? throw new ArgumentNullException(nameof(repository));
             this.UserManager = userManager;
             this.OrderService = orderService;
             this.CustomerService = customerService;
             this.AddressService = addressService;
             this.OrderProductService = orderProductService;
             this.ProductService = productService;
+            this.CouponValidationService = couponValidationService;
+            this.CouponRedemptionRepository = couponRedemptionRepository;
         }
 
         [Timed("service.shopping_cart.save_or_edit_sync")]

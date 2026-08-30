@@ -1,15 +1,19 @@
-﻿using EImece.Domain.Helpers.EmailHelper;
+using EImece.Domain.Helpers.EmailHelper;
 using Microsoft.AspNet.Identity;
-using EImece.Domain.DependencyInjection;
 using NLog;
+using System;
 using System.Threading.Tasks;
 
 namespace EImece.Domain.Services
 {
     public class EmailService : IIdentityMessageService
     {
-        [Inject]
-        public IEmailSender EmailSender { get; set; }
+        private readonly IEmailSender EmailSender;
+
+        public EmailService(IEmailSender emailSender)
+        {
+            EmailSender = emailSender ?? throw new ArgumentNullException(nameof(emailSender));
+        }
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 

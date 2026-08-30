@@ -1,15 +1,21 @@
-﻿using EImece.Domain.Entities;
+using EImece.Domain.Entities;
 using EImece.Domain.Factories.IFactories;
 using EImece.Domain.Helpers;
 using EImece.Domain.Services.IServices;
 using EImece.Domain.DependencyInjection;
 
+using System;
+
 namespace EImece.Domain.Factories
 {
     public class EntityFactory : IEntityFactory
     {
-        [Inject]
-        public ISettingService SettingService { get; set; }
+        private readonly ISettingService SettingService;
+
+        public EntityFactory(ISettingService settingService)
+        {
+            SettingService = settingService ?? throw new ArgumentNullException(nameof(settingService));
+        }
 
         public T GetBaseContentInstance<T>() where T : BaseContent, new()
         {

@@ -17,29 +17,35 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
+using EImece.Domain.Factories.IFactories;
+
 namespace EImece.Domain.Services
 {
     public class ProductCategoryService : BaseContentService<ProductCategory>, IProductCategoryService
     {
         protected static readonly Logger ProductCategoryServiceLogger = LogManager.GetCurrentClassLogger();
 
-        [Inject]
-        public IProductService ProductService { get; set; }
+        private readonly IBrandService BrandService;
+        private readonly IProductRepository ProductRepository;
+        private readonly IProductCategoryRepository ProductCategoryRepository;
+        private readonly IMenuService MenuService;
 
-        [Inject]
-        public IBrandService BrandService { get; set; }
-
-        [Inject]
-        public TemplateService TemplateService { get; set; }
-
-        [Inject]
-        public IProductRepository ProductRepository { get; set; }
-
-        private IProductCategoryRepository ProductCategoryRepository { get; set; }
-
-        public ProductCategoryService(IProductCategoryRepository repository) : base(repository)
+        public ProductCategoryService(
+            IProductCategoryRepository repository,
+            IEimeceCacheProvider dataCachingProvider,
+            ISettingService settingService,
+            IFileStorageService fileStorageService,
+            IHttpContextFactory httpContextFactory,
+            FilesHelper filesHelper,
+            IBrandService brandService,
+            IProductRepository productRepository,
+            IMenuService menuService)
+            : base(repository, dataCachingProvider, settingService, fileStorageService, httpContextFactory, filesHelper)
         {
-            ProductCategoryRepository = repository;
+            ProductCategoryRepository = repository ?? throw new ArgumentNullException(nameof(repository));
+            BrandService = brandService ?? throw new ArgumentNullException(nameof(brandService));
+            ProductRepository = productRepository ?? throw new ArgumentNullException(nameof(productRepository));
+            MenuService = menuService ?? throw new ArgumentNullException(nameof(menuService));
         }
 
         /// <summary>
@@ -55,11 +61,6 @@ namespace EImece.Domain.Services
         {
             // Grid state/position/main-page toggles change the navigation tree and listings.
             InvalidateCategoryCaches();
-        }
-
-        public ProductCategoryService(IProductCategoryRepository repository, bool IsCachingActivated) : base(repository)
-        {
-            this.IsCachingActivated = IsCachingActivated;
         }
 
         #region Storefront Read Methods (LINQ Projection, AsNoTracking, Main Entity Activation)
@@ -386,7 +387,7 @@ namespace EImece.Domain.Services
             DataCachingProvider.ClearByPrefix("Navigation-");
             // Canonical category: family (detail/children/tree/mainpage/active lists).
             DataCachingProvider.ClearByPrefix(CacheKeys.CategoryPrefix);
-            ProductService?.InvalidateProductListCaches();
+            DataCachingProvider.ClearByPrefix(CacheKeys.ProductListPrefix);
         }
 
         public override ProductCategory SaveOrEditEntity(ProductCategory entity)
@@ -419,7 +420,7 @@ namespace EImece.Domain.Services
             var productIdList = productCategory.Products?.Select(r => r.Id).ToList() ?? new List<int>();
             foreach (var id in productIdList)
             {
-                ProductService.DeleteProductById(id);
+                ProductRepository.DeleteByWhereCondition(r => r.Id == id);
             }
 
             DeleteEntity(productCategory);
@@ -442,7 +443,7 @@ namespace EImece.Domain.Services
             var productIdList = productCategory.Products?.Select(r => r.Id).ToList() ?? new List<int>();
             foreach (var id in productIdList)
             {
-                await ProductService.DeleteProductByIdAsync(id, cancellationToken).ConfigureAwait(false);
+                await ProductRepository.DeleteByWhereConditionAsync(r => r.Id == id).ConfigureAwait(false);
             }
 
             await DeleteEntityAsync(productCategory).ConfigureAwait(false);

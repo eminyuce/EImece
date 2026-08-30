@@ -8,9 +8,12 @@ namespace EImece.Domain.Observability.HealthChecks
 {
     public sealed class BackgroundServiceHealthCheck : IHealthCheck
     {
-        // Injected by PropertyInjector ([Inject] pattern)
-        [Inject]
-        public IScheduler Scheduler { get; set; }
+        private readonly IScheduler Scheduler;
+
+        public BackgroundServiceHealthCheck(IScheduler scheduler = null)
+        {
+            Scheduler = scheduler;
+        }
 
         public string Name
         {

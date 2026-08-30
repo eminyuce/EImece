@@ -9,15 +9,25 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
+using EImece.Domain.Factories.IFactories;
+using System;
+
 namespace EImece.Domain.Services
 {
     public class BrandService : BaseContentService<Brand>, IBrandService
     {
         private readonly IBrandRepository BrandRepository;
 
-        public BrandService(IBrandRepository repository) : base(repository)
+        public BrandService(
+            IBrandRepository repository,
+            IEimeceCacheProvider dataCachingProvider,
+            ISettingService settingService,
+            IFileStorageService fileStorageService,
+            IHttpContextFactory httpContextFactory,
+            FilesHelper filesHelper)
+            : base(repository, dataCachingProvider, settingService, fileStorageService, httpContextFactory, filesHelper)
         {
-            BrandRepository = repository;
+            BrandRepository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
         #region Storefront Read Methods (LINQ Projection, AsNoTracking, Main Entity Activation)

@@ -19,8 +19,12 @@ namespace EImece.Domain.Helpers.EmailHelper
     /// </summary>
     public class EmailSender : IEmailSender
     {
-        [Inject]
-        public ISettingService SettingService { get; set; }
+        private readonly ISettingService SettingService;
+
+        public EmailSender(ISettingService settingService)
+        {
+            SettingService = settingService ?? throw new ArgumentNullException(nameof(settingService));
+        }
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private const string FromAddressRequiredMessage = "From Address cannot be null";

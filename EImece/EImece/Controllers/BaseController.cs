@@ -26,11 +26,14 @@ namespace EImece.Controllers
     [UnderConst]
     public abstract class BaseController : Controller
     {
-        [Inject]
-        public ISettingService SettingService { get; set; }
+        protected readonly ISettingService SettingService;
+        protected readonly AutoMapper.IMapper Mapper;
 
-        [Inject]
-        public AutoMapper.IMapper Mapper { get; set; }
+        protected BaseController(ISettingService settingService, AutoMapper.IMapper mapper)
+        {
+            SettingService = settingService;
+            Mapper = mapper;
+        }
 
         private static readonly Logger BaseLogger = LogManager.GetCurrentClassLogger();
 

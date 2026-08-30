@@ -9,23 +9,11 @@ namespace EImece.Domain.Services
 {
     public class AdresService
     {
-        public AdresService()
-        {
-        }
+        private readonly IEimeceCacheProvider MemoryCacheProvider;
 
-        private IEimeceCacheProvider _memoryCacheProvider { get; set; }
-
-        [Inject]
-        public IEimeceCacheProvider MemoryCacheProvider
+        public AdresService(IEimeceCacheProvider memoryCacheProvider)
         {
-            get
-            {
-                return _memoryCacheProvider;
-            }
-            set
-            {
-                _memoryCacheProvider = value;
-            }
+            MemoryCacheProvider = memoryCacheProvider ?? throw new ArgumentNullException(nameof(memoryCacheProvider));
         }
 
         public TurkiyeAdres GetTurkiyeAdres()

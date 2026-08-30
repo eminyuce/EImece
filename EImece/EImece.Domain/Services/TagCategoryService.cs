@@ -1,4 +1,4 @@
-﻿using EImece.Domain.Entities;
+using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Repositories.IRepositories;
@@ -18,14 +18,15 @@ namespace EImece.Domain.Services
     {
         private static readonly Logger TagCategoryServiceLogger = LogManager.GetCurrentClassLogger();
 
-        [Inject]
-        public ITagService TagService { get; set; }
+        private readonly ITagService TagService;
+        private readonly ITagCategoryRepository TagCategoryRepository;
 
-        private ITagCategoryRepository TagCategoryRepository { get; set; }
-
-        public TagCategoryService(ITagCategoryRepository repository) : base(repository)
+        public TagCategoryService(
+            ITagCategoryRepository repository,
+            ITagService tagService) : base(repository)
         {
-            TagCategoryRepository = repository;
+            TagCategoryRepository = repository ?? throw new ArgumentNullException(nameof(repository));
+            TagService = tagService ?? throw new ArgumentNullException(nameof(tagService));
         }
 
         public List<TagCategory> GetTagsByTagType(EImeceLanguage language)

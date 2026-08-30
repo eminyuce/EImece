@@ -23,27 +23,20 @@ namespace EImece.Domain.Services
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private readonly IOrderRepository OrderRepository;
-
         private readonly IOrderProductService OrderProductService;
-
         private readonly ICustomerService CustomerService;
+        private readonly IAddressService AddressService;
 
-        [Inject]
-        public IAddressService AddressService { get; set; }
-
-        public OrderService(IOrderRepository repository, ICustomerService customerService, IOrderProductService orderProductService) : base(repository)
+        public OrderService(
+            IOrderRepository repository,
+            ICustomerService customerService = null,
+            IOrderProductService orderProductService = null,
+            IAddressService addressService = null) : base(repository)
         {
-            OrderRepository = repository;
+            OrderRepository = repository ?? throw new ArgumentNullException(nameof(repository));
+            CustomerService = customerService;
             OrderProductService = orderProductService;
-            this.CustomerService = customerService;
-        }
-
-        public OrderService(IOrderRepository repository, ICustomerService customerService, IOrderProductService orderProductService, IAddressService addressService) : base(repository)
-        {
-            OrderRepository = repository;
-            OrderProductService = orderProductService;
-            this.CustomerService = customerService;
-            this.AddressService = addressService;
+            AddressService = addressService;
         }
 
         #region Storefront Read Methods (LINQ Projection, AsNoTracking)

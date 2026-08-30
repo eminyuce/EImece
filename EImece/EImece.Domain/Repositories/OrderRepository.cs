@@ -21,9 +21,6 @@ namespace EImece.Domain.Repositories
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        [Inject]
-        public ICustomerRepository CustomerRepository { get; set; }
-
         public OrderRepository(IEImeceContext dbContext) : base(dbContext)
         {
         }

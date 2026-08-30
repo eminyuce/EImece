@@ -26,8 +26,12 @@ namespace EImece.Domain.Helpers
 {
     public class FilesHelper : IDisposable
     {
-        [Inject]
-        public IFileStorageService FileStorageService { get; set; }
+        private readonly IFileStorageService FileStorageService;
+
+        public FilesHelper(IFileStorageService fileStorageService = null)
+        {
+            FileStorageService = fileStorageService;
+        }
 
         private const string THUMBS = "thumbs";
         private const string THB = "thb";

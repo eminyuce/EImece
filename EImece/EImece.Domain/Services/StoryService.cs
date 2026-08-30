@@ -23,29 +23,41 @@ using System.Web.Mvc;
 using System.Xml;
 using System.Xml.Linq;
 
+using EImece.Domain.Factories.IFactories;
+
 namespace EImece.Domain.Services
 {
     public class StoryService : BaseContentService<Story>, IStoryService
     {
         private static readonly Logger StoryServiceLogger = LogManager.GetCurrentClassLogger();
 
-        [Inject]
-        public ITagService TagService { get; set; }
+        private readonly ITagService TagService;
+        private readonly IProductRepository ProductRepository;
+        private readonly IStoryCategoryService StoryCategoryService;
+        private readonly IStoryRepository StoryRepository;
+        private readonly IStoryTagRepository StoryTagRepository;
+        private readonly IMenuService MenuService;
 
-        [Inject]
-        public IProductService ProductService { get; set; }
-
-        [Inject]
-        public IProductRepository ProductRepository { get; set; }
-
-        [Inject]
-        public IStoryCategoryService StoryCategoryService { get; set; }
-
-        private IStoryRepository StoryRepository { get; set; }
-
-        public StoryService(IStoryRepository repository) : base(repository)
+        public StoryService(
+            IStoryRepository repository,
+            IEimeceCacheProvider dataCachingProvider,
+            ISettingService settingService,
+            IFileStorageService fileStorageService,
+            IHttpContextFactory httpContextFactory,
+            FilesHelper filesHelper,
+            ITagService tagService,
+            IProductRepository productRepository,
+            IStoryCategoryService storyCategoryService,
+            IStoryTagRepository storyTagRepository,
+            IMenuService menuService)
+            : base(repository, dataCachingProvider, settingService, fileStorageService, httpContextFactory, filesHelper)
         {
-            StoryRepository = repository;
+            StoryRepository = repository ?? throw new ArgumentNullException(nameof(repository));
+            TagService = tagService ?? throw new ArgumentNullException(nameof(tagService));
+            ProductRepository = productRepository ?? throw new ArgumentNullException(nameof(productRepository));
+            StoryCategoryService = storyCategoryService ?? throw new ArgumentNullException(nameof(storyCategoryService));
+            StoryTagRepository = storyTagRepository ?? throw new ArgumentNullException(nameof(storyTagRepository));
+            MenuService = menuService ?? throw new ArgumentNullException(nameof(menuService));
         }
 
         #region Storefront Read Methods (LINQ Projection, AsNoTracking, Main Entity Activation)

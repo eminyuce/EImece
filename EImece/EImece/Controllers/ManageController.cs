@@ -9,6 +9,8 @@ using System.Web;
 using System.Web.Mvc;
 using Resources;
 
+using EImece.Domain.Services.IServices;
+
 namespace EImece.Controllers
 {
     [Authorize]
@@ -21,7 +23,12 @@ namespace EImece.Controllers
 
         public ApplicationUserManager UserManager { get; set; }
 
-        public ManageController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
+        public ManageController(
+            ISettingService settingService,
+            AutoMapper.IMapper mapper,
+            ApplicationUserManager userManager,
+            ApplicationSignInManager signInManager)
+            : base(settingService, mapper)
         {
             UserManager = userManager;
             SignInManager = signInManager;

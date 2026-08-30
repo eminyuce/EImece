@@ -1,3 +1,4 @@
+using Quartz;
 using System;
 using System.Threading.Tasks;
 
@@ -10,6 +11,9 @@ namespace EImece.Domain.Scheduler
     /// </summary>
     public class QuartzService : AdminQuartzService
     {
+        public QuartzService(IScheduler scheduler = null) : base(scheduler)
+        {
+        }
         public async Task ExecuteMultiplyTask()
         {
             await ExecuteAdminTasksAsync().ConfigureAwait(false);

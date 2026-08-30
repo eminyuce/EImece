@@ -95,10 +95,7 @@ namespace EImece.Tests.Scheduler
         [TestMethod]
         public async Task BackgroundServiceHealthCheck_WhenSchedulerNull_ReturnsDown()
         {
-            var healthCheck = new BackgroundServiceHealthCheck
-            {
-                Scheduler = null
-            };
+            var healthCheck = new BackgroundServiceHealthCheck(null);
 
             // If scheduler is enabled or disabled
             var result = await healthCheck.CheckAsync(CancellationToken.None);
@@ -115,10 +112,7 @@ namespace EImece.Tests.Scheduler
 
             try
             {
-                var healthCheck = new BackgroundServiceHealthCheck
-                {
-                    Scheduler = sched
-                };
+                var healthCheck = new BackgroundServiceHealthCheck(sched);
 
                 var result = await healthCheck.CheckAsync(CancellationToken.None);
                 Assert.IsNotNull(result);
@@ -140,10 +134,7 @@ namespace EImece.Tests.Scheduler
 
             try
             {
-                var adminService = new AdminQuartzService
-                {
-                    Scheduler = sched
-                };
+                var adminService = new AdminQuartzService(sched);
 
                 await adminService.ExecuteAdminTasksAsync();
 
@@ -165,10 +156,7 @@ namespace EImece.Tests.Scheduler
 
             try
             {
-                var userService = new UserQuartzService
-                {
-                    Scheduler = sched
-                };
+                var userService = new UserQuartzService(sched);
 
                 // Currently no active jobs for end-users; should execute cleanly
                 await userService.ExecuteUserTasksAsync();

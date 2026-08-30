@@ -32,32 +32,40 @@ namespace EImece.Controllers
     {
         private static readonly Logger HomeLogger = LogManager.GetCurrentClassLogger();
 
-        [Inject]
-        public IEimeceCacheProvider MemoryCacheProvider { get; set; }
+        private readonly IEimeceCacheProvider MemoryCacheProvider;
+        private readonly IEmailSender EmailSender;
+        private readonly ISubscriberService SubsciberService;
+        private readonly IMainPageImageService MainPageImageService;
+        private readonly IProductCategoryService ProductCategoryService;
+        private readonly IMenuService MenuService;
+        private readonly IMailTemplateService MailTemplateService;
+        private readonly IRazorEngineHelper RazorEngineHelper;
+        private readonly IProductService ProductService;
 
-        [Inject]
-        public IEmailSender EmailSender { get; set; }
-
-        [Inject]
-        public ISubscriberService SubsciberService { get; set; }
-
-        [Inject]
-        public IMainPageImageService MainPageImageService { get; set; }
-
-        [Inject]
-        public IProductCategoryService ProductCategoryService { get; set; }
-
-        [Inject]
-        public IMenuService MenuService { get; set; }
-
-        [Inject]
-        public IMailTemplateService MailTemplateService { get; set; }
-
-        [Inject]
-        public IRazorEngineHelper RazorEngineHelper { get; set; }
-
-        [Inject]
-        public IProductService ProductService { get; set; }
+        public HomeController(
+            ISettingService settingService,
+            AutoMapper.IMapper mapper,
+            IEimeceCacheProvider memoryCacheProvider,
+            IEmailSender emailSender,
+            ISubscriberService subsciberService,
+            IMainPageImageService mainPageImageService,
+            IProductCategoryService productCategoryService,
+            IMenuService menuService,
+            IMailTemplateService mailTemplateService,
+            IRazorEngineHelper razorEngineHelper,
+            IProductService productService)
+            : base(settingService, mapper)
+        {
+            MemoryCacheProvider = memoryCacheProvider ?? throw new ArgumentNullException(nameof(memoryCacheProvider));
+            EmailSender = emailSender ?? throw new ArgumentNullException(nameof(emailSender));
+            SubsciberService = subsciberService ?? throw new ArgumentNullException(nameof(subsciberService));
+            MainPageImageService = mainPageImageService ?? throw new ArgumentNullException(nameof(mainPageImageService));
+            ProductCategoryService = productCategoryService ?? throw new ArgumentNullException(nameof(productCategoryService));
+            MenuService = menuService ?? throw new ArgumentNullException(nameof(menuService));
+            MailTemplateService = mailTemplateService ?? throw new ArgumentNullException(nameof(mailTemplateService));
+            RazorEngineHelper = razorEngineHelper ?? throw new ArgumentNullException(nameof(razorEngineHelper));
+            ProductService = productService ?? throw new ArgumentNullException(nameof(productService));
+        }
 
         [CustomOutputCache(CacheProfile = Constants.Cache1Hour)]
         public async Task<ActionResult> Index()

@@ -1,3 +1,4 @@
+using System;
 using EImece.Domain;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
@@ -16,16 +17,24 @@ namespace EImece.Controllers
 {
     public class AjaxController : BaseController
     {
-        [Inject]
-        public IOrderService OrderService { get; set; }
-
-        [Inject]
-        public ISubscriberService SubsciberService { get; set; }
-
-        [Inject]
-        public ITurkishRegionService TurkishRegionService { get; set; }
+        private readonly IOrderService OrderService;
+        private readonly ISubscriberService SubsciberService;
+        private readonly ITurkishRegionService TurkishRegionService;
 
         private const string Main_Page_Product_Subscription = "Main-Page-Product-Subscription";
+
+        public AjaxController(
+            ISettingService settingService,
+            AutoMapper.IMapper mapper,
+            IOrderService orderService,
+            ISubscriberService subsciberService,
+            ITurkishRegionService turkishRegionService)
+            : base(settingService, mapper)
+        {
+            OrderService = orderService ?? throw new ArgumentNullException(nameof(orderService));
+            SubsciberService = subsciberService ?? throw new ArgumentNullException(nameof(subsciberService));
+            TurkishRegionService = turkishRegionService ?? throw new ArgumentNullException(nameof(turkishRegionService));
+        }
 
         [HttpPost]
         public JsonResult HomePageShoppingCart()
@@ -35,10 +44,6 @@ namespace EImece.Controllers
                         "ShoppingCartTemplates/_HomePageShoppingCart",
                         new ViewDataDictionary(), tempData);
             return Json(html, JsonRequestBehavior.AllowGet);
-        }
-
-        public AjaxController()
-        {
         }
 
         public async Task<JsonResult> SubscribeEmail(string subscribeEmail)

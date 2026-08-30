@@ -219,7 +219,7 @@ namespace EImece.Tests.Helpers
         [TestMethod]
         public async Task SendTestEmailAsync_RejectsMissingAndInvalidRecipient()
         {
-            var service = new MailTemplateTestService();
+            var service = (MailTemplateTestService)System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof(MailTemplateTestService));
 
             var missing = await service.SendTestEmailAsync(null);
             Assert.IsFalse(missing.Success);

@@ -16,14 +16,22 @@ namespace EImece.Controllers
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        [Inject]
-        public IProductService ProductService { get; set; }
+        private readonly IProductService ProductService;
+        private readonly IStoryService StoryService;
+        private readonly IStoryCategoryService StoryCategoryService;
 
-        [Inject]
-        public IStoryService StoryService { get; set; }
-
-        [Inject]
-        public IStoryCategoryService StoryCategoryService { get; set; }
+        public RssController(
+            ISettingService settingService,
+            AutoMapper.IMapper mapper,
+            IProductService productService,
+            IStoryService storyService,
+            IStoryCategoryService storyCategoryService)
+            : base(settingService, mapper)
+        {
+            ProductService = productService ?? throw new ArgumentNullException(nameof(productService));
+            StoryService = storyService ?? throw new ArgumentNullException(nameof(storyService));
+            StoryCategoryService = storyCategoryService ?? throw new ArgumentNullException(nameof(storyCategoryService));
+        }
 
         // GET: Rss
         /// rss/products/?Take=10&Description=1&CategoryId=2&Language=1&Width=300&Height=250&utm_source=google&utm_medium=cpc&utm_campaign=spring_sale&utm_term=shoes&utm_content=ad1

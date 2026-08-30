@@ -18,8 +18,12 @@ namespace EImece.Domain.Scheduler
             Quartz.Logging.LogProvider.IsDisabled = true;
         }
 
-        [Inject]
-        public IScheduler Scheduler { get; set; }
+        protected readonly IScheduler Scheduler;
+
+        protected BaseQuartzService(IScheduler scheduler = null)
+        {
+            Scheduler = scheduler;
+        }
 
         public abstract Task StartSchedulerServiceAsync();
 

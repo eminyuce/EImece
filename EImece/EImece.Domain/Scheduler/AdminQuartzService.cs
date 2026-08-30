@@ -11,6 +11,9 @@ namespace EImece.Domain.Scheduler
     /// </summary>
     public class AdminQuartzService : BaseQuartzService
     {
+        public AdminQuartzService(IScheduler scheduler = null) : base(scheduler)
+        {
+        }
         public override async Task StartSchedulerServiceAsync()
         {
             Logger.Info("AdminQuartzService has started");

@@ -32,33 +32,36 @@ namespace EImece.Controllers
         private const string LockoutAction = "Lockout";
         private const string AdminLoginAction = "AdminLogin";
 
-        [Inject]
-        public IIdentityManager IdentityManager { get; set; }
-
-        [Inject]
-        public IUsersService UsersService { get; set; }
-
-        [Inject]
-        public IRazorEngineHelper RazorEngineHelper { get; set; }
-
-        [Inject]
-        public IAuthenticationManager AuthenticationManager { get; set; }
-
-        public ApplicationSignInManager SignInManager { get; set; }
-
-        public ApplicationUserManager UserManager { get; set; }
-
-        [Inject]
-        public TwoFactorTokenService TwoFactorTokenService { get; set; }
-
+        private readonly IIdentityManager IdentityManager;
+        private readonly IUsersService UsersService;
+        private readonly IRazorEngineHelper RazorEngineHelper;
+        private readonly IAuthenticationManager AuthenticationManager;
+        private readonly ApplicationSignInManager SignInManager;
+        private readonly ApplicationUserManager UserManager;
+        private readonly TwoFactorTokenService TwoFactorTokenService;
         private readonly ICustomerService CustomerService;
 
-        public AccountController(ApplicationUserManager userManager,
-            ApplicationSignInManager signInManager, ICustomerService customerService)
+        public AccountController(
+            ISettingService settingService,
+            AutoMapper.IMapper mapper,
+            ApplicationUserManager userManager,
+            ApplicationSignInManager signInManager,
+            ICustomerService customerService,
+            IIdentityManager identityManager,
+            IUsersService usersService,
+            IRazorEngineHelper razorEngineHelper,
+            IAuthenticationManager authenticationManager,
+            TwoFactorTokenService twoFactorTokenService)
+            : base(settingService, mapper)
         {
-            UserManager = userManager;
-            SignInManager = signInManager;
-            CustomerService = customerService;
+            UserManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
+            SignInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
+            CustomerService = customerService ?? throw new ArgumentNullException(nameof(customerService));
+            IdentityManager = identityManager ?? throw new ArgumentNullException(nameof(identityManager));
+            UsersService = usersService ?? throw new ArgumentNullException(nameof(usersService));
+            RazorEngineHelper = razorEngineHelper ?? throw new ArgumentNullException(nameof(razorEngineHelper));
+            AuthenticationManager = authenticationManager ?? throw new ArgumentNullException(nameof(authenticationManager));
+            TwoFactorTokenService = twoFactorTokenService ?? throw new ArgumentNullException(nameof(twoFactorTokenService));
         }
 
         [AllowAnonymous]

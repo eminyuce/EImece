@@ -43,41 +43,42 @@ namespace EImece.Areas.Customers.Controllers
                 return EnumHelper.GetEnumFromDescription(lang, typeof(EImeceLanguage));
             }
         }
-        [Inject]
-        public IAuthenticationManager AuthenticationManager { get; set; }
+        private readonly IAuthenticationManager AuthenticationManager;
+        private readonly AutoMapper.IMapper Mapper;
+        private readonly ICustomerService CustomerService;
+        private readonly IOrderService OrderService;
+        private readonly IFaqService FaqService;
+        private readonly ISubscriberService SubsciberService;
+        private readonly ISettingService SettingService;
+        private readonly ApplicationSignInManager SignInManager;
+        private readonly IIdentityManager IdentityManager;
+        private readonly ApplicationUserManager UserManager;
+        private readonly IRazorEngineHelper RazorEngineHelper;
 
-        [Inject]
-        public AutoMapper.IMapper Mapper { get; set; }
-
-        [Inject]
-        public ICustomerService CustomerService { get; set; }
-
-        [Inject]
-        public IOrderService OrderService { get; set; }
-
-        [Inject]
-        public IFaqService FaqService { get; set; }
-
-        [Inject]
-        public ISubscriberService SubsciberService { get; set; }
-
-        [Inject]
-        public ISettingService SettingService { get; set; }
-
-        [Inject]
-        public ApplicationSignInManager SignInManager { get; set; }
-
-        [Inject]
-        public IIdentityManager IdentityManager { get; set; }
-
-        public ApplicationUserManager UserManager { get; set; }
-
-        [Inject]
-        public IRazorEngineHelper RazorEngineHelper { get; set; }
-
-        public HomeController(ApplicationUserManager userManager)
+        public HomeController(
+            ApplicationUserManager userManager,
+            IAuthenticationManager authenticationManager,
+            AutoMapper.IMapper mapper,
+            ICustomerService customerService,
+            IOrderService orderService,
+            IFaqService faqService,
+            ISubscriberService subsciberService,
+            ISettingService settingService,
+            ApplicationSignInManager signInManager,
+            IIdentityManager identityManager,
+            IRazorEngineHelper razorEngineHelper)
         {
-            this.UserManager = userManager;
+            UserManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
+            AuthenticationManager = authenticationManager ?? throw new ArgumentNullException(nameof(authenticationManager));
+            Mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            CustomerService = customerService ?? throw new ArgumentNullException(nameof(customerService));
+            OrderService = orderService ?? throw new ArgumentNullException(nameof(orderService));
+            FaqService = faqService ?? throw new ArgumentNullException(nameof(faqService));
+            SubsciberService = subsciberService ?? throw new ArgumentNullException(nameof(subsciberService));
+            SettingService = settingService ?? throw new ArgumentNullException(nameof(settingService));
+            SignInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
+            IdentityManager = identityManager ?? throw new ArgumentNullException(nameof(identityManager));
+            RazorEngineHelper = razorEngineHelper ?? throw new ArgumentNullException(nameof(razorEngineHelper));
         }
         protected override void Initialize(System.Web.Routing.RequestContext requestContext)
         {

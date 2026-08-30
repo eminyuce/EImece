@@ -19,20 +19,29 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
+using EImece.Domain.Factories.IFactories;
+
 namespace EImece.Domain.Services
 {
     public class MenuService : BaseContentService<Menu>, IMenuService
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        [Inject]
-        public IStoryCategoryService StoryCategoryService { get; set; }
+        private readonly IStoryCategoryService StoryCategoryService;
+        private readonly IMenuRepository MenuRepository;
 
-        private IMenuRepository MenuRepository { get; set; }
-
-        public MenuService(IMenuRepository repository) : base(repository)
+        public MenuService(
+            IMenuRepository repository,
+            IEimeceCacheProvider dataCachingProvider,
+            ISettingService settingService,
+            IFileStorageService fileStorageService,
+            IHttpContextFactory httpContextFactory,
+            FilesHelper filesHelper,
+            IStoryCategoryService storyCategoryService)
+            : base(repository, dataCachingProvider, settingService, fileStorageService, httpContextFactory, filesHelper)
         {
-            MenuRepository = repository;
+            MenuRepository = repository ?? throw new ArgumentNullException(nameof(repository));
+            StoryCategoryService = storyCategoryService ?? throw new ArgumentNullException(nameof(storyCategoryService));
         }
 
         #region Storefront Read Methods (LINQ Projection, AsNoTracking, Main Entity Activation)
@@ -473,7 +482,7 @@ namespace EImece.Domain.Services
 
         public void UpdateStoryCategoryMenuLink(int storyCategoryId, int lang)
         {
-            var items = MenuService.GetActiveBaseContentsFromCache(null, lang).Where(r1 => r1.MenuLink.Contains("stories-categories")).ToList();
+            var items = this.GetActiveBaseContentsFromCache(null, lang).Where(r1 => r1.MenuLink.Contains("stories-categories")).ToList();
             foreach (var item in items)
             {
                 var menuLink = item.MenuLink;
@@ -482,14 +491,14 @@ namespace EImece.Domain.Services
                     var storyCategory = StoryCategoryService.GetSingle(storyCategoryId);
                     string m = "stories-categories_" + storyCategory.GetSeoUrl();
                     item.MenuLink = m;
-                    MenuService.SaveOrEditEntity(item);
+                    this.SaveOrEditEntity(item);
                 }
             }
         }
 
         public async Task UpdateStoryCategoryMenuLinkAsync(int storyCategoryId, int lang)
         {
-            var items = (await MenuService.GetActiveBaseContentsFromCacheAsync(null, lang).ConfigureAwait(false)).Where(r1 => r1.MenuLink.Contains("stories-categories")).ToList();
+            var items = (await this.GetActiveBaseContentsFromCacheAsync(null, lang).ConfigureAwait(false)).Where(r1 => r1.MenuLink.Contains("stories-categories")).ToList();
             foreach (var item in items)
             {
                 var menuLink = item.MenuLink;
@@ -498,7 +507,7 @@ namespace EImece.Domain.Services
                     var storyCategory = await StoryCategoryService.GetSingleAsync(storyCategoryId).ConfigureAwait(false);
                     string m = "stories-categories_" + storyCategory.GetSeoUrl();
                     item.MenuLink = m;
-                    await MenuService.SaveOrEditEntityAsync(item).ConfigureAwait(false);
+                    await this.SaveOrEditEntityAsync(item).ConfigureAwait(false);
                 }
             }
         }

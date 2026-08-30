@@ -33,7 +33,17 @@ namespace EImece.Tests.Controllers
                 object defaultResult = null;
                 if (call.MethodBase is MethodInfo mi && mi.ReturnType != typeof(void))
                 {
-                    if (mi.ReturnType.IsValueType)
+                    if (mi.ReturnType == typeof(Task))
+                    {
+                        defaultResult = Task.CompletedTask;
+                    }
+                    else if (mi.ReturnType.IsGenericType && mi.ReturnType.GetGenericTypeDefinition() == typeof(Task<>))
+                    {
+                        var innerType = mi.ReturnType.GetGenericArguments()[0];
+                        var defaultInner = innerType.IsValueType ? Activator.CreateInstance(innerType) : null;
+                        defaultResult = typeof(Task).GetMethod("FromResult").MakeGenericMethod(innerType).Invoke(null, new[] { defaultInner });
+                    }
+                    else if (mi.ReturnType.IsValueType)
                     {
                         defaultResult = Activator.CreateInstance(mi.ReturnType);
                     }
@@ -135,7 +145,8 @@ namespace EImece.Tests.Controllers
         [TestMethod]
         public async Task UnderConstructionController_Index_ShouldBeAsync()
         {
-            var controller = new UnderConstructionController();
+            var mockSettingService = (ISettingService)new InterfaceMockProxy<ISettingService>().GetTransparentProxy();
+            var controller = new UnderConstructionController(mockSettingService);
             var result = await controller.Index();
             Assert.IsNotNull(result, "UnderConstructionController Index should return an ActionResult.");
         }
@@ -143,7 +154,8 @@ namespace EImece.Tests.Controllers
         [TestMethod]
         public async Task RobotController_RobotsText_ShouldBeAsync()
         {
-            var controller = new RobotController();
+            var mockSettingService = (ISettingService)new InterfaceMockProxy<ISettingService>().GetTransparentProxy();
+            var controller = new RobotController(mockSettingService);
             var result = await controller.RobotsText();
             Assert.IsNotNull(result, "RobotController RobotsText should return a FileContentResult.");
             Assert.AreEqual(MediaTypeNames.Text.Plain, result.ContentType);
