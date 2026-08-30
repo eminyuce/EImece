@@ -10346,6 +10346,60 @@ namespace Resources {
             }
         }
 
+        public static string ContentLanguagesTitle {
+            get {
+                return ResourceManager.GetString("ContentLanguagesTitle", resourceCulture);
+            }
+        }
+
+        public static string ContentLanguagesHelp {
+            get {
+                return ResourceManager.GetString("ContentLanguagesHelp", resourceCulture);
+            }
+        }
+
+        public static string ContentLanguageTurkish {
+            get {
+                return ResourceManager.GetString("ContentLanguageTurkish", resourceCulture);
+            }
+        }
+
+        public static string ContentLanguageEnglish {
+            get {
+                return ResourceManager.GetString("ContentLanguageEnglish", resourceCulture);
+            }
+        }
+
+        public static string ContentLanguageTurkishName {
+            get {
+                return ResourceManager.GetString("ContentLanguageTurkishName", resourceCulture);
+            }
+        }
+
+        public static string ContentLanguageEnglishName {
+            get {
+                return ResourceManager.GetString("ContentLanguageEnglishName", resourceCulture);
+            }
+        }
+
+        public static string ContentLanguagesAtLeastOne {
+            get {
+                return ResourceManager.GetString("ContentLanguagesAtLeastOne", resourceCulture);
+            }
+        }
+
+        public static string ActiveContentLanguageLabel {
+            get {
+                return ResourceManager.GetString("ActiveContentLanguageLabel", resourceCulture);
+            }
+        }
+
+        public static string ContentLanguagesBilingualMode {
+            get {
+                return ResourceManager.GetString("ContentLanguagesBilingualMode", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Atanan Kullanıcı Id.
         /// </summary>

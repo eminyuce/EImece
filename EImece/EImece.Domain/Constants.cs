@@ -108,6 +108,11 @@ namespace EImece.Domain
 
         // Admin & Content UI Preferences Setting Keys
         public const string AdminPanelLanguage = "AdminPanelLanguage";
+        /// <summary>
+        /// Comma-separated content languages for products/stories/menus (tr-TR and/or en-US).
+        /// Independent of <see cref="AdminPanelLanguage"/>.
+        /// </summary>
+        public const string SupportedContentLanguages = "SupportedContentLanguages";
         public const string GridPageSizeNumber = "GridPageSizeNumber";
         public const string ProductShortDescriptionPreviewLength = "ProductShortDescriptionPreviewLength";
         public const string IsEditLinkEnable = "IsEditLinkEnable";
@@ -175,6 +180,7 @@ namespace EImece.Domain
         public const bool DefaultRequireAdminAuthenticator = true;
         public const string DefaultCaptchaProvider = "Legacy";
         public const string DefaultAdminPanelLanguage = "tr-TR";
+        public const string DefaultSupportedContentLanguages = "tr-TR";
         public const string DefaultSuitableForSaleProductStates = "ProductInStock,PreOrder,LimitedStock";
 
         public const string DbConnectionKey = "EImeceDbConnection";

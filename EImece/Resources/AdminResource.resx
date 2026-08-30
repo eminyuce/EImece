@@ -4524,6 +4524,33 @@
   <data name="AdminPanelUILanguageHelp" xml:space="preserve">
     <value>Yönetim paneli arayüz dili (menüler, butonlar, sistem mesajları). Veri giriş dili (üst çubuk) ayrı bir ayardır.</value>
   </data>
+  <data name="ContentLanguagesTitle" xml:space="preserve">
+    <value>İçerik Dilleri</value>
+  </data>
+  <data name="ContentLanguagesHelp" xml:space="preserve">
+    <value>Ürün, hikâye, menü ve kategori içeriklerinin dilidir. Yönetim paneli arayüz dilinden bağımsızdır. En az bir dil seçilmelidir. İkisi de seçiliyse çift dil (vitrin dil değiştirici) açılır.</value>
+  </data>
+  <data name="ContentLanguageTurkish" xml:space="preserve">
+    <value>Türkçe</value>
+  </data>
+  <data name="ContentLanguageEnglish" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="ContentLanguageTurkishName" xml:space="preserve">
+    <value>Türkçe</value>
+  </data>
+  <data name="ContentLanguageEnglishName" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="ContentLanguagesAtLeastOne" xml:space="preserve">
+    <value>En az bir içerik dili seçilmelidir.</value>
+  </data>
+  <data name="ActiveContentLanguageLabel" xml:space="preserve">
+    <value>Aktif içerik dili: {0}</value>
+  </data>
+  <data name="ContentLanguagesBilingualMode" xml:space="preserve">
+    <value>Çift dil modu: vitrin dil değiştirici kullanılabilir.</value>
+  </data>
   <data name="AssignedUserId" xml:space="preserve">
     <value>Atanan Kullanıcı Id</value>
   </data>

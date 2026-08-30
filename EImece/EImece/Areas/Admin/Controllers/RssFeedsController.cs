@@ -114,7 +114,7 @@ namespace EImece.Areas.Admin.Controllers
         private List<SelectListItem> GetAvailableLanguages()
         {
             var list = new List<SelectListItem>();
-            foreach (EImeceLanguage lang in Enum.GetValues(typeof(EImeceLanguage)))
+            foreach (EImeceLanguage lang in EnumHelper.GetLanguageEnumListFromWebConfig())
             {
                 int langId = (int)lang;
                 string langName = EnumHelper.GetEnumDescription(lang);

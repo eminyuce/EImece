@@ -503,6 +503,38 @@
                                     </div>
                                     @Html.ValidationMessageFor(model => model.AdminPanelLanguage, "", new { @class = "text-danger small" })
                                 </div>
+                                <!-- Content languages (storefront / data-entry) — independent of Admin Panel UI language -->
+                                <div class="setting-item mb-0 p-3 border rounded bg-light" data-setting-name="SupportedContentLanguages" data-setting-label="@AdminResource.ContentLanguagesTitle" data-setting-desc="@AdminResource.ContentLanguagesHelp" data-keywords="içerik dili content language turkish english tr en bilingual veri giriş">
+                                    <div class="d-flex align-items-center justify-content-between mb-2">
+                                        <label class="form-label fw-bold small m-0 d-flex align-items-center gap-2">
+                                            <span class="badge bg-success text-uppercase"><i class="fa fa-language me-1"></i>DATA</span>
+                                            <span>@AdminResource.ContentLanguagesTitle</span>
+                                            @Html.Partial("_AdminFieldTip", null, new ViewDataDictionary { { "TipText", AdminResource.ContentLanguagesHelp } })
+                                        </label>
+                                    </div>
+                                    @Html.HiddenFor(model => model.SupportedContentLanguages)
+                                    <div class="d-flex flex-wrap gap-3 mb-2">
+                                        <div class="form-check">
+                                            @Html.CheckBoxFor(model => model.ContentLanguageTurkish, new { @class = "form-check-input content-language-checkbox", id = "ContentLanguageTurkish", data_lang = "tr" })
+                                            <label class="form-check-label" for="ContentLanguageTurkish">🇹🇷 @AdminResource.ContentLanguageTurkish</label>
+                                        </div>
+                                        <div class="form-check">
+                                            @Html.CheckBoxFor(model => model.ContentLanguageEnglish, new { @class = "form-check-input content-language-checkbox", id = "ContentLanguageEnglish", data_lang = "en" })
+                                            <label class="form-check-label" for="ContentLanguageEnglish">🇬🇧 @AdminResource.ContentLanguageEnglish</label>
+                                        </div>
+                                    </div>
+                                    <div id="contentLanguageSingleHint" class="form-text small mb-1" style="display:none;">
+                                        <i class="fa fa-info-circle me-1 text-primary"></i>
+                                        <span id="contentLanguageSingleHintText"></span>
+                                    </div>
+                                    <div id="contentLanguageBilingualHint" class="form-text small mb-1" style="display:none;">
+                                        <i class="fa fa-exchange me-1 text-success"></i>@AdminResource.ContentLanguagesBilingualMode
+                                    </div>
+                                    <div class="form-text small text-muted">
+                                        <i class="fa fa-info-circle me-1 text-primary"></i>@AdminResource.ContentLanguagesHelp
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.SupportedContentLanguages, "", new { @class = "text-danger small" })
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -2099,6 +2131,35 @@
                     window.location.reload();
                 }
             });
+
+            function syncContentLanguageHints() {
+                var tr = $('#ContentLanguageTurkish').is(':checked');
+                var en = $('#ContentLanguageEnglish').is(':checked');
+                var $single = $('#contentLanguageSingleHint');
+                var $bilingual = $('#contentLanguageBilingualHint');
+                if (tr && en) {
+                    $single.hide();
+                    $bilingual.show();
+                } else {
+                    var label = en
+                        ? '@AdminResource.ContentLanguageEnglishName'
+                        : '@AdminResource.ContentLanguageTurkishName';
+                    $('#contentLanguageSingleHintText').text('@AdminResource.ActiveContentLanguageLabel'.replace('{0}', label));
+                    $bilingual.hide();
+                    $single.show();
+                }
+            }
+
+            $('.content-language-checkbox').on('click', function (e) {
+                if ($('.content-language-checkbox:checked').length === 0) {
+                    e.preventDefault();
+                    $(this).prop('checked', true);
+                    alert('@AdminResource.ContentLanguagesAtLeastOne');
+                    return false;
+                }
+            });
+            $('.content-language-checkbox').on('change', syncContentLanguageHints);
+            syncContentLanguageHints();
 
             // Quick change Admin Panel Language button
             $('#btnChangeAdminLanguage').on('click', function () {

@@ -356,6 +356,7 @@
     <Compile Include="Helpers\ProductCommentAdminListHelperTests.cs" />
     <Compile Include="Helpers\UserLockoutHelperTests.cs" />
     <Compile Include="Helpers\UserAdminFilterHelperTests.cs" />
+    <Compile Include="Helpers\ContentLanguageSettingsHelperTests.cs" />
     <Compile Include="Helpers\PropertyInjectorCircularDependencyTests.cs" />
     <Compile Include="Helpers\SensitiveDataMaskerTests.cs" />
     <Compile Include="Helpers\MailTemplateModelInspectorTests.cs" />

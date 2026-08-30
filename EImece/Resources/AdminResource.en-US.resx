@@ -4524,6 +4524,33 @@
   <data name="AdminPanelUILanguageHelp" xml:space="preserve">
     <value>The language used for the admin interface (menus, labels, buttons, messages). Independent from the topbar data-entry language.</value>
   </data>
+  <data name="ContentLanguagesTitle" xml:space="preserve">
+    <value>Content Languages</value>
+  </data>
+  <data name="ContentLanguagesHelp" xml:space="preserve">
+    <value>Language used for product, story, menu, and category content. Independent of the Admin Panel UI language. At least one language must stay selected. Both checked enables bilingual storefront switching.</value>
+  </data>
+  <data name="ContentLanguageTurkish" xml:space="preserve">
+    <value>Turkish</value>
+  </data>
+  <data name="ContentLanguageEnglish" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="ContentLanguageTurkishName" xml:space="preserve">
+    <value>Turkish</value>
+  </data>
+  <data name="ContentLanguageEnglishName" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="ContentLanguagesAtLeastOne" xml:space="preserve">
+    <value>At least one content language must be selected.</value>
+  </data>
+  <data name="ActiveContentLanguageLabel" xml:space="preserve">
+    <value>Active content language: {0}</value>
+  </data>
+  <data name="ContentLanguagesBilingualMode" xml:space="preserve">
+    <value>Bilingual mode: the storefront language switcher remains available.</value>
+  </data>
   <data name="AssignedUserId" xml:space="preserve">
     <value>Assigned User Id</value>
   </data>

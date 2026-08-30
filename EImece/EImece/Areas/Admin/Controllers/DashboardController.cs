@@ -323,9 +323,16 @@ namespace EImece.Areas.Admin.Controllers
         [HttpGet]
         public ActionResult SetLanguage(string id)
         {
-            EImeceLanguage selectedLanguage = (EImeceLanguage)id.ToInt();
-            CreateLanguageCookie(selectedLanguage, Domain.Constants.AdminCultureCookieName);
-            MemoryCacheProvider.ClearAll();
+            var contentLanguages = ContentLanguageSettingsHelper.GetCurrent();
+            if (contentLanguages.IsBilingual)
+            {
+                EImeceLanguage selectedLanguage = (EImeceLanguage)id.ToInt();
+                if (contentLanguages.IsLanguageEnabled(selectedLanguage))
+                {
+                    CreateLanguageCookie(selectedLanguage, Domain.Constants.AdminCultureCookieName);
+                    MemoryCacheProvider.ClearAll();
+                }
+            }
             var returnDefault = RedirectToAction(IndexAction);
             return RequestReturn(returnDefault);
         }

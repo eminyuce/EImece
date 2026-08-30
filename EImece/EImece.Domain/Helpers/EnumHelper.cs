@@ -5,7 +5,6 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
-using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 
@@ -229,29 +228,7 @@ namespace EImece.Domain.Helpers
 
         public static List<EImeceLanguage> GetLanguageEnumListFromWebConfig()
         {
-            List<EImeceLanguage> selectedLanguages = new List<EImeceLanguage>();
-
-            var languagesText = AppConfig.ApplicationLanguages;
-            if (!string.IsNullOrEmpty(languagesText))
-            {
-                var languages = Regex.Split(languagesText, @",").Select(r => r.Trim()).Where(s => !string.IsNullOrEmpty(s)).ToList();
-                foreach (var lang in languages)
-                {
-                    var parsed = ParseLanguage(lang);
-                    if (parsed.HasValue && !selectedLanguages.Contains(parsed.Value))
-                    {
-                        selectedLanguages.Add(parsed.Value);
-                    }
-                }
-            }
-
-            if (selectedLanguages.Count == 0)
-            {
-                var mainLang = (EImeceLanguage)AppConfig.MainLanguage;
-                selectedLanguages.Add(Enum.IsDefined(typeof(EImeceLanguage), mainLang) ? mainLang : EImeceLanguage.Turkish);
-            }
-
-            return selectedLanguages;
+            return new List<EImeceLanguage>(ContentLanguageSettingsHelper.GetCurrent().EnabledLanguages);
         }
         public static string GetDisplayName(Enum enumValue)
         {

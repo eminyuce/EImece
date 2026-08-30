@@ -37,6 +37,15 @@ namespace EImece.Domain.Services
             "BasketMinTotalPriceForCargo"
         };
 
+        /// <summary>
+        /// Checkbox properties used only in the System Settings UI; persisted via SupportedContentLanguages.
+        /// </summary>
+        private static readonly string[] ContentLanguageUiOnlyProperties =
+        {
+            nameof(SystemSettingModel.ContentLanguageTurkish),
+            nameof(SystemSettingModel.ContentLanguageEnglish)
+        };
+
         public SettingService(ISettingRepository repository) : base(repository)
         {
             SettingRepository = repository;
@@ -427,6 +436,24 @@ namespace EImece.Domain.Services
             return propertyName;
         }
 
+        private static bool IsContentLanguageUiOnlyProperty(string propertyName)
+        {
+            return ContentLanguageUiOnlyProperties.Contains(propertyName, StringComparer.OrdinalIgnoreCase);
+        }
+
+        private static void ApplyContentLanguageCheckboxes(SystemSettingModel model)
+        {
+            if (model == null)
+            {
+                return;
+            }
+
+            var parsed = ContentLanguageSettingsHelper.Parse(model.SupportedContentLanguages);
+            model.SupportedContentLanguages = parsed.SerializedCultures;
+            model.ContentLanguageTurkish = parsed.TurkishEnabled;
+            model.ContentLanguageEnglish = parsed.EnglishEnabled;
+        }
+
         private static Setting FindSettingForProperty(List<Setting> settings, List<Setting> allSettings, string propertyName)
         {
             string key = GetSettingKeyForProperty(propertyName);
@@ -447,6 +474,10 @@ namespace EImece.Domain.Services
             {
                 // Get name.
                 string name = propertyInfo.Name;
+                if (IsContentLanguageUiOnlyProperty(name))
+                {
+                    continue;
+                }
                 string key = GetSettingKeyForProperty(name);
                 var setting = FindSettingForProperty(Settings, allSettings, name);
 
@@ -471,6 +502,7 @@ namespace EImece.Domain.Services
                 }
             }
 
+            ApplyContentLanguageCheckboxes(result);
             return result;
         }
 
@@ -487,6 +519,10 @@ namespace EImece.Domain.Services
             {
                 // Get name.
                 string name = propertyInfo.Name;
+                if (IsContentLanguageUiOnlyProperty(name))
+                {
+                    continue;
+                }
                 string key = GetSettingKeyForProperty(name);
                 var setting = FindSettingForProperty(Settings, allSettings, name);
 
@@ -511,6 +547,7 @@ namespace EImece.Domain.Services
                 }
             }
 
+            ApplyContentLanguageCheckboxes(result);
             return result;
         }
 
@@ -529,6 +566,10 @@ namespace EImece.Domain.Services
             {
                 // Get name.
                 string name = propertyInfo.Name;
+                if (IsContentLanguageUiOnlyProperty(name))
+                {
+                    continue;
+                }
                 string settingKey = GetSettingKeyForProperty(name);
 
                 // Get value on the target instance.
@@ -574,7 +615,8 @@ namespace EImece.Domain.Services
 
                 // Company & contact settings are managed by the general settings page (SettingModel).
                 // Skip them here so saving system settings never overwrites those values.
-                if (GeneralSettingsManagedKeys.Contains(name, StringComparer.InvariantCultureIgnoreCase))
+                if (GeneralSettingsManagedKeys.Contains(name, StringComparer.InvariantCultureIgnoreCase)
+                    || IsContentLanguageUiOnlyProperty(name))
                 {
                     continue;
                 }

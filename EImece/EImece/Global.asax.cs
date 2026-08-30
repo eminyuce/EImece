@@ -120,11 +120,19 @@ namespace EImece
         {
             if (custom == "User")
             {
-                HttpCookie cultureCookie = Request.Cookies[Domain.Constants.CultureCookieName];
-                String cultureCookieValue = "";
-                if (cultureCookie != null)
+                var contentLanguages = EImece.Domain.Helpers.ContentLanguageSettingsHelper.GetCurrent();
+                String cultureCookieValue = contentLanguages.DefaultLanguageId.ToString();
+                if (contentLanguages.IsBilingual)
                 {
-                    cultureCookieValue = cultureCookie.Values[Domain.Constants.ELanguage].ToStr();
+                    HttpCookie cultureCookie = Request.Cookies[Domain.Constants.CultureCookieName];
+                    if (cultureCookie != null)
+                    {
+                        var cookieLang = cultureCookie.Values[Domain.Constants.ELanguage].ToStr();
+                        if (!string.IsNullOrWhiteSpace(cookieLang) && contentLanguages.IsCultureEnabled(cookieLang))
+                        {
+                            cultureCookieValue = cookieLang;
+                        }
+                    }
                 }
 
                 if (User.Identity.IsAuthenticated)

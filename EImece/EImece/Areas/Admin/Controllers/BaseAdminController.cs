@@ -15,7 +15,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Web;
 using System.Web.Mvc;
@@ -268,18 +267,22 @@ namespace EImece.Areas.Admin.Controllers
         {
             get
             {
-                var languagesText = AppConfig.ApplicationLanguages;
-                var languages = Regex.Split(languagesText, @",").Select(r => r.Trim()).Where(s => !string.IsNullOrEmpty(s)).ToList();
-                if (languages.Count > 1)
+                var contentLanguages = ContentLanguageSettingsHelper.GetCurrent();
+                if (!contentLanguages.IsBilingual)
                 {
-                    HttpCookie cultureCookie = Request?.Cookies != null ? Request.Cookies[DomainConstants.AdminCultureCookieName] : null;
-                    if (cultureCookie != null)
-                    {
-                        return cultureCookie.Values[DomainConstants.ELanguage].ToInt();
-                    }
-                    return AppConfig.MainLanguage;
+                    return contentLanguages.DefaultLanguageId;
                 }
-                return AppConfig.MainLanguage;
+
+                HttpCookie cultureCookie = Request?.Cookies != null ? Request.Cookies[DomainConstants.AdminCultureCookieName] : null;
+                if (cultureCookie != null)
+                {
+                    var cookieLang = cultureCookie.Values[DomainConstants.ELanguage].ToInt();
+                    if (contentLanguages.IsLanguageEnabled((EImeceLanguage)cookieLang))
+                    {
+                        return cookieLang;
+                    }
+                }
+                return contentLanguages.DefaultLanguageId;
             }
         }
 
