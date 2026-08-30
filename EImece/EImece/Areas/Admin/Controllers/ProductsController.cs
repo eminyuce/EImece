@@ -431,7 +431,7 @@ namespace EImece.Areas.Admin.Controllers
             return new QueryableResult<Product>(products.AsQueryable());
         }
 
-        public async Task<ActionResult> MoveProducts(CancellationToken cancellationToken, int? id, string productIdList, int oldCategoryId)
+        public async Task<ActionResult> MoveProducts(CancellationToken cancellationToken, int? id, string productIdList, int? oldCategoryId)
         {
             if (!id.HasValue || id.Value <= 0)
             {
@@ -440,7 +440,7 @@ namespace EImece.Areas.Admin.Controllers
 
             var categoryId = id.Value;
             await ProductService.MoveProductsInTreesAsync(categoryId, productIdList, cancellationToken);
-            return RedirectToAction("MoveProductsInTrees", new { id = categoryId, productIdList, oldCategoryId });
+            return RedirectToAction("MoveProductsInTrees", new { id = categoryId, productIdList, oldCategoryId = oldCategoryId.GetValueOrDefault() });
         }
 
         private async Task<List<SelectListItem>> GetBrandsSelectListAsync()
