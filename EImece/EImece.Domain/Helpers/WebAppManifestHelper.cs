@@ -1,9 +1,9 @@
+using EImece.Domain.DependencyInjection;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Services.IServices;
 using Newtonsoft.Json;
 using System;
 using System.Text.RegularExpressions;
-using System.Web.Mvc;
 
 namespace EImece.Domain.Helpers
 {
@@ -20,14 +20,14 @@ namespace EImece.Domain.Helpers
 
         private static string GetSetting(string key, string defaultValue)
         {
-            var settingService = DependencyResolver.Current?.GetService(typeof(ISettingService)) as ISettingService;
+            var settingService = DomainServiceProvider.GetService<ISettingService>();
             var val = settingService?.GetSettingByKey(key);
             return !string.IsNullOrWhiteSpace(val) ? val.Trim() : defaultValue;
         }
 
         private static int GetSettingInt(string key, int defaultValue)
         {
-            var settingService = DependencyResolver.Current?.GetService(typeof(ISettingService)) as ISettingService;
+            var settingService = DomainServiceProvider.GetService<ISettingService>();
             var val = settingService?.GetSettingByKey(key);
             return !string.IsNullOrWhiteSpace(val) ? val.ToInt(defaultValue) : defaultValue;
         }

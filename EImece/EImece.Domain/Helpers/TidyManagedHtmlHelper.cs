@@ -1,6 +1,6 @@
-﻿using System;
+using System;
+using System.Net;
 using System.Text.RegularExpressions;
-using System.Web;
 
 using TidyManaged;
 
@@ -63,7 +63,7 @@ namespace EImece.Domain.Helpers
         {
             source = ClearHTML(source.Replace(Environment.NewLine, " ").Replace("\n", " ")).Replace("<\\p>", "<\\p>" + Environment.NewLine);
 
-            return StripTagsRegexCompiled(HttpUtility.HtmlDecode(source).Trim());
+            return StripTagsRegexCompiled(WebUtility.HtmlDecode(source).Trim());
         }
 
         private static Regex _htmlRegexComents = new Regex("<!--.*?-->", RegexOptions.Compiled);

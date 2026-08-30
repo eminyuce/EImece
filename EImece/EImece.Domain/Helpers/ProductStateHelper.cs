@@ -122,7 +122,7 @@ namespace EImece.Domain.Helpers
 
             try
             {
-                var settingService = System.Web.Mvc.DependencyResolver.Current?.GetService(typeof(EImece.Domain.Services.IServices.ISettingService)) as EImece.Domain.Services.IServices.ISettingService;
+                var settingService = Domain.DependencyInjection.DomainServiceProvider.Instance?.GetService(typeof(EImece.Domain.Services.IServices.ISettingService)) as EImece.Domain.Services.IServices.ISettingService;
                 var dbValue = settingService?.GetSettingByKey(Constants.SuitableForSaleProductStates);
                 if (dbValue != null)
                 {
@@ -131,7 +131,7 @@ namespace EImece.Domain.Helpers
             }
             catch
             {
-                // Fallback when DependencyResolver / ISettingService is not available
+                // Fallback when DomainServiceProvider / ISettingService is not available
             }
 
             var appValue = AppConfig.GetConfigString(Constants.SuitableForSaleProductStates, Constants.DefaultSuitableForSaleProductStates);

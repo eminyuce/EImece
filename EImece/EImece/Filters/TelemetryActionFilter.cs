@@ -32,7 +32,7 @@ namespace EImece.Filters
                 return;
             }
 
-            StructuredLoggingBootstrap.EnrichFromHttpContext();
+            WebLoggingHelper.EnrichFromHttpContext();
 
             if (!_options.EnableTracing && !_options.EnableMetrics)
             {

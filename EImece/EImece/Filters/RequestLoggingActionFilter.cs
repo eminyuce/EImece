@@ -1,6 +1,7 @@
 using EImece.Domain.Observability.Configuration;
 using EImece.Domain.Observability.Logging;
 using EImece.Domain.Observability.Metrics;
+using EImece.Infrastructure;
 using System;
 using System.Web.Mvc;
 

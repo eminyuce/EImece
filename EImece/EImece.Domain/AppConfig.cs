@@ -3,8 +3,6 @@ using System;
 using System.Collections.Concurrent;
 using System.Configuration;
 using System.IO;
-using System.Web;
-using System.Web.Hosting;
 
 namespace EImece.Domain
 {
@@ -332,36 +330,8 @@ namespace EImece.Domain
         {
             get
             {
-                try
-                {
-                    var mapped = HostingEnvironment.MapPath(Constants.ServerMapPath);
-                    if (!string.IsNullOrEmpty(mapped))
-                    {
-                        return mapped;
-                    }
-                }
-                catch (Exception)
-                {
-                    // Hosting context is not always available (unit tests, background jobs).
-                }
-
-                try
-                {
-                    var context = HttpContext.Current;
-                    if (context != null)
-                    {
-                        var mapped = context.Server.MapPath(Constants.ServerMapPath);
-                        if (!string.IsNullOrEmpty(mapped))
-                        {
-                            return mapped;
-                        }
-                    }
-                }
-                catch (Exception)
-                {
-                }
-
-                return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "media", "images");
+                var serverMap = Constants.ServerMapPath?.TrimStart('~', '/', '\\') ?? Path.Combine("media", "images");
+                return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, serverMap);
             }
         }
 

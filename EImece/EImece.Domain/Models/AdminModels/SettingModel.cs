@@ -1,6 +1,5 @@
 using Resources;
 using System.ComponentModel.DataAnnotations;
-using System.Web.Mvc;
 
 namespace EImece.Domain.Models.AdminModels
 {
@@ -22,7 +21,6 @@ namespace EImece.Domain.Models.AdminModels
         public string FooterEmailListDescription { get; set; }
 
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.FooterHtmlDescription))]
-        [AllowHtml]
         public string FooterHtmlDescription { get; set; }
 
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.CargoCompany))]
@@ -32,7 +30,6 @@ namespace EImece.Domain.Models.AdminModels
         public int CargoPrice { get; set; }
 
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.CargoDescription))]
-        [AllowHtml]
         public string CargoDescription { get; set; }
 
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.BasketMinTotalPriceForCargo))]
@@ -48,7 +45,6 @@ namespace EImece.Domain.Models.AdminModels
         public string WebSiteCompanyPhoneAndLocation { get; set; }
 
         [Display(ResourceType = typeof(AdminResource), Name = nameof(AdminResource.CompanyAddress))]
-        [AllowHtml]
         public string CompanyAddress { get; set; }
     }
 }

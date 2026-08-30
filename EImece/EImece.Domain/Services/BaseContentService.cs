@@ -4,6 +4,7 @@ using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
+using EImece.Domain.Abstractions;
 using EImece.Domain.DependencyInjection;
 using NLog;
 using System;
@@ -13,8 +14,6 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 
-using EImece.Domain.Factories.IFactories;
-
 namespace EImece.Domain.Services
 {
     public abstract class BaseContentService<T> : BaseEntityService<T> where T : BaseContent
@@ -23,7 +22,7 @@ namespace EImece.Domain.Services
 
         protected readonly ISettingService SettingService;
         protected readonly IFileStorageService FileStorageService;
-        protected readonly IHttpContextFactory HttpContextFactory;
+        protected readonly ICurrentUserContext CurrentUserContext;
         protected readonly FilesHelper FilesHelper;
         public IBaseContentRepository<T> BaseContentRepository { get; }
 
@@ -32,14 +31,14 @@ namespace EImece.Domain.Services
             IEimeceCacheProvider dataCachingProvider,
             ISettingService settingService,
             IFileStorageService fileStorageService,
-            IHttpContextFactory httpContextFactory,
+            ICurrentUserContext currentUserContext,
             FilesHelper filesHelper)
             : base(baseContentRepository, dataCachingProvider)
         {
             this.BaseContentRepository = baseContentRepository;
             this.SettingService = settingService;
             this.FileStorageService = fileStorageService;
-            this.HttpContextFactory = httpContextFactory;
+            this.CurrentUserContext = currentUserContext;
             this.FilesHelper = filesHelper;
         }
 
@@ -49,14 +48,14 @@ namespace EImece.Domain.Services
             IEimeceCacheProvider dataCachingProvider,
             ISettingService settingService,
             IFileStorageService fileStorageService,
-            IHttpContextFactory httpContextFactory,
+            ICurrentUserContext currentUserContext,
             FilesHelper filesHelper)
             : base(baseContentRepository, isCachingActivated, dataCachingProvider)
         {
             this.BaseContentRepository = baseContentRepository;
             this.SettingService = settingService;
             this.FileStorageService = fileStorageService;
-            this.HttpContextFactory = httpContextFactory;
+            this.CurrentUserContext = currentUserContext;
             this.FilesHelper = filesHelper;
         }
 
@@ -190,14 +189,14 @@ namespace EImece.Domain.Services
             if (entity.Id > 0)
             {
                 entity.UpdatedDate = DateTime.Now;
-                entity.UpdateUserId = HttpContextFactory.GetCurrentUserId();
+                entity.UpdateUserId = CurrentUserContext?.GetCurrentUserId();
             }
             else
             {
                 entity.UpdatedDate = DateTime.Now;
                 entity.CreatedDate = DateTime.Now;
-                entity.UpdateUserId = HttpContextFactory.GetCurrentUserId();
-                entity.AddUserId = HttpContextFactory.GetCurrentUserId();
+                entity.UpdateUserId = CurrentUserContext?.GetCurrentUserId();
+                entity.AddUserId = CurrentUserContext?.GetCurrentUserId();
             }
             var tmp = BaseContentRepository.SaveOrEdit(entity);
             return entity;
@@ -213,14 +212,14 @@ namespace EImece.Domain.Services
             if (entity.Id > 0)
             {
                 entity.UpdatedDate = DateTime.Now;
-                entity.UpdateUserId = HttpContextFactory.GetCurrentUserId();
+                entity.UpdateUserId = CurrentUserContext?.GetCurrentUserId();
             }
             else
             {
                 entity.UpdatedDate = DateTime.Now;
                 entity.CreatedDate = DateTime.Now;
-                entity.UpdateUserId = HttpContextFactory.GetCurrentUserId();
-                entity.AddUserId = HttpContextFactory.GetCurrentUserId();
+                entity.UpdateUserId = CurrentUserContext?.GetCurrentUserId();
+                entity.AddUserId = CurrentUserContext?.GetCurrentUserId();
             }
             await BaseContentRepository.SaveOrEditAsync(entity).ConfigureAwait(false);
             return entity;

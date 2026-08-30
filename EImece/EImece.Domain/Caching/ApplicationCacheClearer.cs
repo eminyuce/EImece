@@ -27,18 +27,25 @@ namespace EImece.Domain.Caching
             var keys = new List<string>();
             try
             {
-                IDictionaryEnumerator enumerator = System.Web.HttpRuntime.Cache.GetEnumerator();
-                while (enumerator.MoveNext())
+                var httpRuntimeType = Type.GetType("System.Web.HttpRuntime, System.Web");
+                if (httpRuntimeType == null) return 0;
+
+                var cacheProp = httpRuntimeType.GetProperty("Cache");
+                var cache = cacheProp?.GetValue(null) as IEnumerable;
+                if (cache == null) return 0;
+
+                var removeMethod = cache.GetType().GetMethod("Remove", new[] { typeof(string) });
+                foreach (DictionaryEntry entry in cache)
                 {
-                    if (enumerator.Key != null)
+                    if (entry.Key is string k)
                     {
-                        keys.Add((string)enumerator.Key);
+                        keys.Add(k);
                     }
                 }
 
                 foreach (var key in keys)
                 {
-                    System.Web.HttpRuntime.Cache.Remove(key);
+                    removeMethod?.Invoke(cache, new object[] { key });
                 }
             }
             catch (Exception ex)

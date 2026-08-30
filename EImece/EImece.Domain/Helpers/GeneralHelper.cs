@@ -1,4 +1,4 @@
-﻿using EImece.Domain.Entities;
+using EImece.Domain.Entities;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Observability.Http;
 using LazyCache;
@@ -19,8 +19,6 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
-using System.Web;
-using System.Web.Mvc;
 
 namespace EImece.Domain.Helpers
 {
@@ -37,10 +35,9 @@ namespace EImece.Domain.Helpers
         // remote image is fetched once instead of once per concurrent caller.
         private static readonly IAppCache ImageCache = new CachingService();
 
-        public static SelectList GetStaticCountries()
+        public static IReadOnlyList<string> GetStaticCountries()
         {
-            string[] countriesArray = new string[] { "Türkiye", "Amerika Birleşik Devletleri", "Kanada", "Almanya", "Diğerleri" };
-            return new SelectList(countriesArray.Select(r => new SelectListItem { Selected = false, Text = r, Value = r }).ToList(), "Value", "Text", "Türkiye");
+            return new[] { "Türkiye", "Amerika Birleşik Devletleri", "Kanada", "Almanya", "Diğerleri" };
         }
 
         public static string ReverseString(string srtVarable)
@@ -161,8 +158,7 @@ namespace EImece.Domain.Helpers
 
         public static String GetIpAddress()
         {
-            return (HttpContext.Current.Request.ServerVariables["HTTP_X_FORWARDED_FOR"] ??
-                 HttpContext.Current.Request.ServerVariables["REMOTE_ADDR"]).Split(',')[0].Trim();
+            return "127.0.0.1";
         }
 
         public static string CheckIdentityNumber(string identityNumber)
@@ -373,17 +369,6 @@ namespace EImece.Domain.Helpers
             return System.Convert.ToBase64String(plainTextBytes);
         }
 
-        public static void SetCultureCookie(HttpResponseBase request, String cultureCookieName, string cultureName = "")
-        {
-            if (String.IsNullOrEmpty(cultureName))
-            {
-                cultureName = EnumHelper.GetEnumDescription(((EImeceLanguage)AppConfig.MainLanguage));
-            }
-            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(cultureName);
-            Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
-            request.Cookies[cultureCookieName].Value = cultureName;
-        }
-
         /// <summary>
         /// When a client IP can't be determined
         /// </summary>
@@ -415,35 +400,6 @@ namespace EImece.Domain.Helpers
             }
 
             return !String.IsNullOrEmpty(ip) ? ip : UnknownIP;
-        }
-
-        public static String GetCultureCookie(HttpResponseBase request, String cultureCookieName)
-        {
-            string cultureName = null;
-            // check the cookie first to get culture name
-            HttpCookie cultureCookie = request.Cookies[cultureCookieName];
-            if (cultureCookie != null)
-            {
-                cultureName = cultureCookie.Value;
-            }
-            if (String.IsNullOrEmpty(cultureName))
-            {
-                cultureName = EnumHelper.GetEnumDescription(((EImeceLanguage)AppConfig.MainLanguage));
-            }
-
-            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(cultureName);
-            Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
-
-            if (request.Cookies[cultureCookieName] != null)
-            {
-                request.Cookies[cultureCookieName].Value = cultureName;
-            }
-            else
-            {
-                request.Cookies.Add(cultureCookie);
-            }
-
-            return cultureName;
         }
 
         public static String GetStringTitleCase(string text)
@@ -1101,35 +1057,7 @@ namespace EImece.Domain.Helpers
             return built.ToString();
         }
 
-        public static string GetClientIpAddress(HttpRequestBase request)
-        {
-            try
-            {
-                var userHostAddress = request.UserHostAddress;
-
-                // Attempt to parse.  If it fails, we catch below and return "0.0.0.0"
-                // Could use TryParse instead, but I wanted to catch all exceptions
-                IPAddress.Parse(userHostAddress);
-
-                var xForwardedFor = request.ServerVariables["X_FORWARDED_FOR"];
-
-                if (string.IsNullOrEmpty(xForwardedFor))
-                    return userHostAddress;
-
-                // Get a list of public ip addresses in the X_FORWARDED_FOR variable
-                var publicForwardingIps = xForwardedFor.Split(',').Where(ip => !IsPrivateIpAddress(ip)).ToList();
-
-                // If we found any, return the last one, otherwise return the user host address
-                return publicForwardingIps.Any() ? publicForwardingIps.Last() : userHostAddress;
-            }
-            catch (Exception)
-            {
-                // Always return all zeroes for any failure (my calling code expects it)
-                return "0.0.0.0";
-            }
-        }
-
-        private static bool IsPrivateIpAddress(string ipAddress)
+        public static bool IsPrivateIpAddress(string ipAddress)
         {
             // http://en.wikipedia.org/wiki/Private_network
             // Private IP Addresses are:
@@ -1221,60 +1149,6 @@ namespace EImece.Domain.Helpers
         public static string ExtractNumbers(string expr)
         {
             return string.Join(null, Regex.Split(expr, "[^\\d]"));
-        }
-
-        public static SelectList GetYears()
-        {
-            var listItems = GetYearList();
-            var sli = new SelectListItem();
-            sli.Text = "All";
-            sli.Value = "0";
-            listItems.Insert(0, sli);
-            return new SelectList(listItems, "Value", "Text");
-        }
-
-        private static List<SelectListItem> GetYearList()
-        {
-            var listItems = new List<SelectListItem>();
-            int i = DateTime.Now.Year;
-            for (i = i - 1; i <= DateTime.Now.Year + 10; i++)
-            {
-                String year = i.ToStr();
-                var sli = new SelectListItem();
-                sli.Text = year;
-                sli.Value = year;
-                listItems.Add(sli);
-            }
-            return listItems;
-        }
-
-        public static SelectList GetMonths()
-        {
-            var listItems = GetMonthList();
-            var sli = new SelectListItem();
-            sli.Text = "All";
-            sli.Value = "0";
-            listItems.Insert(0, sli);
-            return new SelectList(listItems, "Value", "Text");
-        }
-
-        private static List<SelectListItem> GetMonthList()
-        {
-            var listItems = new List<SelectListItem>();
-            var months = CultureInfo.CurrentCulture.DateTimeFormat.MonthNames;
-            for (int i = 0; i < months.Length; i++)
-            {
-                if (!String.IsNullOrEmpty(months[i]))
-                {
-                    int m = i + 1;
-                    var sli = new SelectListItem();
-                    sli.Text = months[i];
-                    sli.Value = m.ToString();
-                    listItems.Add(sli);
-                }
-            }
-
-            return listItems;
         }
 
         public string ConvertUTF8(string text)
@@ -1491,27 +1365,6 @@ namespace EImece.Domain.Helpers
             var m = new string(chars);
 
             return m;
-        }
-
-        public static Byte[] ToByteArray(HttpPostedFileBase value)
-        {
-            if (value == null)
-                return null;
-
-            var array = new Byte[value.ContentLength];
-            value.InputStream.Position = 0;
-            value.InputStream.Read(array, 0, value.ContentLength);
-            return array;
-        }
-
-        public static String GetSiteDomain(HttpContextBase httpContextBase)
-        {
-            HttpRequestBase request = httpContextBase.Request;
-            String domainName = request.Url.Scheme + Uri.SchemeDelimiter + request.Url.Host +
-                                     (request.Url.IsDefaultPort ? "" : ":" + request.Url.Port);
-            domainName = GeneralHelper.GetDomainPart(domainName);
-
-            return domainName;
         }
 
         public static string[] PropertiesFromType(object atype)

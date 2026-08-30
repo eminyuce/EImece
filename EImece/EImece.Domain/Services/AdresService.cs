@@ -1,9 +1,8 @@
 using EImece.Domain.Caching;
 using EImece.Domain.Models.FrontModels.Il_Ilce_Mahalle;
 using Newtonsoft.Json;
-using EImece.Domain.DependencyInjection;
 using System;
-using System.Web;
+using System.IO;
 
 namespace EImece.Domain.Services
 {
@@ -35,34 +34,45 @@ namespace EImece.Domain.Services
 
         public IlceRoot GetIlceRoot()
         {
-            return JsonConvert.DeserializeObject<IlceRoot>(read(@"~\App_Data\il-ilce-mahalle\ilceler.json"));
+            return JsonConvert.DeserializeObject<IlceRoot>(read(@"App_Data\il-ilce-mahalle\ilceler.json"));
         }
 
         public IlRoot GetIlRoot()
         {
-            return JsonConvert.DeserializeObject<IlRoot>(read(@"~\App_Data\il-ilce-mahalle\iller.json"));
+            return JsonConvert.DeserializeObject<IlRoot>(read(@"App_Data\il-ilce-mahalle\iller.json"));
         }
 
-        private static string read(string filePath)
+        private static string read(string relativePath)
         {
+            var cleanPath = relativePath.TrimStart('~', '/', '\\');
+            var dataDir = AppDomain.CurrentDomain.GetData("DataDirectory")?.ToString();
             string resolvedPath = null;
-            if (System.Web.Hosting.HostingEnvironment.IsHosted)
+
+            if (!string.IsNullOrEmpty(dataDir))
             {
-                resolvedPath = System.Web.Hosting.HostingEnvironment.MapPath(filePath);
-            }
-            else if (HttpContext.Current != null && HttpContext.Current.Server != null)
-            {
-                resolvedPath = HttpContext.Current.Server.MapPath(filePath);
-            }
-            else
-            {
-                string cleanPath = filePath.TrimStart('~', '/', '\\');
-                resolvedPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, cleanPath);
+                // if cleanPath starts with "App_Data\", remove it when checking against dataDir
+                var subPath = cleanPath.StartsWith("App_Data\\", StringComparison.OrdinalIgnoreCase) || cleanPath.StartsWith("App_Data/", StringComparison.OrdinalIgnoreCase)
+                    ? cleanPath.Substring(9)
+                    : cleanPath;
+                var candidate = Path.Combine(dataDir, subPath);
+                if (File.Exists(candidate))
+                {
+                    resolvedPath = candidate;
+                }
             }
 
-            if (resolvedPath != null && System.IO.File.Exists(resolvedPath))
+            if (resolvedPath == null)
             {
-                return System.IO.File.ReadAllText(resolvedPath);
+                var candidate = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, cleanPath);
+                if (File.Exists(candidate))
+                {
+                    resolvedPath = candidate;
+                }
+            }
+
+            if (resolvedPath != null && File.Exists(resolvedPath))
+            {
+                return File.ReadAllText(resolvedPath);
             }
 
             return string.Empty;

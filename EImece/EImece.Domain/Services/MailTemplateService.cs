@@ -1,18 +1,16 @@
+using EImece.Domain.Abstractions;
 using EImece.Domain.Caching;
 using EImece.Domain.Entities;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Observability.Telemetry;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
-using EImece.Domain.DependencyInjection;
 using NLog;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
-
-using EImece.Domain.Factories.IFactories;
 
 namespace EImece.Domain.Services
 {
@@ -23,20 +21,20 @@ namespace EImece.Domain.Services
         private readonly IMailTemplateRepository MailTemplateRepository;
         private readonly IOrderService OrderService;
         private readonly ISettingService SettingService;
-        private readonly IHttpContextFactory HttpContextFactory;
+        private readonly ISiteUrlProvider SiteUrlProvider;
 
         public MailTemplateService(
             IMailTemplateRepository repository,
             IEimeceCacheProvider dataCachingProvider,
             IOrderService orderService,
             ISettingService settingService,
-            IHttpContextFactory httpContextFactory)
+            ISiteUrlProvider siteUrlProvider)
             : base(repository, dataCachingProvider)
         {
             MailTemplateRepository = repository ?? throw new ArgumentNullException(nameof(repository));
             OrderService = orderService ?? throw new ArgumentNullException(nameof(orderService));
             SettingService = settingService ?? throw new ArgumentNullException(nameof(settingService));
-            HttpContextFactory = httpContextFactory ?? throw new ArgumentNullException(nameof(httpContextFactory));
+            SiteUrlProvider = siteUrlProvider ?? throw new ArgumentNullException(nameof(siteUrlProvider));
         }
 
         [Timed("service.mail_template.get_by_name_sync")]
@@ -58,18 +56,18 @@ namespace EImece.Domain.Services
             var cacheKey = "GetAllMailTemplatesWithCache";
             return DataCachingProvider.GetOrAdd(
                 cacheKey,
-                () => this.GetAll(),
-                AppConfig.CacheLongSeconds);
+                () => MailTemplateRepository.GetAll().ToList(),
+                AppConfig.CacheVeryLongSeconds);
         }
 
         [Timed("service.mail_template.get_all_with_cache")]
         public virtual async Task<List<MailTemplate>> GetAllMailTemplatesWithCacheAsync()
         {
-            var cacheKey = "GetAllMailTemplatesWithCache" + AsyncCacheKeySuffix;
+            var cacheKey = "GetAllMailTemplatesWithCache";
             return await DataCachingProvider.GetOrAddAsync(
                 cacheKey,
-                () => this.GetAllAsync(),
-                AppConfig.CacheLongSeconds).ConfigureAwait(false);
+                async () => await MailTemplateRepository.GetAll().ToListAsync().ConfigureAwait(false),
+                AppConfig.CacheVeryLongSeconds).ConfigureAwait(false);
         }
 
         [Timed("service.mail_template.generate_company_new_order_sync")]
@@ -85,10 +83,7 @@ namespace EImece.Domain.Services
             pp.FinishedOrder = cOrder;
             pp.OrderProducts = cOrder.OrderProducts.ToList();
             string baseurl = GetSiteBaseUrl();
-            // FIX: injected abstraction instead of static HttpContext.Current.
-            var mailRequest = HttpContextFactory.Create().Request;
-            var builder = new UriBuilder(AppConfig.HttpProtocol, mailRequest.Url.Host, mailRequest.Url.Port);
-            var url = builder.Uri.ToString().TrimEnd('/');
+            var url = SiteUrlProvider.GetSiteDomainUrl();
             pp.CompanyWebSiteUrl = url;
             pp.BaseUrl = baseurl;
             pp.AdminPanelUrl = baseurl + "/account/adminlogin/";
@@ -109,9 +104,7 @@ namespace EImece.Domain.Services
             pp.FinishedOrder = cOrder;
             pp.OrderProducts = cOrder.OrderProducts.ToList();
             string baseurl = GetSiteBaseUrl();
-            var mailRequest = HttpContextFactory.Create().Request;
-            var builder = new UriBuilder(AppConfig.HttpProtocol, mailRequest.Url.Host, mailRequest.Url.Port);
-            var url = builder.Uri.ToString().TrimEnd('/');
+            var url = SiteUrlProvider.GetSiteDomainUrl();
             pp.CompanyWebSiteUrl = url;
             pp.BaseUrl = baseurl;
             pp.AdminPanelUrl = baseurl + "/account/adminlogin/";
@@ -121,10 +114,7 @@ namespace EImece.Domain.Services
 
         private string GetSiteBaseUrl()
         {
-            // FIX: injected abstraction instead of static HttpContext.Current.
-            var Request = HttpContextFactory.Create().Request;
-            var baseurl = Request.Url.Scheme + "://" + Request.Url.Authority + Request.ApplicationPath.TrimEnd('/');
-            return baseurl;
+            return SiteUrlProvider.GetSiteBaseUrl();
         }
 
         [Timed("service.mail_template.generate_order_confirmation_sync")]
@@ -139,10 +129,7 @@ namespace EImece.Domain.Services
             pp.CompanyPhoneNumber = SettingService.GetSettingObjectByKey(Constants.WebSiteCompanyPhoneAndLocation).SettingValue.Trim();
             pp.FinishedOrder = cOrder;
             pp.OrderProducts = cOrder.OrderProducts.ToList();
-            // FIX: injected abstraction instead of static HttpContext.Current.
-            var confirmRequest = HttpContextFactory.Create().Request;
-            var builder = new UriBuilder(AppConfig.HttpProtocol, confirmRequest.Url.Host, confirmRequest.Url.Port);
-            var url = builder.Uri.ToString().TrimEnd('/');
+            var url = SiteUrlProvider.GetSiteDomainUrl();
             string baseurl = GetSiteBaseUrl();
             pp.CompanyWebSiteUrl = url;
             pp.BaseUrl = baseurl;
@@ -162,9 +149,7 @@ namespace EImece.Domain.Services
             pp.CompanyPhoneNumber = (await SettingService.GetSettingObjectByKeyAsync(Constants.WebSiteCompanyPhoneAndLocation).ConfigureAwait(false)).SettingValue.Trim();
             pp.FinishedOrder = cOrder;
             pp.OrderProducts = cOrder.OrderProducts.ToList();
-            var confirmRequest = HttpContextFactory.Create().Request;
-            var builder = new UriBuilder(AppConfig.HttpProtocol, confirmRequest.Url.Host, confirmRequest.Url.Port);
-            var url = builder.Uri.ToString().TrimEnd('/');
+            var url = SiteUrlProvider.GetSiteDomainUrl();
             string baseurl = GetSiteBaseUrl();
             pp.CompanyWebSiteUrl = url;
             pp.BaseUrl = baseurl;

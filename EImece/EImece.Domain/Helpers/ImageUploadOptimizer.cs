@@ -571,14 +571,14 @@ namespace EImece.Domain.Helpers
 
         private static int GetSettingInt(string key, int defaultValue)
         {
-            var settingService = System.Web.Mvc.DependencyResolver.Current?.GetService(typeof(EImece.Domain.Services.IServices.ISettingService)) as EImece.Domain.Services.IServices.ISettingService;
+            var settingService = Domain.DependencyInjection.DomainServiceProvider.Instance?.GetService(typeof(EImece.Domain.Services.IServices.ISettingService)) as EImece.Domain.Services.IServices.ISettingService;
             var val = settingService?.GetSettingByKey(key);
             return !string.IsNullOrWhiteSpace(val) ? val.ToInt(defaultValue) : defaultValue;
         }
 
         private static bool GetSettingBool(string key, bool defaultValue)
         {
-            var settingService = System.Web.Mvc.DependencyResolver.Current?.GetService(typeof(EImece.Domain.Services.IServices.ISettingService)) as EImece.Domain.Services.IServices.ISettingService;
+            var settingService = Domain.DependencyInjection.DomainServiceProvider.Instance?.GetService(typeof(EImece.Domain.Services.IServices.ISettingService)) as EImece.Domain.Services.IServices.ISettingService;
             var val = settingService?.GetSettingByKey(key);
             return !string.IsNullOrWhiteSpace(val) ? val.ToBool(defaultValue) : defaultValue;
         }

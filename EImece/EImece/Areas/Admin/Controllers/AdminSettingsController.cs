@@ -50,6 +50,7 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ValidateInput(false)]
         public async Task<ActionResult> Index(CancellationToken cancellationToken, SettingModel settingModel)
         {
             await SettingService.SaveSettingModelAsync(settingModel, CurrentLanguage);
@@ -65,6 +66,7 @@ namespace EImece.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ValidateInput(false)]
         public async Task<ActionResult> SystemSettings(CancellationToken cancellationToken, SystemSettingModel settingModel)
         {
             if (!string.IsNullOrWhiteSpace(settingModel.ProductPriceFilterSetting))

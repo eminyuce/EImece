@@ -1,12 +1,10 @@
 using EImece.Domain.Services.IServices;
-using EImece.Domain.DependencyInjection;
 using RazorEngine;
-using RazorEngine.Templating; // For extension methods.
+using RazorEngine.Templating;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Web;
 
 namespace EImece.Domain.Helpers
 {
@@ -19,9 +17,19 @@ namespace EImece.Domain.Helpers
             ListService = listService ?? throw new ArgumentNullException(nameof(listService));
         }
 
+        private static string ResolveAppDataPath(string fileName)
+        {
+            var dataDir = AppDomain.CurrentDomain.GetData("DataDirectory")?.ToString();
+            if (!string.IsNullOrWhiteSpace(dataDir))
+            {
+                return Path.Combine(dataDir, fileName);
+            }
+            return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "App_Data", fileName);
+        }
+
         public String GenerateXmlEditor(int id = 0)
         {
-            string url = HttpContext.Current.Server.MapPath("~/App_Data/xmlEditorRazor.txt");
+            string url = ResolveAppDataPath("xmlEditorRazor.txt");
             var template = File.ReadAllText(url);
             var config = GetConfiguration();
 
@@ -39,8 +47,7 @@ namespace EImece.Domain.Helpers
 
         private Tuple<String, String> GetConfiguration()
         {
-            string url = HttpContext.Current.Server.MapPath("~/App_Data/xmlEditorConfiguration.txt");
-            //  var configurations = File.ReadAllText(url);
+            string url = ResolveAppDataPath("xmlEditorConfiguration.txt");
 
             var configurationLines = File.ReadAllLines(url).ToList();
             String componentListLine = configurationLines.FirstOrDefault(r => r.StartsWith("//componentList:"));
@@ -89,31 +96,23 @@ namespace EImece.Domain.Helpers
                 if (tag.Equals("group", StringComparison.InvariantCultureIgnoreCase))
                 {
                     return GetListItems("ComponentDisplayNames");
-                    // return new List<string> { "Size", "Power", "Other" };
                 }
 
                 return GetListItems("ComponentNames");
-                //return new List<string> { "width", "length", "height" };
             }
 
             if (atribute.Equals("units", StringComparison.InvariantCultureIgnoreCase))
             {
                 return GetListItems("ComponentUnit");
-                //return new List<string> { "inch", "volt", "pound" };
             }
 
             if (atribute.Equals("values", StringComparison.InvariantCultureIgnoreCase))
             {
                 var list = ListService.GetListItems();
-
                 return list.Where(r => r.IsValues).OrderBy(r => r.Position).Select(r => r.Name).ToList();
-
-                //return new List<string> { "Countries", "Colors", "State" };
             }
 
-            return new List<string>
-            {
-            };
+            return new List<string>();
         }
     }
 }

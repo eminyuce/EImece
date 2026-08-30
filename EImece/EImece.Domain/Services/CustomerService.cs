@@ -5,7 +5,7 @@ using EImece.Domain.Models.Enums;
 using EImece.Domain.Observability.Telemetry;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
-using EImece.Models;
+using EImece.Domain.Models.DTOs;
 using EImece.Domain.DependencyInjection;
 using NLog;
 using System;
@@ -44,7 +44,7 @@ namespace EImece.Domain.Services
             Logger.Debug("CustomerService initialized.");
         }
 
-        public void SaveRegisterViewModel(string userId, RegisterViewModel model)
+        public void SaveRegisterViewModel(string userId, CustomerRegistrationDto model)
         {
             Logger.Debug($"Saving RegisterViewModel for user: {userId}");
             try
@@ -79,7 +79,7 @@ namespace EImece.Domain.Services
             }
         }
 
-        public async Task SaveRegisterViewModelAsync(string userId, RegisterViewModel model)
+        public async Task SaveRegisterViewModelAsync(string userId, CustomerRegistrationDto model)
         {
             Logger.Debug($"Saving RegisterViewModel for user: {userId}");
             try

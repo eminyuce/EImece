@@ -1,8 +1,7 @@
 using EImece.Domain.GenericRepository;
 using EImece.Domain.Models.DTOs.Storefront;
 using EImece.Domain.Models.Enums;
-using System.Web;
-using System.Web.Mvc;
+using System.Net;
 
 namespace EImece.Domain.Models.FrontModels
 {
@@ -15,13 +14,22 @@ namespace EImece.Domain.Models.FrontModels
 
         public string ProductsListPageUrl(SortingType sorting, IPaginatedModelList paginatedModelList)
         {
-            var routeValues = ProductCategoryViewModel.GetRouteValueDictionary(paginatedModelList);
-            var requestContext = HttpContext.Current.Request.RequestContext;
             var sortingInt = (int)sorting;
-            routeValues.Remove("sorting");
-            routeValues.Add("sorting", sortingInt);
-            var urlHelp = new UrlHelper(requestContext);
-            return urlHelp.Action("tag", "Products", routeValues);
+            var routeId = !string.IsNullOrEmpty(paginatedModelList?.RouteId) ? paginatedModelList.RouteId : TagId;
+            var search = paginatedModelList?.Search;
+            var filter = paginatedModelList?.Filter;
+
+            var idPart = !string.IsNullOrEmpty(routeId) ? $"/{routeId}" : "";
+            var url = $"/products/tag{idPart}?sorting={sortingInt}";
+            if (!string.IsNullOrEmpty(search))
+            {
+                url += $"&search={WebUtility.UrlEncode(search)}";
+            }
+            if (!string.IsNullOrEmpty(filter))
+            {
+                url += $"&filtreler={WebUtility.UrlEncode(filter)}";
+            }
+            return url;
         }
     }
 }

@@ -1,9 +1,9 @@
+using EImece.Domain.Models.DTOs;
 using EImece.Domain.Services.IServices;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Web.Mvc;
 using System.Xml.Linq;
 
 namespace EImece.Domain.Helpers
@@ -181,9 +181,9 @@ namespace EImece.Domain.Helpers
         /// <summary>
         /// Resolve dropdown/radio options from values="ListName" or values="A,B,C".
         /// </summary>
-        public static IList<SelectListItem> ResolveOptions(string valuesAttr, string selectedValue)
+        public static IList<SpecificationOptionItem> ResolveOptions(string valuesAttr, string selectedValue)
         {
-            var items = new List<SelectListItem>();
+            var items = new List<SpecificationOptionItem>();
             if (string.IsNullOrWhiteSpace(valuesAttr))
             {
                 return items;
@@ -203,7 +203,7 @@ namespace EImece.Domain.Helpers
             }
 
             var single = valuesAttr.Trim();
-            items.Add(new SelectListItem
+            items.Add(new SpecificationOptionItem
             {
                 Text = single,
                 Value = single,
@@ -212,11 +212,11 @@ namespace EImece.Domain.Helpers
             return items;
         }
 
-        private static bool TryAddOptionsFromListService(List<SelectListItem> items, string valuesAttr, string selectedValue)
+        private static bool TryAddOptionsFromListService(List<SpecificationOptionItem> items, string valuesAttr, string selectedValue)
         {
             try
             {
-                var listService = DependencyResolver.Current.GetService<IListService>();
+                var listService = Domain.DependencyInjection.DomainServiceProvider.Instance?.GetService(typeof(IListService)) as IListService;
                 var list = listService != null ? listService.GetListByName(valuesAttr.Trim()) : null;
                 if (list == null || list.ListItems == null)
                 {
@@ -231,7 +231,7 @@ namespace EImece.Domain.Helpers
                     {
                         continue;
                     }
-                    items.Add(new SelectListItem
+                    items.Add(new SpecificationOptionItem
                     {
                         Text = string.IsNullOrEmpty(text) ? val : text,
                         Value = string.IsNullOrEmpty(val) ? text : val,
@@ -248,7 +248,7 @@ namespace EImece.Domain.Helpers
             }
         }
 
-        private static void AddCommaSeparatedOptions(List<SelectListItem> items, string valuesAttr, string selectedValue)
+        private static void AddCommaSeparatedOptions(List<SpecificationOptionItem> items, string valuesAttr, string selectedValue)
         {
             foreach (var part in valuesAttr.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
             {
@@ -257,7 +257,7 @@ namespace EImece.Domain.Helpers
                 {
                     continue;
                 }
-                items.Add(new SelectListItem
+                items.Add(new SpecificationOptionItem
                 {
                     Text = v,
                     Value = v,

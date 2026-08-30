@@ -1,14 +1,12 @@
-﻿using Resources;
+using Resources;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Web.Mvc;
 
 namespace EImece.Domain.Entities
 {
     public abstract class BaseContent : BaseEntity
     {
-        [AllowHtml]
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.Description))]
         public string Description { get; set; }
 

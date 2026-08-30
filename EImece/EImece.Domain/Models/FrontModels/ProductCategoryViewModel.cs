@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Web.Routing;
 
 namespace EImece.Domain.Models.FrontModels
 {
@@ -121,16 +120,16 @@ namespace EImece.Domain.Models.FrontModels
             }
         }
 
-        public static RouteValueDictionary GetRouteObjectsForPaging(IPaginatedModelList pagingItems, int page)
+        public static IDictionary<string, object> GetRouteObjectsForPaging(IPaginatedModelList pagingItems, int page)
         {
             var routeValues = GetRouteValueDictionary(pagingItems);
-            routeValues.Add("page", page);
+            routeValues["page"] = page;
             return routeValues;
         }
 
-        public static RouteValueDictionary GetRouteValueDictionary(IPaginatedModelList pagingItems)
+        public static IDictionary<string, object> GetRouteValueDictionary(IPaginatedModelList pagingItems)
         {
-            var routeValues = new RouteValueDictionary();
+            var routeValues = new Dictionary<string, object>();
             if (!string.IsNullOrEmpty(pagingItems.RouteId))
             {
                 routeValues.Add("id", pagingItems.RouteId);

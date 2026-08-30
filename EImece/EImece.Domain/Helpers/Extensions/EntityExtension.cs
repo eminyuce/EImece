@@ -1,3 +1,4 @@
+using EImece.Domain.DependencyInjection;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Models.FrontModels;
@@ -9,8 +10,6 @@ using System.IO;
 using System.Net.Mime;
 using System.Reflection;
 using System.ServiceModel.Syndication;
-using System.Web;
-using System.Web.Mvc;
 
 namespace EImece.Domain.Helpers.Extensions
 {
@@ -254,8 +253,8 @@ namespace EImece.Domain.Helpers.Extensions
             var result = string.Format("{0}", GeneralHelper.GetDescriptionWithBody(entity.Description, length));
             if (string.IsNullOrEmpty(result))
             {
-                var SettingService = DependencyResolver.Current.GetService<ISettingService>();
-                result = SettingService.GetSettingByKey(Constants.SiteIndexMetaDescription).ToStr();
+                var SettingService = DomainServiceProvider.GetService<ISettingService>();
+                result = SettingService?.GetSettingByKey(Constants.SiteIndexMetaDescription).ToStr();
             }
             if (string.IsNullOrEmpty(result) && entity != null)
             {
@@ -270,8 +269,8 @@ namespace EImece.Domain.Helpers.Extensions
             if (string.IsNullOrEmpty(result))
             {
                 //TODO: Missing keywords.
-                var SettingService = DependencyResolver.Current.GetService<ISettingService>();
-                result = SettingService.GetSettingByKey(Constants.SiteIndexMetaKeywords).ToStr();
+                var SettingService = DomainServiceProvider.GetService<ISettingService>();
+                result = SettingService?.GetSettingByKey(Constants.SiteIndexMetaKeywords).ToStr();
             }
             return result;
         }
@@ -463,7 +462,7 @@ namespace EImece.Domain.Helpers.Extensions
             var attrs = new List<string>
             {
                 string.Format("src='{0}'", args.Src),
-                string.Format("alt='{0}'", HttpUtility.HtmlAttributeEncode(args.Alt ?? string.Empty))
+                string.Format("alt='{0}'", System.Net.WebUtility.HtmlEncode(args.Alt ?? string.Empty))
             };
 
             if (args.Width > 0)
@@ -565,28 +564,14 @@ namespace EImece.Domain.Helpers.Extensions
         {
             var imageSize = $"w{width}h{height}";
             var imageId = entity.GetImageSeoUrl(fileStorageId);
-            if (HttpContext.Current == null)
+            var relative = $"/images/{imageSize}/{imageId}";
+            if (!isFullPathImageUrl)
             {
-                // Async service continuations (ConfigureAwait(false)) lose HttpContext; build the known route.
-                var relative = $"/images/{imageSize}/{imageId}";
-                if (!isFullPathImageUrl)
-                {
-                    return relative;
-                }
-
-                var baseUrl = GetAbsoluteApplicationBaseUrl(AppConfig.HttpProtocolForImages);
-                return string.IsNullOrEmpty(baseUrl) ? relative : baseUrl + relative;
+                return relative;
             }
 
-            var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
-            if (isFullPathImageUrl)
-            {
-                return urlHelper.Action(Constants.ImageActionName,
-                    "Images", new { imageSize, id = imageId, area = "" },
-                    AppConfig.HttpProtocolForImages);
-            }
-
-            return urlHelper.Action(Constants.ImageActionName, "Images", new { imageSize, id = imageId, area = "" });
+            var baseUrl = GetAbsoluteApplicationBaseUrl(AppConfig.HttpProtocolForImages);
+            return string.IsNullOrEmpty(baseUrl) ? relative : baseUrl + relative;
         }
 
         private static string TryGetMediaFolderImageUrl(BaseEntity entity, bool isThump, int width, int height)
@@ -699,9 +684,7 @@ namespace EImece.Domain.Helpers.Extensions
                 return asStoryFile.FileStorage;
             }
 
-            var fileStorageService = DependencyResolver.Current != null
-                ? DependencyResolver.Current.GetService<IFileStorageService>()
-                : null;
+            var fileStorageService = DomainServiceProvider.GetService<IFileStorageService>();
             return fileStorageService != null ? fileStorageService.GetFileStorage(fileStorageId) : null;
         }
 
@@ -744,37 +727,10 @@ namespace EImece.Domain.Helpers.Extensions
 
         public static String GetAdminCroppedImageUrl(this FileStorage fileStorage, int width = 0, int height = 0)
         {
-            if (HttpContext.Current == null)
-                return "";
             if (fileStorage != null)
             {
-                var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
                 var imageId = string.Format("{0}.jpg", fileStorage.Id);
-                String imagePath = urlHelper.Action(Constants.ImageActionName, "Images", new { area = "admin", id = imageId, width, height });
-                return imagePath;
-            }
-            return "";
-        }
-
-        public static String GetDetailPageUrl_OLD(this BaseEntity entity, String action, String controller, String categoryName = "", String protocol = "", String authorName = "")
-        {
-            if (HttpContext.Current == null)
-                return "";
-            if (entity != null)
-            {
-                var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
-                if (!String.IsNullOrEmpty(authorName))
-                {
-                    return urlHelper.Action(action, controller, new { id = authorName, area = "" }, protocol);
-                }
-                else if (String.IsNullOrEmpty(categoryName))
-                {
-                    return urlHelper.Action(action, controller, new { id = GetSeoUrl(entity), area = "" }, protocol);
-                }
-                else if (!String.IsNullOrEmpty(categoryName))
-                {
-                    return urlHelper.Action(action, controller, new { categoryName = GeneralHelper.GetUrlSeoString(categoryName), id = GetSeoUrl(entity), area = "" }, protocol);
-                }
+                return $"/admin/images/index/{imageId}?width={width}&height={height}";
             }
             return "";
         }
@@ -791,13 +747,7 @@ namespace EImece.Domain.Helpers.Extensions
             string domain = AppConfig.Domain;
             if (string.IsNullOrEmpty(domain))
             {
-                if (HttpContext.Current == null)
-                {
-                    return path ?? string.Empty;
-                }
-
-                // Authority keeps the port (e.g. localhost:81); Host alone drops it
-                domain = HttpContext.Current.Request.Url.Authority;
+                domain = "localhost";
             }
 
             var httpProtocol = string.IsNullOrEmpty(protocol) ? AppConfig.HttpProtocol : protocol;
@@ -810,22 +760,14 @@ namespace EImece.Domain.Helpers.Extensions
         }
 
         /// <summary>
-        /// Absolute site base URL (scheme + authority + app path), safe when HttpContext.Current is null
-        /// after ConfigureAwait(false) continuations.
+        /// Absolute site base URL (scheme + authority + app path).
         /// </summary>
         public static string GetAbsoluteApplicationBaseUrl(string protocol = null)
         {
-            var context = HttpContext.Current;
-            if (context?.Request != null)
-            {
-                var request = context.Request;
-                return request.Url.Scheme + "://" + request.Url.Authority + request.ApplicationPath.TrimEnd('/');
-            }
-
             var domain = AppConfig.Domain;
             if (string.IsNullOrEmpty(domain))
             {
-                return string.Empty;
+                domain = "localhost";
             }
 
             var scheme = string.IsNullOrEmpty(protocol) ? AppConfig.HttpProtocol : protocol;

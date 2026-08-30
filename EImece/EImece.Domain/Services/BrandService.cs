@@ -4,12 +4,11 @@ using EImece.Domain.Helpers;
 using EImece.Domain.Models.DTOs.Storefront;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
+using EImece.Domain.Abstractions;
 using NLog;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-
-using EImece.Domain.Factories.IFactories;
 using System;
 
 namespace EImece.Domain.Services
@@ -23,9 +22,9 @@ namespace EImece.Domain.Services
             IEimeceCacheProvider dataCachingProvider,
             ISettingService settingService,
             IFileStorageService fileStorageService,
-            IHttpContextFactory httpContextFactory,
+            ICurrentUserContext currentUserContext,
             FilesHelper filesHelper)
-            : base(repository, dataCachingProvider, settingService, fileStorageService, httpContextFactory, filesHelper)
+            : base(repository, dataCachingProvider, settingService, fileStorageService, currentUserContext, filesHelper)
         {
             BrandRepository = repository ?? throw new ArgumentNullException(nameof(repository));
         }

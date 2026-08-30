@@ -1,5 +1,6 @@
 using AutoMapper;
 using EImece.Domain;
+using EImece.Domain.Abstractions;
 using EImece.Domain.ApiRepositories;
 using EImece.Domain.Caching;
 using EImece.Domain.DbContext;
@@ -8,6 +9,7 @@ using EImece.Domain.Factories;
 using EImece.Domain.Factories.IFactories;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.EmailHelper;
+using EImece.Infrastructure;
 using EImece.Domain.Observability;
 using EImece.Domain.Observability.Configuration;
 using EImece.Domain.Observability.HealthChecks;
@@ -331,6 +333,11 @@ namespace EImece.App_Start
             services.AddScopedWithProps<ReportService>();
             services.AddScopedWithProps<SiteMapService>();
             services.AddScopedWithProps<IUsersService, UsersService>();
+
+            // Domain abstraction bridges
+            services.AddScoped<ICurrentUserContext, WebCurrentUserContext>();
+            services.AddScoped<ISiteUrlProvider, WebSiteUrlProvider>();
+            services.AddSingleton<IBackgroundWorkQueue, HostingEnvironmentBackgroundWorkQueue>();
 
             // Transient matches Ninject default (no scope) for IEntityFactory / IHttpContextFactory.
             services.AddTransientWithProps<IEntityFactory, EntityFactory>();

@@ -1,7 +1,8 @@
-﻿using System;
+using EImece.Domain.Abstractions;
+using EImece.Domain.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 namespace EImece.Domain.Helpers
 {
@@ -9,25 +10,25 @@ namespace EImece.Domain.Helpers
     {
         public static bool IsDeletedEnableRoles()
         {
-            var user = HttpContext.Current?.User;
-            if (user == null || !user.Identity.IsAuthenticated)
+            var userContext = DomainServiceProvider.GetService<ICurrentUserContext>();
+            if (userContext == null || !userContext.IsAuthenticated)
             {
                 return false;
             }
 
             var roles = GetDeletedRoles();
-            return roles.Any(role => user.IsInRole(role));
+            return roles.Any(role => userContext.IsInRole(role));
         }
 
         public static bool IsAdminManagementRoles()
         {
-            var user = HttpContext.Current.User;
-            return user.IsInRole(Constants.AdministratorRole);
+            var userContext = DomainServiceProvider.GetService<ICurrentUserContext>();
+            return userContext?.IsInRole(Constants.AdministratorRole) ?? false;
         }
 
         public static string[] GetDeletedRoles()
         {
-            var roles = new List<String>();
+            var roles = new List<string>();
             roles.Add(Constants.AdministratorRole);
             return roles.ToArray();
         }

@@ -91,7 +91,7 @@
                         <div class="form-row">
                             <div class="form-group col-sm-6">
                                 <label class="font-weight-semibold" for="customer_Country"><i class="fas fa-globe text-muted mr-1" aria-hidden="true"></i> @Html.DisplayNameFor(model => customer.Country)</label>
-                                @Html.DropDownListFor(model => customer.Country, GeneralHelper.GetStaticCountries(), new { @class = "form-control", id = "customer_Country" })
+                                @Html.DropDownListFor(model => customer.Country, EImece.Helpers.WebGeneralHelper.GetStaticCountries(), new { @class = "form-control", id = "customer_Country" })
                                 @Html.ValidationMessageFor(model => customer.Country, "", new { @class = "text-danger small" })
                             </div>
                             <div class="form-group col-sm-6">

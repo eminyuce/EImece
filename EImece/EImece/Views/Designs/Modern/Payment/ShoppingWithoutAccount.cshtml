@@ -145,7 +145,7 @@
                             <div class="col-sm-6">
                                 <div class="mb-3">
                                     <label><i class="fas fa-globe"></i> @Html.LabelFor(model => customer.Country)</label>
-                                    @Html.DropDownListFor(model => customer.Country, GeneralHelper.GetStaticCountries(), new { @class = "form-control" })
+                                    @Html.DropDownListFor(model => customer.Country, EImece.Helpers.WebGeneralHelper.GetStaticCountries(), new { @class = "form-control" })
                                     @Html.ValidationMessageFor(model => customer.Country, "", new { @class = "text-danger" })
                                 </div>
                             </div>

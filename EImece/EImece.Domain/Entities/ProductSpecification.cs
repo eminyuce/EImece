@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.Web.Mvc;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Xml.Linq;
 
 namespace EImece.Domain.Entities
@@ -10,7 +9,6 @@ namespace EImece.Domain.Entities
         [NotMapped]
         public string GroupName { get; set; }
 
-        [AllowHtml]
         public string Value { get; set; }
 
         public string Unit { get; set; }

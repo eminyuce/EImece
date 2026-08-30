@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\EntityFramework.6.5.2\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.5.2\build\EntityFramework.props')" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
@@ -514,6 +514,34 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Helpers\WebCurrentUserContext.cs" />
+    <Compile Include="Helpers\WebSiteUrlProvider.cs" />
+    <Compile Include="Helpers\HostingEnvironmentBackgroundWorkQueue.cs" />
+    <Compile Include="Helpers\WebGeneralHelper.cs" />
+    <Compile Include="Helpers\WebFilesHelper.cs" />
+    <Compile Include="Helpers\PartialViewToString.cs" />
+    <Compile Include="Helpers\HtmlRequestHelper.cs" />
+    <Compile Include="Helpers\SeoUrlHelper.cs" />
+    <Compile Include="Helpers\HtmlRenderExtensions.cs" />
+    <Compile Include="Helpers\HtmlHelpers\AdminBreadcrumbHtmlHelper.cs" />
+    <Compile Include="Helpers\HtmlHelpers\AdminGridHtmlHelpers.cs" />
+    <Compile Include="Helpers\HtmlHelpers\CaptchaHtmlHelper.cs" />
+    <Compile Include="Helpers\HtmlHelpers\HtmlHelperExtensions.cs" />
+    <Compile Include="Helpers\HtmlHelpers\MVCHtmlHelpers.cs" />
+    <Compile Include="Filters\AuthorizationAttribute.cs" />
+    <Compile Include="Filters\AuthorizeRolesAttribute.cs" />
+    <Compile Include="Filters\CustomOutputCacheAttribute.cs" />
+    <Compile Include="Filters\DeleteAuthorizeAttribute.cs" />
+    <Compile Include="Filters\NoCacheAttribute.cs" />
+    <Compile Include="Filters\UnderConstAttribute.cs" />
+    <Compile Include="Filters\ValidateCaptchaAttribute.cs" />
+    <Compile Include="Filters\ValidateJsonAntiForgeryTokenAttribute.cs" />
+    <Compile Include="Infrastructure\ActionResults\FeedResult.cs" />
+    <Compile Include="Infrastructure\ActionResults\SitemapResult.cs" />
+    <Compile Include="Services\CaptchaService.cs" />
+    <Compile Include="Services\RecaptchaService.cs" />
+    <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Areas\Admin\Models\UserAuditReportViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="android-chrome-144x144.png" />

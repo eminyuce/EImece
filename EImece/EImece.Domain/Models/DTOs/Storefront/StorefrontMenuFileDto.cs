@@ -30,7 +30,7 @@ namespace EImece.Domain.Models.DTOs.Storefront
 
         public string GetCroppedImageTag(int width = 0, int height = 0)
         {
-            return string.Format("<img src=\"{0}\" alt=\"{1}\" />", GetCroppedImageUrl(FileStorageId, width, height), System.Web.HttpUtility.HtmlAttributeEncode(Name ?? FileName));
+            return string.Format("<img src=\"{0}\" alt=\"{1}\" />", GetCroppedImageUrl(FileStorageId, width, height), System.Net.WebUtility.HtmlEncode(Name ?? FileName));
         }
 
         public string GetResponsiveImageSrcSet(int width = 0, int height = 0)

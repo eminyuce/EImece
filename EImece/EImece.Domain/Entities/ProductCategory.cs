@@ -1,4 +1,4 @@
-﻿using EImece.Domain.Helpers.Extensions;
+using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
 using Resources;
@@ -6,8 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Web;
-using System.Web.Mvc;
+using System.Net;
 
 namespace EImece.Domain.Entities
 {
@@ -19,7 +18,6 @@ namespace EImece.Domain.Entities
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.MainPage))]
         public Boolean MainPage { get; set; }
 
-        [AllowHtml]
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.ShortDescription))]
         public string ShortDescription { get; set; }
 
@@ -46,9 +44,7 @@ namespace EImece.Domain.Entities
         {
             get
             {
-                var requestContext = HttpContext.Current?.Request?.RequestContext;
-                if (requestContext == null) return this.GetDetailPageUrl("Category", "ProductCategories", "", "", "");
-                return new UrlHelper(requestContext).Action("Category", "ProductCategories", new { id = this.GetSeoUrl() });
+                return this.GetDetailPageUrl("Category", "ProductCategories", "", "", "");
             }
         }
 
@@ -64,17 +60,14 @@ namespace EImece.Domain.Entities
 
         public string ProductCategoryListPageUrl(SortingType sorting, IPaginatedModelList paginatedModelList)
         {
-            var routeValues = ProductCategoryViewModel.GetRouteValueDictionary(paginatedModelList);
-            var requestContext = HttpContext.Current.Request.RequestContext;
             var sortingInt = (int)sorting;
-            routeValues.Remove("sorting");
-            routeValues.Add("sorting", sortingInt);
-            var urlHelp = new UrlHelper(requestContext);
-            if (string.IsNullOrEmpty(paginatedModelList.Filter))
-            {
-                routeValues.Remove("filtreler");
-            }
-            return urlHelp.Action("Category", "ProductCategories", routeValues);
+            var seoId = this.GetSeoUrl();
+            var search = paginatedModelList?.Search;
+            var filter = paginatedModelList?.Filter;
+            var url = $"/productcategories/category/{seoId}?sorting={sortingInt}";
+            if (!string.IsNullOrEmpty(search)) url += $"&search={WebUtility.UrlEncode(search)}";
+            if (!string.IsNullOrEmpty(filter)) url += $"&filtreler={WebUtility.UrlEncode(filter)}";
+            return url;
         }
 
         public Template Template { get; set; }
@@ -92,7 +85,7 @@ namespace EImece.Domain.Entities
                   300, 0, false);
                     var result = string.Format("<img src='{0}' class='d-block mt-n1' alt='{1}'><div class='text-center font-size-sm font-weight-semibold mt-n0 pb-0'>{1}</div>", mainImageUrl,
                         this.Name);
-                    return HttpUtility.HtmlEncode(result);
+                    return WebUtility.HtmlEncode(result);
                 }
                 else
                 {

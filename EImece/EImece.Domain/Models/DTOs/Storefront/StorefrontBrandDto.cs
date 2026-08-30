@@ -2,8 +2,7 @@ using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
 using System;
-using System.Web;
-using System.Web.Mvc;
+using System.Net;
 
 namespace EImece.Domain.Models.DTOs.Storefront
 {
@@ -80,7 +79,7 @@ namespace EImece.Domain.Models.DTOs.Storefront
 
         public string GetCroppedImageTag(int width = 0, int height = 0)
         {
-            return string.Format("<img src=\"{0}\" alt=\"{1}\" />", GetCroppedImageUrl(null, width, height), System.Web.HttpUtility.HtmlAttributeEncode(Name));
+            return string.Format("<img src=\"{0}\" alt=\"{1}\" />", GetCroppedImageUrl(null, width, height), WebUtility.HtmlEncode(Name));
         }
 
         public string GetResponsiveImageSrcSet(int width = 0, int height = 0)
@@ -93,29 +92,21 @@ namespace EImece.Domain.Models.DTOs.Storefront
         public string GetProductsUrl(ProductCategory category)
         {
             if (Id <= 0 || string.IsNullOrWhiteSpace(Name)) return string.Empty;
-            var requestContext = HttpContext.Current?.Request?.RequestContext;
-            if (requestContext == null) return string.Empty;
-
-            var urlHelper = new UrlHelper(requestContext);
             if (category != null)
             {
-                return urlHelper.Action("Category", "ProductCategories", new { id = category.GetSeoUrl(), filtreler = "b" + Id });
+                return $"/productcategories/category/{category.GetSeoUrl()}?filtreler=b{Id}";
             }
-            return urlHelper.Action("searchproducts", "Products", new { search = Name });
+            return $"/products/searchproducts?search={WebUtility.UrlEncode(Name)}";
         }
 
         public string GetProductsUrl(StorefrontCategoryDto category)
         {
             if (Id <= 0 || string.IsNullOrWhiteSpace(Name)) return string.Empty;
-            var requestContext = HttpContext.Current?.Request?.RequestContext;
-            if (requestContext == null) return string.Empty;
-
-            var urlHelper = new UrlHelper(requestContext);
             if (category != null)
             {
-                return urlHelper.Action("Category", "ProductCategories", new { id = category.GetSeoUrl(), filtreler = "b" + Id });
+                return $"/productcategories/category/{category.GetSeoUrl()}?filtreler=b{Id}";
             }
-            return urlHelper.Action("searchproducts", "Products", new { search = Name });
+            return $"/products/searchproducts?search={WebUtility.UrlEncode(Name)}";
         }
 
         public string GetSeoTitle(int lang = 1) => Name;

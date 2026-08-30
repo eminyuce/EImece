@@ -6,6 +6,7 @@ using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Observability.Telemetry;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
+using EImece.Domain.Abstractions;
 using EImece.Domain.DependencyInjection;
 using NLog;
 using System;
@@ -13,8 +14,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-
-using EImece.Domain.Factories.IFactories;
 
 namespace EImece.Domain.Services
 {
@@ -33,13 +32,13 @@ namespace EImece.Domain.Services
             IEimeceCacheProvider dataCachingProvider,
             ISettingService settingService,
             IFileStorageService fileStorageService,
-            IHttpContextFactory httpContextFactory,
+            ICurrentUserContext currentUserContext,
             FilesHelper filesHelper,
             IProductService productService,
             IStoryService storyService,
             IProductCategoryService productCategoryService,
             IMenuService menuService)
-            : base(repository, dataCachingProvider, settingService, fileStorageService, httpContextFactory, filesHelper)
+            : base(repository, dataCachingProvider, settingService, fileStorageService, currentUserContext, filesHelper)
         {
             MainPageImageRepository = repository ?? throw new ArgumentNullException(nameof(repository));
             ProductService = productService ?? throw new ArgumentNullException(nameof(productService));

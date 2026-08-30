@@ -9,5 +9,10 @@ namespace EImece.Domain.DependencyInjection
     public static class DomainServiceProvider
     {
         public static IServiceProvider Instance { get; set; }
+
+        public static T GetService<T>() where T : class
+        {
+            return Instance?.GetService(typeof(T)) as T;
+        }
     }
 }

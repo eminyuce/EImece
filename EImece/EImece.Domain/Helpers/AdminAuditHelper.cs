@@ -1,7 +1,7 @@
+using EImece.Domain.DependencyInjection;
 using Resources;
 using System;
 using System.Threading.Tasks;
-using System.Web.Mvc;
 
 namespace EImece.Domain.Helpers
 {
@@ -16,7 +16,7 @@ namespace EImece.Domain.Helpers
 
             try
             {
-                var usersService = DependencyResolver.Current.GetService<EImece.Domain.Services.IServices.IUsersService>();
+                var usersService = DomainServiceProvider.GetService<EImece.Domain.Services.IServices.IUsersService>();
                 if (usersService == null)
                 {
                     return userIdOrName;

@@ -13,9 +13,6 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Web;
-using System.Web.Mvc;
-using System.Web.Routing;
 using System.Xml.Serialization;
 
 namespace EImece.Domain.Services
@@ -97,14 +94,13 @@ namespace EImece.Domain.Services
         public virtual async Task<List<SitemapItem>> GenerateSiteMapAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             List<EImeceLanguage> eImeceLanguages = EnumHelper.GetLanguageEnumListFromWebConfig();
-            var requestContext = HttpContext.Current?.Request?.RequestContext;
 
             var sitemapItems = new List<SitemapItem>();
             foreach (var item in eImeceLanguages)
             {
                 cancellationToken.ThrowIfCancellationRequested();
                 int language = (int)item;
-                await GenerateMenuSiteMapAsync(sitemapItems, language, cancellationToken, requestContext).ConfigureAwait(false);
+                await GenerateMenuSiteMapAsync(sitemapItems, language, cancellationToken).ConfigureAwait(false);
                 List<ProductCategory> productCategories = await GenerateProductCategorySiteMapAsync(sitemapItems, language, cancellationToken).ConfigureAwait(false);
                 await GenerateProductSiteMapAsync(sitemapItems, language, productCategories, cancellationToken).ConfigureAwait(false);
                 List<StoryCategory> storyCategories = await GenerateStoryCategorySiteMapAsync(sitemapItems, language, cancellationToken).ConfigureAwait(false);
@@ -115,20 +111,13 @@ namespace EImece.Domain.Services
             return sitemapItems;
         }
 
-        private async Task GenerateMenuSiteMapAsync(List<SitemapItem> sitemapItems, int language, CancellationToken cancellationToken, RequestContext requestContext = null)
+        private async Task GenerateMenuSiteMapAsync(List<SitemapItem> sitemapItems, int language, CancellationToken cancellationToken)
         {
             try
             {
-                if (requestContext == null && HttpContext.Current != null)
-                {
-                    requestContext = HttpContext.Current.Request?.RequestContext;
-                }
-                if (requestContext == null)
-                    return;
-
                 var menus = await MenuService.GetActiveBaseEntitiesFromCacheAsync(true, language).ConfigureAwait(false);
                 cancellationToken.ThrowIfCancellationRequested();
-                AddMenuSitemapItems(sitemapItems, menus, requestContext);
+                AddMenuSitemapItems(sitemapItems, menus);
             }
             catch (Exception ex)
             {
@@ -464,12 +453,8 @@ namespace EImece.Domain.Services
         {
             try
             {
-                if (HttpContext.Current == null)
-                    return;
-                var requestContext = HttpContext.Current.Request.RequestContext;
-
                 var menus = MenuService.GetActiveBaseEntitiesFromCache(true, language);
-                AddMenuSitemapItems(sitemapItems, menus, requestContext);
+                AddMenuSitemapItems(sitemapItems, menus);
             }
             catch (Exception ex)
             {
@@ -477,14 +462,14 @@ namespace EImece.Domain.Services
             }
         }
 
-        private void AddMenuSitemapItems(List<SitemapItem> sitemapItems, IEnumerable<Menu> menus, RequestContext requestContext)
+        private void AddMenuSitemapItems(List<SitemapItem> sitemapItems, IEnumerable<Menu> menus)
         {
             foreach (var c in menus)
             {
                 try
                 {
                     string url;
-                    if (!TryGetMenuSitemapUrl(c, requestContext, out url))
+                    if (!TryGetMenuSitemapUrl(c, out url))
                     {
                         continue;
                     }
@@ -502,7 +487,7 @@ namespace EImece.Domain.Services
             }
         }
 
-        private bool TryGetMenuSitemapUrl(Menu c, RequestContext requestContext, out string url)
+        private bool TryGetMenuSitemapUrl(Menu c, out string url)
         {
             url = null;
             if (c.LinkIsActive && !string.IsNullOrEmpty(c.Link))
@@ -511,7 +496,7 @@ namespace EImece.Domain.Services
             }
             else
             {
-                url = BuildMenuLinkUrl(c, requestContext);
+                url = BuildMenuLinkUrl(c);
                 if (url == null)
                 {
                     return false;
@@ -521,7 +506,7 @@ namespace EImece.Domain.Services
             return !string.IsNullOrWhiteSpace(url) && url != "#";
         }
 
-        private string BuildMenuLinkUrl(Menu c, RequestContext requestContext)
+        private string BuildMenuLinkUrl(Menu c)
         {
             if (string.IsNullOrWhiteSpace(c.MenuLink))
             {
@@ -539,18 +524,18 @@ namespace EImece.Domain.Services
             var action = parts[1];
             var controller = parts[0];
             var mid = p[p.Length - 1];
-            var urlHelper = new UrlHelper(requestContext);
+            var baseUrl = EntityExtension.GetAbsoluteApplicationBaseUrl(AppConfig.HttpProtocol);
 
             if (controller.Equals("pages", StringComparison.InvariantCultureIgnoreCase))
             {
-                return urlHelper.Action("detail", controller, new { id = c.GetSeoUrl() }, AppConfig.HttpProtocol);
+                return $"{baseUrl}/pages/detail/{c.GetSeoUrl()}";
             }
             if (controller.Equals("stories", StringComparison.InvariantCultureIgnoreCase)
                 && action.Equals("categories", StringComparison.InvariantCultureIgnoreCase))
             {
-                return urlHelper.Action(action, controller, new { id = mid }, AppConfig.HttpProtocol);
+                return $"{baseUrl}/stories/categories/{mid}";
             }
-            return urlHelper.Action(action, controller, null, AppConfig.HttpProtocol);
+            return $"{baseUrl}/{controller}/{action}";
         }
 
         /// <summary>

@@ -1,5 +1,5 @@
 using System;
-using System.Web;
+using System.Net;
 using System.Xml.Linq;
 
 namespace EImece.Domain.Helpers
@@ -76,7 +76,7 @@ namespace EImece.Domain.Helpers
             if (ProductSpecificationFieldHelper.IsTextAreaField(field)
                 && !ProductSpecificationFieldHelper.AllowsHtml(field))
             {
-                return HttpUtility.HtmlEncode(raw);
+                return WebUtility.HtmlEncode(raw);
             }
 
             return raw;

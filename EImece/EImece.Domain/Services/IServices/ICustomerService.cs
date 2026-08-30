@@ -1,5 +1,5 @@
 using EImece.Domain.Entities;
-using EImece.Models;
+using EImece.Domain.Models.DTOs;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -7,17 +7,17 @@ namespace EImece.Domain.Services.IServices
 {
     public interface ICustomerService : IBaseEntityService<Customer>
     {
-        void SaveRegisterViewModel(string userId, RegisterViewModel model);
+        void SaveRegisterViewModel(string userId, CustomerRegistrationDto model);
 
-        Task SaveRegisterViewModelAsync(string userId, RegisterViewModel model);
+        Task SaveRegisterViewModelAsync(string userId, CustomerRegistrationDto model);
 
         Customer GetUserId(string userId);
 
         Task<Customer> GetUserIdAsync(string userId);
 
-        System.Threading.Tasks.Task<EImece.Domain.Models.DTOs.Storefront.CustomerSummaryDto> GetStorefrontCustomerSummaryByUserIdAsync(string userId);
+        Task<EImece.Domain.Models.DTOs.Storefront.CustomerSummaryDto> GetStorefrontCustomerSummaryByUserIdAsync(string userId);
 
-        System.Threading.Tasks.Task<EImece.Domain.Models.DTOs.CustomerDto> GetStorefrontCustomerProfileByUserIdAsync(string userId);
+        Task<EImece.Domain.Models.DTOs.CustomerDto> GetStorefrontCustomerProfileByUserIdAsync(string userId);
 
         void DeleteByUserId(string userId);
 
@@ -30,11 +30,5 @@ namespace EImece.Domain.Services.IServices
         List<Customer> GetCustomerServices(string search);
 
         Task<List<Customer>> GetCustomerServicesAsync(string search);
-
-        void GetUserFields(Customer item);
-
-        Task GetUserFieldsAsync(Customer item);
-
-        Task<List<string>> DeleteCustomersAsync(List<string> userIds, string currentUserId = null);
     }
 }

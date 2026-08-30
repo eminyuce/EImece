@@ -3,8 +3,6 @@ using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.DTOs.Storefront;
 using System;
 using System.Collections.Generic;
-using System.Web;
-using System.Web.Mvc;
 
 namespace EImece.Domain.Models.FrontModels.ShoppingCart
 {
@@ -28,8 +26,7 @@ namespace EImece.Domain.Models.FrontModels.ShoppingCart
             {
                 if (string.IsNullOrEmpty(_detailPageUrl))
                 {
-                    var requestContext = HttpContext.Current.Request.RequestContext;
-                    return new UrlHelper(requestContext).Action("Detail", "Products", new { id = Id });
+                    return $"/products/detail/{Id}";
                 }
                 return _detailPageUrl;
             }

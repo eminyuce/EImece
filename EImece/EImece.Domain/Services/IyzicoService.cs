@@ -11,9 +11,8 @@ using NLog;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Net;
 using System.Threading.Tasks;
-using System.Web;
-using System.Web.Mvc;
 
 namespace EImece.Domain.Services
 {
@@ -75,20 +74,10 @@ namespace EImece.Domain.Services
             if (string.IsNullOrEmpty(callbackUrl))
             {
                 Logger.Debug("Building callback URL for Payment Result...");
-                string o = HttpUtility.UrlEncode(EncryptDecryptQueryString.Encrypt(shoppingCart.OrderGuid));
-                string u = HttpUtility.UrlEncode(EncryptDecryptQueryString.Encrypt(userId));
-                if (HttpContext.Current != null && HttpContext.Current.Request != null)
-                {
-                    var requestContext = HttpContext.Current.Request.RequestContext;
-                    callbackUrl = new UrlHelper(requestContext).Action(actionName,
-                                                       "Payment",
-                                                       new { o, u, orderNumber },
-                                                       AppConfig.HttpProtocol);
-                }
-                else
-                {
-                    callbackUrl = $"/Payment/{actionName}?o={o}&u={u}&orderNumber={orderNumber}";
-                }
+                string o = WebUtility.UrlEncode(EncryptDecryptQueryString.Encrypt(shoppingCart.OrderGuid));
+                string u = WebUtility.UrlEncode(EncryptDecryptQueryString.Encrypt(userId));
+                var baseUrl = EntityExtension.GetAbsoluteApplicationBaseUrl(AppConfig.HttpProtocol);
+                callbackUrl = $"{baseUrl}/payment/{actionName}?o={o}&u={u}&orderNumber={orderNumber}";
             }
 
             // Initialize request
@@ -226,19 +215,9 @@ namespace EImece.Domain.Services
             if (string.IsNullOrEmpty(callbackUrl))
             {
                 Logger.Debug("Building callback URL for BuyNow Payment Result...");
-                string o = HttpUtility.UrlEncode(EncryptDecryptQueryString.Encrypt(buyNowModel.OrderGuid));
-                if (HttpContext.Current != null && HttpContext.Current.Request != null)
-                {
-                    var requestContext = HttpContext.Current.Request.RequestContext;
-                    callbackUrl = new UrlHelper(requestContext).Action("BuyNowPaymentResult",
-                                                       "Payment",
-                                                       new { o },
-                                                       AppConfig.HttpProtocol);
-                }
-                else
-                {
-                    callbackUrl = $"/Payment/BuyNowPaymentResult?o={o}";
-                }
+                string o = WebUtility.UrlEncode(EncryptDecryptQueryString.Encrypt(buyNowModel.OrderGuid));
+                var baseUrl = EntityExtension.GetAbsoluteApplicationBaseUrl(AppConfig.HttpProtocol);
+                callbackUrl = $"{baseUrl}/payment/buynowpaymentresult?o={o}";
             }
 
             var request = new CreateCheckoutFormInitializeRequest
@@ -357,7 +336,7 @@ namespace EImece.Domain.Services
 
         private static List<int> GetEnabledInstallments()
         {
-            var settingService = DependencyResolver.Current?.GetService(typeof(EImece.Domain.Services.IServices.ISettingService)) as EImece.Domain.Services.IServices.ISettingService;
+            var settingService = DomainServiceProvider.GetService<EImece.Domain.Services.IServices.ISettingService>();
             var raw = settingService?.GetSettingByKey(Constants.IyzicoEnabledInstallments);
             if (string.IsNullOrWhiteSpace(raw))
             {

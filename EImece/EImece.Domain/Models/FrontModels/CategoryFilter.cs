@@ -3,8 +3,7 @@ using EImece.Domain.Helpers.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+using System.Net;
 
 namespace EImece.Domain.Models.FrontModels
 {
@@ -29,20 +28,40 @@ namespace EImece.Domain.Models.FrontModels
 
             var filters = SelectedFilterTypes.Where(r => !r.CategoryFilterId.Equals(this.CategoryFilterId, StringComparison.InvariantCultureIgnoreCase)).ToList();
 
-            var routeValues = ProductCategoryViewModel.GetRouteValueDictionary(paginatedModelList);
-            routeValues.Remove("filtreler");
+            var routeId = paginatedModelList?.RouteId ?? "";
             var remaining = string.Join("-", filters.Select(r => r.CategoryFilterId));
+
+            var idPart = !string.IsNullOrEmpty(routeId) ? $"/{routeId}" : "";
+            var url = $"/productcategories/category{idPart}";
+            var queryParams = new List<string>();
+
+            if (paginatedModelList?.Sorting.HasValue == true && paginatedModelList.Sorting.Value > 0)
+            {
+                queryParams.Add($"sorting={paginatedModelList.Sorting.Value}");
+            }
             if (!string.IsNullOrEmpty(remaining))
             {
-                routeValues.Add("filtreler", remaining);
+                queryParams.Add($"filtreler={WebUtility.UrlEncode(remaining)}");
             }
-            if (HttpContext.Current != null && HttpContext.Current.Request != null)
+            if (!string.IsNullOrEmpty(paginatedModelList?.Search))
             {
-                var requestContext = HttpContext.Current.Request.RequestContext;
-                var urlHelp = new UrlHelper(requestContext);
-                return urlHelp.Action("Category", "ProductCategories", routeValues);
+                queryParams.Add($"search={WebUtility.UrlEncode(paginatedModelList.Search)}");
             }
-            return "";
+            if (paginatedModelList?.MinPrice.HasValue == true && paginatedModelList.MinPrice.Value > 0)
+            {
+                queryParams.Add($"minPrice={paginatedModelList.MinPrice.Value}");
+            }
+            if (paginatedModelList?.MaxPrice.HasValue == true && paginatedModelList.MaxPrice.Value > 0)
+            {
+                queryParams.Add($"maxPrice={paginatedModelList.MaxPrice.Value}");
+            }
+
+            if (queryParams.Count > 0)
+            {
+                url += "?" + string.Join("&", queryParams);
+            }
+
+            return url;
         }
 
         public override bool Equals(object obj)
@@ -59,12 +78,7 @@ namespace EImece.Domain.Models.FrontModels
 
         public override int GetHashCode()
         {
-            return base.GetHashCode();
-        }
-
-        public override string ToString()
-        {
-            return name;
+            return this.CategoryFilterId.GetHashCode();
         }
     }
 }

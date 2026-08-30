@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using System.ServiceModel.Syndication;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Web;
 
 namespace EImece.Domain.Services.IServices
 {
@@ -139,9 +138,9 @@ namespace EImece.Domain.Services.IServices
          int language,
          CancellationToken cancellationToken = default(CancellationToken));
 
-        void ParseTemplateAndSaveProductSpecifications(int productId, int templateId, int currentLanguage, HttpRequestBase request);
+        void ParseTemplateAndSaveProductSpecifications(int productId, int templateId, int currentLanguage, System.Collections.Specialized.NameValueCollection formValues);
 
-        Task ParseTemplateAndSaveProductSpecificationsAsync(int productId, int templateId, int currentLanguage, HttpRequestBase request, CancellationToken cancellationToken = default(CancellationToken));
+        Task ParseTemplateAndSaveProductSpecificationsAsync(int productId, int templateId, int currentLanguage, System.Collections.Specialized.NameValueCollection formValues, CancellationToken cancellationToken = default(CancellationToken));
 
         void MoveProductsInTrees(int newCategoryId, string products);
 
