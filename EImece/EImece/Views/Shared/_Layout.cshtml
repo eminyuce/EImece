@@ -101,7 +101,6 @@
             <div class="dropdown d-inline-block d-lg-none">
                 <a class="dropdown-toggle text-light  py-1" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">@Resource.UsefulLinks</a>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href="@Url.Action(Constants.AboutUs,"info", new { lang= countryCode })">@Resource.AboutUs</a>
                     <a class="dropdown-item" href="@Url.Action(Constants.DeliveryInfo,"info", new { lang= countryCode })">@Resource.DeliveryInfo</a>
                     @if (productPriceEnabled)
                     {
@@ -117,10 +116,6 @@
                 <ul class="list-inline mb-0 d-none d-lg-block">
                     <li class="list-inline-item me-2">
                         @Html.Action("Languages", "Home")
-                    </li>
-                    <li class="list-inline-item me-2">
-                        <a class="text-light  py-1 ps-0 pe-2 border-right border-light"
-                           href="@Url.Action(Constants.AboutUs,"info", new { lang= countryCode })">@Resource.AboutUs</a>
                     </li>
                     <li class="list-inline-item me-2">
                         <a class="text-light  py-1 ps-0 pe-2"
