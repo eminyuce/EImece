@@ -6,7 +6,6 @@ using EImece.Domain.Services.IServices;
 using ImageProcessor;
 using ImageProcessor.Imaging.Formats;
 using ImageProcessor.Plugins.WebP.Imaging.Formats;
-using EImece.Domain.DependencyInjection;
 using EImece.Domain.Observability.Telemetry;
 using NLog;
 using System;
@@ -25,10 +24,12 @@ namespace EImece.Domain.Helpers
     public class FilesHelper : IDisposable
     {
         internal readonly IFileStorageService FileStorageService;
+        private readonly ISettingService _settingService;
 
-        public FilesHelper(IFileStorageService fileStorageService = null)
+        public FilesHelper(IFileStorageService fileStorageService = null, ISettingService settingService = null)
         {
             FileStorageService = fileStorageService;
+            _settingService = settingService;
         }
 
         private const string THUMBS = "thumbs";
@@ -661,17 +662,15 @@ namespace EImece.Domain.Helpers
             return new SavedImage(newFileName, width, height, imageSize, contentType, fileName, fileHash);
         }
 
-        private static int GetSettingInt(string key, int defaultValue)
+        private int GetSettingInt(string key, int defaultValue)
         {
-            var settingService = DomainServiceProvider.GetService<EImece.Domain.Services.IServices.ISettingService>();
-            var val = settingService?.GetSettingByKey(key);
+            var val = _settingService?.GetSettingByKey(key);
             return !string.IsNullOrWhiteSpace(val) ? val.ToInt(defaultValue) : defaultValue;
         }
 
-        private static bool GetSettingBool(string key, bool defaultValue)
+        private bool GetSettingBool(string key, bool defaultValue)
         {
-            var settingService = DomainServiceProvider.GetService<EImece.Domain.Services.IServices.ISettingService>();
-            var val = settingService?.GetSettingByKey(key);
+            var val = _settingService?.GetSettingByKey(key);
             return !string.IsNullOrWhiteSpace(val) ? val.ToBool(defaultValue) : defaultValue;
         }
 
@@ -702,7 +701,7 @@ namespace EImece.Domain.Helpers
             }
         }
 
-        private static Size ResolveThumbnailTargetSize(int requestedWidth, int requestedHeight, int originalWidth, int originalHeight)
+        private Size ResolveThumbnailTargetSize(int requestedWidth, int requestedHeight, int originalWidth, int originalHeight)
         {
             int thumbMaxW = GetSettingInt(Constants.ImageUploadThumbMaxWidth, Constants.DefaultImageUploadThumbMaxWidth);
             int thumbMaxH = GetSettingInt(Constants.ImageUploadThumbMaxHeight, Constants.DefaultImageUploadThumbMaxHeight);

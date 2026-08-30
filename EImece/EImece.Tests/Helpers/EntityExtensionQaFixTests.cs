@@ -38,6 +38,7 @@ namespace EImece.Tests.Helpers
             StringAssert.Contains(
                 EntityExtension.BuildMenuLinkRelativePath("pages", "detail", null, menu),
                 "/i/blog-");
+            Assert.AreEqual(string.Empty, EntityExtension.BuildMenuLinkRelativePath("pages", "index", null));
         }
 
         [TestMethod]

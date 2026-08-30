@@ -810,6 +810,12 @@ namespace EImece.Domain.Helpers.Extensions
                 return $"/{Constants.PagesControllerRoutingPrefix}/{entityForSeo.GetSeoUrl()}";
             }
 
+            if (string.Equals(controller, "Pages", StringComparison.OrdinalIgnoreCase)
+                && string.Equals(action, Constants.IndexAction, StringComparison.OrdinalIgnoreCase))
+            {
+                return string.Empty;
+            }
+
             if (string.Equals(controller, Constants.StoriesAction, StringComparison.OrdinalIgnoreCase)
                 && string.Equals(action, "Categories", StringComparison.OrdinalIgnoreCase)
                 && !string.IsNullOrWhiteSpace(mid))
