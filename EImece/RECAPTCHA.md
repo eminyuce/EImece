@@ -61,7 +61,7 @@ out of source control and injecting them via local/user secrets or environment-s
 
 **Controller:**
 ```csharp
-using EImece.Domain.Helpers.AttributeHelper;
+using EImece.Filters;
 using EImece.Domain.Services;
 
 [HttpPost]

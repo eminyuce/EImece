@@ -3,6 +3,7 @@ using EImece.Domain.Observability.Configuration;
 using EImece.Domain.Observability.Logging;
 using EImece.Domain.Observability.Metrics;
 using EImece.Domain.Observability.Telemetry;
+using EImece.Infrastructure;
 using System.Diagnostics;
 using System.Web.Mvc;
 

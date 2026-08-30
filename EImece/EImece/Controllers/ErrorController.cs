@@ -1,5 +1,5 @@
 using EImece.Domain;
-using EImece.Domain.Helpers.AttributeHelper;
+using EImece.Filters;
 using EImece.Domain.Models.HelperModels;
 using NLog;
 using System;

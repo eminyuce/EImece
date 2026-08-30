@@ -2,6 +2,7 @@ using EImece.Domain;
 using EImece.Domain.Caching;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
+using EImece.Helpers;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Services;
@@ -316,7 +317,7 @@ namespace EImece.Areas.Admin.Controllers
 
         public PartialViewResult Languages()
         {
-            List<SelectListItem> listItems = EnumHelper.ToSelectList3(Domain.Constants.AdminCultureCookieName);
+            List<SelectListItem> listItems = EnumWebExtensions.ToSelectList3(Domain.Constants.AdminCultureCookieName);
             return PartialView("pLanguages", listItems);
         }
 

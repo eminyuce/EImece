@@ -1,5 +1,5 @@
 using EImece.Areas.Admin.Controllers;
-using EImece.Domain.Models.AdminModels;
+using EImece.Areas.Admin.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;

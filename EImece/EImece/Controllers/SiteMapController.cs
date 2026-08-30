@@ -1,7 +1,7 @@
 using System;
 using EImece.Domain;
 using EImece.Domain.Helpers;
-using EImece.Domain.Helpers.AttributeHelper;
+using EImece.Filters;
 using EImece.Domain.Helpers.SiteMap;
 using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;

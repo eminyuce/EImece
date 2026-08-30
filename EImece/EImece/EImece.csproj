@@ -514,11 +514,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs" />
     <Compile Include="Startup.cs" />
-    <Compile Include="Helpers\WebCurrentUserContext.cs" />
-    <Compile Include="Helpers\WebSiteUrlProvider.cs" />
-    <Compile Include="Helpers\HostingEnvironmentBackgroundWorkQueue.cs" />
+    <Compile Include="Infrastructure\Security\WebCurrentUserContext.cs" />
+    <Compile Include="Infrastructure\WebSiteUrlProvider.cs" />
+    <Compile Include="Infrastructure\HostingEnvironmentBackgroundWorkQueue.cs" />
     <Compile Include="Helpers\WebGeneralHelper.cs" />
     <Compile Include="Helpers\WebFilesHelper.cs" />
+    <Compile Include="Helpers\EnumWebExtensions.cs" />
     <Compile Include="Helpers\PartialViewToString.cs" />
     <Compile Include="Helpers\HtmlRequestHelper.cs" />
     <Compile Include="Helpers\SeoUrlHelper.cs" />
@@ -536,6 +537,7 @@
     <Compile Include="Filters\UnderConstAttribute.cs" />
     <Compile Include="Filters\ValidateCaptchaAttribute.cs" />
     <Compile Include="Filters\ValidateJsonAntiForgeryTokenAttribute.cs" />
+    <Compile Include="Infrastructure\WebLoggingHelper.cs" />
     <Compile Include="Infrastructure\ActionResults\FeedResult.cs" />
     <Compile Include="Infrastructure\ActionResults\SitemapResult.cs" />
     <Compile Include="Services\CaptchaService.cs" />

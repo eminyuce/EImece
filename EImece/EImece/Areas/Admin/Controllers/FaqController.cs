@@ -1,6 +1,6 @@
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
-using EImece.Domain.Helpers.AttributeHelper;
+using EImece.Filters;
 using Griddly.Mvc;
 using Griddly.Mvc.Results;
 using Microsoft.AspNet.Identity;

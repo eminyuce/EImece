@@ -3,7 +3,7 @@ using EImece.Domain;
 using EImece.Domain.Caching;
 using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
-using EImece.Domain.Factories;
+
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.EmailHelper;
 using EImece.Domain.Models.FrontModels;
@@ -200,10 +200,10 @@ namespace EImece.Tests.Controllers
             var settingService = new SettingService(new SettingRepository(db));
             var filesHelper = (FilesHelper)System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof(FilesHelper));
             var categoryRepo = new ProductCategoryRepository(db);
-            var categoryBrandService = new BrandService(new BrandRepository(db), cache, settingService, null, new HttpContextFactory(), filesHelper);
+            var categoryBrandService = new BrandService(new BrandRepository(db), cache, settingService, null, new EImece.Tests.Infrastructure.NullCurrentUserContext(), filesHelper);
             var productRepo = new ProductRepository(db);
-            var menuService = new MenuService(new MenuRepository(db), cache, settingService, null, new HttpContextFactory(), filesHelper, null);
-            var categoryServ = new ProductCategoryService(categoryRepo, cache, settingService, null, new HttpContextFactory(), filesHelper, categoryBrandService, productRepo, menuService);
+            var menuService = new MenuService(new MenuRepository(db), cache, settingService, null, new EImece.Tests.Infrastructure.NullCurrentUserContext(), filesHelper, null);
+            var categoryServ = new ProductCategoryService(categoryRepo, cache, settingService, null, new EImece.Tests.Infrastructure.NullCurrentUserContext(), filesHelper, categoryBrandService, productRepo, menuService);
             var commentRepo = new ProductCommentRepository(db);
             var orderProductRepo = new OrderProductRepository(db);
             var tagServ = new TagService(new TagRepository(db), cache, new ProductTagRepository(db), new StoryTagRepository(db));
@@ -217,7 +217,7 @@ namespace EImece.Tests.Controllers
                 cache,
                 settingService,
                 null,
-                new HttpContextFactory(),
+                new EImece.Tests.Infrastructure.NullCurrentUserContext(),
                 filesHelper,
                 categoryServ,
                 commentRepo,
@@ -265,7 +265,7 @@ namespace EImece.Tests.Controllers
             var cservice = new CustomerService(customerRepo, aservice, orderRepo, oservice, null, null);
             var settingRepo = new SettingRepository(db);
             var settingService = new SettingService(settingRepo);
-            var service = new MailTemplateService(new MailTemplateRepository(db), cache, oservice, settingService, new HttpContextFactory());
+            var service = new MailTemplateService(new MailTemplateRepository(db), cache, oservice, settingService, new EImece.Tests.Infrastructure.NullSiteUrlProvider());
             var orderConfirmationEmailTemplate = service.GetMailTemplateByName("OrderConfirmationEmail");
             Assert.IsNotNull(orderConfirmationEmailTemplate);
             String orderConfirmationEmailTemplateHtml = File.ReadAllText(@"C:\Users\YUCE\Documents\GitHub\EImece\EImece\EImece.Tests\dataFolder\emailTemplates\OrderConfirmationEmail.html");
@@ -289,7 +289,7 @@ namespace EImece.Tests.Controllers
             var cache = new LazyCacheProvider();
             var settingService = new SettingService(new SettingRepository(db));
             var filesHelper = (FilesHelper)System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof(FilesHelper));
-            var ProductCategoryService = new ProductCategoryService(new ProductCategoryRepository(db), cache, settingService, null, new HttpContextFactory(), filesHelper, null, new ProductRepository(db), null);
+            var ProductCategoryService = new ProductCategoryService(new ProductCategoryRepository(db), cache, settingService, null, new EImece.Tests.Infrastructure.NullCurrentUserContext(), filesHelper, null, new ProductRepository(db), null);
             var breadCrumb = ProductCategoryService.GetBreadCrumb(215, 1);
             foreach (var item in breadCrumb)
             {
@@ -384,7 +384,7 @@ namespace EImece.Tests.Controllers
             var cache = new LazyCacheProvider();
             var settingService = new SettingService(new SettingRepository(db));
             var filesHelper = (FilesHelper)System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof(FilesHelper));
-            var ProductCategoryService = new ProductCategoryService(new ProductCategoryRepository(db), cache, settingService, null, new HttpContextFactory(), filesHelper, null, new ProductRepository(db), null);
+            var ProductCategoryService = new ProductCategoryService(new ProductCategoryRepository(db), cache, settingService, null, new EImece.Tests.Infrastructure.NullCurrentUserContext(), filesHelper, null, new ProductRepository(db), null);
             Expression<Func<ProductCategory, bool>> whereLambda = r => r.Name.Contains(search);
             var productCategories = ProductCategoryService.SearchEntities(whereLambda, search, CurrentLanguage);
             foreach (var item in productCategories)
@@ -514,7 +514,7 @@ QUITE
             var filesHelper = (FilesHelper)System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof(FilesHelper));
             var fileStorageRepo = new FileStorageRepository(dbContext);
             var fileStorageService = new FileStorageService(fileStorageRepo, cache, new ProductFileRepository(dbContext), new StoryFileRepository(dbContext), new MenuFileRepository(dbContext), new FileStorageTagRepository(dbContext));
-            var productCategoryService = new ProductCategoryService(new ProductCategoryRepository(dbContext), cache, settingService, fileStorageService, new HttpContextFactory(), filesHelper, null, new ProductRepository(dbContext), null);
+            var productCategoryService = new ProductCategoryService(new ProductCategoryRepository(dbContext), cache, settingService, fileStorageService, new EImece.Tests.Infrastructure.NullCurrentUserContext(), filesHelper, null, new ProductRepository(dbContext), null);
             productCategoryService.DeleteProductCategory(308);
         }
 

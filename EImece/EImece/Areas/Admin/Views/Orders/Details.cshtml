@@ -15,7 +15,7 @@
 
     var tr = CultureInfo.GetCultureInfo("tr-TR");
     var orderStatus = (EImeceOrderStatus)Model.OrderStatus;
-    var orderStatusList = EImece.Domain.Helpers.EnumHelper.ToSelectList(orderStatus);
+    var orderStatusList = EImece.Helpers.EnumWebExtensions.ToSelectList(orderStatus);
     var paymentOk = string.Equals(Model.PaymentStatus, "SUCCESS", StringComparison.OrdinalIgnoreCase);
     var productCount = Model.OrderProducts != null ? Model.OrderProducts.Count : 0;
     var subtotal = Model.Price.ToDecimal() - Model.CargoPrice;

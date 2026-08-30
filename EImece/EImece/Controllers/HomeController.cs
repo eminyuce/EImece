@@ -1,16 +1,16 @@
 using EImece.Domain;
 using EImece.Domain.Caching;
 using EImece.Domain.Entities;
+using EImece.Domain.DependencyInjection;
 using EImece.Domain.Helpers;
-using EImece.Domain.Helpers.AttributeHelper;
-using EImece.Domain.Services;
 using EImece.Domain.Helpers.EmailHelper;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Repositories;
+using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
-using EImece.Domain.DependencyInjection;
 using EImece.Filters;
+using EImece.Helpers;
 using NLog;
 using Resources;
 using System;
@@ -146,7 +146,7 @@ namespace EImece.Controllers
 
         public ActionResult Languages()
         {
-            List<SelectListItem> listItems = EnumHelper.ToSelectList3("Language");
+            List<SelectListItem> listItems = EnumWebExtensions.ToSelectList3("Language");
             return PartialView("_Languages", listItems);
         }
 

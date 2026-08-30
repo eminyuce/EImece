@@ -317,6 +317,7 @@
   <ItemGroup>
     <Compile Include="Infrastructure\DesignSystemTests.cs" />
     <Compile Include="Infrastructure\ResilientHttpClientLifetimeTests.cs" />
+    <Compile Include="Infrastructure\TestDomainAbstractions.cs" />
     <Compile Include="Services\CompressedImageExportServiceTests.cs" />
     <Compile Include="Services\DataExportServiceTests.cs" />
     <Compile Include="Services\ProductDeletionAndHistoricalOrderTests.cs" />

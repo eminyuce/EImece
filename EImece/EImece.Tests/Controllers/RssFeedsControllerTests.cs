@@ -2,7 +2,7 @@ using EImece.Areas.Admin.Controllers;
 using EImece.Areas.Admin.Models;
 using EImece.Controllers;
 using EImece.Domain;
-using EImece.Domain.Helpers.AttributeHelper;
+using EImece.Filters;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Services.IServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

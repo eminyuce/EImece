@@ -9,7 +9,7 @@ namespace EImece
             filters.Add(new HandleErrorAttribute());
             filters.Add(new Filters.RequestLoggingActionFilter());
             filters.Add(new Filters.RobotsNoIndexAttribute());
-            filters.Add(new EImece.Domain.Helpers.AttributeHelper.UnderConstAttribute());
+            filters.Add(new Filters.UnderConstAttribute());
         }
     }
 }

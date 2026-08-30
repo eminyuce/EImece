@@ -339,9 +339,8 @@ namespace EImece.App_Start
             services.AddScoped<ISiteUrlProvider, WebSiteUrlProvider>();
             services.AddSingleton<IBackgroundWorkQueue, HostingEnvironmentBackgroundWorkQueue>();
 
-            // Transient matches Ninject default (no scope) for IEntityFactory / IHttpContextFactory.
+            // Transient matches Ninject default (no scope) for IEntityFactory.
             services.AddTransientWithProps<IEntityFactory, EntityFactory>();
-            services.AddTransientWithProps<IHttpContextFactory, HttpContextFactory>();
         }
 
         private static void RegisterHelpers(IServiceCollection services)

@@ -2,7 +2,7 @@ using EImece.Domain;
 using EImece.Domain.Entities;
 using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Helpers;
-using EImece.Domain.Helpers.AttributeHelper;
+using EImece.Filters;
 using EImece.Domain.Helpers.EmailHelper;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.Enums;

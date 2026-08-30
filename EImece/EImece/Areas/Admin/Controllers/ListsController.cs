@@ -1,5 +1,5 @@
 using EImece.Domain.Entities;
-using EImece.Domain.Helpers.AttributeHelper;
+using EImece.Filters;
 using EImece.Domain.Helpers.Extensions;
 using Griddly.Mvc;
 using Griddly.Mvc.Results;
