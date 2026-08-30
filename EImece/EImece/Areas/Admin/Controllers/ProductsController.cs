@@ -270,7 +270,7 @@ namespace EImece.Areas.Admin.Controllers
 
                         if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText, StringComparison.InvariantCultureIgnoreCase))
                         {
-                            return RedirectToAction(IndexAction);
+                            return RedirectToProductIndex(product.ProductCategoryId);
                         }
                         else if (!String.IsNullOrEmpty(saveButton) && ModelState.IsValid && saveButton.Equals(AdminResource.SaveButtonText, StringComparison.InvariantCultureIgnoreCase))
                         {
@@ -455,6 +455,13 @@ namespace EImece.Areas.Admin.Controllers
                     Text = r.Name.ToStr(),
                     Value = r.Id.ToStr()
                 }).ToList();
+        }
+
+        private ActionResult RedirectToProductIndex(int productCategoryId)
+        {
+            return productCategoryId > 0
+                ? RedirectToAction(IndexAction, new { id = productCategoryId })
+                : RedirectToAction(IndexAction);
         }
 
         private static void ApplyPostedProductPrices(Product product)

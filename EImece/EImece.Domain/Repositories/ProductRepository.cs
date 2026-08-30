@@ -209,7 +209,7 @@ namespace EImece.Domain.Repositories
                     products = products.Take(1000);
                 }
             }
-            products = products.OrderByDescending(r => r.UpdatedDate);
+            products = products.OrderByDescending(r => r.UpdatedDate).ThenByDescending(r => r.Id);
 
             return products;
         }

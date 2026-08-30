@@ -89,14 +89,30 @@ namespace EImece.Tests.Controllers
             var newer = new DateTime(2024, 6, 1);
             var products = new List<Product>
             {
-                new Product { Id = 1, Position = 1, UpdatedDate = older },
-                new Product { Id = 2, Position = 99, UpdatedDate = newer },
-                new Product { Id = 3, Position = 2, UpdatedDate = older.AddDays(1) },
+                new Product { Id = 1, ProductCategoryId = 1928, Position = 1, UpdatedDate = older },
+                new Product { Id = 2, ProductCategoryId = 1928, Position = 99, UpdatedDate = newer },
+                new Product { Id = 3, ProductCategoryId = 1928, Position = 2, UpdatedDate = older.AddDays(1) },
+                new Product { Id = 4, ProductCategoryId = 999, Position = 1, UpdatedDate = newer.AddDays(1) },
             };
 
-            var orderedIds = products.OrderByDescending(p => p.UpdatedDate).Select(p => p.Id).ToList();
+            var categoryProducts = products.Where(p => p.ProductCategoryId == 1928);
+            var orderedIds = categoryProducts.OrderByDescending(p => p.UpdatedDate).ThenByDescending(p => p.Id).Select(p => p.Id).ToList();
 
             CollectionAssert.AreEqual(new List<int> { 2, 3, 1 }, orderedIds);
+        }
+
+        [TestMethod]
+        public void AdminProductIndexGrid_IncludesUpdatedDateColumnForGriddlySort()
+        {
+            var gridViewPath = System.IO.Path.Combine(
+                AppDomain.CurrentDomain.BaseDirectory,
+                "..", "..", "..", "EImece", "EImece", "Areas", "Admin", "Views", "Products", "IndexGrid.cshtml");
+
+            gridViewPath = System.IO.Path.GetFullPath(gridViewPath);
+            var gridMarkup = System.IO.File.ReadAllText(gridViewPath);
+
+            StringAssert.Contains(gridMarkup, "Field = \"UpdatedDate\"");
+            StringAssert.Contains(gridMarkup, "x => x.UpdatedDate");
         }
 
         private static MethodInfo FindPostMethod(Type controllerType, string actionName, Type modelType)
