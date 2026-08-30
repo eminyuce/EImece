@@ -76,7 +76,7 @@ namespace EImece.Helpers
         public static void UploadAndShowResults(this FilesHelper filesHelper, HttpContextBase contentBase, List<ViewDataUploadFilesResult> resultList)
         {
             if (filesHelper == null || contentBase?.Request == null || resultList == null) return;
-            filesHelper.EnsureStorageInitialized();
+            filesHelper.InitFilesMediaFolder();
 
             var request = contentBase.Request;
             int height = request.Form["imageHeight"].ToInt();

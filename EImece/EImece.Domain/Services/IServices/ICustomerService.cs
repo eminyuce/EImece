@@ -30,5 +30,7 @@ namespace EImece.Domain.Services.IServices
         List<Customer> GetCustomerServices(string search);
 
         Task<List<Customer>> GetCustomerServicesAsync(string search);
+
+        Task<List<string>> DeleteCustomersAsync(List<string> userIds, string currentUserId = null);
     }
 }

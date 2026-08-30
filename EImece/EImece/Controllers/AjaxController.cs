@@ -1,4 +1,5 @@
 using System;
+using EImece.Helpers;
 using EImece.Domain;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;

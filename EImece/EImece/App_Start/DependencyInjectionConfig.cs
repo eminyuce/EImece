@@ -10,6 +10,7 @@ using EImece.Domain.Factories.IFactories;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.EmailHelper;
 using EImece.Infrastructure;
+using EImece.Infrastructure.Security;
 using EImece.Domain.Observability;
 using EImece.Domain.Observability.Configuration;
 using EImece.Domain.Observability.HealthChecks;

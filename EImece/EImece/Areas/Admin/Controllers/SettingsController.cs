@@ -1,4 +1,5 @@
 using EImece.Domain;
+using EImece.Helpers;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Filters;

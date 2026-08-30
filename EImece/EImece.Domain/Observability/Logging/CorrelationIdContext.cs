@@ -9,6 +9,8 @@ namespace EImece.Domain.Observability.Logging
         public const string HeaderName = "X-Correlation-Id";
         public const string TraceParentHeaderName = "traceparent";
         public const string TraceStateHeaderName = "tracestate";
+        /// <summary>NLog/Serilog scope property name for the active correlation id (not HttpContext-specific).</summary>
+        public const string ScopeContextPropertyName = "CorrelationId";
 
         private static readonly AsyncLocal<string> _current = new AsyncLocal<string>();
         private static readonly AsyncLocal<string> _traceParent = new AsyncLocal<string>();

@@ -25,7 +25,7 @@ namespace EImece.Filters
             }
 
             filterContext.HttpContext.Items[StopwatchKey] = System.Diagnostics.Stopwatch.StartNew();
-            StructuredLoggingBootstrap.EnrichFromHttpContext();
+            WebLoggingHelper.EnrichFromHttpContext();
         }
 
         public void OnActionExecuted(ActionExecutedContext filterContext)

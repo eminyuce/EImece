@@ -1,4 +1,5 @@
 using EImece.Domain.Helpers;
+using EImece.Services;
 using EImece.Filters;
 using EImece.Domain.Helpers.EmailHelper;
 using EImece.Domain.Services;
@@ -8,7 +9,6 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using EImece.Domain.DependencyInjection;
-using EImece.Filters;
 using NLog;
 using Resources;
 using System;

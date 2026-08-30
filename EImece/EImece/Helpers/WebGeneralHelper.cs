@@ -1,4 +1,6 @@
+using EImece.Domain;
 using EImece.Domain.Helpers;
+using EImece.Domain.Models.Enums;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
