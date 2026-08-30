@@ -523,19 +523,15 @@ namespace EImece.Domain.Services
 
             var action = parts[1];
             var controller = parts[0];
-            var mid = p[p.Length - 1];
+            var mid = p.Length > 1 ? p[p.Length - 1] : null;
             var baseUrl = EntityExtension.GetAbsoluteApplicationBaseUrl(AppConfig.HttpProtocol);
+            var relativePath = EntityExtension.BuildMenuLinkRelativePath(controller, action, mid, c);
+            if (string.IsNullOrEmpty(relativePath))
+            {
+                return null;
+            }
 
-            if (controller.Equals("pages", StringComparison.InvariantCultureIgnoreCase))
-            {
-                return $"{baseUrl}/pages/detail/{c.GetSeoUrl()}";
-            }
-            if (controller.Equals("stories", StringComparison.InvariantCultureIgnoreCase)
-                && action.Equals("categories", StringComparison.InvariantCultureIgnoreCase))
-            {
-                return $"{baseUrl}/stories/categories/{mid}";
-            }
-            return $"{baseUrl}/{controller}/{action}";
+            return baseUrl.TrimEnd('/') + relativePath;
         }
 
         /// <summary>

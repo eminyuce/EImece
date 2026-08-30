@@ -774,6 +774,70 @@ namespace EImece.Domain.Helpers.Extensions
             return $"{scheme}://{domain.TrimEnd('/')}";
         }
 
+        /// <summary>
+        /// Canonical relative path for CMS menu links (home-index, stories-index, stories-categories_*, etc.).
+        /// Used by sitemap generation so loc URLs match storefront pretty routes (/s/, /p/, /c/, /i/, …).
+        /// </summary>
+        public static string BuildMenuLinkRelativePath(string controller, string action, string mid, BaseEntity entityForSeo = null)
+        {
+            if (string.IsNullOrWhiteSpace(controller) || string.IsNullOrWhiteSpace(action))
+            {
+                return string.Empty;
+            }
+
+            if (string.Equals(controller, "home", StringComparison.OrdinalIgnoreCase)
+                && string.Equals(action, Constants.IndexAction, StringComparison.OrdinalIgnoreCase))
+            {
+                return "/";
+            }
+
+            if (string.Equals(controller, Constants.StoriesAction, StringComparison.OrdinalIgnoreCase)
+                && string.Equals(action, Constants.IndexAction, StringComparison.OrdinalIgnoreCase))
+            {
+                return $"/{Constants.StoriesCategoriesControllerRoutingPrefix}/";
+            }
+
+            if (string.Equals(controller, "Products", StringComparison.OrdinalIgnoreCase)
+                && string.Equals(action, Constants.IndexAction, StringComparison.OrdinalIgnoreCase))
+            {
+                return $"/{Constants.ProductsControllerRoutingPrefix}/";
+            }
+
+            if (string.Equals(controller, "Pages", StringComparison.OrdinalIgnoreCase)
+                && string.Equals(action, Constants.DetailAction, StringComparison.OrdinalIgnoreCase)
+                && entityForSeo != null)
+            {
+                return $"/{Constants.PagesControllerRoutingPrefix}/{entityForSeo.GetSeoUrl()}";
+            }
+
+            if (string.Equals(controller, Constants.StoriesAction, StringComparison.OrdinalIgnoreCase)
+                && string.Equals(action, "Categories", StringComparison.OrdinalIgnoreCase)
+                && !string.IsNullOrWhiteSpace(mid))
+            {
+                return $"/{Constants.StoriesCategoriesControllerRoutingPrefix}/sc/{mid}";
+            }
+
+            if (string.Equals(controller, "ProductCategories", StringComparison.OrdinalIgnoreCase)
+                && string.Equals(action, "Category", StringComparison.OrdinalIgnoreCase)
+                && !string.IsNullOrWhiteSpace(mid))
+            {
+                return $"/{Constants.ProductsCategoriesControllerRoutingPrefix}/pc/{mid}";
+            }
+
+            if (string.Equals(controller, "info", StringComparison.OrdinalIgnoreCase))
+            {
+                return $"/info/{action}";
+            }
+
+            if (!string.IsNullOrWhiteSpace(mid)
+                && !string.Equals(mid, action, StringComparison.OrdinalIgnoreCase))
+            {
+                return $"/{controller}/{action}/{mid}";
+            }
+
+            return $"/{controller}/{action}";
+        }
+
         private static string BuildDetailRelativePathWithoutHttpContext(
             BaseEntity entity,
             string action,
