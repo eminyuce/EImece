@@ -19,8 +19,16 @@ namespace EImece.Controllers
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        [Inject]
-        public IStoryService StoryService { get; set; }
+        private readonly IStoryService StoryService;
+
+        public StoriesController(
+            ISettingService settingService,
+            AutoMapper.IMapper mapper,
+            IStoryService storyService)
+            : base(settingService, mapper)
+        {
+            StoryService = storyService ?? throw new ArgumentNullException(nameof(storyService));
+        }
 
         [Route("")]
         [Route("~/stories")]

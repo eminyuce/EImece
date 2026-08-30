@@ -1,4 +1,5 @@
-﻿using EImece.Domain.Entities;
+using EImece.Domain.Caching;
+using EImece.Domain.Entities;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
 using EImece.Domain.DependencyInjection;
@@ -14,14 +15,17 @@ namespace EImece.Domain.Services
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        [Inject]
-        public IListItemRepository ListItemRepository { get; set; }
+        private readonly IListItemRepository ListItemRepository;
+        private readonly IListRepository ListRepository;
 
-        private IListRepository ListRepository { get; set; }
-
-        public ListService(IListRepository repository) : base(repository)
+        public ListService(
+            IListRepository repository,
+            IEimeceCacheProvider dataCachingProvider,
+            IListItemRepository listItemRepository)
+            : base(repository, dataCachingProvider)
         {
-            ListRepository = repository;
+            ListRepository = repository ?? throw new ArgumentNullException(nameof(repository));
+            ListItemRepository = listItemRepository ?? throw new ArgumentNullException(nameof(listItemRepository));
         }
 
         public List GetListById(int id)

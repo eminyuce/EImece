@@ -1,3 +1,4 @@
+using System;
 using EImece.Domain;
 using EImece.Domain.DependencyInjection;
 using EImece.Domain.Helpers;
@@ -13,16 +14,11 @@ namespace EImece.Controllers
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        [Inject]
-        public ISettingService SettingService { get; set; }
-
-        public UnderConstructionController()
-        {
-        }
+        private readonly ISettingService SettingService;
 
         public UnderConstructionController(ISettingService settingService)
         {
-            SettingService = settingService;
+            SettingService = settingService ?? throw new ArgumentNullException(nameof(settingService));
         }
 
         // GET: UnderConstruction

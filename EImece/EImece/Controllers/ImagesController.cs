@@ -21,28 +21,13 @@ namespace EImece.Controllers
 {
     public class ImagesController : BaseController
     {
-        private IEimeceCacheProvider _memoryCacheProvider { get; set; }
+        private readonly IFileStorageService _fileStorageService;
+        private readonly IEimeceCacheProvider _memoryCacheProvider;
+        private readonly FilesHelper _filesHelper;
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        [Inject]
-        public IFileStorageService FileStorageService { get; set; }
-
-        [Inject]
-        public IEimeceCacheProvider MemoryCacheProvider
-        {
-            get
-            {
-                return _memoryCacheProvider;
-            }
-            set
-            {
-                _memoryCacheProvider = value;
-            }
-        }
-
-        private FilesHelper _filesHelper { get; set; }
-
-        [Inject]
+        public IFileStorageService FileStorageService => _fileStorageService;
+        public IEimeceCacheProvider MemoryCacheProvider => _memoryCacheProvider;
         public FilesHelper FilesHelper
         {
             get
@@ -50,10 +35,19 @@ namespace EImece.Controllers
                 _filesHelper.InitFilesMediaFolder();
                 return _filesHelper;
             }
-            set
-            {
-                _filesHelper = value;
-            }
+        }
+
+        public ImagesController(
+            ISettingService settingService,
+            AutoMapper.IMapper mapper,
+            IFileStorageService fileStorageService,
+            IEimeceCacheProvider memoryCacheProvider,
+            FilesHelper filesHelper)
+            : base(settingService, mapper)
+        {
+            _fileStorageService = fileStorageService ?? throw new ArgumentNullException(nameof(fileStorageService));
+            _memoryCacheProvider = memoryCacheProvider ?? throw new ArgumentNullException(nameof(memoryCacheProvider));
+            _filesHelper = filesHelper ?? throw new ArgumentNullException(nameof(filesHelper));
         }
 
         // GET: Images

@@ -20,24 +20,28 @@ namespace EImece.Domain.Services
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        [Inject]
-        public IOrderService OrderService { get; set; }
+        private readonly IOrderService OrderService;
+        private readonly IOrderRepository OrderRepository;
+        private readonly ICustomerRepository CustomerRepository;
+        private readonly IAddressService AddressService;
+        private readonly IUserRepository UserRepository;
+        private readonly ApplicationUserManager UserManager;
 
-        [Inject]
-        public IOrderRepository OrderRepository { get; set; }
-
-        private ICustomerRepository CustomerRepository { get; set; }
-
-        private IAddressService AddressService { get; set; }
-
-        [Inject]
-        public UsersService UsersService { get; set; }
-
-        public CustomerService(ICustomerRepository repository, IAddressService addressService) : base(repository)
+        public CustomerService(
+            ICustomerRepository repository,
+            IAddressService addressService = null,
+            IOrderRepository orderRepository = null,
+            IOrderService orderService = null,
+            IUserRepository userRepository = null,
+            ApplicationUserManager userManager = null) : base(repository)
         {
-            Logger.Debug("CustomerService initialized.");
-            CustomerRepository = repository;
+            CustomerRepository = repository ?? throw new ArgumentNullException(nameof(repository));
             AddressService = addressService;
+            OrderRepository = orderRepository;
+            OrderService = orderService;
+            UserRepository = userRepository;
+            UserManager = userManager;
+            Logger.Debug("CustomerService initialized.");
         }
 
         public void SaveRegisterViewModel(string userId, RegisterViewModel model)
@@ -337,13 +341,13 @@ namespace EImece.Domain.Services
 
         private Dictionary<string, (string Email, string FirstName, string LastName)> BuildUsersDictionary(List<string> userIds)
         {
-            if (userIds == null || userIds.Count == 0 || UsersService?.UserManager == null)
+            if (userIds == null || userIds.Count == 0 || UserManager == null)
             {
                 return new Dictionary<string, (string, string, string)>(StringComparer.OrdinalIgnoreCase);
             }
             try
             {
-                return UsersService.UserManager.Users
+                return UserManager.Users
                     .Where(u => userIds.Contains(u.Id))
                     .Select(u => new { u.Id, u.Email, u.FirstName, u.LastName })
                     .ToList()
@@ -358,13 +362,13 @@ namespace EImece.Domain.Services
 
         private async Task<Dictionary<string, (string Email, string FirstName, string LastName)>> BuildUsersDictionaryAsync(List<string> userIds)
         {
-            if (userIds == null || userIds.Count == 0 || UsersService?.UserManager == null)
+            if (userIds == null || userIds.Count == 0 || UserManager == null)
             {
                 return new Dictionary<string, (string, string, string)>(StringComparer.OrdinalIgnoreCase);
             }
             try
             {
-                var rows = await UsersService.UserManager.Users
+                var rows = await UserManager.Users
                     .Where(u => userIds.Contains(u.Id))
                     .Select(u => new { u.Id, u.Email, u.FirstName, u.LastName })
                     .ToListAsync().ConfigureAwait(false);
@@ -385,7 +389,7 @@ namespace EImece.Domain.Services
                 return;
             }
             Logger.Debug($"Fetching user fields for userId: {item.UserId}");
-            var user = UsersService.GetUser(item.UserId);
+            var user = UserRepository.GetById(item.UserId);
             if (user != null)
             {
                 item.Email = user.Email;
@@ -395,7 +399,7 @@ namespace EImece.Domain.Services
             }
             else
             {
-                Logger.Warn("User not found in UsersService.");
+                Logger.Warn("User not found in UserRepository.");
             }
         }
 
@@ -407,7 +411,7 @@ namespace EImece.Domain.Services
                 return;
             }
             Logger.Debug($"Fetching user fields for userId: {item.UserId}");
-            var user = await UsersService.GetUserAsync(item.UserId).ConfigureAwait(false);
+            var user = await UserRepository.GetByIdAsync(item.UserId).ConfigureAwait(false);
             if (user != null)
             {
                 item.Email = user.Email;
@@ -417,7 +421,7 @@ namespace EImece.Domain.Services
             }
             else
             {
-                Logger.Warn("User not found in UsersService.");
+                Logger.Warn("User not found in UserRepository.");
             }
         }
 
@@ -443,12 +447,12 @@ namespace EImece.Domain.Services
                     continue;
                 }
 
-                if (UsersService != null)
+                if (UserManager != null)
                 {
-                    var user = await UsersService.GetUserAsync(userId).ConfigureAwait(false);
+                    var user = await UserRepository.GetByIdAsync(userId).ConfigureAwait(false);
                     if (user != null)
                     {
-                        var roles = await UsersService.UserManager.GetRolesAsync(userId).ConfigureAwait(false);
+                        var roles = await UserManager.GetRolesAsync(userId).ConfigureAwait(false);
                         var isCustomer = roles != null
                             && roles.Any(r => r.Equals(Constants.CustomerRole, StringComparison.OrdinalIgnoreCase));
                         if (!isCustomer && roles != null && roles.Count > 0)
@@ -457,7 +461,7 @@ namespace EImece.Domain.Services
                             continue;
                         }
 
-                        await UsersService.DeleteUserAsync(userId).ConfigureAwait(false);
+                        await UserManager.DeleteAsync(user).ConfigureAwait(false);
                     }
                 }
 

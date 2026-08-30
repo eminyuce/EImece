@@ -1,4 +1,5 @@
-﻿using EImece.Domain.Entities;
+using EImece.Domain.Caching;
+using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Repositories.IRepositories;
@@ -12,34 +13,51 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 
+using EImece.Domain.Factories.IFactories;
+
 namespace EImece.Domain.Services
 {
     public abstract class BaseContentService<T> : BaseEntityService<T> where T : BaseContent
     {
         private static readonly Logger BaseContentServiceLogger = LogManager.GetCurrentClassLogger();
 
-        [Inject]
-        public ITagCategoryService TagCategoryService { get; set; }
+        protected readonly ISettingService SettingService;
+        protected readonly IFileStorageService FileStorageService;
+        protected readonly IHttpContextFactory HttpContextFactory;
+        protected readonly FilesHelper FilesHelper;
+        public IBaseContentRepository<T> BaseContentRepository { get; }
 
-        [Inject]
-        public ISettingService SettingService { get; set; }
-
-        [Inject]
-        public IFileStorageService FileStorageService { get; set; }
-
-        [Inject]
-        public IMenuService MenuService { get; set; }
-
-        public IBaseContentRepository<T> BaseContentRepository { get; set; }
-
-        protected BaseContentService(IBaseContentRepository<T> baseContentRepository) : base(baseContentRepository)
+        protected BaseContentService(
+            IBaseContentRepository<T> baseContentRepository,
+            IEimeceCacheProvider dataCachingProvider,
+            ISettingService settingService,
+            IFileStorageService fileStorageService,
+            IHttpContextFactory httpContextFactory,
+            FilesHelper filesHelper)
+            : base(baseContentRepository, dataCachingProvider)
         {
             this.BaseContentRepository = baseContentRepository;
+            this.SettingService = settingService;
+            this.FileStorageService = fileStorageService;
+            this.HttpContextFactory = httpContextFactory;
+            this.FilesHelper = filesHelper;
         }
 
-        protected BaseContentService(IBaseContentRepository<T> baseContentRepository, bool IsCachingActivated) : base(baseContentRepository)
+        protected BaseContentService(
+            IBaseContentRepository<T> baseContentRepository,
+            bool isCachingActivated,
+            IEimeceCacheProvider dataCachingProvider,
+            ISettingService settingService,
+            IFileStorageService fileStorageService,
+            IHttpContextFactory httpContextFactory,
+            FilesHelper filesHelper)
+            : base(baseContentRepository, isCachingActivated, dataCachingProvider)
         {
-            this.IsCachingActivated = IsCachingActivated;
+            this.BaseContentRepository = baseContentRepository;
+            this.SettingService = settingService;
+            this.FileStorageService = fileStorageService;
+            this.HttpContextFactory = httpContextFactory;
+            this.FilesHelper = filesHelper;
         }
 
         public virtual T GetBaseContent(int id)

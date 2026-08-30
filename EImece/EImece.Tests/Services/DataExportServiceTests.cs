@@ -241,7 +241,7 @@ namespace EImece.Tests.Services
         [TestMethod]
         public async Task ExportDataAsync_NullStream_ThrowsArgumentNullException()
         {
-            var service = new DataExportService();
+            var service = (DataExportService)System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof(DataExportService));
             try
             {
                 await service.ExportDataAsync(new DataExportRequest(), null);

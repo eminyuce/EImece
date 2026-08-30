@@ -16,16 +16,11 @@ namespace EImece.Controllers
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        [Inject]
-        public ISettingService SettingService { get; set; }
-
-        public RobotController()
-        {
-        }
+        private readonly ISettingService SettingService;
 
         public RobotController(ISettingService settingService)
         {
-            SettingService = settingService;
+            SettingService = settingService ?? throw new ArgumentNullException(nameof(settingService));
         }
 
         // GET: Robots

@@ -145,13 +145,8 @@ namespace EImece.Tests.Helpers
             public List<Order> Orders = new List<Order>();
             public List<int> DeletedOrderIds = new List<int>();
 
-            public TestableOrderService(IOrderRepository repo, ICustomerService customerService, IOrderProductService orderProductService, IAddressService addressService)
+            public TestableOrderService(IOrderRepository repo, ICustomerService customerService, IOrderProductService orderProductService, IAddressService addressService = null)
                 : base(repo, customerService, orderProductService, addressService)
-            {
-            }
-
-            public TestableOrderService(IOrderRepository repo, ICustomerService customerService, IOrderProductService orderProductService)
-                : base(repo, customerService, orderProductService)
             {
             }
 

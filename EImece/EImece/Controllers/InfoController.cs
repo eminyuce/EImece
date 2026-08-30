@@ -16,8 +16,16 @@ namespace EImece.Controllers
 {
     public class InfoController : BaseController
     {
-        [Inject]
-        public IMenuService MenuService { get; set; }
+        private readonly IMenuService MenuService;
+
+        public InfoController(
+            ISettingService settingService,
+            AutoMapper.IMapper mapper,
+            IMenuService menuService)
+            : base(settingService, mapper)
+        {
+            MenuService = menuService ?? throw new ArgumentNullException(nameof(menuService));
+        }
 
         // GET: Info
         public async Task<ActionResult> Index(string id, string lang = "")

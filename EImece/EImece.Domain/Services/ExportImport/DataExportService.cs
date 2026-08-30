@@ -22,11 +22,14 @@ namespace EImece.Domain.Services.ExportImport
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        [Inject]
-        public IDataExportRepository Repository { get; set; }
+        private readonly IDataExportRepository Repository;
+        private readonly IUsersService UsersService;
 
-        [Inject]
-        public IUsersService UsersService { get; set; }
+        public DataExportService(IDataExportRepository repository, IUsersService usersService)
+        {
+            Repository = repository ?? throw new ArgumentNullException(nameof(repository));
+            UsersService = usersService ?? throw new ArgumentNullException(nameof(usersService));
+        }
 
         private static readonly JsonSerializerOptions JsonOptions = new JsonSerializerOptions
         {

@@ -17,11 +17,19 @@ namespace EImece.Domain.Services
     {
         private static readonly Logger TagServiceLogger = LogManager.GetCurrentClassLogger();
 
-        private ITagRepository TagRepository { get; set; }
+        private readonly ITagRepository TagRepository;
+        private readonly IProductTagRepository ProductTagRepository;
+        private readonly IStoryTagRepository StoryTagRepository;
 
-        public TagService(ITagRepository repository) : base(repository)
+        public TagService(
+            ITagRepository repository,
+            IEimeceCacheProvider dataCachingProvider,
+            IProductTagRepository productTagRepository,
+            IStoryTagRepository storyTagRepository) : base(repository, dataCachingProvider)
         {
-            TagRepository = repository;
+            TagRepository = repository ?? throw new ArgumentNullException(nameof(repository));
+            ProductTagRepository = productTagRepository ?? throw new ArgumentNullException(nameof(productTagRepository));
+            StoryTagRepository = storyTagRepository ?? throw new ArgumentNullException(nameof(storyTagRepository));
         }
 
         /// <summary>

@@ -34,7 +34,6 @@ namespace EImece.Tests.Services
         {
             _repository = new FakeSettingRepository();
             _settingService = new SettingService(_repository);
-            _settingService.DataCachingProvider = new MemoryCacheProvider();
             _settingService.ClearCache();
             DependencyResolver.SetResolver(new SimpleTestDependencyResolver(_settingService));
         }

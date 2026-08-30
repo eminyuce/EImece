@@ -1,3 +1,4 @@
+using EImece.Domain.Caching;
 using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository.EntityFramework.Enums;
 using EImece.Domain.Helpers;
@@ -22,17 +23,53 @@ namespace EImece.Domain.Services
     {
         protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        [Inject]
-        public IProductService ProductService { get; set; }
+        public IFileStorageRepository FileStorageRepository { get; }
+        private readonly IProductFileRepository ProductFileRepository;
+        private readonly IStoryFileRepository StoryFileRepository;
+        private readonly IMenuFileRepository MenuFileRepository;
+        private readonly IFileStorageTagRepository FileStorageTagRepository;
 
-        [Inject]
-        public IStoryService StoryService { get; set; }
-
-        public IFileStorageRepository FileStorageRepository { get; set; }
-
-        public FileStorageService(IFileStorageRepository repository) : base(repository)
+        public FileStorageService(
+            IFileStorageRepository repository,
+            IEimeceCacheProvider dataCachingProvider,
+            IProductFileRepository productFileRepository,
+            IStoryFileRepository storyFileRepository,
+            IMenuFileRepository menuFileRepository,
+            IFileStorageTagRepository fileStorageTagRepository)
+            : base(repository, dataCachingProvider)
         {
-            FileStorageRepository = repository;
+            FileStorageRepository = repository ?? throw new ArgumentNullException(nameof(repository));
+            ProductFileRepository = productFileRepository ?? throw new ArgumentNullException(nameof(productFileRepository));
+            StoryFileRepository = storyFileRepository ?? throw new ArgumentNullException(nameof(storyFileRepository));
+            MenuFileRepository = menuFileRepository ?? throw new ArgumentNullException(nameof(menuFileRepository));
+            FileStorageTagRepository = fileStorageTagRepository ?? throw new ArgumentNullException(nameof(fileStorageTagRepository));
+        }
+
+        private static bool PhysicalFileExists(string fileName)
+        {
+            if (string.IsNullOrWhiteSpace(fileName)) return false;
+            string fullPath = SecurityHelper.GetSafeStorageFilePath(AppConfig.StorageRoot, fileName);
+            return System.IO.File.Exists(fullPath);
+        }
+
+        private static void TryDeletePhysicalFile(string fileName)
+        {
+            if (string.IsNullOrWhiteSpace(fileName) || string.Equals(fileName, FilesHelper.EXTERNAL_IMAGE, StringComparison.OrdinalIgnoreCase))
+            {
+                return;
+            }
+            try
+            {
+                string fullPath = SecurityHelper.GetSafeStorageFilePath(AppConfig.StorageRoot, fileName);
+                if (System.IO.File.Exists(fullPath))
+                {
+                    System.IO.File.Delete(fullPath);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "TryDeletePhysicalFile failed for {0}", fileName);
+            }
         }
 
         public FileStorage GetFileStorage(int fileStorageId)
@@ -118,7 +155,7 @@ namespace EImece.Domain.Services
                     fileStorage.IsActive = true;
                     fileStorage.Position = 1;
                     fileStorage.FileSize = file.size;
-                    fileStorage.IsFileExist = FilesHelper.NormalFileExists(fileStorage.FileName);
+                    fileStorage.IsFileExist = PhysicalFileExists(fileStorage.FileName);
                     fileStorage.Type = contentImageType.Value.ToStr();
                     fileStorage.Lang = language;
                     FileStorageRepository.SaveOrEdit(fileStorage);
@@ -219,7 +256,7 @@ namespace EImece.Domain.Services
                     fileStorage.IsActive = true;
                     fileStorage.Position = 1;
                     fileStorage.FileSize = file.size;
-                    fileStorage.IsFileExist = FilesHelper.NormalFileExists(fileStorage.FileName);
+                    fileStorage.IsFileExist = PhysicalFileExists(fileStorage.FileName);
                     fileStorage.Type = contentImageType.Value.ToStr();
                     fileStorage.Lang = language;
                     await FileStorageRepository.SaveOrEditAsync(fileStorage).ConfigureAwait(false);
@@ -302,7 +339,7 @@ namespace EImece.Domain.Services
             FileStorage f = FileStorageRepository.GetFileStoragebyFileName(fileName);
             if (f == null)
             {
-                FilesHelper.DeleteFile(fileName);
+                TryDeletePhysicalFile(fileName);
                 Logger.Info("Deleted orphan media file {0} (no FileStorage row) contentId={1}", fileName, contentId);
                 return;
             }
@@ -427,9 +464,7 @@ namespace EImece.Domain.Services
             {
                 if (fileStorage == null) continue;
 
-                bool exists = FilesHelper != null
-                    ? FilesHelper.NormalFileExists(fileStorage.FileName)
-                    : !string.IsNullOrWhiteSpace(fileStorage.FileName) && System.IO.File.Exists(SecurityHelper.GetSafeStorageFilePath(AppConfig.StorageRoot, fileStorage.FileName));
+                bool exists = PhysicalFileExists(fileStorage.FileName);
 
                 if (!exists)
                 {
@@ -456,9 +491,7 @@ namespace EImece.Domain.Services
             {
                 if (fileStorage == null) continue;
 
-                bool exists = FilesHelper != null
-                    ? FilesHelper.NormalFileExists(fileStorage.FileName)
-                    : !string.IsNullOrWhiteSpace(fileStorage.FileName) && System.IO.File.Exists(SecurityHelper.GetSafeStorageFilePath(AppConfig.StorageRoot, fileStorage.FileName));
+                bool exists = PhysicalFileExists(fileStorage.FileName);
 
                 if (!exists)
                 {
@@ -686,7 +719,7 @@ namespace EImece.Domain.Services
                     if (!FilesHelper.IsSeedPlaceholderMedia(fileStorage)
                         && !string.Equals(fileName, FilesHelper.EXTERNAL_IMAGE, StringComparison.OrdinalIgnoreCase))
                     {
-                        FilesHelper.DeleteFile(fileName);
+                        TryDeletePhysicalFile(fileName);
                     }
 
                     DeleteEntity(fileStorage);
@@ -717,7 +750,7 @@ namespace EImece.Domain.Services
                     if (!FilesHelper.IsSeedPlaceholderMedia(fileStorage)
                         && !string.Equals(fileName, FilesHelper.EXTERNAL_IMAGE, StringComparison.OrdinalIgnoreCase))
                     {
-                        FilesHelper.DeleteFile(fileName);
+                        TryDeletePhysicalFile(fileName);
                     }
 
                     await DeleteEntityAsync(fileStorage).ConfigureAwait(false);

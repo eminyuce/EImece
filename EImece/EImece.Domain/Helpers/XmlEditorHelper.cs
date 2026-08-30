@@ -1,4 +1,4 @@
-﻿using EImece.Domain.Services.IServices;
+using EImece.Domain.Services.IServices;
 using EImece.Domain.DependencyInjection;
 using RazorEngine;
 using RazorEngine.Templating; // For extension methods.
@@ -12,8 +12,12 @@ namespace EImece.Domain.Helpers
 {
     public class XmlEditorHelper
     {
-        [Inject]
-        public IListService ListService { get; set; }
+        private readonly IListService ListService;
+
+        public XmlEditorHelper(IListService listService)
+        {
+            ListService = listService ?? throw new ArgumentNullException(nameof(listService));
+        }
 
         public String GenerateXmlEditor(int id = 0)
         {

@@ -13,20 +13,32 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
+using EImece.Domain.Factories.IFactories;
+
 namespace EImece.Domain.Services
 {
     public class StoryCategoryService : BaseContentService<StoryCategory>, IStoryCategoryService
     {
         private static readonly Logger StoryCategoryServiceLogger = LogManager.GetCurrentClassLogger();
 
-        [Inject]
-        public IStoryService StoryService { get; set; }
+        private readonly IStoryCategoryRepository StoryCategoryRepository;
+        private readonly IStoryRepository StoryRepository;
+        private readonly IStoryTagRepository StoryTagRepository;
 
-        private IStoryCategoryRepository StoryCategoryRepository { get; set; }
-
-        public StoryCategoryService(IStoryCategoryRepository repository) : base(repository)
+        public StoryCategoryService(
+            IStoryCategoryRepository repository,
+            IEimeceCacheProvider dataCachingProvider,
+            ISettingService settingService,
+            IFileStorageService fileStorageService,
+            IHttpContextFactory httpContextFactory,
+            FilesHelper filesHelper,
+            IStoryRepository storyRepository,
+            IStoryTagRepository storyTagRepository)
+            : base(repository, dataCachingProvider, settingService, fileStorageService, httpContextFactory, filesHelper)
         {
-            StoryCategoryRepository = repository;
+            StoryCategoryRepository = repository ?? throw new ArgumentNullException(nameof(repository));
+            StoryRepository = storyRepository ?? throw new ArgumentNullException(nameof(storyRepository));
+            StoryTagRepository = storyTagRepository ?? throw new ArgumentNullException(nameof(storyTagRepository));
         }
 
         #region Storefront Read Methods (LINQ Projection, AsNoTracking, Main Entity Activation)
@@ -125,7 +137,8 @@ namespace EImece.Domain.Services
             var storyIdList = storyCategory.Stories != null ? storyCategory.Stories.Select(r => r.Id).ToList() : new List<int>();
             foreach (var id in storyIdList)
             {
-                StoryService.DeleteStoryById(id);
+                StoryTagRepository.DeleteByWhereCondition(r => r.StoryId == id);
+                StoryRepository.DeleteByWhereCondition(r => r.Id == id);
             }
             DeleteEntity(storyCategory);
             InvalidateStoryCategoryCaches();
@@ -143,7 +156,8 @@ namespace EImece.Domain.Services
             var storyIdList = storyCategory.Stories != null ? storyCategory.Stories.Select(r => r.Id).ToList() : new List<int>();
             foreach (var id in storyIdList)
             {
-                await StoryService.DeleteStoryByIdAsync(id).ConfigureAwait(false);
+                await StoryTagRepository.DeleteByWhereConditionAsync(r => r.StoryId == id).ConfigureAwait(false);
+                await StoryRepository.DeleteByWhereConditionAsync(r => r.Id == id).ConfigureAwait(false);
             }
             await DeleteEntityAsync(storyCategory).ConfigureAwait(false);
             InvalidateStoryCategoryCaches();

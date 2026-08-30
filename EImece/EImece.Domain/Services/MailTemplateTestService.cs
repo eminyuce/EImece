@@ -18,17 +18,22 @@ namespace EImece.Domain.Services
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        [Inject]
-        public IMailTemplateService MailTemplateService { get; set; }
+        private readonly IMailTemplateService MailTemplateService;
+        private readonly ISettingService SettingService;
+        private readonly IEmailSender EmailSender;
+        private readonly IRazorTemplateEngine RazorTemplateEngine;
 
-        [Inject]
-        public ISettingService SettingService { get; set; }
-
-        [Inject]
-        public IEmailSender EmailSender { get; set; }
-
-        [Inject]
-        public IRazorTemplateEngine RazorTemplateEngine { get; set; }
+        public MailTemplateTestService(
+            IMailTemplateService mailTemplateService,
+            ISettingService settingService,
+            IEmailSender emailSender,
+            IRazorTemplateEngine razorTemplateEngine)
+        {
+            MailTemplateService = mailTemplateService ?? throw new ArgumentNullException(nameof(mailTemplateService));
+            SettingService = settingService ?? throw new ArgumentNullException(nameof(settingService));
+            EmailSender = emailSender ?? throw new ArgumentNullException(nameof(emailSender));
+            RazorTemplateEngine = razorTemplateEngine ?? throw new ArgumentNullException(nameof(razorTemplateEngine));
+        }
 
         public async Task<MailTemplateTestPreview> InspectAsync(SendMailTemplateTestRequest request, string defaultRecipientEmail)
         {

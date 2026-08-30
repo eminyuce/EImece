@@ -28,38 +28,56 @@ using System.Web.Mvc;
 using System.Xml;
 using System.Xml.Linq;
 
+using EImece.Domain.Factories.IFactories;
+
 namespace EImece.Domain.Services
 {
     public class ProductService : BaseContentService<Product>, IProductService
     {
         private static readonly Logger ProductServiceLogger = LogManager.GetCurrentClassLogger();
 
-        [Inject]
-        public IProductCategoryService ProductCategoryService { get; set; }
+        private readonly IProductCategoryService ProductCategoryService;
+        private readonly IProductCommentRepository ProductCommentRepository;
+        private readonly IOrderProductRepository OrderProductRepository;
+        private readonly ITagService TagService;
+        private readonly ITemplateService TemplateService;
+        private readonly IProductTagRepository ProductTagRepository;
+        private readonly IProductSpecificationRepository ProductSpecificationRepository;
+        private readonly IEntityFactory EntityFactory;
+        private readonly IProductRepository ProductRepository;
+        private readonly IMenuService MenuService;
+        private readonly ITagCategoryService TagCategoryService;
 
-        [Inject]
-        public IProductCommentRepository ProductCommentRepository { get; set; }
-
-        [Inject]
-        public IOrderProductRepository OrderProductRepository { get; set; }
-
-        [Inject]
-        public ITagService TagService { get; set; }
-
-        [Inject]
-        public IStoryService StoryService { get; set; }
-
-        [Inject]
-        public ITemplateService TemplateService { get; set; }
-
-        [Inject]
-        public IStoryRepository StoryRepository { get; set; }
-
-        private IProductRepository ProductRepository { get; set; }
-
-        public ProductService(IProductRepository repository) : base(repository)
+        public ProductService(
+            IProductRepository repository,
+            IEimeceCacheProvider dataCachingProvider,
+            ISettingService settingService,
+            IFileStorageService fileStorageService,
+            IHttpContextFactory httpContextFactory,
+            FilesHelper filesHelper,
+            IProductCategoryService productCategoryService,
+            IProductCommentRepository productCommentRepository,
+            IOrderProductRepository orderProductRepository,
+            ITagService tagService,
+            ITemplateService templateService,
+            IProductTagRepository productTagRepository,
+            IProductSpecificationRepository productSpecificationRepository,
+            IEntityFactory entityFactory,
+            IMenuService menuService,
+            ITagCategoryService tagCategoryService)
+            : base(repository, dataCachingProvider, settingService, fileStorageService, httpContextFactory, filesHelper)
         {
-            ProductRepository = repository;
+            ProductRepository = repository ?? throw new ArgumentNullException(nameof(repository));
+            ProductCategoryService = productCategoryService;
+            ProductCommentRepository = productCommentRepository;
+            OrderProductRepository = orderProductRepository;
+            TagService = tagService;
+            TemplateService = templateService;
+            ProductTagRepository = productTagRepository;
+            ProductSpecificationRepository = productSpecificationRepository;
+            EntityFactory = entityFactory;
+            MenuService = menuService;
+            TagCategoryService = tagCategoryService;
         }
 
         /// <summary>

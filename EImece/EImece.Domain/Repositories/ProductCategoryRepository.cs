@@ -22,9 +22,6 @@ namespace EImece.Domain.Repositories
 {
     public class ProductCategoryRepository : BaseContentRepository<ProductCategory>, IProductCategoryRepository
     {
-        [Inject]
-        public IProductService ProductService { get; set; }
-
         public ProductCategoryRepository(IEImeceContext dbContext) : base(dbContext)
         {
         }

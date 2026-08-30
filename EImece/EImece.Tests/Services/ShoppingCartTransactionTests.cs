@@ -67,7 +67,7 @@ namespace EImece.Tests.Services
             public List<Customer> SavedCustomers { get; } = new List<Customer>();
             public List<string> NormalCustomerUserIds { get; } = new List<string>();
 
-            public FakeCustomerService() : base(new CustomerRepository(new FakeDbContextProxy().Context), null) { }
+            public FakeCustomerService() : base(new CustomerRepository(new FakeDbContextProxy().Context), null, null, null, null, null) { }
 
             public override Customer SaveOrEditEntity(Customer entity)
             {
@@ -97,7 +97,7 @@ namespace EImece.Tests.Services
         {
             public List<Order> SavedOrders { get; } = new List<Order>();
 
-            public FakeOrderService() : base(new OrderRepository(new FakeDbContextProxy().Context), null, null) { }
+            public FakeOrderService() : base(new OrderRepository(new FakeDbContextProxy().Context), null, null, null) { }
 
             public override Order SaveOrEditEntity(Order entity)
             {
@@ -140,7 +140,7 @@ namespace EImece.Tests.Services
         {
             public List<Tuple<int, int>> DecreasedStocks { get; } = new List<Tuple<int, int>>();
 
-            public FakeProductService() : base(new ProductRepository(new FakeDbContextProxy().Context)) { }
+            public FakeProductService() : base(new ProductRepository(new FakeDbContextProxy().Context), null, null, null, null, null, null, null, null, null, null, null, null, null, null, null) { }
 
             public override void DecreaseStock(int productId, int quantity)
             {
@@ -182,7 +182,9 @@ namespace EImece.Tests.Services
                 customerService,
                 addressService,
                 orderProductService,
-                productService);
+                productService,
+                null,
+                null);
 
             var cartSession = new ShoppingCartSession
             {
@@ -247,7 +249,9 @@ namespace EImece.Tests.Services
                 customerService,
                 addressService,
                 orderProductService,
-                productService);
+                productService,
+                null,
+                null);
 
             var buyNowModel = new BuyNowModel
             {
@@ -296,7 +300,9 @@ namespace EImece.Tests.Services
                 customerService,
                 addressService,
                 orderProductService,
-                productService);
+                productService,
+                null,
+                null);
 
             var cartSession = new ShoppingCartSession
             {

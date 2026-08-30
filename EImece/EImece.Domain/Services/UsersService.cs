@@ -18,26 +18,21 @@ namespace EImece.Domain.Services
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private readonly IUserRepository _userRepository;
+        public ApplicationUserManager UserManager { get; }
+        private readonly ICustomerService CustomerService;
+        private readonly IOrderService OrderService;
 
-        public UsersService(IUserRepository userRepository)
+        public UsersService(
+            IUserRepository userRepository,
+            ApplicationUserManager userManager,
+            ICustomerService customerService,
+            IOrderService orderService)
         {
             _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
+            UserManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
+            CustomerService = customerService ?? throw new ArgumentNullException(nameof(customerService));
+            OrderService = orderService ?? throw new ArgumentNullException(nameof(orderService));
         }
-
-        [Inject]
-        public ApplicationSignInManager SignInManager { get; set; }
-
-        [Inject]
-        public ApplicationUserManager UserManager { get; set; }
-
-        [Inject]
-        public IdentityManager IdentityManager { get; set; }
-
-        [Inject]
-        public ICustomerService CustomerService { get; set; }
-
-        [Inject]
-        public IOrderService OrderService { get; set; }
 
         [Timed("service.users.get_by_id_sync")]
         public virtual ApplicationUser GetUser(string id)

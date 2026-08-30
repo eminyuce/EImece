@@ -1,4 +1,5 @@
-﻿using EImece.Domain.Entities;
+using EImece.Domain.Caching;
+using EImece.Domain.Entities;
 using EImece.Domain.Models.HelperModels;
 using EImece.Domain.Repositories.IRepositories;
 using NLog;
@@ -18,16 +19,31 @@ namespace EImece.Domain.Services
         private const string IS_CAMPAIGN = "IsCampaign";
         private static readonly Logger BaseEntityServiceLogger = LogManager.GetCurrentClassLogger();
 
-        private IBaseEntityRepository<T> baseEntityRepository { get; set; }
+        private readonly IBaseEntityRepository<T> baseEntityRepository;
+        protected readonly IEimeceCacheProvider DataCachingProvider;
 
-        protected BaseEntityService(IBaseEntityRepository<T> baseEntityRepository) : base(baseEntityRepository)
+        protected virtual string ActiveListCachePrefix
         {
-            this.baseEntityRepository = baseEntityRepository;
+            get { return "activelist:" + GetType().Name + ":"; }
         }
 
-        protected BaseEntityService(IBaseEntityRepository<T> baseEntityRepository, bool IsCachingActivated) : base(baseEntityRepository)
+        protected BaseEntityService(IBaseEntityRepository<T> baseEntityRepository)
+            : this(baseEntityRepository, null)
         {
-            this.IsCachingActivated = IsCachingActivated;
+        }
+
+        protected BaseEntityService(IBaseEntityRepository<T> baseEntityRepository, IEimeceCacheProvider dataCachingProvider)
+            : base(baseEntityRepository)
+        {
+            this.baseEntityRepository = baseEntityRepository ?? throw new ArgumentNullException(nameof(baseEntityRepository));
+            this.DataCachingProvider = dataCachingProvider;
+        }
+
+        protected BaseEntityService(IBaseEntityRepository<T> baseEntityRepository, bool isCachingActivated, IEimeceCacheProvider dataCachingProvider = null)
+            : base(baseEntityRepository, isCachingActivated)
+        {
+            this.baseEntityRepository = baseEntityRepository ?? throw new ArgumentNullException(nameof(baseEntityRepository));
+            this.DataCachingProvider = dataCachingProvider;
         }
 
         public virtual List<T> GetActiveBaseEntities(bool? isActive, int? language)

@@ -24,47 +24,52 @@ namespace EImece.Domain.Services
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        [Inject]
-        public IMainPageImageService MainPageImageService { get; set; }
+        private readonly IMainPageImageService MainPageImageService;
+        private readonly ISettingService SettingService;
+        private readonly IProductService ProductService;
+        private readonly IProductCategoryService ProductCategoryService;
+        private readonly IMenuService MenuService;
+        private readonly IStoryService StoryService;
+        private readonly IStoryCategoryService StoryCategoryService;
+        private readonly ITagService TagService;
+        private readonly ITagCategoryService TagCategoryService;
+        private readonly ISubscriberService SubsciberService;
+        private readonly IFileStorageService FileStorageService;
+        private readonly IImageDownloadService ImageDownloadService;
+        private readonly ITemplateService TemplateService;
+        private readonly IMailTemplateService MailTemplateService;
 
-        [Inject]
-        public ISettingService SettingService { get; set; }
-
-        [Inject]
-        public IProductService ProductService { get; set; }
-
-        [Inject]
-        public IProductCategoryService ProductCategoryService { get; set; }
-
-        [Inject]
-        public IMenuService MenuService { get; set; }
-
-        [Inject]
-        public IStoryService StoryService { get; set; }
-
-        [Inject]
-        public IStoryCategoryService StoryCategoryService { get; set; }
-
-        [Inject]
-        public ITagService TagService { get; set; }
-
-        [Inject]
-        public ITagCategoryService TagCategoryService { get; set; }
-
-        [Inject]
-        public ISubscriberService SubsciberService { get; set; }
-
-        [Inject]
-        public IFileStorageService FileStorageService { get; set; }
-
-        [Inject]
-        public IImageDownloadService ImageDownloadService { get; set; }
-
-        [Inject]
-        public ITemplateService TemplateService { get; set; }
-
-        [Inject]
-        public IMailTemplateService MailTemplateService { get; set; }
+        public SiteMapService(
+            IMainPageImageService mainPageImageService,
+            ISettingService settingService,
+            IProductService productService,
+            IProductCategoryService productCategoryService,
+            IMenuService menuService,
+            IStoryService storyService,
+            IStoryCategoryService storyCategoryService,
+            ITagService tagService,
+            ITagCategoryService tagCategoryService,
+            ISubscriberService subsciberService,
+            IFileStorageService fileStorageService,
+            IImageDownloadService imageDownloadService,
+            ITemplateService templateService,
+            IMailTemplateService mailTemplateService)
+        {
+            MainPageImageService = mainPageImageService ?? throw new ArgumentNullException(nameof(mainPageImageService));
+            SettingService = settingService ?? throw new ArgumentNullException(nameof(settingService));
+            ProductService = productService ?? throw new ArgumentNullException(nameof(productService));
+            ProductCategoryService = productCategoryService ?? throw new ArgumentNullException(nameof(productCategoryService));
+            MenuService = menuService ?? throw new ArgumentNullException(nameof(menuService));
+            StoryService = storyService ?? throw new ArgumentNullException(nameof(storyService));
+            StoryCategoryService = storyCategoryService ?? throw new ArgumentNullException(nameof(storyCategoryService));
+            TagService = tagService ?? throw new ArgumentNullException(nameof(tagService));
+            TagCategoryService = tagCategoryService ?? throw new ArgumentNullException(nameof(tagCategoryService));
+            SubsciberService = subsciberService ?? throw new ArgumentNullException(nameof(subsciberService));
+            FileStorageService = fileStorageService ?? throw new ArgumentNullException(nameof(fileStorageService));
+            ImageDownloadService = imageDownloadService ?? throw new ArgumentNullException(nameof(imageDownloadService));
+            TemplateService = templateService ?? throw new ArgumentNullException(nameof(templateService));
+            MailTemplateService = mailTemplateService ?? throw new ArgumentNullException(nameof(mailTemplateService));
+        }
 
         [Timed("service.sitemap.generate_sync")]
         public virtual List<SitemapItem> GenerateSiteMap()

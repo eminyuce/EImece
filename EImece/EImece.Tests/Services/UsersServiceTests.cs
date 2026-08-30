@@ -67,7 +67,7 @@ namespace EImece.Tests.Services
         {
             try
             {
-                var service = new UsersService(null);
+                var service = new UsersService(null, null, null, null);
                 Assert.Fail("Expected ArgumentNullException was not thrown.");
             }
             catch (ArgumentNullException)

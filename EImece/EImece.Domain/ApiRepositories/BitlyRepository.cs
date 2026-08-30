@@ -1,4 +1,4 @@
-﻿using EImece.Domain.Helpers;
+using EImece.Domain.Helpers;
 using EImece.Domain.Models.UrlShortenModels;
 using EImece.Domain.Repositories.IRepositories;
 using HtmlAgilityPack;
@@ -18,8 +18,12 @@ namespace EImece.Domain.ApiRepositories
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        [Inject]
-        public IShortUrlRepository ShortUrlRepository { get; set; }
+        private readonly IShortUrlRepository ShortUrlRepository;
+
+        public BitlyRepository(IShortUrlRepository shortUrlRepository)
+        {
+            ShortUrlRepository = shortUrlRepository ?? throw new ArgumentNullException(nameof(shortUrlRepository));
+        }
 
         public static string BitlyAPIAccessToken
         {

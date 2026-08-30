@@ -65,7 +65,7 @@ namespace EImece.Tests.Helpers
             string root = Path.Combine(Path.GetTempPath(), "eimece-media-exists-" + Path.GetRandomFileName());
             Directory.CreateDirectory(root);
 
-            var filesHelper = new FilesHelper
+            var filesHelper = new FilesHelper(null)
             {
                 StorageRoot = root
             };
@@ -102,7 +102,7 @@ namespace EImece.Tests.Helpers
         [TestMethod]
         public void GetFileNames2_InitializesStorageRootWhenEmpty()
         {
-            var helper = new FilesHelper();
+            var helper = new FilesHelper(null);
             Assert.IsTrue(string.IsNullOrWhiteSpace(helper.StorageRoot));
 
             var names = helper.GetFileNames2("photo.jpg");

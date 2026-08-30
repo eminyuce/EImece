@@ -1,3 +1,4 @@
+using System;
 using EImece.Domain.DependencyInjection;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
@@ -18,26 +19,28 @@ namespace EImece.Domain.Services
     public class CouponService : BaseEntityService<Coupon>, ICouponService
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        private ICouponRepository CouponRepository { get; set; }
+        private readonly ICouponRepository CouponRepository;
+        private readonly ICouponProductRepository CouponProductRepository;
+        private readonly ICouponCategoryRepository CouponCategoryRepository;
+        private readonly ICouponRedemptionRepository CouponRedemptionRepository;
+        private readonly IOrderRepository OrderRepository;
+        private readonly ICustomerRepository CustomerRepository;
 
-        [Inject]
-        public ICouponProductRepository CouponProductRepository { get; set; }
-
-        [Inject]
-        public ICouponCategoryRepository CouponCategoryRepository { get; set; }
-
-        [Inject]
-        public ICouponRedemptionRepository CouponRedemptionRepository { get; set; }
-
-        [Inject]
-        public IOrderRepository OrderRepository { get; set; }
-
-        [Inject]
-        public ICustomerRepository CustomerRepository { get; set; }
-
-        public CouponService(ICouponRepository repository) : base(repository)
+        public CouponService(
+            ICouponRepository repository,
+            ICouponProductRepository couponProductRepository,
+            ICouponCategoryRepository couponCategoryRepository,
+            ICouponRedemptionRepository couponRedemptionRepository,
+            IOrderRepository orderRepository,
+            ICustomerRepository customerRepository)
+            : base(repository)
         {
-            CouponRepository = repository;
+            CouponRepository = repository ?? throw new ArgumentNullException(nameof(repository));
+            CouponProductRepository = couponProductRepository ?? throw new ArgumentNullException(nameof(couponProductRepository));
+            CouponCategoryRepository = couponCategoryRepository ?? throw new ArgumentNullException(nameof(couponCategoryRepository));
+            CouponRedemptionRepository = couponRedemptionRepository ?? throw new ArgumentNullException(nameof(couponRedemptionRepository));
+            OrderRepository = orderRepository ?? throw new ArgumentNullException(nameof(orderRepository));
+            CustomerRepository = customerRepository ?? throw new ArgumentNullException(nameof(customerRepository));
         }
 
         [Timed("service.coupons.get_by_code_sync")]

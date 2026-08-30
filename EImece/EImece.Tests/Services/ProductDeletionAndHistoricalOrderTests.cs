@@ -1,5 +1,8 @@
+using EImece.Domain.Caching;
 using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
+using EImece.Domain.Factories.IFactories;
+using EImece.Domain.Helpers;
 using EImece.Domain.Models.DTOs;
 using EImece.Domain.Models.DTOs.Storefront;
 using EImece.Domain.Models.Enums;
@@ -54,7 +57,17 @@ namespace EImece.Tests.Services
                 object defaultResult = null;
                 if (call.MethodBase is MethodInfo mi && mi.ReturnType != typeof(void))
                 {
-                    if (mi.ReturnType.IsValueType)
+                    if (mi.ReturnType == typeof(Task))
+                    {
+                        defaultResult = Task.CompletedTask;
+                    }
+                    else if (mi.ReturnType.IsGenericType && mi.ReturnType.GetGenericTypeDefinition() == typeof(Task<>))
+                    {
+                        var innerType = mi.ReturnType.GetGenericArguments()[0];
+                        var defaultInner = innerType.IsValueType ? Activator.CreateInstance(innerType) : null;
+                        defaultResult = typeof(Task).GetMethod("FromResult").MakeGenericMethod(innerType).Invoke(null, new[] { defaultInner });
+                    }
+                    else if (mi.ReturnType.IsValueType)
                     {
                         defaultResult = Activator.CreateInstance(mi.ReturnType);
                     }
@@ -264,10 +277,7 @@ namespace EImece.Tests.Services
             var fakeProductRepo = new FakeRepositoryProxy<IProductRepository>(productStore).Instance;
             var fakeOrderProductRepo = new FakeRepositoryProxy<IOrderProductRepository>(orderProductStore).Instance;
 
-            var productService = new ProductService(fakeProductRepo)
-            {
-                OrderProductRepository = fakeOrderProductRepo
-            };
+            var productService = CreateProductService(fakeProductRepo, fakeOrderProductRepo);
 
             // Act: Delete product
             var result = productService.DeleteProductById(77);
@@ -319,10 +329,7 @@ namespace EImece.Tests.Services
             var fakeProductRepo = new FakeRepositoryProxy<IProductRepository>(productStore).Instance;
             var fakeOrderProductRepo = new FakeRepositoryProxy<IOrderProductRepository>(orderProductStore).Instance;
 
-            var productService = new ProductService(fakeProductRepo)
-            {
-                OrderProductRepository = fakeOrderProductRepo
-            };
+            var productService = CreateProductService(fakeProductRepo, fakeOrderProductRepo);
 
             // Act: Delete product async
             var result = await productService.DeleteProductByIdAsync(88);
@@ -382,10 +389,7 @@ namespace EImece.Tests.Services
             var fakeProductRepo = new FakeRepositoryProxy<IProductRepository>(productStore).Instance;
             var fakeOrderProductRepo = new FakeRepositoryProxy<IOrderProductRepository>(orderProductStore).Instance;
 
-            var productService = new ProductService(fakeProductRepo)
-            {
-                OrderProductRepository = fakeOrderProductRepo
-            };
+            var productService = CreateProductService(fakeProductRepo, fakeOrderProductRepo);
 
             // Act: Delete Product A only
             var result = productService.DeleteProductById(1);
@@ -475,11 +479,7 @@ namespace EImece.Tests.Services
             var fakeOrderProductRepo = new FakeRepositoryProxy<IOrderProductRepository>(orderProductStore).Instance;
             var fakeFileStorageService = new FakeRepositoryProxy<IFileStorageService>(fileStorageStore).Instance;
 
-            var productService = new ProductService(fakeProductRepo)
-            {
-                OrderProductRepository = fakeOrderProductRepo,
-                FileStorageService = fakeFileStorageService
-            };
+            var productService = CreateProductService(fakeProductRepo, fakeOrderProductRepo, fakeFileStorageService);
 
             // Act: Delete product with order history
             var result = productService.DeleteProductById(150);
@@ -514,11 +514,7 @@ namespace EImece.Tests.Services
             var fakeOrderProductRepo = new FakeRepositoryProxy<IOrderProductRepository>(orderProductStore).Instance;
             var fakeFileStorageService = new FakeRepositoryProxy<IFileStorageService>(fileStorageStore).Instance;
 
-            var productService = new ProductService(fakeProductRepo)
-            {
-                OrderProductRepository = fakeOrderProductRepo,
-                FileStorageService = fakeFileStorageService
-            };
+            var productService = CreateProductService(fakeProductRepo, fakeOrderProductRepo, fakeFileStorageService);
 
             // Act: Delete product with no order history
             var result = productService.DeleteProductById(160);
@@ -529,6 +525,44 @@ namespace EImece.Tests.Services
             // FileStorageService MUST delete image and gallery files for unused product
             CollectionAssert.Contains(fileStorageStore.DeletedFileStorageIds, 77, "Main image storage must be cleaned up when product has no order history.");
             CollectionAssert.Contains(fileStorageStore.DeletedGalleryProductIds, 160, "Gallery images must be cleaned up when product has no order history.");
+        }
+
+        private static ProductService CreateProductService(
+            IProductRepository productRepo,
+            IOrderProductRepository orderProductRepo = null,
+            IFileStorageService fileStorageService = null)
+        {
+            var cache = new FakeRepositoryProxy<IEimeceCacheProvider>(new object()).Instance;
+            var settingService = new FakeRepositoryProxy<ISettingService>(new object()).Instance;
+            var httpContextFactory = new FakeRepositoryProxy<IHttpContextFactory>(new object()).Instance;
+            var filesHelper = (FilesHelper)System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof(FilesHelper));
+            var categoryServ = new FakeRepositoryProxy<IProductCategoryService>(new object()).Instance;
+            var commentRepo = new FakeRepositoryProxy<IProductCommentRepository>(new object()).Instance;
+            var tagServ = new FakeRepositoryProxy<ITagService>(new object()).Instance;
+            var templateServ = new FakeRepositoryProxy<ITemplateService>(new object()).Instance;
+            var productTagRepo = new FakeRepositoryProxy<IProductTagRepository>(new object()).Instance;
+            var specRepo = new FakeRepositoryProxy<IProductSpecificationRepository>(new object()).Instance;
+            var entityFactory = new FakeRepositoryProxy<IEntityFactory>(new object()).Instance;
+            var menuService = new FakeRepositoryProxy<IMenuService>(new object()).Instance;
+            var tagCategoryServ = new FakeRepositoryProxy<ITagCategoryService>(new object()).Instance;
+
+            return new ProductService(
+                productRepo,
+                cache,
+                settingService,
+                fileStorageService ?? new FakeRepositoryProxy<IFileStorageService>(new object()).Instance,
+                httpContextFactory,
+                filesHelper,
+                categoryServ,
+                commentRepo,
+                orderProductRepo ?? new FakeRepositoryProxy<IOrderProductRepository>(new object()).Instance,
+                tagServ,
+                templateServ,
+                productTagRepo,
+                specRepo,
+                entityFactory,
+                menuService,
+                tagCategoryServ);
         }
     }
 }

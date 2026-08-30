@@ -14,26 +14,38 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
+using EImece.Domain.Factories.IFactories;
+
 namespace EImece.Domain.Services
 {
     public class MainPageImageService : BaseContentService<MainPageImage>, IMainPageImageService
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        [Inject]
-        public IProductService ProductService { get; set; }
+        private readonly IProductService ProductService;
+        private readonly IStoryService StoryService;
+        private readonly IProductCategoryService ProductCategoryService;
+        private readonly IMenuService MenuService;
+        private readonly IMainPageImageRepository MainPageImageRepository;
 
-        [Inject]
-        public IStoryService StoryService { get; set; }
-
-        [Inject]
-        public IProductCategoryService ProductCategoryService { get; set; }
-
-        private IMainPageImageRepository MainPageImageRepository { get; set; }
-
-        public MainPageImageService(IMainPageImageRepository repository) : base(repository)
+        public MainPageImageService(
+            IMainPageImageRepository repository,
+            IEimeceCacheProvider dataCachingProvider,
+            ISettingService settingService,
+            IFileStorageService fileStorageService,
+            IHttpContextFactory httpContextFactory,
+            FilesHelper filesHelper,
+            IProductService productService,
+            IStoryService storyService,
+            IProductCategoryService productCategoryService,
+            IMenuService menuService)
+            : base(repository, dataCachingProvider, settingService, fileStorageService, httpContextFactory, filesHelper)
         {
-            MainPageImageRepository = repository;
+            MainPageImageRepository = repository ?? throw new ArgumentNullException(nameof(repository));
+            ProductService = productService ?? throw new ArgumentNullException(nameof(productService));
+            StoryService = storyService ?? throw new ArgumentNullException(nameof(storyService));
+            ProductCategoryService = productCategoryService ?? throw new ArgumentNullException(nameof(productCategoryService));
+            MenuService = menuService ?? throw new ArgumentNullException(nameof(menuService));
         }
 
         #region Storefront Read Methods (LINQ Projection, AsNoTracking, Main Entity Activation)

@@ -21,11 +21,19 @@ namespace EImece.Controllers
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        [Inject]
-        public IProductCategoryService ProductCategoryService { get; set; }
+        private readonly IProductCategoryService ProductCategoryService;
+        private readonly IProductService ProductService;
 
-        [Inject]
-        public IProductService ProductService { get; set; }
+        public ProductCategoriesController(
+            ISettingService settingService,
+            AutoMapper.IMapper mapper,
+            IProductCategoryService productCategoryService,
+            IProductService productService)
+            : base(settingService, mapper)
+        {
+            ProductCategoryService = productCategoryService ?? throw new ArgumentNullException(nameof(productCategoryService));
+            ProductService = productService ?? throw new ArgumentNullException(nameof(productService));
+        }
 
         public async Task<ActionResult> GetProductCategoryDto(String id)
         {

@@ -27,23 +27,27 @@ namespace EImece.Controllers
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private const string ErrorKey = "Error";
         private readonly IProductCommentService productCommentService;
+        private readonly IProductService ProductService;
+        private readonly IAddressService AddressService;
+        private readonly ICustomerService CustomerService;
+        private readonly IUsersService UsersService;
 
-        [Inject]
-        public IProductService ProductService { get; set; }
-
-        [Inject]
-        public IAddressService AddressService { get; set; }
-
-        [Inject]
-        public ICustomerService CustomerService { get; set; }
-
-        [Inject]
-        public IUsersService UsersService { get; set; }
-
-        public ProductsController(IProductCommentService ProductCommentService)
+        public ProductsController(
+            ISettingService settingService,
+            AutoMapper.IMapper mapper,
+            IProductCommentService productCommentService,
+            IProductService productService,
+            IAddressService addressService,
+            ICustomerService customerService,
+            IUsersService usersService)
+            : base(settingService, mapper)
         {
-            Logger.Debug("ProductsController constructor called. Initializing ProductCommentService.");
-            this.productCommentService = ProductCommentService;
+            Logger.Debug("ProductsController constructor called. Initializing dependencies.");
+            this.productCommentService = productCommentService ?? throw new ArgumentNullException(nameof(productCommentService));
+            ProductService = productService ?? throw new ArgumentNullException(nameof(productService));
+            AddressService = addressService ?? throw new ArgumentNullException(nameof(addressService));
+            CustomerService = customerService ?? throw new ArgumentNullException(nameof(customerService));
+            UsersService = usersService ?? throw new ArgumentNullException(nameof(usersService));
         }
 
         /// <summary>
