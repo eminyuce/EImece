@@ -14,13 +14,13 @@
 @Html.AdminValidationSummary()
 
 <div class="form-group row mb-3">
-    @Html.LabelFor(m => m.Email, new { @class = "col-md-2 col-form-label" })
+    @Html.AdminLabelFor(m => m.Email, new { @class = "col-md-2 col-form-label" })
     <div class="col-md-10">
         @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
     </div>
 </div>
 <div class="form-group row mb-3">
-    @Html.LabelFor(m => m.Password, new { @class = "col-md-2 col-form-label" })
+    @Html.AdminLabelFor(m => m.Password, new { @class = "col-md-2 col-form-label" })
     <div class="col-md-10">
         @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
         <span class="label text-bg-danger text-uppercase">
@@ -29,7 +29,7 @@
     </div>
 </div>
 <div class="form-group row mb-3">
-    @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 col-form-label" })
+    @Html.AdminLabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 col-form-label" })
     <div class="col-md-10">
         @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
     </div>
@@ -37,13 +37,13 @@
 
     // Add the LastName, FirstName, and Email Properties:
 <div class="form-group row mb-3">
-    @Html.LabelFor(m => m.FirstName, new { @class = "col-md-2 col-form-label" })
+    @Html.AdminLabelFor(m => m.FirstName, new { @class = "col-md-2 col-form-label" })
     <div class="col-md-10">
         @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
     </div>
 </div>
 <div class="form-group row mb-3">
-    @Html.LabelFor(m => m.LastName, new { @class = "col-md-2 col-form-label" })
+    @Html.AdminLabelFor(m => m.LastName, new { @class = "col-md-2 col-form-label" })
     <div class="col-md-10">
         @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
     </div>

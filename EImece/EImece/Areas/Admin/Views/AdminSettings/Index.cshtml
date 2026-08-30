@@ -85,7 +85,7 @@
                         <div class="card-header"><h3 class="h6 mb-0">@AdminResource.CompanyAndContactInfo</h3></div>
                         <div class="card-body">
                             <div class="form-group row mb-3">
-                                @Html.LabelFor(model => model.CompanyName, htmlAttributes: new { @class = "col-form-label col-md-3" })
+                                @Html.AdminLabelFor(model => model.CompanyName, htmlAttributes: new { @class = "col-form-label col-md-3" })
                                 <div class="col-md-9">
                                     @Html.EditorFor(model => model.CompanyName, new { htmlAttributes = new { @class = "form-control", placeholder = "EImece E-Ticaret A.S." } })
                                     @Html.ValidationMessageFor(model => model.CompanyName, "", new { @class = "text-danger" })
@@ -93,7 +93,7 @@
                                 </div>
                             </div>
                             <div class="form-group row mb-3">
-                                @Html.LabelFor(model => model.WebSiteCompanyEmailAddress, htmlAttributes: new { @class = "col-form-label col-md-3" })
+                                @Html.AdminLabelFor(model => model.WebSiteCompanyEmailAddress, htmlAttributes: new { @class = "col-form-label col-md-3" })
                                 <div class="col-md-9">
                                     @Html.EditorFor(model => model.WebSiteCompanyEmailAddress, new { htmlAttributes = new { @class = "form-control", type = "email", placeholder = "info@eimece.test" } })
                                     @Html.ValidationMessageFor(model => model.WebSiteCompanyEmailAddress, "", new { @class = "text-danger" })
@@ -101,7 +101,7 @@
                                 </div>
                             </div>
                             <div class="form-group row mb-3">
-                                @Html.LabelFor(model => model.WebSiteCompanyPhoneAndLocation, htmlAttributes: new { @class = "col-form-label col-md-3" })
+                                @Html.AdminLabelFor(model => model.WebSiteCompanyPhoneAndLocation, htmlAttributes: new { @class = "col-form-label col-md-3" })
                                 <div class="col-md-9">
                                     @Html.EditorFor(model => model.WebSiteCompanyPhoneAndLocation, new { htmlAttributes = new { @class = "form-control", placeholder = "+90 216 555 01 23 | Kadikoy / Istanbul" } })
                                     @Html.ValidationMessageFor(model => model.WebSiteCompanyPhoneAndLocation, "", new { @class = "text-danger" })
@@ -109,7 +109,7 @@
                                 </div>
                             </div>
                             <div class="form-group row mb-3">
-                                @Html.LabelFor(model => model.CompanyAddress, htmlAttributes: new { @class = "col-form-label col-md-3" })
+                                @Html.AdminLabelFor(model => model.CompanyAddress, htmlAttributes: new { @class = "col-form-label col-md-3" })
                                 <div class="col-md-9">
                                     @Html.TextAreaFor(model => model.CompanyAddress, 2, 50, new { @class = "form-control", placeholder = "Caferaga Mah. Moda Cad. No:42 Kadikoy / Istanbul" })
                                     @Html.ValidationMessageFor(model => model.CompanyAddress, "", new { @class = "text-danger" })
@@ -128,25 +128,25 @@
                             <div class="card-header"><h3 class="h6 mb-0">@AdminResource.CargoSettings</h3></div>
                             <div class="card-body">
                                 <div class="form-group row mb-3">
-                                    @Html.LabelFor(model => model.CargoCompany, htmlAttributes: new { @class = "col-form-label col-md-3" })
+                                    @Html.AdminLabelFor(model => model.CargoCompany, htmlAttributes: new { @class = "col-form-label col-md-3" })
                                     <div class="col-md-9">
                                         @Html.EditorFor(model => model.CargoCompany, new { htmlAttributes = new { @class = "form-control" } })
                                     </div>
                                 </div>
                                 <div class="form-group row mb-3">
-                                    @Html.LabelFor(model => model.CargoPrice, htmlAttributes: new { @class = "col-form-label col-md-3" })
+                                    @Html.AdminLabelFor(model => model.CargoPrice, htmlAttributes: new { @class = "col-form-label col-md-3" })
                                     <div class="col-md-9">
                                         @Html.EditorFor(model => model.CargoPrice, new { htmlAttributes = new { @class = "form-control" } })
                                     </div>
                                 </div>
                                 <div class="form-group row mb-3">
-                                    @Html.LabelFor(model => model.BasketMinTotalPriceForCargo, htmlAttributes: new { @class = "col-form-label col-md-3" })
+                                    @Html.AdminLabelFor(model => model.BasketMinTotalPriceForCargo, htmlAttributes: new { @class = "col-form-label col-md-3" })
                                     <div class="col-md-9">
                                         @Html.EditorFor(model => model.BasketMinTotalPriceForCargo, new { htmlAttributes = new { @class = "form-control" } })
                                     </div>
                                 </div>
                                 <div class="form-group row mb-3">
-                                    @Html.LabelFor(model => model.CargoDescription, htmlAttributes: new { @class = "col-form-label col-md-3" })
+                                    @Html.AdminLabelFor(model => model.CargoDescription, htmlAttributes: new { @class = "col-form-label col-md-3" })
                                     <div class="col-md-9">
                                         @Html.TextAreaFor(model => model.CargoDescription, 3, 50, new { @class = "form-control" })
                                     </div>

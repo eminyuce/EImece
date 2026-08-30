@@ -70,7 +70,7 @@
                     <div class="tab-content">
                         <div id="admin-edit-tab-fields" class="tab-pane fade show active" role="tabpanel">
 <div class="form-group row mb-3">
-                                @Html.LabelFor(model => model.ParentId, htmlAttributes: new { @class = "col-form-label col-md-2" })
+                                @Html.AdminLabelFor(model => model.ParentId, htmlAttributes: new { @class = "col-form-label col-md-2" })
                                 <div class="col-md-10">
                                     @Html.HiddenFor(model => model.ParentId)
                                     @Html.Partial("_AdminTreePicker", null, new ViewDataDictionary(ViewData) {
@@ -86,21 +86,21 @@
                                 </div>
                             </div>
                             <div class="form-group row mb-3">
-                                @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "col-form-label col-md-2" })
+                                @Html.AdminLabelFor(model => model.Name, htmlAttributes: new { @class = "col-form-label col-md-2" })
                                 <div class="col-md-10">
                                     @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
                                     @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
                                 </div>
                             </div>
                             <div class="form-group row mb-3">
-                                @Html.LabelFor(model => model.ShortDescription, htmlAttributes: new { @class = "col-form-label col-md-2" })
+                                @Html.AdminLabelFor(model => model.ShortDescription, htmlAttributes: new { @class = "col-form-label col-md-2" })
                                 <div class="col-md-10">
                                     @Html.TextAreaFor(model => model.ShortDescription, 2, 20, new { @class = "form-control" })
                                     @Html.ValidationMessageFor(model => model.ShortDescription, "", new { @class = "text-danger" })
                                 </div>
                             </div>
                             <div class="form-group row mb-3">
-                                @Html.LabelFor(model => model.TemplateId, htmlAttributes: new { @class = "col-form-label col-md-2" })
+                                @Html.AdminLabelFor(model => model.TemplateId, htmlAttributes: new { @class = "col-form-label col-md-2" })
                                 <div class="col-md-10">
                                     <div class="admin-brand-combobox" data-searchable-combobox data-placeholder="@AdminResource.SelectTemplate" data-entity-name="şablon" data-sort="name">
                                         @Html.DropDownListFor(model => model.TemplateId, templates, new { @class = "form-select", data_searchable_select = "true" })
@@ -110,7 +110,7 @@
                             </div>
 
                             <div class="form-group row mb-3">
-                                @Html.LabelFor(model => model.DiscountPercantage, htmlAttributes: new { @class = "col-form-label col-md-2" })
+                                @Html.AdminLabelFor(model => model.DiscountPercantage, htmlAttributes: new { @class = "col-form-label col-md-2" })
                                 <div class="col-md-10">
                                     @Html.EditorFor(model => model.DiscountPercantage, new { htmlAttributes = new { @class = "form-control" } })
                                     @Html.ValidationMessageFor(model => model.DiscountPercantage, "", new { @class = "text-danger" })
@@ -118,7 +118,7 @@
                             </div>
 
                             <div class="form-group row mb-3">
-                                @Html.LabelFor(model => model.MetaKeywords, htmlAttributes: new { @class = "col-form-label col-md-2" })
+                                @Html.AdminLabelFor(model => model.MetaKeywords, htmlAttributes: new { @class = "col-form-label col-md-2" })
                                 <div class="col-md-10">
                                     @Html.TextAreaFor(model => model.MetaKeywords, 2, 20, new { @class = "form-control" })
                                     @Html.ValidationMessageFor(model => model.MetaKeywords, "", new { @class = "text-danger" })
@@ -130,19 +130,19 @@
                                 <div class="col-md-10 d-flex flex-wrap gap-4 align-items-center">
                                     <div class="form-check">
                                         @Html.EditorFor(model => model.IsActive)
-                                        @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "form-check-label" })
+                                        @Html.AdminLabelFor(model => model.IsActive, htmlAttributes: new { @class = "form-check-label" })
                                         @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="form-check">
                                         @Html.EditorFor(model => model.MainPage)
-                                        @Html.LabelFor(model => model.MainPage, htmlAttributes: new { @class = "form-check-label" })
+                                        @Html.AdminLabelFor(model => model.MainPage, htmlAttributes: new { @class = "form-check-label" })
                                         @Html.ValidationMessageFor(model => model.MainPage, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
                             </div>
 
                             <div class="form-group row mb-3">
-                                @Html.LabelFor(model => model.Position, htmlAttributes: new { @class = "col-form-label col-md-2" })
+                                @Html.AdminLabelFor(model => model.Position, htmlAttributes: new { @class = "col-form-label col-md-2" })
                                 <div class="col-md-10">
                                     @Html.EditorFor(model => model.Position, new { htmlAttributes = new { @class = "form-control" } })
                                     @Html.ValidationMessageFor(model => model.Position, "", new { @class = "text-danger" })
@@ -150,13 +150,13 @@
                             </div>
 
                             <div class="form-group row mb-3">
-                                @Html.LabelFor(model => model.MainImageId, htmlAttributes: new { @class = "col-form-label col-md-2" })
+                                @Html.AdminLabelFor(model => model.MainImageId, htmlAttributes: new { @class = "col-form-label col-md-2" })
                                 <div class="col-md-3">
                                     <input type="file" name="postedImage" class="form-control" />
                                     @Html.ValidationMessageFor(model => model.MainImageId, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="col-md-3">
-                                    @Html.LabelFor(model => model.ImageState)
+                                    @Html.AdminLabelFor(model => model.ImageState)
                                     @Html.EditorFor(model => model.ImageState)
                                     @Html.ValidationMessageFor(model => model.ImageState, "", new { @class = "text-danger" })
                                 </div>

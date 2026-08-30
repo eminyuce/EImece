@@ -83,13 +83,13 @@
             <div class="report-filter-row">
                 <div class="report-filter-field">
                     <div class="form-group row mb-3">
-                        @Html.LabelFor(m => m.StartDate, "Başlangıç Tarihi")
+                        @Html.AdminLabelFor(m => m.StartDate, "Başlangıç Tarihi")
                         @Html.TextBoxFor(m => m.StartDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
                     </div>
                 </div>
                 <div class="report-filter-field">
                     <div class="form-group row mb-3">
-                        @Html.LabelFor(m => m.EndDate, "Bitiş Tarihi")
+                        @Html.AdminLabelFor(m => m.EndDate, "Bitiş Tarihi")
                         @Html.TextBoxFor(m => m.EndDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
                     </div>
                 </div>

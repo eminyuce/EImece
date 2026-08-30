@@ -132,6 +132,7 @@
     <Compile Include="Filters\WebApiExceptionFilter.cs" />
     <Compile Include="Helpers\AdminGridQueryableHelper.cs" />
     <Compile Include="Helpers\EnumWebExtensions.cs" />
+    <Compile Include="Helpers\HtmlHelpers\AdminFormHtmlHelper.cs" />
     <Compile Include="Helpers\HtmlHelpers\AdminBreadcrumbHtmlHelper.cs" />
     <Compile Include="Helpers\HtmlHelpers\AdminGridHtmlHelpers.cs" />
     <Compile Include="Helpers\HtmlHelpers\CaptchaHtmlHelper.cs" />

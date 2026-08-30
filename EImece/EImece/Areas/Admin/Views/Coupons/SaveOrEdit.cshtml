@@ -163,7 +163,7 @@
                             <div class="col-sm-3 offset-sm-3">
                                 <div class="form-check">
                                     @Html.EditorFor(model => model.IsActive, new { htmlAttributes = new { @class = "form-check-input" } })
-                                    @Html.LabelFor(model => model.IsActive, new { @class = "form-check-label" })
+                                    @Html.AdminLabelFor(model => model.IsActive, new { @class = "form-check-label" })
                                 </div>
                                 <small class="form-text text-muted">@AdminResource.CouponIsActiveHelp</small>
                                 @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
@@ -241,7 +241,7 @@
                             <div class="col-sm-9 offset-sm-3">
                                 <div class="form-check">
                                     @Html.EditorFor(model => model.ExcludeSaleItems, new { htmlAttributes = new { @class = "form-check-input" } })
-                                    @Html.LabelFor(model => model.ExcludeSaleItems, new { @class = "form-check-label" })
+                                    @Html.AdminLabelFor(model => model.ExcludeSaleItems, new { @class = "form-check-label" })
                                 </div>
                                 <small class="form-text text-muted">@AdminResource.ExcludeSaleItemsHelp</small>
                             </div>
@@ -263,21 +263,21 @@
                             <div class="col-sm-4">
                                 <div class="form-check">
                                     @Html.EditorFor(model => model.RequireLogin, new { htmlAttributes = new { @class = "form-check-input" } })
-                                    @Html.LabelFor(model => model.RequireLogin, new { @class = "form-check-label" })
+                                    @Html.AdminLabelFor(model => model.RequireLogin, new { @class = "form-check-label" })
                                 </div>
                                 <small class="form-text text-muted">@AdminResource.RequireLoginHelp</small>
                             </div>
                             <div class="col-sm-4">
                                 <div class="form-check">
                                     @Html.EditorFor(model => model.IsFirstOrderOnly, new { htmlAttributes = new { @class = "form-check-input" } })
-                                    @Html.LabelFor(model => model.IsFirstOrderOnly, new { @class = "form-check-label" })
+                                    @Html.AdminLabelFor(model => model.IsFirstOrderOnly, new { @class = "form-check-label" })
                                 </div>
                                 <small class="form-text text-muted">@AdminResource.IsFirstOrderOnlyHelp</small>
                             </div>
                             <div class="col-sm-4">
                                 <div class="form-check">
                                     @Html.EditorFor(model => model.IsNewCustomerOnly, new { htmlAttributes = new { @class = "form-check-input" } })
-                                    @Html.LabelFor(model => model.IsNewCustomerOnly, new { @class = "form-check-label" })
+                                    @Html.AdminLabelFor(model => model.IsNewCustomerOnly, new { @class = "form-check-label" })
                                 </div>
                                 <small class="form-text text-muted">@AdminResource.IsNewCustomerOnlyHelp</small>
                             </div>
@@ -359,7 +359,7 @@
                             <div class="col-sm-6">
                                 <div class="form-check">
                                     @Html.EditorFor(model => model.AllowStacking, new { htmlAttributes = new { @class = "form-check-input" } })
-                                    @Html.LabelFor(model => model.AllowStacking, new { @class = "form-check-label" })
+                                    @Html.AdminLabelFor(model => model.AllowStacking, new { @class = "form-check-label" })
                                 </div>
                                 <small class="form-text text-muted">@AdminResource.AllowStackingHelp</small>
                             </div>
@@ -369,7 +369,7 @@
                             <div class="col-sm-6">
                                 <div class="form-check">
                                     @Html.EditorFor(model => model.IsBirthdayCoupon, new { htmlAttributes = new { @class = "form-check-input" } })
-                                    @Html.LabelFor(model => model.IsBirthdayCoupon, new { @class = "form-check-label" })
+                                    @Html.AdminLabelFor(model => model.IsBirthdayCoupon, new { @class = "form-check-label" })
                                 </div>
                                 <small class="form-text text-muted">@AdminResource.IsBirthdayCouponHelp</small>
                             </div>

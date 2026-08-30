@@ -673,6 +673,13 @@ input[name='checkboxGrid'] {
     margin-bottom: 1px;
 }
 
+/* Required field marker — paired with AdminLabelFor and adminRequiredLabels.js */
+.admin-required-marker {
+    color: #dc3545;
+    font-weight: 700;
+    margin-left: 0.15rem;
+}
+
 /*
  * Form-horizontal boolean fields: use a clear native checkbox.
  * checkBoxStyle.css draws a custom box via label::before and expects

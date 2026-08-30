@@ -39,7 +39,7 @@
         @Html.AntiForgeryToken()
         <div class="form-horizontal">
             <div class="form-group row mb-3">
-                @Html.LabelFor(model => model.SecondCategoryId, htmlAttributes: new { @class = "col-form-label col-md-3" })
+                @Html.AdminLabelFor(model => model.SecondCategoryId, htmlAttributes: new { @class = "col-form-label col-md-3" })
                 <div class="col-md-6">
                     <div class="admin-brand-combobox" data-searchable-combobox data-placeholder="Kategori seçin" data-entity-name="kategori" data-sort="position-name">
                         @Html.DropDownListFor(model => model.SecondCategoryId, productCategoryDropDownList, new { @class = "form-select", data_searchable_select = "true" })
@@ -48,7 +48,7 @@
                 </div>
             </div>
             <div class="form-group row mb-3">
-                @Html.LabelFor(model => model.FirstCategoryId, htmlAttributes: new { @class = "col-form-label col-md-3" })
+                @Html.AdminLabelFor(model => model.FirstCategoryId, htmlAttributes: new { @class = "col-form-label col-md-3" })
                 <div class="col-md-6">
                     <div class="admin-brand-combobox" data-searchable-combobox data-placeholder="Kategori seçin" data-entity-name="kategori" data-sort="position-name">
                         @Html.DropDownListFor(model => model.FirstCategoryId, productCategoryDropDownList, new { @class = "form-select", data_searchable_select = "true" })

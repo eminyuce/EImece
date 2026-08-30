@@ -75,6 +75,7 @@ namespace EImece
                   "~/Scripts/admin-bs5-jquery-bridge.js",
                   "~/Scripts/rich-text-editor.js",
                   "~/Scripts/adminEimece.js",
+                  "~/Scripts/adminRequiredLabels.js",
                   "~/Scripts/adminGridModern.js",
                   "~/Scripts/griddly.js"));
 
