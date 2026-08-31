@@ -1,7 +1,7 @@
+using Microsoft.Extensions.Logging;
 using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
-using NLog;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -14,7 +14,12 @@ namespace EImece.Domain.Repositories
     // AppLog  NLog.config dosyasi uzerinden veritabani kayiti yapilir.
     public class AppLogRepository
     {
-        private readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        private readonly ILogger<AppLogRepository> _logger;
+
+        public AppLogRepository(ILogger<AppLogRepository> logger)
+        {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        }
 
         public List<AppLog> GetAppLogs(string search, string eventLevel = "")
         {
@@ -25,7 +30,7 @@ namespace EImece.Domain.Repositories
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, ex.Message);
+                _logger.LogError(ex, ex.Message);
                 throw;
             }
             return applogResult;
@@ -39,7 +44,7 @@ namespace EImece.Domain.Repositories
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "GetAppLogsAsync failed.");
+                _logger.LogError(ex, "GetAppLogsAsync failed.");
                 throw new InvalidOperationException("GetAppLogsAsync failed.", ex);
             }
         }

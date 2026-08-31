@@ -6,7 +6,8 @@ using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
 using EImece.Domain.Abstractions;
 using EImece.Domain.DependencyInjection;
-using NLog;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Validation;
@@ -18,8 +19,6 @@ namespace EImece.Domain.Services
 {
     public abstract class BaseContentService<T> : BaseEntityService<T> where T : BaseContent
     {
-        private static readonly Logger BaseContentServiceLogger = LogManager.GetCurrentClassLogger();
-
         protected readonly ISettingService SettingService;
         protected readonly IFileStorageService FileStorageService;
         protected readonly ICurrentUserContext CurrentUserContext;
@@ -32,8 +31,9 @@ namespace EImece.Domain.Services
             ISettingService settingService,
             IFileStorageService fileStorageService,
             ICurrentUserContext currentUserContext,
-            FilesHelper filesHelper)
-            : base(baseContentRepository, dataCachingProvider)
+            FilesHelper filesHelper,
+            ILogger logger)
+            : base(baseContentRepository, dataCachingProvider, logger)
         {
             this.BaseContentRepository = baseContentRepository;
             this.SettingService = settingService;
@@ -49,8 +49,9 @@ namespace EImece.Domain.Services
             ISettingService settingService,
             IFileStorageService fileStorageService,
             ICurrentUserContext currentUserContext,
-            FilesHelper filesHelper)
-            : base(baseContentRepository, isCachingActivated, dataCachingProvider)
+            FilesHelper filesHelper,
+            ILogger logger)
+            : base(baseContentRepository, isCachingActivated, dataCachingProvider, logger)
         {
             this.BaseContentRepository = baseContentRepository;
             this.SettingService = settingService;
@@ -248,11 +249,11 @@ namespace EImece.Domain.Services
             catch (DbEntityValidationException ex)
             {
                 var message = ExceptionHelper.GetDbEntityValidationExceptionDetail(ex);
-                BaseContentServiceLogger.Error(ex, "DbEntityValidationException:" + message);
+                Logger.LogError(ex, "DbEntityValidationException:" + message);
             }
             catch (Exception exception)
             {
-                BaseContentServiceLogger.Error(exception, "DeleteBaseEntity :" + String.Join(",", values));
+                Logger.LogError(exception, "DeleteBaseEntity :" + String.Join(",", values));
             }
         }
 
@@ -279,11 +280,11 @@ namespace EImece.Domain.Services
             catch (DbEntityValidationException ex)
             {
                 var message = ExceptionHelper.GetDbEntityValidationExceptionDetail(ex);
-                BaseContentServiceLogger.Error(ex, "DbEntityValidationException:" + message);
+                Logger.LogError(ex, "DbEntityValidationException:" + message);
             }
             catch (Exception exception)
             {
-                BaseContentServiceLogger.Error(exception, "DeleteBaseEntity :" + String.Join(",", values));
+                Logger.LogError(exception, "DeleteBaseEntity :" + String.Join(",", values));
             }
         }
     }

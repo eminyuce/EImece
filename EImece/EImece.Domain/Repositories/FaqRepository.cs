@@ -1,9 +1,9 @@
+using Microsoft.Extensions.Logging;
 using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.Models.DTOs;
 using EImece.Domain.Observability.Telemetry;
 using EImece.Domain.Repositories.IRepositories;
-using NLog;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -16,10 +16,7 @@ namespace EImece.Domain.Repositories
 {
     public class FaqRepository : BaseEntityRepository<Faq>, IFaqRepository
     {
-        protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
-        public FaqRepository(IEImeceContext dbContext) : base(dbContext)
-        {
+        public FaqRepository(IEImeceContext dbContext, ILogger<FaqRepository> logger) : base(dbContext, logger) {
         }
 
         #region Storefront Read Methods (LINQ Projection, AsNoTracking)

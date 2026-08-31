@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using EImece.Web.Areas.Admin.Controllers;
 using EImece.Areas.Admin.Models;
 using EImece.Domain.Helpers;
@@ -5,7 +6,6 @@ using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
 using EImece.Domain.DependencyInjection;
-using NLog;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -21,7 +21,6 @@ namespace EImece.Areas.Admin.Controllers
 {
     public class ReportController : BaseAdminController
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private const string PerformanceSystemReportKey = "PerformanceSystemReport";
         private const string FinancialReportKey = "FinancialReport";
         private const string FraudRiskReportKey = "FraudRiskReport";
@@ -41,11 +40,9 @@ namespace EImece.Areas.Admin.Controllers
         private const string StartDateAfterEndDateMessage = "Start date cannot be after end date";
         private readonly ReportService _reportService;
 
-        public ReportController(
-            ISettingService settingService,
-            ReportService reportService)
-            : base(settingService)
-        {
+        public ReportController(ISettingService settingService,
+            ReportService reportService, ILogger<ReportController> logger)
+            : base(settingService, logger) {
             _reportService = reportService ?? throw new ArgumentNullException(nameof(reportService));
         }
 
@@ -65,7 +62,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Error in CouponUsage report");
+                Logger.LogError(ex, "Error in CouponUsage report");
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
             }
         }
@@ -80,7 +77,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Error in FraudAnalysis report");
+                Logger.LogError(ex, "Error in FraudAnalysis report");
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
             }
         }
@@ -95,7 +92,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Error in PaymentMethod report");
+                Logger.LogError(ex, "Error in PaymentMethod report");
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
             }
         }
@@ -110,7 +107,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Error in PaymentStatus report");
+                Logger.LogError(ex, "Error in PaymentStatus report");
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
             }
         }
@@ -128,7 +125,7 @@ namespace EImece.Areas.Admin.Controllers
             catch (Exception ex)
             {
                 // Avoid opaque IIS 500; show empty report with a clear message for admins.
-                Logger.Error(ex, "Error in RegionalSales report");
+                Logger.LogError(ex, "Error in RegionalSales report");
                 TempData["StatusMessage"] = "Bölgesel satış raporu yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.";
                 ViewBag.PaymentStatus = paymentStatus ?? string.Empty;
                 return View("RegionalSales", new DataTable());
@@ -172,7 +169,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Error loading SalesByDateRange view");
+                Logger.LogError(ex, "Error loading SalesByDateRange view");
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
             }
         }
@@ -198,7 +195,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Error in SalesByDateRange report");
+                Logger.LogError(ex, "Error in SalesByDateRange report");
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
             }
         }
@@ -213,7 +210,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Error in ShipmentCompany report");
+                Logger.LogError(ex, "Error in ShipmentCompany report");
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
             }
         }
@@ -401,7 +398,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Error in ProductSummary report");
+                Logger.LogError(ex, "Error in ProductSummary report");
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
             }
         }
@@ -433,7 +430,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Error in ProductSummary report");
+                Logger.LogError(ex, "Error in ProductSummary report");
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
             }
         }
@@ -453,7 +450,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Error in PriceAnalysis report");
+                Logger.LogError(ex, "Error in PriceAnalysis report");
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
             }
         }
@@ -491,7 +488,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Error in PriceAnalysis report");
+                Logger.LogError(ex, "Error in PriceAnalysis report");
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
             }
         }
@@ -511,7 +508,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Error in ProductInventory report");
+                Logger.LogError(ex, "Error in ProductInventory report");
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
             }
         }
@@ -538,7 +535,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Error in ProductInventory report");
+                Logger.LogError(ex, "Error in ProductInventory report");
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
             }
         }
@@ -565,7 +562,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Error loading ProductStatsByDateRange view");
+                Logger.LogError(ex, "Error loading ProductStatsByDateRange view");
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
             }
         }
@@ -606,7 +603,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Error processing ProductStatsByDateRange POST");
+                Logger.LogError(ex, "Error processing ProductStatsByDateRange POST");
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
             }
         }
@@ -633,7 +630,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Error in UserAudit GET report");
+                Logger.LogError(ex, "Error in UserAudit GET report");
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
             }
         }
@@ -659,7 +656,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Error in UserAudit POST report");
+                Logger.LogError(ex, "Error in UserAudit POST report");
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
             }
         }
@@ -793,7 +790,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Error exporting report {0} as {1}", reportKey, format);
+                Logger.LogError(ex, "Error exporting report {0} as {1}", reportKey, format);
                 return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
             }
         }

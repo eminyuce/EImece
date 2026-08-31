@@ -1,8 +1,8 @@
+using Microsoft.Extensions.Logging;
 ﻿using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Repositories.IRepositories;
-using NLog;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -15,10 +15,7 @@ namespace EImece.Domain.Repositories
 {
     public class ProductCommentRepository : BaseEntityRepository<ProductComment>, IProductCommentRepository
     {
-        protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
-        public ProductCommentRepository(IEImeceContext dbContext) : base(dbContext)
-        {
+        public ProductCommentRepository(IEImeceContext dbContext, ILogger<ProductCommentRepository> logger) : base(dbContext, logger) {
         }
 
         public List<ProductComment> GetAdminPageList(int? productId, string search, int lang, IList<int> ratings = null, DateTime? startDate = null, DateTime? endDate = null)

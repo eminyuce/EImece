@@ -1,48 +1,35 @@
-using EImece.Domain.Observability.Configuration;
-using NLog;
-using Serilog;
-using Serilog.Context;
-using Serilog.Events;
+using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 
 namespace EImece.Domain.Observability.Logging
 {
+    /// <summary>
+    /// Request-scoped enrichment and cross-cutting log helpers built on Microsoft.Extensions.Logging.
+    /// Reuses existing CorrelationId / Activity trace context — no second correlation system.
+    /// </summary>
     public static class StructuredLoggingBootstrap
     {
         private const string CorrelationIdProperty = "CorrelationId";
         private const string TraceIdProperty = "TraceId";
         private const string SpanIdProperty = "SpanId";
 
+        private static Microsoft.Extensions.Logging.ILogger _pipelineLogger;
         private static bool _initialized;
 
-        public static void Configure()
-        {
-            Configure(ObservabilityOptions.FromAppConfig());
-        }
-
-        public static void Configure(ObservabilityOptions options)
+        public static void Configure(Observability.Configuration.ObservabilityOptions options)
         {
             if (_initialized)
             {
                 return;
             }
 
-            // Same writable root as uploads (media/) — one IIS ACL for images + logs.
-            var logDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "media", "logs");
-            Directory.CreateDirectory(logDirectory);
+            var factory = LoggingBootstrap.Configure(LoggingOptions.FromAppConfig());
+            _pipelineLogger = factory.CreateLogger("EImece.RequestPipeline");
 
             var enableEfSqlLogging = options != null && options.EnableEfSqlLogging;
-            EfSqlLogger.Configure(enableEfSqlLogging, options != null && options.EnableEfTelemetry);
-
-            var loggerConfiguration = new LoggerConfiguration()
-                .MinimumLevel.Information()
-                .Enrich.FromLogContext()
-                .Enrich.WithProperty("Application", "EImece")
-                .Enrich.WithMachineName();
-
-            Log.Logger = loggerConfiguration.CreateLogger();
+            EfSqlLogger.Configure(factory, enableEfSqlLogging, options != null && options.EnableEfTelemetry);
 
             _initialized = true;
         }
@@ -51,51 +38,101 @@ namespace EImece.Domain.Observability.Logging
         {
             activity = activity ?? Activity.Current;
             var correlationId = CorrelationIdContext.Ensure();
-            LogContext.PushProperty(CorrelationIdProperty, correlationId);
-            ScopeContext.PushProperty(CorrelationIdProperty, correlationId);
+            PushScopeProperties(correlationId, activity);
+        }
 
-            if (activity == null)
+        public static void LogRequestCompleted(long elapsedMs, int statusCode, string httpMethod = null, string requestPath = null, string userId = null)
+        {
+            if (_pipelineLogger == null || !_pipelineLogger.IsEnabled(LogLevel.Debug))
             {
                 return;
             }
 
-            var traceId = activity.TraceId.ToString();
-            var spanId = activity.SpanId.ToString();
-            LogContext.PushProperty(TraceIdProperty, traceId);
-            LogContext.PushProperty(SpanIdProperty, spanId);
-            ScopeContext.PushProperty(TraceIdProperty, traceId);
-            ScopeContext.PushProperty(SpanIdProperty, spanId);
-        }
-
-        public static void LogRequestCompleted(long durationMs, int statusCode)
-        {
-            Log.ForContext("ExecutionTimeMs", durationMs)
-                .ForContext("StatusCode", statusCode)
-                .ForContext(CorrelationIdProperty, CorrelationIdContext.Current)
-                .ForContext(TraceIdProperty, Activity.Current?.TraceId.ToString())
-                .ForContext(SpanIdProperty, Activity.Current?.SpanId.ToString())
-                .Write(LogEventLevel.Information, "HTTP request completed");
+            using (BeginRequestScope())
+            {
+                _pipelineLogger.LogDebug(
+                    "HTTP request completed {HttpMethod} {RequestPath} {StatusCode} {ElapsedMs} {UserId}",
+                    httpMethod,
+                    requestPath,
+                    statusCode,
+                    elapsedMs,
+                    userId);
+            }
         }
 
         public static void LogException(Exception exception, string message)
         {
-            Log.ForContext("ExceptionType", exception.GetType().FullName)
-                .ForContext(CorrelationIdProperty, CorrelationIdContext.Current)
-                .ForContext(TraceIdProperty, Activity.Current?.TraceId.ToString())
-                .ForContext(SpanIdProperty, Activity.Current?.SpanId.ToString())
-                .Error(exception, SensitiveDataMasker.Mask(message));
+            if (exception == null || _pipelineLogger == null)
+            {
+                return;
+            }
+
+            using (BeginRequestScope())
+            {
+                _pipelineLogger.LogError(
+                    exception,
+                    "{Message}",
+                    SensitiveDataMasker.Mask(message));
+            }
+        }
+
+        public static IDisposable BeginRequestScope()
+        {
+            var activity = Activity.Current;
+            var correlationId = CorrelationIdContext.Current ?? CorrelationIdContext.Ensure();
+            var state = new Dictionary<string, object>
+            {
+                [CorrelationIdProperty] = correlationId,
+            };
+
+            if (activity != null)
+            {
+                state[TraceIdProperty] = activity.TraceId.ToString();
+                state[SpanIdProperty] = activity.SpanId.ToString();
+            }
+
+            PushNLogScopeProperties(state);
+            return _pipelineLogger?.BeginScope(state) ?? NullScope.Instance;
         }
 
         public static void CloseAndFlush()
         {
-            try
+            LoggingBootstrap.FlushAndShutdown();
+            _pipelineLogger = null;
+            _initialized = false;
+        }
+
+        private static void PushScopeProperties(string correlationId, Activity activity)
+        {
+            var state = new Dictionary<string, object>
             {
-                Log.CloseAndFlush();
-            }
-            catch
+                [CorrelationIdProperty] = correlationId,
+            };
+
+            if (activity != null)
             {
-                // Best-effort during AppDomain recycle.
+                state[TraceIdProperty] = activity.TraceId.ToString();
+                state[SpanIdProperty] = activity.SpanId.ToString();
             }
+
+            PushNLogScopeProperties(state);
+        }
+
+        private static void PushNLogScopeProperties(IReadOnlyDictionary<string, object> state)
+        {
+            foreach (var pair in state)
+            {
+                if (pair.Value != null)
+                {
+                    NLog.ScopeContext.PushProperty(pair.Key, pair.Value);
+                }
+            }
+        }
+
+        private sealed class NullScope : IDisposable
+        {
+            internal static readonly NullScope Instance = new NullScope();
+            public void Dispose() { }
         }
     }
 }

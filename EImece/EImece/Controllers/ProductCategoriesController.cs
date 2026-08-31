@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using EImece.Web.Controllers;
 using EImece.Domain;
 using EImece.Domain.Entities;
@@ -7,7 +8,6 @@ using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Services.IServices;
 using EImece.Domain.DependencyInjection;
-using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,18 +20,14 @@ namespace EImece.Controllers
     [RoutePrefix(Constants.ProductsCategoriesControllerRoutingPrefix)]
     public class ProductCategoriesController : BaseController
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
         private readonly IProductCategoryService ProductCategoryService;
         private readonly IProductService ProductService;
 
-        public ProductCategoriesController(
-            ISettingService settingService,
+        public ProductCategoriesController(ISettingService settingService,
             AutoMapper.IMapper mapper,
             IProductCategoryService productCategoryService,
-            IProductService productService)
-            : base(settingService, mapper)
-        {
+            IProductService productService, ILogger<ProductCategoriesController> logger)
+            : base(settingService, mapper, logger) {
             ProductCategoryService = productCategoryService ?? throw new ArgumentNullException(nameof(productCategoryService));
             ProductService = productService ?? throw new ArgumentNullException(nameof(productService));
         }
@@ -48,7 +44,7 @@ namespace EImece.Controllers
         [Route("pc")]
         public ActionResult CategoryRoot()
         {
-            Logger.Info("CategoryRoot: redirecting bare /c/pc/ to home.");
+            Logger.LogInformation("CategoryRoot: redirecting bare /c/pc/ to home.");
             return RedirectToActionPermanent("Index", "Home");
         }
 
@@ -83,7 +79,7 @@ namespace EImece.Controllers
                 var match = CategorySlugHelper.FindMatchingCategory(tree, slug);
                 if (match == null)
                 {
-                    Logger.Info("CategoryLegacy: no category matched slug '{0}'.", slug);
+                    Logger.LogInformation("CategoryLegacy: no category matched slug '{0}'.", slug);
                     return RedirectToAction("NotFound", "Error");
                 }
 
@@ -93,7 +89,7 @@ namespace EImece.Controllers
                     return RedirectToAction("NotFound", "Error");
                 }
 
-                Logger.Info("CategoryLegacy: '{0}' → '{1}'.", slug, destination);
+                Logger.LogInformation("CategoryLegacy: '{0}' → '{1}'.", slug, destination);
                 return RedirectPermanent(destination);
             }
             catch (Exception ex)
@@ -118,7 +114,7 @@ namespace EImece.Controllers
                 return RedirectToAction("NotFound", "Error");
             }
 
-            Logger.Info("CategoryLegacyMvc: '{0}' → '{1}'.", id, destination);
+            Logger.LogInformation("CategoryLegacyMvc: '{0}' → '{1}'.", id, destination);
             return RedirectPermanent(destination);
         }
 
@@ -126,17 +122,17 @@ namespace EImece.Controllers
         [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
         public async Task<ActionResult> Category(String id, int page = 0, int sorting = 0, string filtreler = "", int minPrice = 0, int maxPrice = 0)
         {
-            Logger.Debug($"Entering Category action with id: '{id}', page: {page}, sorting: {sorting}, filtreler: '{filtreler}', minPrice: {minPrice}, maxPrice: {maxPrice}");
+            Logger.LogDebug($"Entering Category action with id: '{id}', page: {page}, sorting: {sorting}, filtreler: '{filtreler}', minPrice: {minPrice}, maxPrice: {maxPrice}");
             try
             {
                 if (String.IsNullOrEmpty(id))
                 {
-                    Logger.Info("Category ID is null or empty. Redirecting bare category URL to home.");
+                    Logger.LogInformation("Category ID is null or empty. Redirecting bare category URL to home.");
                     return RedirectToActionPermanent("Index", "Home");
                 }
 
                 var categoryId = id.GetId();
-                Logger.Debug($"Parsed category ID: {categoryId}");
+                Logger.LogDebug($"Parsed category ID: {categoryId}");
 
                 var productCategory = await ProductCategoryService.GetStorefrontCategoryPageViewModelAsync(
                     categoryId,
@@ -148,23 +144,23 @@ namespace EImece.Controllers
                     AppConfig.ProductDefaultRecordPerPage,
                     CurrentLanguage);
 
-                Logger.Debug($"Retrieved product category view model for ID: {categoryId}, Name: {productCategory?.CategoryDto?.Name}");
+                Logger.LogDebug($"Retrieved product category view model for ID: {categoryId}, Name: {productCategory?.CategoryDto?.Name}");
 
                 if (productCategory == null || productCategory.CategoryDto == null)
                 {
-                    Logger.Info($"ProductCategory with ID: {categoryId} was not found. Returning 404 NotFound.");
+                    Logger.LogInformation($"ProductCategory with ID: {categoryId} was not found. Returning 404 NotFound.");
                     return HttpNotFoundView();
                 }
                 if (!productCategory.CategoryDto.IsActive)
                 {
-                    Logger.Info($"ProductCategory with ID: {categoryId} is inactive. Returning 410 Gone.");
+                    Logger.LogInformation($"ProductCategory with ID: {categoryId} is inactive. Returning 410 Gone.");
                     return HttpGoneView(Resources.Resource.NotFoundText);
                 }
 
                 productCategory.SeoId = id;
                 ViewBag.SeoId = productCategory.CategoryDto.GetSeoUrl();
 
-                Logger.Debug("Returning Category view.");
+                Logger.LogDebug("Returning Category view.");
                 return View(productCategory);
             }
             catch (Exception ex)

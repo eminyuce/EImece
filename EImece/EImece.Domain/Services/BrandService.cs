@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using EImece.Domain.Caching;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
@@ -5,7 +6,6 @@ using EImece.Domain.Models.DTOs.Storefront;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
 using EImece.Domain.Abstractions;
-using NLog;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,15 +17,13 @@ namespace EImece.Domain.Services
     {
         private readonly IBrandRepository BrandRepository;
 
-        public BrandService(
-            IBrandRepository repository,
+        public BrandService(IBrandRepository repository,
             IEimeceCacheProvider dataCachingProvider,
             ISettingService settingService,
             IFileStorageService fileStorageService,
             ICurrentUserContext currentUserContext,
-            FilesHelper filesHelper)
-            : base(repository, dataCachingProvider, settingService, fileStorageService, currentUserContext, filesHelper)
-        {
+            FilesHelper filesHelper, ILogger<BrandService> logger)
+            : base(repository, dataCachingProvider, settingService, fileStorageService, currentUserContext, filesHelper, logger) {
             BrandRepository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 

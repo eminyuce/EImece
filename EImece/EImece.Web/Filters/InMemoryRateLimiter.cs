@@ -1,4 +1,6 @@
-using NLog;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
+using EImece.Domain.Observability.Logging;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -23,7 +25,9 @@ namespace EImece.Web.Filters
     /// </summary>
     public static class InMemoryRateLimiter
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private static ILogger Logger =>
+            LoggingBootstrap.LoggerFactory?.CreateLogger(typeof(InMemoryRateLimiter))
+            ?? NullLogger.Instance;
 
         private class ClientRequestRecord
         {
@@ -129,7 +133,7 @@ namespace EImece.Web.Filters
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Error occurred during in-memory rate limiter cleanup.");
+                Logger.LogError(ex, "Error occurred during in-memory rate limiter cleanup.");
             }
             finally
             {

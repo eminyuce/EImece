@@ -1,10 +1,10 @@
+using Microsoft.Extensions.Logging;
 using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Models.DTOs;
 using EImece.Domain.Observability.Telemetry;
 using EImece.Domain.Repositories.IRepositories;
-using NLog;
 using System;
 using System.Data.Entity;
 using System.Linq;
@@ -15,10 +15,7 @@ namespace EImece.Domain.Repositories
 {
     public class CustomerRepository : BaseEntityRepository<Customer>, ICustomerRepository
     {
-        protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
-        public CustomerRepository(IEImeceContext dbContext) : base(dbContext)
-        {
+        public CustomerRepository(IEImeceContext dbContext, ILogger<CustomerRepository> logger) : base(dbContext, logger) {
         }
 
         [Timed("repo.customers.get_by_user_sync")]

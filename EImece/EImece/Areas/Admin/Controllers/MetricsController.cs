@@ -6,6 +6,7 @@ using Griddly.Mvc.Results;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 using System.Web.Mvc;
 
 using EImece.Domain.Services.IServices;
@@ -18,8 +19,9 @@ namespace EImece.Areas.Admin.Controllers
 
         public MetricsController(
             ISettingService settingService,
-            IApplicationMetrics applicationMetrics)
-            : base(settingService)
+            IApplicationMetrics applicationMetrics,
+            ILogger<MetricsController> logger)
+            : base(settingService, logger)
         {
             _applicationMetrics = applicationMetrics ?? throw new ArgumentNullException(nameof(applicationMetrics));
         }

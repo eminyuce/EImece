@@ -1,4 +1,4 @@
-﻿using NLog;
+using Microsoft.Extensions.Logging;
 using Quartz;
 using System;
 using System.Threading;
@@ -8,19 +8,27 @@ namespace EImece.Domain.Scheduler.Jobs
 {
     public class HelloJob : IJob
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private readonly ILogger<HelloJob> _logger;
 
-        public async Task Execute(IJobExecutionContext context)
+        public HelloJob(ILogger<HelloJob> logger)
         {
-            JobKey key = context.JobDetail.Key;
-            JobDataMap dataMap = context.JobDetail.JobDataMap;
-            int JobId = dataMap.GetInt("EmailScheduleJob_JobId");
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        }
 
-            Logger.Info("WriteLog Executing for " + JobId + " CurrentThread: " + Thread.CurrentThread.ManagedThreadId);
-            // FIX: removed Task.Run for trivial synchronous work — it added pointless thread-pool
-            // scheduling overhead. Quartz already invokes Execute on a worker thread.
-            Console.WriteLine("Test");
-            await Task.CompletedTask;
+        public Task Execute(IJobExecutionContext context)
+        {
+            var jobId = context.JobDetail.JobDataMap.GetInt("EmailScheduleJob_JobId");
+            var executionId = Guid.NewGuid().ToString("N");
+
+            using (_logger.BeginScope(new { JobName = context.JobDetail.Key.Name, JobGroup = context.JobDetail.Key.Group, ExecutionId = executionId }))
+            {
+                _logger.LogInformation(
+                    "HelloJob executing {JobId} on thread {ThreadId}",
+                    jobId,
+                    Thread.CurrentThread.ManagedThreadId);
+            }
+
+            return Task.CompletedTask;
         }
     }
 }

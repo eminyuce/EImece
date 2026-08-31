@@ -1,9 +1,9 @@
+using Microsoft.Extensions.Logging;
 using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.Models.DTOs.Storefront;
 using EImece.Domain.Observability.Telemetry;
 using EImece.Domain.Repositories.IRepositories;
-using NLog;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -16,10 +16,7 @@ namespace EImece.Domain.Repositories
 {
     public class MainPageImageRepository : BaseContentRepository<MainPageImage>, IMainPageImageRepository
     {
-        protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
-        public MainPageImageRepository(IEImeceContext dbContext) : base(dbContext)
-        {
+        public MainPageImageRepository(IEImeceContext dbContext, ILogger<MainPageImageRepository> logger) : base(dbContext, logger) {
         }
 
         #region Storefront Read Methods (LINQ Projection, AsNoTracking, Main Entity Activation)

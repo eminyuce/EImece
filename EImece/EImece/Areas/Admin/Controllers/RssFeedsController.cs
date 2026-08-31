@@ -1,9 +1,9 @@
+using Microsoft.Extensions.Logging;
 using EImece.Web.Areas.Admin.Controllers;
 using EImece.Areas.Admin.Models;
 using EImece.Domain;
 using EImece.Domain.Helpers;
 using EImece.Domain.Models.Enums;
-using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,17 +17,13 @@ namespace EImece.Areas.Admin.Controllers
 {
     public class RssFeedsController : BaseAdminController
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
         protected IStoryCategoryService StoryCategoryService { get; }
         protected IProductCategoryService ProductCategoryService { get; }
 
-        public RssFeedsController(
-            ISettingService settingService,
+        public RssFeedsController(ISettingService settingService,
             IStoryCategoryService storyCategoryService,
-            IProductCategoryService productCategoryService)
-            : base(settingService)
-        {
+            IProductCategoryService productCategoryService, ILogger<RssFeedsController> logger)
+            : base(settingService, logger) {
             StoryCategoryService = storyCategoryService ?? throw new ArgumentNullException(nameof(storyCategoryService));
             ProductCategoryService = productCategoryService ?? throw new ArgumentNullException(nameof(productCategoryService));
         }
@@ -61,7 +57,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Warn(ex, "Story categories could not be loaded for RSS link builder.");
+                Logger.LogWarning(ex, "Story categories could not be loaded for RSS link builder.");
             }
 
             // Populate Product Categories for link builder dropdown
@@ -81,7 +77,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Warn(ex, "Product categories could not be loaded for RSS link builder.");
+                Logger.LogWarning(ex, "Product categories could not be loaded for RSS link builder.");
             }
 
             // Populate Languages

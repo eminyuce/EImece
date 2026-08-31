@@ -8,6 +8,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
+using Microsoft.Extensions.Logging;
 using System.Web.Mvc;
 
 namespace EImece.Areas.Admin.Controllers
@@ -20,8 +21,9 @@ namespace EImece.Areas.Admin.Controllers
         public ImagesController(
             ISettingService settingService,
             ICompressedImageExportService compressedImageExportService,
-            FilesHelper filesHelper)
-            : base(settingService)
+            FilesHelper filesHelper,
+            ILogger<ImagesController> logger)
+            : base(settingService, logger)
         {
             CompressedImageExportService = compressedImageExportService ?? throw new ArgumentNullException(nameof(compressedImageExportService));
             FilesHelper = filesHelper ?? throw new ArgumentNullException(nameof(filesHelper));

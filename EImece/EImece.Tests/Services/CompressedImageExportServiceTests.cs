@@ -1,3 +1,4 @@
+using EImece.Tests.Infrastructure;
 using EImece.Areas.Admin.Controllers;
 using EImece.Domain.Helpers;
 using EImece.Domain.Models.AdminModels;
@@ -132,7 +133,7 @@ namespace EImece.Tests.Services
             }
 
             var proxy = new FakeImageExportRepositoryProxy();
-            var service = new CompressedImageExportService(proxy.Repository);
+            var service = new CompressedImageExportService(proxy.Repository, TestNullLoggers.Create<CompressedImageExportService>());
 
             // Act
             var result = await service.ExportCompressedImagesAsync(_tempDirectory, 70L, CancellationToken.None);
@@ -198,7 +199,7 @@ namespace EImece.Tests.Services
             }
 
             var proxy = new FakeImageExportRepositoryProxy();
-            var service = new CompressedImageExportService(proxy.Repository);
+            var service = new CompressedImageExportService(proxy.Repository, TestNullLoggers.Create<CompressedImageExportService>());
 
             // Act
             var result = await service.ExportCompressedImagesAsync(_tempDirectory, 70L, CancellationToken.None);
@@ -222,7 +223,7 @@ namespace EImece.Tests.Services
             // Arrange
             string nonExistentPath = Path.Combine(_tempDirectory, "non_existent_folder");
             var proxy = new FakeImageExportRepositoryProxy();
-            var service = new CompressedImageExportService(proxy.Repository);
+            var service = new CompressedImageExportService(proxy.Repository, TestNullLoggers.Create<CompressedImageExportService>());
 
             // Act
             var result = await service.ExportCompressedImagesAsync(nonExistentPath, 70L, CancellationToken.None);
@@ -270,7 +271,8 @@ namespace EImece.Tests.Services
             var controller = new EImece.Areas.Admin.Controllers.ImagesController(
                 new FakeSettingServiceProxy().Service,
                 new FakeImageExportService(),
-                new FilesHelper(null));
+                new FilesHelper(null),
+                TestNullLoggers.Create<ImagesController>());
 
             // Act
             var actionResult = await controller.DownloadCompressedImages(CancellationToken.None);

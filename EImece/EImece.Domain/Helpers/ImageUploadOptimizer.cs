@@ -1,8 +1,8 @@
+using Microsoft.Extensions.Logging;
 using EImece.Domain.Services.IServices;
 using ImageProcessor;
 using ImageProcessor.Imaging.Formats;
 using ImageProcessor.Plugins.WebP.Imaging.Formats;
-using NLog;
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -20,7 +20,9 @@ namespace EImece.Domain.Helpers
     /// </summary>
     public static class ImageUploadOptimizer
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private static ILogger Logger =>
+            Observability.Logging.LoggingBootstrap.LoggerFactory?.CreateLogger(typeof(ImageUploadOptimizer))
+            ?? Microsoft.Extensions.Logging.Abstractions.NullLogger.Instance;
 
         public const string MimeJpeg = MediaTypeNames.Image.Jpeg;
         public const string MimePng = "image/png";
@@ -98,7 +100,7 @@ namespace EImece.Domain.Helpers
 
                 if (IsAnimatedGif(original))
                 {
-                    Logger.Info("Skipping re-encode of animated GIF ({0} bytes, {1}x{2}) to preserve frames.", source.Length, origW, origH);
+                    Logger.LogInformation("Skipping re-encode of animated GIF ({0} bytes, {1}x{2}) to preserve frames.", source.Length, origW, origH);
                     return KeepOriginal(source, origW, origH, sourceExt, options.SourceMimeType, MimeGif, ".gif");
                 }
 
@@ -136,7 +138,7 @@ namespace EImece.Domain.Helpers
                         && !mustConvert
                         && encoded.Length >= source.Length)
                     {
-                        Logger.Debug("Keeping original bytes; re-encode was not smaller ({0} -> {1}).", source.Length, encoded.Length);
+                        Logger.LogDebug("Keeping original bytes; re-encode was not smaller ({0} -> {1}).", source.Length, encoded.Length);
                         return KeepOriginal(source, origW, origH, sourceExt, options.SourceMimeType, mime, ext);
                     }
 
@@ -333,7 +335,7 @@ namespace EImece.Domain.Helpers
             }
             catch (Exception ex)
             {
-                Logger.Warn(ex, "WebP encode failed; using JPEG/PNG instead.");
+                Logger.LogWarning(ex, "WebP encode failed; using JPEG/PNG instead.");
                 return null;
             }
         }
@@ -400,7 +402,7 @@ namespace EImece.Domain.Helpers
             }
             catch (Exception ex)
             {
-                Logger.Debug(ex, "GDI+ failed to load image; trying ImageProcessor.");
+                Logger.LogDebug(ex, "GDI+ failed to load image; trying ImageProcessor.");
             }
 
             try

@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository;
@@ -8,7 +9,6 @@ using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Observability.Telemetry;
 using EImece.Domain.Repositories.IRepositories;
-using NLog;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -25,10 +25,10 @@ namespace EImece.Domain.Repositories
 {
     public class ProductRepository : BaseContentRepository<Product>, IProductRepository
     {
-        protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private readonly ILogger<ProductRepository> _logger;
 
-        public ProductRepository(IEImeceContext dbContext) : base(dbContext)
-        {
+        public ProductRepository(IEImeceContext dbContext, ILogger<ProductRepository> logger) : base(dbContext, logger) {
+            _logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
         }
 
         public PaginatedList<Product> GetActiveProducts(int pageIndex, int pageSize, int language)
@@ -54,7 +54,7 @@ namespace EImece.Domain.Repositories
             }
             catch (Exception exception)
             {
-                Logger.Error(exception, exception.Message);
+                _logger.LogError(exception, exception.Message);
                 throw;
             }
         }
@@ -82,7 +82,7 @@ namespace EImece.Domain.Repositories
             }
             catch (Exception exception)
             {
-                Logger.Error(exception, "GetActiveProductsAsync failed.");
+                _logger.LogError(exception, "GetActiveProductsAsync failed.");
                 throw new InvalidOperationException("GetActiveProductsAsync failed.", exception);
             }
         }
@@ -121,7 +121,7 @@ namespace EImece.Domain.Repositories
             }
             catch (Exception exception)
             {
-                Logger.Error(exception, "GetMainPageProducts failed.");
+                _logger.LogError(exception, "GetMainPageProducts failed.");
                 throw new InvalidOperationException("GetMainPageProducts failed.", exception);
             }
         }
@@ -686,7 +686,7 @@ namespace EImece.Domain.Repositories
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, ex.Message);
+                _logger.LogError(ex, ex.Message);
             }
             finally
             {
@@ -781,7 +781,7 @@ namespace EImece.Domain.Repositories
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, ex.Message);
+                _logger.LogError(ex, ex.Message);
             }
             finally
             {

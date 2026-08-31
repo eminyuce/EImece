@@ -1,9 +1,9 @@
+using Microsoft.Extensions.Logging;
 using EImece.Domain;
 using EImece.Domain.DependencyInjection;
 using EImece.Domain.Helpers;
 using EImece.Web.Filters;
 using EImece.Domain.Services.IServices;
-using NLog;
 using System;
 using System.Net.Mime;
 using System.Text;
@@ -14,12 +14,13 @@ namespace EImece.Controllers
 {
     public class RobotController : Controller
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private readonly ILogger<RobotController> _logger;
 
         private readonly ISettingService SettingService;
 
-        public RobotController(ISettingService settingService)
-        {
+        public RobotController(ISettingService settingService, ILogger<RobotController> logger)
+         {
+            _logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
             SettingService = settingService ?? throw new ArgumentNullException(nameof(settingService));
         }
 
@@ -48,13 +49,13 @@ namespace EImece.Controllers
 
             if (!SeoSettings.AllowIndexing)
             {
-                Logger.Debug("Search engine indexing is disabled. Setting robots.txt to disallow all.");
+                _logger.LogDebug("Search engine indexing is disabled. Setting robots.txt to disallow all.");
                 sb.AppendLine(Constants.RobotsUserAgentAll)
                   .AppendLine("Disallow: /");
             }
             else if (isUnderConstruction || AppConfig.IsSiteUnderDevelopment)
             {
-                Logger.Debug("Site is under construction or development. Setting robots.txt to disallow all.");
+                _logger.LogDebug("Site is under construction or development. Setting robots.txt to disallow all.");
                 sb.AppendLine(Constants.RobotsUserAgentAll)
                   .AppendLine("Disallow: /")
                   .AppendLine("# Disallow Robots (Debug)");

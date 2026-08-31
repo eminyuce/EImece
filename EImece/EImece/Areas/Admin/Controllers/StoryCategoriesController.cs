@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using EImece.Web.Areas.Admin.Controllers;
 using EImece.Domain.Entities;
 using EImece.Web.Helpers;
@@ -6,7 +7,6 @@ using EImece.Web.Filters;
 using EImece.Domain.Models.Enums;
 using Griddly.Mvc;
 using Griddly.Mvc.Results;
-using NLog;
 using Resources;
 using System;
 using System.Data;
@@ -25,21 +25,17 @@ namespace EImece.Areas.Admin.Controllers
 {
     public class StoryCategoriesController : BaseAdminController
     {
-        protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
         protected IStoryCategoryService StoryCategoryService { get; }
         protected IMenuService MenuService { get; }
         protected IEntityFactory EntityFactory { get; }
         protected FilesHelper FilesHelper { get; }
 
-        public StoryCategoriesController(
-            ISettingService settingService,
+        public StoryCategoriesController(ISettingService settingService,
             IStoryCategoryService storyCategoryService,
             IMenuService menuService,
             IEntityFactory entityFactory,
-            FilesHelper filesHelper)
-            : base(settingService)
-        {
+            FilesHelper filesHelper, ILogger<StoryCategoriesController> logger)
+            : base(settingService, logger) {
             StoryCategoryService = storyCategoryService ?? throw new ArgumentNullException(nameof(storyCategoryService));
             MenuService = menuService ?? throw new ArgumentNullException(nameof(menuService));
             EntityFactory = entityFactory ?? throw new ArgumentNullException(nameof(entityFactory));
@@ -128,7 +124,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Unable to save changes:" + ex.StackTrace, storyCategory);
+                Logger.LogError(ex, "Unable to save changes:" + ex.StackTrace, storyCategory);
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace + ex.Message);
             }
             RemoveModelState();
@@ -158,7 +154,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Unable to delete product:" + ex.StackTrace, StoryCategory);
+                Logger.LogError(ex, "Unable to delete product:" + ex.StackTrace, StoryCategory);
                 SetErrorMessage();
                 return ReturnIndexIfNotUrlReferrer("Index");
             }

@@ -1,10 +1,10 @@
+using Microsoft.Extensions.Logging;
 using EImece.Web.Areas.Admin.Controllers;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Web.Filters;
 using Griddly.Mvc;
 using Griddly.Mvc.Results;
-using NLog;
 using Resources;
 using System;
 using System.Globalization;
@@ -21,23 +21,19 @@ namespace EImece.Areas.Admin.Controllers
 {
     public class CouponsController : BaseAdminController
     {
-        protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
         protected ICouponService CouponService { get; }
         protected IEntityFactory EntityFactory { get; }
         protected ICustomerService CustomerService { get; }
         protected IProductService ProductService { get; }
         protected IProductCategoryService ProductCategoryService { get; }
 
-        public CouponsController(
-            ISettingService settingService,
+        public CouponsController(ISettingService settingService,
             ICouponService couponService,
             IEntityFactory entityFactory,
             ICustomerService customerService,
             IProductService productService,
-            IProductCategoryService productCategoryService)
-            : base(settingService)
-        {
+            IProductCategoryService productCategoryService, ILogger<CouponsController> logger)
+            : base(settingService, logger) {
             CouponService = couponService ?? throw new ArgumentNullException(nameof(couponService));
             EntityFactory = entityFactory ?? throw new ArgumentNullException(nameof(entityFactory));
             CustomerService = customerService ?? throw new ArgumentNullException(nameof(customerService));
@@ -96,7 +92,7 @@ namespace EImece.Areas.Admin.Controllers
                         var recent = await CouponService.GetRecentRedemptionsAsync(id, 20, cancellationToken).ConfigureAwait(false);
                         ViewBag.Redemptions = recent;
                     }
-                    catch (Exception ex) { Logger.Warn(ex, "Failed to load coupon details"); }
+                    catch (Exception ex) { Logger.LogWarning(ex, "Failed to load coupon details"); }
                 }
             }
             try
@@ -107,14 +103,14 @@ namespace EImece.Areas.Admin.Controllers
                 var categories = await ProductCategoryService.SearchEntitiesAsync(r => r.Name.Contains(""), "", CurrentLanguage).ConfigureAwait(false);
                 ViewBag.AllCategories = categories.OrderBy(c => c.Name).Select(c => new { c.Id, c.Name }).Take(500).ToList();
             }
-            catch (Exception ex) { Logger.Warn(ex, "Failed to load product/category lookups"); ViewBag.AllProducts = new object[0]; ViewBag.AllCategories = new object[0]; }
+            catch (Exception ex) { Logger.LogWarning(ex, "Failed to load product/category lookups"); ViewBag.AllProducts = new object[0]; ViewBag.AllCategories = new object[0]; }
             try
             {
                 ViewBag.AllCustomers = await CustomerService.GetAllAsync().ConfigureAwait(false);
             }
             catch (Exception ex)
             {
-                Logger.Warn(ex, "Failed to load customer lookup");
+                Logger.LogWarning(ex, "Failed to load customer lookup");
                 ViewBag.AllCustomers = new EImece.Domain.Entities.Customer[0];
             }
             return View(content);
@@ -142,7 +138,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Unable to save changes:" + ex.StackTrace, coupon);
+                Logger.LogError(ex, "Unable to save changes:" + ex.StackTrace, coupon);
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace + ex.Message);
             }
             await PopulateCouponEditViewBagsAsync(coupon);
@@ -172,7 +168,7 @@ namespace EImece.Areas.Admin.Controllers
         private async Task TrySaveRestrictionsAsync(Coupon coupon)
         {
             try { await CouponService.SaveCouponRestrictionsAsync(coupon.Id, coupon.ProductIdsCsv, coupon.CategoryIdsCsv).ConfigureAwait(false); }
-            catch (Exception ex) { Logger.Warn(ex, "Failed to save coupon restrictions"); }
+            catch (Exception ex) { Logger.LogWarning(ex, "Failed to save coupon restrictions"); }
         }
 
         private static bool ShouldRedirectToIndex(string saveButton)
@@ -204,7 +200,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch { }
             try { ViewBag.AllCustomers = await CustomerService.GetAllAsync().ConfigureAwait(false); }
-            catch (Exception ex) { Logger.Warn(ex, "Failed to load customer lookup"); ViewBag.AllCustomers = new EImece.Domain.Entities.Customer[0]; }
+            catch (Exception ex) { Logger.LogWarning(ex, "Failed to load customer lookup"); ViewBag.AllCustomers = new EImece.Domain.Entities.Customer[0]; }
         }
 
         [HttpGet]
@@ -264,7 +260,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Unable to delete product:" + ex.StackTrace, item);
+                Logger.LogError(ex, "Unable to delete product:" + ex.StackTrace, item);
                 SetErrorMessage();
                 return ReturnIndexIfNotUrlReferrer("Index");
             }

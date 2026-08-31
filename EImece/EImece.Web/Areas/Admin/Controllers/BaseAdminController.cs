@@ -9,7 +9,7 @@ using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
-using NLog;
+using Microsoft.Extensions.Logging;
 using Resources;
 using System;
 using System.Collections.Generic;
@@ -36,13 +36,14 @@ namespace EImece.Web.Areas.Admin.Controllers
     [AuthorizeRoles(DomainConstants.AdministratorRole, DomainConstants.EditorRole)]
     public abstract class BaseAdminController : Controller
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        protected readonly ILogger Logger;
 
         protected ISettingService SettingService { get; }
 
-        protected BaseAdminController(ISettingService settingService)
+        protected BaseAdminController(ISettingService settingService, ILogger logger)
         {
             SettingService = settingService ?? throw new ArgumentNullException(nameof(settingService));
+            Logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         #region Exception & Lifecycle Filters
@@ -60,7 +61,7 @@ namespace EImece.Web.Areas.Admin.Controllers
             var action = filterContext.RouteData?.Values["action"]?.ToString() ?? "";
             var correlationId = CorrelationIdContext.Current ?? CorrelationIdContext.Ensure();
 
-            Logger.Error(ex, "Admin exception in {0}/{1} (CorrelationId: {2}): {3}", controller, action, correlationId, ex.Message);
+            Logger.LogError(ex, "Admin exception in {0}/{1} (CorrelationId: {2}): {3}", controller, action, correlationId, ex.Message);
 
             if (!filterContext.ExceptionHandled)
             {

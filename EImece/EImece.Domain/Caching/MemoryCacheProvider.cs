@@ -1,5 +1,5 @@
+using Microsoft.Extensions.Logging;
 ﻿using EImece.Domain.Abstractions;
-using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,13 +10,14 @@ namespace EImece.Domain.Caching
 {
     public class MemoryCacheProvider : IEimeceCacheProvider
     {
-        protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private readonly ILogger<MemoryCacheProvider> _logger;
+
         private const string PhysicalKeyPrefix = "Memory:";
         private readonly MemoryCache _cache = MemoryCache.Default;
         private readonly IHttpRuntimeCacheClearer _httpRuntimeCacheClearer;
 
-        public MemoryCacheProvider(IHttpRuntimeCacheClearer httpRuntimeCacheClearer = null)
-        {
+        public MemoryCacheProvider(ILogger<MemoryCacheProvider> logger, IHttpRuntimeCacheClearer httpRuntimeCacheClearer = null)
+         {
             _httpRuntimeCacheClearer = httpRuntimeCacheClearer;
         }
 
@@ -192,7 +193,7 @@ namespace EImece.Domain.Caching
             int httpRuntimeRemoved;
             int memoryCacheRemoved;
             ApplicationCacheClearer.ClearAspNetCaches(_httpRuntimeCacheClearer, out httpRuntimeRemoved, out memoryCacheRemoved);
-            Logger.Info(
+            _logger.LogInformation(
                 "MemoryCacheProvider.ClearAll removed {0} data keys (+ {1} HttpRuntime, {2} MemoryCache.Default)",
                 cacheKeys.Count,
                 httpRuntimeRemoved,

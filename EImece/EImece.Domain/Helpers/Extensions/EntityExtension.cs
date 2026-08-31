@@ -1,9 +1,10 @@
+using EImece.Domain.Observability.Logging;
+using Microsoft.Extensions.Logging;
 using EImece.Domain.DependencyInjection;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Services.IServices;
-using NLog;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,8 +16,9 @@ namespace EImece.Domain.Helpers.Extensions
 {
     public static class EntityExtension
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
+        private static ILogger Logger =>
+            LoggingBootstrap.LoggerFactory?.CreateLogger(typeof(EntityExtension))
+            ?? Microsoft.Extensions.Logging.Abstractions.NullLogger.Instance;
         public static SyndicationItem GetStorySyndicationItem(this Story product, string categoryName, string url, RssParams rssParams)
         {
             String link = String.Format("{0}", product.GetDetailPageUrl(Constants.DetailAction, Constants.StoriesAction, categoryName,
@@ -53,7 +55,7 @@ namespace EImece.Domain.Helpers.Extensions
                     }
                     catch (Exception e)
                     {
-                        Logger.Error(e, e.Message + " : " + String.Format("url={0} imageSrc={1}", url, imageSrc));
+                        Logger.LogError(e, e.Message + " : " + String.Format("url={0} imageSrc={1}", url, imageSrc));
                     }
                 }
             }
@@ -143,7 +145,7 @@ namespace EImece.Domain.Helpers.Extensions
                     }
                     catch (Exception e)
                     {
-                        Logger.Error(e, e.Message + " : " + String.Format("url={0} imageSrc={1}", url, imageSrc));
+                        Logger.LogError(e, e.Message + " : " + String.Format("url={0} imageSrc={1}", url, imageSrc));
                     }
                 }
             }
@@ -342,7 +344,7 @@ namespace EImece.Domain.Helpers.Extensions
             }
             catch (Exception e)
             {
-                Logger.Error(e.Message);
+                Logger.LogError(e.Message);
             }
 
             return String.Empty;
@@ -651,7 +653,7 @@ namespace EImece.Domain.Helpers.Extensions
             }
             catch (Exception ex)
             {
-                Logger.Debug(ex, "TryGetStaticThumbnailUrl fallback to resize proxy for fileStorageId={0}", fileStorageId);
+                Logger.LogDebug(ex, "TryGetStaticThumbnailUrl fallback to resize proxy for fileStorageId={0}", fileStorageId);
                 return null;
             }
         }

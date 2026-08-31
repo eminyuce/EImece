@@ -1,9 +1,9 @@
+using Microsoft.Extensions.Logging;
 using EImece.Domain.Caching;
 using EImece.Domain.Entities;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
 using EImece.Domain.DependencyInjection;
-using NLog;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -13,17 +13,13 @@ namespace EImece.Domain.Services
 {
     public class ListService : BaseEntityService<List>, IListService
     {
-        protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
         private readonly IListItemRepository ListItemRepository;
         private readonly IListRepository ListRepository;
 
-        public ListService(
-            IListRepository repository,
+        public ListService(IListRepository repository,
             IEimeceCacheProvider dataCachingProvider,
-            IListItemRepository listItemRepository)
-            : base(repository, dataCachingProvider)
-        {
+            IListItemRepository listItemRepository, ILogger<ListService> logger)
+            : base(repository, dataCachingProvider, logger) {
             ListRepository = repository ?? throw new ArgumentNullException(nameof(repository));
             ListItemRepository = listItemRepository ?? throw new ArgumentNullException(nameof(listItemRepository));
         }

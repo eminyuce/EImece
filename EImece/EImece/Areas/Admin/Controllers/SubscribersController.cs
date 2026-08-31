@@ -8,6 +8,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using System.Web.Mvc;
 
 using EImece.Domain.Services.IServices;
@@ -20,8 +21,9 @@ namespace EImece.Areas.Admin.Controllers
 
         public SubscribersController(
             ISettingService settingService,
-            ISubscriberService subscriberService)
-            : base(settingService)
+            ISubscriberService subscriberService,
+            ILogger<SubscribersController> logger)
+            : base(settingService, logger)
         {
             SubscriberService = subscriberService ?? throw new ArgumentNullException(nameof(subscriberService));
         }

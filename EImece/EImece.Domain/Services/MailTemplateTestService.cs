@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.EmailHelper;
@@ -5,7 +6,6 @@ using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Services.IServices;
 using EImece.Domain.DependencyInjection;
-using NLog;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -16,19 +16,19 @@ namespace EImece.Domain.Services
 {
     public class MailTemplateTestService : IMailTemplateTestService
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private readonly ILogger<MailTemplateTestService> _logger;
 
         private readonly IMailTemplateService MailTemplateService;
         private readonly ISettingService SettingService;
         private readonly IEmailSender EmailSender;
         private readonly IRazorTemplateEngine RazorTemplateEngine;
 
-        public MailTemplateTestService(
-            IMailTemplateService mailTemplateService,
+        public MailTemplateTestService(IMailTemplateService mailTemplateService,
             ISettingService settingService,
             IEmailSender emailSender,
-            IRazorTemplateEngine razorTemplateEngine)
-        {
+            IRazorTemplateEngine razorTemplateEngine, ILogger<MailTemplateTestService> logger)
+         {
+            _logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
             MailTemplateService = mailTemplateService ?? throw new ArgumentNullException(nameof(mailTemplateService));
             SettingService = settingService ?? throw new ArgumentNullException(nameof(settingService));
             EmailSender = emailSender ?? throw new ArgumentNullException(nameof(emailSender));
@@ -82,7 +82,7 @@ namespace EImece.Domain.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Failed to load SMTP account for mail template test.");
+                _logger.LogError(ex, "Failed to load SMTP account for mail template test.");
                 return Fail("SMTP hesabı okunamadı. Sistem Ayarları > SMTP sekmesini kontrol edin.");
             }
 
@@ -133,7 +133,7 @@ namespace EImece.Domain.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Failed to send test email for MailTemplate Id={0} to {1}", template.Id, recipient);
+                _logger.LogError(ex, "Failed to send test email for MailTemplate Id={0} to {1}", template.Id, recipient);
                 return Fail("E-posta gönderilemedi: " + ex.ToFormattedString());
             }
 

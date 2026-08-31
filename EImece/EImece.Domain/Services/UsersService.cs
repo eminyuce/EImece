@@ -1,10 +1,10 @@
+using Microsoft.Extensions.Logging;
 using EImece.Domain.DependencyInjection;
 using EImece.Domain.Helpers;
 using EImece.Domain.Observability.Telemetry;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
 using EImece.Models;
-using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,19 +15,19 @@ namespace EImece.Domain.Services
 {
     public class UsersService : IUsersService
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private readonly ILogger<UsersService> _logger;
 
         private readonly IUserRepository _userRepository;
         public ApplicationUserManager UserManager { get; }
         private readonly ICustomerService CustomerService;
         private readonly IOrderService OrderService;
 
-        public UsersService(
-            IUserRepository userRepository,
+        public UsersService(IUserRepository userRepository,
             ApplicationUserManager userManager,
             ICustomerService customerService,
-            IOrderService orderService)
-        {
+            IOrderService orderService, ILogger<UsersService> logger)
+         {
+            _logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
             _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
             UserManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
             CustomerService = customerService ?? throw new ArgumentNullException(nameof(customerService));
@@ -45,7 +45,7 @@ namespace EImece.Domain.Services
             var user = _userRepository.GetById(id);
             if (user == null)
             {
-                Logger.Debug("User is null for userId " + id);
+                _logger.LogDebug("User is null for userId " + id);
             }
             return user;
         }
@@ -61,7 +61,7 @@ namespace EImece.Domain.Services
             var user = await _userRepository.GetByIdAsync(id).ConfigureAwait(false);
             if (user == null)
             {
-                Logger.Debug("User is null for userId " + id);
+                _logger.LogDebug("User is null for userId " + id);
             }
             return user;
         }
@@ -195,7 +195,7 @@ namespace EImece.Domain.Services
                 return deleted;
             }
 
-            Logger.Debug($"DeleteUsersAsync called for {userIds.Count} userIds");
+            _logger.LogDebug($"DeleteUsersAsync called for {userIds.Count} userIds");
             foreach (var userId in userIds.Where(v => !string.IsNullOrWhiteSpace(v)).Distinct(StringComparer.OrdinalIgnoreCase))
             {
                 if (!string.IsNullOrEmpty(currentUserId)
@@ -231,7 +231,7 @@ namespace EImece.Domain.Services
                 deleted.Add(userId);
             }
 
-            Logger.Info($"DeleteUsersAsync finished. Total deleted: {deleted.Count}");
+            _logger.LogInformation($"DeleteUsersAsync finished. Total deleted: {deleted.Count}");
             return deleted;
         }
 

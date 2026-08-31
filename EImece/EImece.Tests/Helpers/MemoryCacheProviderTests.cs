@@ -1,4 +1,5 @@
 using EImece.Domain.Caching;
+using EImece.Tests.Infrastructure;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Threading;
@@ -14,7 +15,7 @@ namespace EImece.Tests.Helpers
         [TestInitialize]
         public void Init()
         {
-            _cache = new MemoryCacheProvider();
+            _cache = new MemoryCacheProvider(TestNullLoggers.Create<MemoryCacheProvider>());
             _prefix = "test:perf:" + Guid.NewGuid().ToString("N") + ":";
         }
 

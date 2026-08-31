@@ -1,8 +1,8 @@
+using Microsoft.Extensions.Logging;
 ﻿using EImece.Domain.Caching;
 using EImece.Domain.Entities;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
-using NLog;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -12,11 +12,9 @@ namespace EImece.Domain.Services
 {
     public class ProductCommentService : BaseEntityService<ProductComment>, IProductCommentService
     {
-        protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private IProductCommentRepository ProductCommentRepository { get; set; }
 
-        public ProductCommentService(IProductCommentRepository repository) : base(repository)
-        {
+        public ProductCommentService(IProductCommentRepository repository, ILogger<ProductCommentService> logger) : base(repository, logger) {
             ProductCommentRepository = repository;
         }
 

@@ -31,10 +31,11 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Owin.Security;
-using NLog.Extensions.Logging;
+using EImece.Domain.Observability.Logging;
 using Quartz;
 using Quartz.Impl;
 using EImece.Domain.Scheduler;
+using EImece.Domain.Scheduler.Jobs;
 using System;
 using System.Web;
 using System.Web.Http;
@@ -176,6 +177,9 @@ namespace EImece.App_Start
                     sp.GetRequiredService<IApplicationMetrics>(),
                     sp.GetRequiredService<ObservabilityOptions>()));
 
+            services.AddSingleton<RequestLoggingActionFilter>();
+            services.AddSingleton<StructuredExceptionFilter>();
+
             // Multiple IHealthCheck implementations — GetServices / IEnumerable<IHealthCheck> returns all.
             services.AddSingleton<IHealthCheck>(sp => PropertyInjector.Create<SqlServerHealthCheck>(sp));
             services.AddSingleton<IHealthCheck>(sp => PropertyInjector.Create<FileStorageHealthCheck>(sp));
@@ -189,14 +193,14 @@ namespace EImece.App_Start
 
         private static void RegisterLogging(IServiceCollection services)
         {
-            services.AddSingleton<ILoggerFactory>(_ =>
+            services.AddSingleton(_ => LoggingOptions.FromAppConfig());
+
+            services.AddSingleton<ILoggerFactory>(sp =>
             {
-                var factory = new LoggerFactory();
-                factory.AddProvider(new NLogLoggerProvider());
-                return factory;
+                var options = sp.GetRequiredService<LoggingOptions>();
+                return LoggingBootstrap.Configure(options);
             });
 
-            // Open-generic ILogger<T> (covers ResilientHttpClient and any other consumers).
             services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
         }
 
@@ -414,9 +418,16 @@ namespace EImece.App_Start
 
         private static void RegisterScheduler(IServiceCollection services)
         {
-            // Resolve once at startup via GetAwaiter().GetResult() — same as Ninject singleton binding.
-            services.AddSingleton<IScheduler>(_ =>
-                new StdSchedulerFactory().GetScheduler().GetAwaiter().GetResult());
+            services.AddTransient<HelloJob>();
+            services.AddTransient<ClearExpiredShoppingCartsJob>();
+            services.AddTransient<ClearLogsFromDbJob>();
+
+            services.AddSingleton<IScheduler>(sp =>
+            {
+                var scheduler = new StdSchedulerFactory().GetScheduler().GetAwaiter().GetResult();
+                scheduler.JobFactory = new MsDiJobFactory(sp);
+                return scheduler;
+            });
             services.AddSingletonWithProps<AdminQuartzService>();
             services.AddSingletonWithProps<UserQuartzService>();
             services.AddSingletonWithProps<QuartzService>();

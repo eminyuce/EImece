@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using System.Web.Mvc;
 
 namespace EImece.Areas.Admin.Controllers
@@ -26,8 +27,9 @@ namespace EImece.Areas.Admin.Controllers
             ISettingService settingService,
             ICustomerService customerService,
             IOrderService orderService,
-            IShoppingCartService shoppingCartService)
-            : base(settingService)
+            IShoppingCartService shoppingCartService,
+            ILogger<CustomersController> logger)
+            : base(settingService, logger)
         {
             CustomerService = customerService ?? throw new ArgumentNullException(nameof(customerService));
             OrderService = orderService ?? throw new ArgumentNullException(nameof(orderService));

@@ -1,3 +1,4 @@
+using EImece.Tests.Infrastructure;
 using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.Models.DTOs;
@@ -47,7 +48,7 @@ namespace EImece.Tests.Services
         {
             public List<Address> SavedAddresses { get; } = new List<Address>();
 
-            public FakeAddressService() : base(new AddressRepository(new FakeDbContextProxy().Context)) { }
+            public FakeAddressService() : base(new AddressRepository(new FakeDbContextProxy().Context, TestNullLoggers.Create<AddressRepository>()), TestNullLoggers.Create<AddressService>()) { }
 
             public override Address SaveOrEditEntity(Address entity)
             {
@@ -67,7 +68,7 @@ namespace EImece.Tests.Services
             public List<Customer> SavedCustomers { get; } = new List<Customer>();
             public List<string> NormalCustomerUserIds { get; } = new List<string>();
 
-            public FakeCustomerService() : base(new CustomerRepository(new FakeDbContextProxy().Context), null, null, null, null, null) { }
+            public FakeCustomerService() : base(new CustomerRepository(new FakeDbContextProxy().Context, TestNullLoggers.Create<CustomerRepository>()), TestNullLoggers.Create<CustomerService>()) { }
 
             public override Customer SaveOrEditEntity(Customer entity)
             {
@@ -97,7 +98,7 @@ namespace EImece.Tests.Services
         {
             public List<Order> SavedOrders { get; } = new List<Order>();
 
-            public FakeOrderService() : base(new OrderRepository(new FakeDbContextProxy().Context), null, null, null) { }
+            public FakeOrderService() : base(new OrderRepository(new FakeDbContextProxy().Context, TestNullLoggers.Create<OrderRepository>()), TestNullLoggers.Create<OrderService>()) { }
 
             public override Order SaveOrEditEntity(Order entity)
             {
@@ -117,7 +118,7 @@ namespace EImece.Tests.Services
             public List<OrderProduct> SavedOrderProducts { get; } = new List<OrderProduct>();
             public bool ShouldThrowOnSave { get; set; }
 
-            public FakeOrderProductService() : base(new OrderProductRepository(new FakeDbContextProxy().Context)) { }
+            public FakeOrderProductService() : base(new OrderProductRepository(new FakeDbContextProxy().Context), TestNullLoggers.Create<OrderProductService>()) { }
 
             public override OrderProduct SaveOrEditEntity(OrderProduct entity)
             {
@@ -140,7 +141,7 @@ namespace EImece.Tests.Services
         {
             public List<Tuple<int, int>> DecreasedStocks { get; } = new List<Tuple<int, int>>();
 
-            public FakeProductService() : base(new ProductRepository(new FakeDbContextProxy().Context), null, null, null, null, null, null, null, null, null, null, null, null, null, null, null) { }
+            public FakeProductService() : base(new ProductRepository(new FakeDbContextProxy().Context, TestNullLoggers.Create<ProductRepository>()), null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, TestNullLoggers.Create<ProductService>()) { }
 
             public override void DecreaseStock(int productId, int quantity)
             {
@@ -156,7 +157,7 @@ namespace EImece.Tests.Services
 
         private class FakeShoppingCartRepository : ShoppingCartRepository
         {
-            public FakeShoppingCartRepository() : base(new FakeDbContextProxy().Context) { }
+            public FakeShoppingCartRepository() : base(new FakeDbContextProxy().Context, TestNullLoggers.Create<ShoppingCartRepository>()) { }
 
             public override EImece.Domain.GenericRepository.EntityFramework.EntitiesContext GetDbContext() => null;
 

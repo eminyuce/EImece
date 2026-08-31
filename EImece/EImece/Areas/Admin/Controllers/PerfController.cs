@@ -8,6 +8,7 @@ using Griddly.Mvc.Results;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 using System.Web.Mvc;
 using DomainConstants = EImece.Domain.Constants;
 
@@ -20,8 +21,8 @@ namespace EImece.Areas.Admin.Controllers
     [AuthorizeRoles(DomainConstants.AdministratorRole)]
     public class PerfController : BaseAdminController
     {
-        public PerfController(ISettingService settingService)
-            : base(settingService)
+        public PerfController(ISettingService settingService, ILogger<PerfController> logger)
+            : base(settingService, logger)
         {
         }
 

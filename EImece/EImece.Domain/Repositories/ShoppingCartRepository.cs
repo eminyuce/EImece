@@ -1,9 +1,9 @@
+using Microsoft.Extensions.Logging;
 using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Observability.Telemetry;
-using NLog;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -18,10 +18,7 @@ namespace EImece.Domain.Repositories
 {
     public class ShoppingCartRepository : BaseEntityRepository<ShoppingCart>, IShoppingCartRepository
     {
-        protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
-        public ShoppingCartRepository(IEImeceContext dbContext) : base(dbContext)
-        {
+        public ShoppingCartRepository(IEImeceContext dbContext, ILogger<ShoppingCartRepository> logger) : base(dbContext, logger) {
         }
 
         [Timed("repo.shopping_cart.get_admin_page_list_sync")]

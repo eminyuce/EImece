@@ -1,9 +1,9 @@
+using Microsoft.Extensions.Logging;
 using EImece.Web.Areas.Admin.Controllers;
 using EImece.Domain.Entities;
 using EImece.Web.Filters;
 using Griddly.Mvc;
 using Griddly.Mvc.Results;
-using NLog;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
@@ -17,15 +17,11 @@ namespace EImece.Areas.Admin.Controllers
 {
     public class OrdersController : BaseAdminController
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
         protected IOrderService OrderService { get; }
 
-        public OrdersController(
-            ISettingService settingService,
-            IOrderService orderService)
-            : base(settingService)
-        {
+        public OrdersController(ISettingService settingService,
+            IOrderService orderService, ILogger<OrdersController> logger)
+            : base(settingService, logger) {
             OrderService = orderService ?? throw new ArgumentNullException(nameof(orderService));
         }
 
@@ -85,7 +81,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Unable to delete order:" + ex.StackTrace, item);
+                Logger.LogError(ex, "Unable to delete order:" + ex.StackTrace, item);
                 SetErrorMessage();
                 return ReturnIndexIfNotUrlReferrer("Index");
             }

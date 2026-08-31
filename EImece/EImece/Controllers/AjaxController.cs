@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using System.Web.Mvc;
 
 namespace EImece.Controllers
@@ -30,8 +31,9 @@ namespace EImece.Controllers
             AutoMapper.IMapper mapper,
             IOrderService orderService,
             ISubscriberService subsciberService,
-            ITurkishRegionService turkishRegionService)
-            : base(settingService, mapper)
+            ITurkishRegionService turkishRegionService,
+            ILogger<AjaxController> logger)
+            : base(settingService, mapper, logger)
         {
             OrderService = orderService ?? throw new ArgumentNullException(nameof(orderService));
             SubsciberService = subsciberService ?? throw new ArgumentNullException(nameof(subsciberService));

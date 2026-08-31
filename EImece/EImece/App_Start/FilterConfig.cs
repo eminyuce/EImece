@@ -8,7 +8,6 @@ namespace EImece
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
             filters.Add(new HandleErrorAttribute());
-            filters.Add(new RequestLoggingActionFilter());
             filters.Add(new RobotsNoIndexAttribute());
             filters.Add(new UnderConstAttribute());
         }

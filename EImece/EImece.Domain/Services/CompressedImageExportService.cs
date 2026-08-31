@@ -1,10 +1,10 @@
+using Microsoft.Extensions.Logging;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
 using Newtonsoft.Json;
-using NLog;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -20,7 +20,8 @@ namespace EImece.Domain.Services
 {
     public class CompressedImageExportService : ICompressedImageExportService
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private readonly ILogger<CompressedImageExportService> _logger;
+
         private readonly IImageExportRepository _imageExportRepository;
 
         private static readonly HashSet<string> AllowedExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
@@ -28,8 +29,9 @@ namespace EImece.Domain.Services
             ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".webp"
         };
 
-        public CompressedImageExportService(IImageExportRepository imageExportRepository)
-        {
+        public CompressedImageExportService(IImageExportRepository imageExportRepository, ILogger<CompressedImageExportService> logger)
+         {
+            _logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
             _imageExportRepository = imageExportRepository ?? throw new ArgumentNullException(nameof(imageExportRepository));
         }
 
@@ -47,7 +49,7 @@ namespace EImece.Domain.Services
 
             if (string.IsNullOrWhiteSpace(targetDirectory) || !Directory.Exists(targetDirectory))
             {
-                Logger.Warn("Media images directory '{0}' not found. Returning empty archive.", targetDirectory);
+                _logger.LogWarning("Media images directory '{0}' not found. Returning empty archive.", targetDirectory);
                 result.ZipBytes = CreateZipWithMetadata(new List<ImageMetadataMapping>(), new Dictionary<string, byte[]>());
                 return result;
             }
@@ -106,7 +108,7 @@ namespace EImece.Domain.Services
             result.TotalCompressedSizeBytes = totalCompressedBytes;
             result.ZipBytes = CreateZipWithMetadata(mappings, compressedEntries);
 
-            Logger.Info("Successfully generated compressed images export ZIP with {0} images.", result.TotalImageCount);
+            _logger.LogInformation("Successfully generated compressed images export ZIP with {0} images.", result.TotalImageCount);
             return result;
         }
 
@@ -123,7 +125,7 @@ namespace EImece.Domain.Services
             }
             catch (Exception ex)
             {
-                Logger.Warn(ex, "Failed to resolve AppConfig.StorageRoot, falling back to default relative path.");
+                _logger.LogWarning(ex, "Failed to resolve AppConfig.StorageRoot, falling back to default relative path.");
                 return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "media", "images");
             }
         }
@@ -188,7 +190,7 @@ namespace EImece.Domain.Services
             }
             catch (Exception ex)
             {
-                Logger.Warn(ex, "Failed to compress image '{0}', falling back to raw file content.", filePath);
+                _logger.LogWarning(ex, "Failed to compress image '{0}', falling back to raw file content.", filePath);
                 try
                 {
                     byte[] rawBytes = File.ReadAllBytes(filePath);
@@ -196,7 +198,7 @@ namespace EImece.Domain.Services
                 }
                 catch (Exception readEx)
                 {
-                    Logger.Error(readEx, "Failed to read raw image file '{0}'.", filePath);
+                    _logger.LogError(readEx, "Failed to read raw image file '{0}'.", filePath);
                     return (null, null, null);
                 }
             }
@@ -441,7 +443,7 @@ namespace EImece.Domain.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Error while loading database relations for compressed image export.");
+                _logger.LogError(ex, "Error while loading database relations for compressed image export.");
             }
 
             return lookups;

@@ -1,3 +1,4 @@
+using EImece.Tests.Infrastructure;
 using EImece.Domain.Entities;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services;
@@ -146,7 +147,7 @@ namespace EImece.Tests.Helpers
             public List<int> DeletedOrderIds = new List<int>();
 
             public TestableOrderService(IOrderRepository repo, ICustomerService customerService, IOrderProductService orderProductService, IAddressService addressService = null)
-                : base(repo, customerService, orderProductService, addressService)
+                : base(repo, TestNullLoggers.Create<OrderService>(), customerService, orderProductService, addressService)
             {
             }
 

@@ -1,3 +1,4 @@
+using EImece.Tests.Infrastructure;
 using EImece.Domain.Entities;
 using EImece.Domain.Models;
 using EImece.Domain.Models.Enums;
@@ -215,14 +216,14 @@ namespace EImece.Tests.Services
         public void Setup()
         {
             _ctx = new FakeEImeceContext();
-            var couponRepo = new CouponRepository(_ctx);
+            var couponRepo = new CouponRepository(_ctx, TestNullLoggers.Create<CouponRepository>());
             var couponProductRepo = new CouponProductRepository(_ctx);
             var couponCategoryRepo = new CouponCategoryRepository(_ctx);
-            var productRepo = new ProductRepository(_ctx);
+            var productRepo = new ProductRepository(_ctx, TestNullLoggers.Create<ProductRepository>());
             var productCategoryRepo = new ProductCategoryRepository(_ctx);
-            var orderRepo = new OrderRepository(_ctx);
+            var orderRepo = new OrderRepository(_ctx, TestNullLoggers.Create<OrderRepository>());
             var redemptionRepo = new CouponRedemptionRepository(_ctx);
-            _service = new CouponValidationService(couponRepo, redemptionRepo, couponProductRepo, couponCategoryRepo, productRepo, productCategoryRepo, orderRepo);
+            _service = new CouponValidationService(couponRepo, redemptionRepo, couponProductRepo, couponCategoryRepo, productRepo, productCategoryRepo, orderRepo, TestNullLoggers.Create<CouponValidationService>());
             _ctx.ProductCategories.Add(new ProductCategory { Id = 1, Name = "Shoes", DiscountPercantage = 0 });
             _ctx.ProductCategories.Add(new ProductCategory { Id = 2, Name = "SaleCat", DiscountPercantage = 20 });
             _ctx.Products.Add(new Product { Id = 1, Name = "Shoe A", Price = 100, ProductCategoryId = 1, State = "ProductInStock" });

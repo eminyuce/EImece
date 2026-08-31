@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using EImece.Domain.Caching;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
@@ -11,7 +12,6 @@ using EImece.Domain.Services.IServices;
 using EImece.Domain.Abstractions;
 using EImece.Domain.DependencyInjection;
 using EImece.Domain.Observability.Telemetry;
-using NLog;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Validation;
@@ -24,21 +24,17 @@ namespace EImece.Domain.Services
 {
     public class MenuService : BaseContentService<Menu>, IMenuService
     {
-        protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
         private readonly IStoryCategoryService StoryCategoryService;
         private readonly IMenuRepository MenuRepository;
 
-        public MenuService(
-            IMenuRepository repository,
+        public MenuService(IMenuRepository repository,
             IEimeceCacheProvider dataCachingProvider,
             ISettingService settingService,
             IFileStorageService fileStorageService,
             ICurrentUserContext currentUserContext,
             FilesHelper filesHelper,
-            IStoryCategoryService storyCategoryService)
-            : base(repository, dataCachingProvider, settingService, fileStorageService, currentUserContext, filesHelper)
-        {
+            IStoryCategoryService storyCategoryService, ILogger<MenuService> logger)
+            : base(repository, dataCachingProvider, settingService, fileStorageService, currentUserContext, filesHelper, logger) {
             MenuRepository = repository ?? throw new ArgumentNullException(nameof(repository));
             StoryCategoryService = storyCategoryService ?? throw new ArgumentNullException(nameof(storyCategoryService));
         }
@@ -450,11 +446,11 @@ namespace EImece.Domain.Services
             catch (DbEntityValidationException ex)
             {
                 var message = ExceptionHelper.GetDbEntityValidationExceptionDetail(ex);
-                Logger.Error(ex, "DbEntityValidationException:" + message);
+                Logger.LogError(ex, "DbEntityValidationException:" + message);
             }
             catch (Exception exception)
             {
-                Logger.Error(exception, "DeleteBaseEntity :" + String.Join(",", values));
+                Logger.LogError(exception, "DeleteBaseEntity :" + String.Join(",", values));
             }
         }
 
@@ -471,11 +467,11 @@ namespace EImece.Domain.Services
             catch (DbEntityValidationException ex)
             {
                 var message = ExceptionHelper.GetDbEntityValidationExceptionDetail(ex);
-                Logger.Error(ex, "DbEntityValidationException:" + message);
+                Logger.LogError(ex, "DbEntityValidationException:" + message);
             }
             catch (Exception exception)
             {
-                Logger.Error(exception, "DeleteBaseEntity :" + String.Join(",", values));
+                Logger.LogError(exception, "DeleteBaseEntity :" + String.Join(",", values));
             }
         }
 

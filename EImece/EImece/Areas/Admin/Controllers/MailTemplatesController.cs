@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using EImece.Web.Areas.Admin.Controllers;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
@@ -10,7 +11,6 @@ using Griddly.Mvc;
 using Griddly.Mvc.Results;
 using Microsoft.AspNet.Identity;
 using Newtonsoft.Json;
-using NLog;
 using Resources;
 using System;
 using System.IO;
@@ -30,7 +30,6 @@ namespace EImece.Areas.Admin.Controllers
     [AuthorizeRoles(Domain.Constants.AdministratorRole)]
     public class MailTemplatesController : BaseAdminController
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private const string IndexAction = "Index";
 
         protected IMailTemplateService MailTemplateService { get; }
@@ -38,14 +37,12 @@ namespace EImece.Areas.Admin.Controllers
         protected IEntityFactory EntityFactory { get; }
         protected IRazorEngineHelper RazorEngineHelper { get; }
 
-        public MailTemplatesController(
-            ISettingService settingService,
+        public MailTemplatesController(ISettingService settingService,
             IMailTemplateService mailTemplateService,
             IMailTemplateTestService mailTemplateTestService,
             IEntityFactory entityFactory,
-            IRazorEngineHelper razorEngineHelper)
-            : base(settingService)
-        {
+            IRazorEngineHelper razorEngineHelper, ILogger<MailTemplatesController> logger)
+            : base(settingService, logger) {
             MailTemplateService = mailTemplateService ?? throw new ArgumentNullException(nameof(mailTemplateService));
             MailTemplateTestService = mailTemplateTestService ?? throw new ArgumentNullException(nameof(mailTemplateTestService));
             EntityFactory = entityFactory ?? throw new ArgumentNullException(nameof(entityFactory));
@@ -107,7 +104,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "GenerateHtmlBody render failed for MailTemplate Id = {0}", id);
+                Logger.LogError(ex, "GenerateHtmlBody render failed for MailTemplate Id = {0}", id);
                 warning = ex.Message;
                 body = System.Net.WebUtility.HtmlDecode(rssTemplate.Body ?? string.Empty);
             }
@@ -197,7 +194,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Unable to save changes:" + ex.StackTrace, MailTemplate);
+                Logger.LogError(ex, "Unable to save changes:" + ex.StackTrace, MailTemplate);
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
             }
 
@@ -227,7 +224,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Unable to delete item:" + ex.StackTrace, MailTemplate);
+                Logger.LogError(ex, "Unable to delete item:" + ex.StackTrace, MailTemplate);
                 SetErrorMessage();
                 return RedirectToAction(IndexAction);
             }
@@ -246,7 +243,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "InspectTemplate failed for MailTemplate Id = {0}", request.Id);
+                Logger.LogError(ex, "InspectTemplate failed for MailTemplate Id = {0}", request.Id);
                 return JsonPayload(new { success = false, message = ex.Message });
             }
         }
@@ -269,7 +266,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "PreviewTestEmail failed for MailTemplate Id = {0}", request.Id);
+                Logger.LogError(ex, "PreviewTestEmail failed for MailTemplate Id = {0}", request.Id);
                 return JsonPayload(new { success = false, message = ex.Message });
             }
         }
@@ -287,7 +284,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "SendTestEmail failed for MailTemplate Id = {0}", request.Id);
+                Logger.LogError(ex, "SendTestEmail failed for MailTemplate Id = {0}", request.Id);
                 return JsonPayload(new { success = false, message = "E-posta gönderilemedi: " + ex.ToFormattedString() });
             }
         }

@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using EImece.Domain.Caching;
 using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository;
@@ -11,7 +12,6 @@ using EImece.Domain.Services.IServices;
 using EImece.Domain.Abstractions;
 using EImece.Domain.DependencyInjection;
 using EImece.Domain.Observability.Telemetry;
-using NLog;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Validation;
@@ -28,8 +28,6 @@ namespace EImece.Domain.Services
 {
     public class StoryService : BaseContentService<Story>, IStoryService
     {
-        private static readonly Logger StoryServiceLogger = LogManager.GetCurrentClassLogger();
-
         private readonly ITagService TagService;
         private readonly IProductRepository ProductRepository;
         private readonly IStoryCategoryService StoryCategoryService;
@@ -37,8 +35,7 @@ namespace EImece.Domain.Services
         private readonly IStoryTagRepository StoryTagRepository;
         private readonly IMenuService MenuService;
 
-        public StoryService(
-            IStoryRepository repository,
+        public StoryService(IStoryRepository repository,
             IEimeceCacheProvider dataCachingProvider,
             ISettingService settingService,
             IFileStorageService fileStorageService,
@@ -48,9 +45,8 @@ namespace EImece.Domain.Services
             IProductRepository productRepository,
             IStoryCategoryService storyCategoryService,
             IStoryTagRepository storyTagRepository,
-            IMenuService menuService)
-            : base(repository, dataCachingProvider, settingService, fileStorageService, currentUserContext, filesHelper)
-        {
+            IMenuService menuService, ILogger<StoryService> logger)
+            : base(repository, dataCachingProvider, settingService, fileStorageService, currentUserContext, filesHelper, logger) {
             StoryRepository = repository ?? throw new ArgumentNullException(nameof(repository));
             TagService = tagService ?? throw new ArgumentNullException(nameof(tagService));
             ProductRepository = productRepository ?? throw new ArgumentNullException(nameof(productRepository));
@@ -484,11 +480,11 @@ namespace EImece.Domain.Services
             catch (DbEntityValidationException ex)
             {
                 var message = ExceptionHelper.GetDbEntityValidationExceptionDetail(ex);
-                StoryServiceLogger.Error(ex, "DbEntityValidationException:" + message);
+                Logger.LogError(ex, "DbEntityValidationException:" + message);
             }
             catch (Exception exception)
             {
-                StoryServiceLogger.Error(exception, "DeleteBaseEntity :" + String.Join(",", values));
+                Logger.LogError(exception, "DeleteBaseEntity :" + String.Join(",", values));
             }
         }
 
@@ -505,11 +501,11 @@ namespace EImece.Domain.Services
             catch (DbEntityValidationException ex)
             {
                 var message = ExceptionHelper.GetDbEntityValidationExceptionDetail(ex);
-                StoryServiceLogger.Error(ex, "DbEntityValidationException:" + message);
+                Logger.LogError(ex, "DbEntityValidationException:" + message);
             }
             catch (Exception exception)
             {
-                StoryServiceLogger.Error(exception, "DeleteBaseEntity :" + String.Join(",", values));
+                Logger.LogError(exception, "DeleteBaseEntity :" + String.Join(",", values));
             }
         }
 

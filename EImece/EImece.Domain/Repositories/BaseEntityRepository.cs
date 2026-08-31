@@ -2,7 +2,7 @@
 using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository.EntityFramework.Enums;
 using EImece.Domain.Helpers;
-using NLog;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -15,7 +15,9 @@ namespace EImece.Domain.Repositories
 {
     public abstract class BaseEntityRepository<T> : BaseRepository<T> where T : BaseEntity
     {
-        protected static readonly Logger BaseEntityLogger = LogManager.GetCurrentClassLogger();
+        protected BaseEntityRepository(IEImeceContext dbContext, ILogger logger) : base(dbContext, logger)
+        {
+        }
 
         protected BaseEntityRepository(IEImeceContext dbContext) : base(dbContext)
         {
@@ -33,7 +35,7 @@ namespace EImece.Domain.Repositories
             }
             catch (Exception exception)
             {
-                BaseEntityLogger.Error(exception);
+                Logger.LogError(exception, "GetActiveBaseEntities failed");
                 throw;
             }
         }
@@ -64,7 +66,7 @@ namespace EImece.Domain.Repositories
             }
             catch (Exception exception)
             {
-                BaseEntityLogger.Error(exception, "GetActiveBaseEntitiesAsync failed.");
+                Logger.LogError(exception, "GetActiveBaseEntitiesAsync failed.");
                 throw new InvalidOperationException("GetActiveBaseEntitiesAsync failed.", exception);
             }
         }

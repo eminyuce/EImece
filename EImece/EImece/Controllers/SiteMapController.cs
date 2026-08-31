@@ -11,6 +11,7 @@ using EImece.Domain.DependencyInjection;
 using System.Net.Mime;
 using System.Threading.Tasks;
 using System.Text;
+using Microsoft.Extensions.Logging;
 using System.Web.Mvc;
 
 namespace EImece.Controllers
@@ -22,8 +23,9 @@ namespace EImece.Controllers
         public SiteMapController(
             ISettingService settingService,
             AutoMapper.IMapper mapper,
-            SiteMapService siteMapService)
-            : base(settingService, mapper)
+            SiteMapService siteMapService,
+            ILogger<SiteMapController> logger)
+            : base(settingService, mapper, logger)
         {
             SiteMapService = siteMapService ?? throw new ArgumentNullException(nameof(siteMapService));
         }

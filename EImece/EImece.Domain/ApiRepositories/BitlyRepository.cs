@@ -1,10 +1,10 @@
+using Microsoft.Extensions.Logging;
 using EImece.Domain.Helpers;
 using EImece.Domain.Models.UrlShortenModels;
 using EImece.Domain.Repositories.IRepositories;
 using HtmlAgilityPack;
 using Newtonsoft.Json;
 using EImece.Domain.DependencyInjection;
-using NLog;
 using RestSharp;
 using System;
 using System.Collections.Generic;
@@ -16,12 +16,13 @@ namespace EImece.Domain.ApiRepositories
 {
     public class BitlyRepository
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private readonly ILogger<BitlyRepository> _logger;
 
         private readonly IShortUrlRepository ShortUrlRepository;
 
-        public BitlyRepository(IShortUrlRepository shortUrlRepository)
-        {
+        public BitlyRepository(IShortUrlRepository shortUrlRepository, ILogger<BitlyRepository> logger)
+         {
+            _logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
             ShortUrlRepository = shortUrlRepository ?? throw new ArgumentNullException(nameof(shortUrlRepository));
         }
 
@@ -221,7 +222,7 @@ namespace EImece.Domain.ApiRepositories
                                 catch (Exception ex)
                                 {
                                     //  Console.WriteLine(ex.Message);
-                                    Logger.Error(ex, ex.Message + " " + hrefValue);
+                                    _logger.LogError(ex, ex.Message + " " + hrefValue);
                                 }
                             }
                             foreach (HtmlNode link in aHrefLinks)
@@ -239,7 +240,7 @@ namespace EImece.Domain.ApiRepositories
                                 catch (Exception ex)
                                 {
                                     //   Console.WriteLine(ex.Message);
-                                    Logger.Error(ex, ex.Message + " " + hrefValue);
+                                    _logger.LogError(ex, ex.Message + " " + hrefValue);
                                 }
                             }
                         }
@@ -252,7 +253,7 @@ namespace EImece.Domain.ApiRepositories
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                _logger.LogError(ex, "Bitly operation failed");
                 result.ErrorMessage = ex.Message;
                 return result;
             }
@@ -315,7 +316,7 @@ namespace EImece.Domain.ApiRepositories
                                 catch (Exception ex)
                                 {
                                     //  Console.WriteLine(ex.Message);
-                                    Logger.Error(ex, ex.Message + " " + hrefValue);
+                                    _logger.LogError(ex, ex.Message + " " + hrefValue);
                                 }
                             }
                         }
@@ -326,7 +327,7 @@ namespace EImece.Domain.ApiRepositories
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, ex.Message);
+                _logger.LogError(ex, ex.Message);
             }
             return result;
         }
@@ -381,7 +382,7 @@ namespace EImece.Domain.ApiRepositories
                                 catch (Exception ex)
                                 {
                                     //  Console.WriteLine(ex.Message);
-                                    Logger.Error(ex, ex.Message + " " + hrefValue);
+                                    _logger.LogError(ex, ex.Message + " " + hrefValue);
                                 }
                             }
                             foreach (HtmlNode link in aHrefLinks)
@@ -399,7 +400,7 @@ namespace EImece.Domain.ApiRepositories
                                 catch (Exception ex)
                                 {
                                     //   Console.WriteLine(ex.Message);
-                                    Logger.Error(ex, ex.Message + " " + hrefValue);
+                                    _logger.LogError(ex, ex.Message + " " + hrefValue);
                                 }
                             }
                         }
@@ -418,7 +419,7 @@ namespace EImece.Domain.ApiRepositories
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                _logger.LogError(ex, "Bitly operation failed");
                 result.ErrorMessage = ex.Message;
                 return result;
             }
@@ -432,11 +433,11 @@ namespace EImece.Domain.ApiRepositories
                 if (String.IsNullOrEmpty(bitlyEmailObj.ErrorMessage))
                 {
                     body = bitlyEmailObj.EmailContentBitlyLinks;
-                    Logger.Info("Email Template body is changed to bitly shorten links " + emailTemplateName);
+                    _logger.LogInformation("Email Template body is changed to bitly shorten links " + emailTemplateName);
                 }
                 else
                 {
-                    Logger.Error("Email Template body NOT changed to bitly shorten links " + emailTemplateName + " ErrorMessage:" + bitlyEmailObj.ErrorMessage);
+                    _logger.LogError("Email Template body NOT changed to bitly shorten links " + emailTemplateName + " ErrorMessage:" + bitlyEmailObj.ErrorMessage);
                 }
             }
             else if (trackWithMlnk)
@@ -445,11 +446,11 @@ namespace EImece.Domain.ApiRepositories
                 if (String.IsNullOrEmpty(mlnkEmailObj.ErrorMessage))
                 {
                     body = mlnkEmailObj.EmailContentBitlyLinks;
-                    Logger.Info("Email Template body is changed to t.Mlnk  shorten links " + emailTemplateName);
+                    _logger.LogInformation("Email Template body is changed to t.Mlnk  shorten links " + emailTemplateName);
                 }
                 else
                 {
-                    Logger.Error("Email Template body NOT changed to t.Mlnk shorten links " + emailTemplateName + " ErrorMessage:" + mlnkEmailObj.ErrorMessage);
+                    _logger.LogError("Email Template body NOT changed to t.Mlnk shorten links " + emailTemplateName + " ErrorMessage:" + mlnkEmailObj.ErrorMessage);
                 }
             }
 

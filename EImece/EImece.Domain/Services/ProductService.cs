@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using EImece.Domain.Abstractions;
 using EImece.Domain.Caching;
 using EImece.Domain.Entities;
@@ -12,7 +13,6 @@ using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Observability.Telemetry;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
-using NLog;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -30,8 +30,6 @@ namespace EImece.Domain.Services
 {
     public class ProductService : BaseContentService<Product>, IProductService
     {
-        private static readonly Logger ProductServiceLogger = LogManager.GetCurrentClassLogger();
-
         private readonly IProductCategoryService ProductCategoryService;
         private readonly IProductCommentRepository ProductCommentRepository;
         private readonly IOrderProductRepository OrderProductRepository;
@@ -44,8 +42,7 @@ namespace EImece.Domain.Services
         private readonly IMenuService MenuService;
         private readonly ITagCategoryService TagCategoryService;
 
-        public ProductService(
-            IProductRepository repository,
+        public ProductService(IProductRepository repository,
             IEimeceCacheProvider dataCachingProvider,
             ISettingService settingService,
             IFileStorageService fileStorageService,
@@ -60,9 +57,8 @@ namespace EImece.Domain.Services
             IProductSpecificationRepository productSpecificationRepository,
             IEntityFactory entityFactory,
             IMenuService menuService,
-            ITagCategoryService tagCategoryService)
-            : base(repository, dataCachingProvider, settingService, fileStorageService, currentUserContext, filesHelper)
-        {
+            ITagCategoryService tagCategoryService, ILogger<ProductService> logger)
+            : base(repository, dataCachingProvider, settingService, fileStorageService, currentUserContext, filesHelper, logger) {
             ProductRepository = repository ?? throw new ArgumentNullException(nameof(repository));
             ProductCategoryService = productCategoryService;
             ProductCommentRepository = productCommentRepository;
@@ -633,11 +629,11 @@ namespace EImece.Domain.Services
             catch (DbEntityValidationException ex)
             {
                 var message = ExceptionHelper.GetDbEntityValidationExceptionDetail(ex);
-                ProductServiceLogger.Error(ex, "DbEntityValidationException:" + message);
+                Logger.LogError(ex, "DbEntityValidationException:" + message);
             }
             catch (Exception exception)
             {
-                ProductServiceLogger.Error(exception, "DeleteBaseEntity :" + String.Join(",", values));
+                Logger.LogError(exception, "DeleteBaseEntity :" + String.Join(",", values));
             }
         }
 
@@ -654,11 +650,11 @@ namespace EImece.Domain.Services
             catch (DbEntityValidationException ex)
             {
                 var message = ExceptionHelper.GetDbEntityValidationExceptionDetail(ex);
-                ProductServiceLogger.Error(ex, "DbEntityValidationException:" + message);
+                Logger.LogError(ex, "DbEntityValidationException:" + message);
             }
             catch (Exception exception)
             {
-                ProductServiceLogger.Error(exception, "DeleteBaseEntity :" + String.Join(",", values));
+                Logger.LogError(exception, "DeleteBaseEntity :" + String.Join(",", values));
             }
         }
 
@@ -701,7 +697,7 @@ namespace EImece.Domain.Services
             catch (Exception e)
             {
                 System.Diagnostics.Trace.WriteLine("DeleteProductById exception: " + e);
-                ProductServiceLogger.Error(e, "DeleteProductById did not work for productId:" + id);
+                Logger.LogError(e, "DeleteProductById did not work for productId:" + id);
                 return ProductDeleteResult.Failed;
             }
         }
@@ -759,7 +755,7 @@ namespace EImece.Domain.Services
             catch (Exception e)
             {
                 System.Diagnostics.Trace.WriteLine("DeleteProductByIdAsync exception: " + e);
-                ProductServiceLogger.Error(e, "DeleteProductById did not work for productId:" + id);
+                Logger.LogError(e, "DeleteProductById did not work for productId:" + id);
                 return ProductDeleteResult.Failed;
             }
         }
@@ -899,7 +895,7 @@ namespace EImece.Domain.Services
             var detailRemoved = DataCachingProvider.ClearByPrefix(CacheKeys.ProductDetailPrefix);
             var relatedRemoved = DataCachingProvider.ClearByPrefix(CacheKeys.ProductRelatedPrefix);
             var categoryRemoved = DataCachingProvider.ClearByPrefix(CacheKeys.CategoryPrefix);
-            ProductServiceLogger.Info(
+            Logger.LogInformation(
                 "InvalidateProductListCaches removed {0} list + {1} search + {2} detail + {3} related + {4} category entries",
                 listRemoved,
                 searchRemoved,
@@ -1385,11 +1381,11 @@ namespace EImece.Domain.Services
             var product = ProductRepository.GetProduct(productId);
             if (product == null)
             {
-                ProductServiceLogger.Warn($"DecreaseStock: Product with Id {productId} not found.");
+                Logger.LogWarning($"DecreaseStock: Product with Id {productId} not found.");
                 return;
             }
 
-            ProductServiceLogger.Info($"DecreaseStock: ProductId: {productId}, ProductName: {product.Name}, Quantity: {quantity}, State: {product.State}");
+            Logger.LogInformation($"DecreaseStock: ProductId: {productId}, ProductName: {product.Name}, Quantity: {quantity}, State: {product.State}");
             product.UpdatedDate = DateTime.Now;
             ProductRepository.Edit(product);
             ProductRepository.Save();
@@ -1406,11 +1402,11 @@ namespace EImece.Domain.Services
             var product = await ProductRepository.GetProductAsync(productId, cancellationToken).ConfigureAwait(false);
             if (product == null)
             {
-                ProductServiceLogger.Warn($"DecreaseStockAsync: Product with Id {productId} not found.");
+                Logger.LogWarning($"DecreaseStockAsync: Product with Id {productId} not found.");
                 return;
             }
 
-            ProductServiceLogger.Info($"DecreaseStockAsync: ProductId: {productId}, ProductName: {product.Name}, Quantity: {quantity}, State: {product.State}");
+            Logger.LogInformation($"DecreaseStockAsync: ProductId: {productId}, ProductName: {product.Name}, Quantity: {quantity}, State: {product.State}");
             product.UpdatedDate = DateTime.Now;
             ProductRepository.Edit(product);
             await ProductRepository.SaveAsync().ConfigureAwait(false);

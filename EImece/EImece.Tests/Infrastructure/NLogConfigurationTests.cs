@@ -112,5 +112,19 @@ namespace EImece.Tests.Infrastructure
             Assert.IsNotNull(config, "XmlLoggingConfiguration should initialize cleanly without throwing exceptions.");
             Assert.IsTrue(config.AllTargets.Count > 0, "NLog configuration should register targets.");
         }
+
+        [TestMethod]
+        public void NLogConfig_DefaultLogsLocation_IsMediaLogs()
+        {
+            var configPath = GetNLogConfigPath();
+            var doc = XDocument.Load(configPath);
+            var logsLocation = doc.Descendants()
+                .FirstOrDefault(e => e.Name.LocalName == "variable" && e.Attribute("name")?.Value == "LogsLocation")
+                ?.Attribute("value")?.Value;
+
+            Assert.IsNotNull(logsLocation);
+            StringAssert.Contains(logsLocation, "media/logs");
+            StringAssert.DoesNotMatch(logsLocation, new System.Text.RegularExpressions.Regex("App_Data", System.Text.RegularExpressions.RegexOptions.IgnoreCase));
+        }
     }
 }

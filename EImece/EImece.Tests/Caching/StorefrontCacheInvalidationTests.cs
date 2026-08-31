@@ -1,3 +1,4 @@
+using EImece.Tests.Infrastructure;
 using EImece.Domain.Caching;
 using EImece.Domain.Models.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -47,7 +48,7 @@ namespace EImece.Tests.Caching
         [TestInitialize]
         public void Init()
         {
-            _cache = new MemoryCacheProvider();
+            _cache = new MemoryCacheProvider(TestNullLoggers.Create<MemoryCacheProvider>());
             _rnd = new Random(unchecked((int)DateTime.UtcNow.Ticks));
         }
 

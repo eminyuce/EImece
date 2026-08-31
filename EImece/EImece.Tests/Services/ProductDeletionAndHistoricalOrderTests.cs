@@ -1,3 +1,4 @@
+using EImece.Tests.Infrastructure;
 using EImece.Domain.Caching;
 using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
@@ -562,7 +563,8 @@ namespace EImece.Tests.Services
                 specRepo,
                 entityFactory,
                 menuService,
-                tagCategoryServ);
+                tagCategoryServ,
+                TestNullLoggers.Create<ProductService>());
         }
     }
 }

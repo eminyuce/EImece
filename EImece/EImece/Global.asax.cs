@@ -6,7 +6,8 @@ using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
 using EImece.Web.Filters;
 using EImece.Web.Infrastructure.Designs;
-using NLog;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Net;
 using System.Security.Claims;
@@ -27,13 +28,15 @@ namespace EImece
     /// </summary>
     public class MvcApplication : System.Web.HttpApplication
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private static ILogger _logger;
 
         protected void Application_Start()
         {
             // Fail closed on missing/placeholder DB credentials before any request handling.
             ConnectionStringProvider.Initialize();
             DependencyInjectionConfig.Register();
+            _logger = DependencyInjectionConfig.ServiceProvider.GetRequiredService<ILoggerFactory>()
+                .CreateLogger<MvcApplication>();
             AdminHtmlMetadataConfig.Register();
 
             //System.Net.ServicePointManager.SecurityProtocol
@@ -68,7 +71,8 @@ namespace EImece
                 var observabilityOptions = DependencyResolver.Current.GetService<EImece.Domain.Observability.Configuration.ObservabilityOptions>()
                     ?? EImece.Domain.Observability.Configuration.ObservabilityOptions.FromAppConfig();
                 GlobalFilters.Filters.Add(new TelemetryActionFilter(metrics, observabilityOptions));
-                GlobalFilters.Filters.Add(new StructuredExceptionFilter());
+                GlobalFilters.Filters.Add(DependencyResolver.Current.GetService<StructuredExceptionFilter>());
+                GlobalFilters.Filters.Add(DependencyResolver.Current.GetService<RequestLoggingActionFilter>());
 
                 var adresService = DependencyResolver.Current.GetService<AdresService>();
             }
@@ -91,7 +95,7 @@ namespace EImece
                         }
                         catch (Exception ex)
                         {
-                            Logger.Error(ex, "Unhandled exception during AdminQuartzService background execution.");
+                            _logger.LogError(ex, "Unhandled exception during AdminQuartzService background execution.");
                         }
                     });
                 }
@@ -107,14 +111,14 @@ namespace EImece
                         }
                         catch (Exception ex)
                         {
-                            Logger.Error(ex, "Unhandled exception during UserQuartzService background execution.");
+                            _logger.LogError(ex, "Unhandled exception during UserQuartzService background execution.");
                         }
                     });
                 }
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Failed to initialize Quartz scheduler services.");
+                _logger.LogError(ex, "Failed to initialize Quartz scheduler services.");
             }
         }
 
@@ -262,7 +266,7 @@ namespace EImece
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Error in EnforceUnderConstructionRedirect");
+                _logger?.LogError(ex, "Error in EnforceUnderConstructionRedirect");
             }
         }
 
@@ -274,14 +278,6 @@ namespace EImece
         protected void Application_End()
         {
             ObservabilityBootstrap.Shutdown();
-            try
-            {
-                LogManager.Shutdown();
-            }
-            catch
-            {
-                // Suppress shutdown errors
-            }
         }
 
         /// <summary>
@@ -389,11 +385,11 @@ namespace EImece
                              (exception != null ? exception.Message : "(null)");
             if (exception != null)
             {
-                Logger.Error(exception, logMessage, "");
+                _logger?.LogError(exception, "{LogMessage}", logMessage);
             }
             else
             {
-                Logger.Error(logMessage);
+                _logger?.LogError("{LogMessage}", logMessage);
             }
         }
 
@@ -459,7 +455,7 @@ namespace EImece
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "ExecuteErrorController execution failed. Rendering static fallback error page.");
+                _logger?.LogError(ex, "ExecuteErrorController execution failed. Rendering static fallback error page.");
                 try
                 {
                     httpContext.ClearError();

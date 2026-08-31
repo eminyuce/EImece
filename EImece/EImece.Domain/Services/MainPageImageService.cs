@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using EImece.Domain.Caching;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
@@ -8,7 +9,6 @@ using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
 using EImece.Domain.Abstractions;
 using EImece.Domain.DependencyInjection;
-using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,16 +19,13 @@ namespace EImece.Domain.Services
 {
     public class MainPageImageService : BaseContentService<MainPageImage>, IMainPageImageService
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
         private readonly IProductService ProductService;
         private readonly IStoryService StoryService;
         private readonly IProductCategoryService ProductCategoryService;
         private readonly IMenuService MenuService;
         private readonly IMainPageImageRepository MainPageImageRepository;
 
-        public MainPageImageService(
-            IMainPageImageRepository repository,
+        public MainPageImageService(IMainPageImageRepository repository,
             IEimeceCacheProvider dataCachingProvider,
             ISettingService settingService,
             IFileStorageService fileStorageService,
@@ -37,9 +34,8 @@ namespace EImece.Domain.Services
             IProductService productService,
             IStoryService storyService,
             IProductCategoryService productCategoryService,
-            IMenuService menuService)
-            : base(repository, dataCachingProvider, settingService, fileStorageService, currentUserContext, filesHelper)
-        {
+            IMenuService menuService, ILogger<MainPageImageService> logger)
+            : base(repository, dataCachingProvider, settingService, fileStorageService, currentUserContext, filesHelper, logger) {
             MainPageImageRepository = repository ?? throw new ArgumentNullException(nameof(repository));
             ProductService = productService ?? throw new ArgumentNullException(nameof(productService));
             StoryService = storyService ?? throw new ArgumentNullException(nameof(storyService));

@@ -1,8 +1,10 @@
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using EImece.Domain;
 using EImece.Domain.Helpers;
 using EImece.Domain.Models.Enums;
+using EImece.Domain.Observability.Logging;
 using Newtonsoft.Json;
-using NLog;
 using System;
 using System.Collections.Specialized;
 using System.Net;
@@ -20,7 +22,9 @@ namespace EImece.Web.Services
         public const string ResponseFormKey = "g-recaptcha-response";
         public const string ModelStateKey = "Recaptcha";
 
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private static ILogger Logger =>
+            LoggingBootstrap.LoggerFactory?.CreateLogger(typeof(RecaptchaService))
+            ?? NullLogger.Instance;
 
         public static bool HasValidationError(ModelStateDictionary modelState)
         {
@@ -38,20 +42,20 @@ namespace EImece.Web.Services
         {
             if (CaptchaSettings.Provider != CaptchaProviderType.Recaptcha)
             {
-                Logger.Debug("reCAPTCHA validation skipped because CaptchaProvider is not Recaptcha.");
+                Logger.LogDebug("reCAPTCHA validation skipped because CaptchaProvider is not Recaptcha.");
                 return true;
             }
 
             if (request == null)
             {
-                Logger.Error("reCAPTCHA validation failed: HTTP request is null.");
+                Logger.LogError("reCAPTCHA validation failed: HTTP request is null.");
                 return false;
             }
 
             var response = request.Form[ResponseFormKey];
             if (string.IsNullOrWhiteSpace(response))
             {
-                Logger.Warn("reCAPTCHA validation failed: missing g-recaptcha-response.");
+                Logger.LogWarning("reCAPTCHA validation failed: missing g-recaptcha-response.");
                 return false;
             }
 
@@ -63,7 +67,7 @@ namespace EImece.Web.Services
         {
             if (string.IsNullOrWhiteSpace(secretKey))
             {
-                Logger.Error("reCAPTCHA secret key is not configured.");
+                Logger.LogError("reCAPTCHA secret key is not configured.");
                 return false;
             }
 
@@ -95,7 +99,7 @@ namespace EImece.Web.Services
 
                     if (result == null)
                     {
-                        Logger.Error("reCAPTCHA siteverify returned an empty/unreadable response.");
+                        Logger.LogError("reCAPTCHA siteverify returned an empty/unreadable response.");
                         return false;
                     }
 
@@ -104,7 +108,7 @@ namespace EImece.Web.Services
                         var errors = result.ErrorCodes != null
                             ? string.Join(", ", result.ErrorCodes)
                             : "(none)";
-                        Logger.Warn($"reCAPTCHA siteverify failed. Error codes: {errors}");
+                        Logger.LogWarning($"reCAPTCHA siteverify failed. Error codes: {errors}");
                     }
 
                     return result.Success;
@@ -112,7 +116,7 @@ namespace EImece.Web.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "reCAPTCHA siteverify request failed.");
+                Logger.LogError(ex, "reCAPTCHA siteverify request failed.");
                 return false;
             }
         }

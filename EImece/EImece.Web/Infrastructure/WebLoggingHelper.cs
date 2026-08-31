@@ -1,6 +1,7 @@
 using EImece.Domain.Observability.Logging;
-using NLog;
-using Serilog.Context;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Web;
 
@@ -12,56 +13,79 @@ namespace EImece.Web.Infrastructure
         private const string TraceIdProperty = "TraceId";
         private const string SpanIdProperty = "SpanId";
 
-        public static void EnrichFromHttpContext()
+        public static Dictionary<string, object> BuildScopeStateFromHttpContext()
         {
             var context = HttpContext.Current;
             if (context == null)
             {
-                return;
+                return null;
             }
 
             var correlationId = CorrelationIdContext.Ensure();
             var activity = Activity.Current;
-            var traceId = activity?.TraceId.ToString();
-            var spanId = activity?.SpanId.ToString();
-
-            LogContext.PushProperty(CorrelationIdProperty, correlationId);
-            LogContext.PushProperty("RequestId", context.Items["RequestId"]);
-            LogContext.PushProperty("ClientIp", context.Request.UserHostAddress);
-            LogContext.PushProperty("RequestPath", context.Request.Url?.AbsolutePath);
-            LogContext.PushProperty("HttpMethod", context.Request.HttpMethod);
-
-            if (!string.IsNullOrEmpty(traceId))
+            var state = new Dictionary<string, object>
             {
-                LogContext.PushProperty(TraceIdProperty, traceId);
-            }
+                [CorrelationIdProperty] = correlationId,
+                ["RequestId"] = context.Items["RequestId"],
+                ["ClientIp"] = context.Request.UserHostAddress,
+                ["RequestPath"] = context.Request.Url?.AbsolutePath,
+                ["HttpMethod"] = context.Request.HttpMethod,
+            };
 
-            if (!string.IsNullOrEmpty(spanId))
+            if (activity != null)
             {
-                LogContext.PushProperty(SpanIdProperty, spanId);
-            }
-
-            // NLog scope properties for layouts that read ${scopeproperty:item=...}
-            ScopeContext.PushProperty(CorrelationIdProperty, correlationId);
-            ScopeContext.PushProperty("RequestPath", context.Request.Url?.AbsolutePath);
-            ScopeContext.PushProperty("HttpMethod", context.Request.HttpMethod);
-            ScopeContext.PushProperty("ClientIp", context.Request.UserHostAddress);
-
-            if (!string.IsNullOrEmpty(traceId))
-            {
-                ScopeContext.PushProperty(TraceIdProperty, traceId);
-            }
-
-            if (!string.IsNullOrEmpty(spanId))
-            {
-                ScopeContext.PushProperty(SpanIdProperty, spanId);
+                state[TraceIdProperty] = activity.TraceId.ToString();
+                state[SpanIdProperty] = activity.SpanId.ToString();
             }
 
             if (context.User?.Identity?.IsAuthenticated == true)
             {
-                LogContext.PushProperty("UserId", context.User.Identity.Name);
-                ScopeContext.PushProperty("UserId", context.User.Identity.Name);
+                state["UserId"] = context.User.Identity.Name;
             }
+
+            return state;
+        }
+
+        public static void EnrichFromHttpContext()
+        {
+            var state = BuildScopeStateFromHttpContext();
+            if (state == null)
+            {
+                return;
+            }
+
+            foreach (var pair in state)
+            {
+                if (pair.Value != null)
+                {
+                    NLog.ScopeContext.PushProperty(pair.Key, pair.Value);
+                }
+            }
+        }
+
+        public static IDisposable BeginRequestScope(ILogger logger)
+        {
+            var state = BuildScopeStateFromHttpContext();
+            if (state == null)
+            {
+                return NullScope.Instance;
+            }
+
+            foreach (var pair in state)
+            {
+                if (pair.Value != null)
+                {
+                    NLog.ScopeContext.PushProperty(pair.Key, pair.Value);
+                }
+            }
+
+            return logger?.BeginScope(state) ?? NullScope.Instance;
+        }
+
+        private sealed class NullScope : System.IDisposable
+        {
+            internal static readonly NullScope Instance = new NullScope();
+            public void Dispose() { }
         }
     }
 }

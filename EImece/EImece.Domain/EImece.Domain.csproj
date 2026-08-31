@@ -136,6 +136,9 @@
     <Reference Include="Microsoft.Extensions.Logging.Abstractions, Version=10.0.0.10, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.Logging.Abstractions.10.0.10\lib\net462\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Extensions.Logging.Console, Version=10.0.0.10, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Logging.Console.10.0.10\lib\net462\Microsoft.Extensions.Logging.Console.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Extensions.Options, Version=10.0.0.10, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.Options.10.0.10\lib\net462\Microsoft.Extensions.Options.dll</HintPath>
     </Reference>
@@ -234,13 +237,6 @@
     </Reference>
     <Reference Include="RestSharp, Version=114.0.0.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
       <HintPath>..\packages\RestSharp.114.0.0\lib\net48\RestSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="Serilog, Version=4.4.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
-      <HintPath>..\packages\Serilog.4.4.0\lib\net471\Serilog.dll</HintPath>
-    </Reference>
-    <Reference Include="Serilog.Enrichers.Environment">
-      <HintPath>..\packages\Serilog.Enrichers.Environment.3.0.1\lib\netstandard2.0\Serilog.Enrichers.Environment.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="RazorEngine, Version=3.10.0.0, Culture=neutral, PublicKeyToken=9ee697374c7e744a, processorArchitecture=MSIL">
       <HintPath>..\packages\RazorEngine.3.10.0\lib\net45\RazorEngine.dll</HintPath>
@@ -404,6 +400,9 @@
     <Compile Include="Observability\Logging\CorrelationIdContext.cs" />
     <Compile Include="Observability\Logging\EfSqlLogger.cs" />
     <Compile Include="Observability\Logging\SensitiveDataMasker.cs" />
+    <Compile Include="Observability\Logging\FailSafeLoggerProvider.cs" />
+    <Compile Include="Observability\Logging\LoggingBootstrap.cs" />
+    <Compile Include="Observability\Logging\LoggingOptions.cs" />
     <Compile Include="Observability\Logging\StructuredLoggingBootstrap.cs" />
     <Compile Include="Observability\Metrics\ApplicationMetrics.cs" />
     <Compile Include="Observability\Metrics\MeasuredServiceProxy.cs" />
@@ -825,6 +824,7 @@
     <Compile Include="Scheduler\Jobs\HelloJob.cs" />
     <Compile Include="Scheduler\Jobs\ClearExpiredShoppingCartsJob.cs" />
     <Compile Include="Scheduler\Jobs\ClearLogsFromDbJob.cs" />
+    <Compile Include="Scheduler\MsDiJobFactory.cs" />
     <Compile Include="Scheduler\BaseQuartzService.cs" />
     <Compile Include="Scheduler\AdminQuartzService.cs" />
     <Compile Include="Scheduler\UserQuartzService.cs" />
@@ -956,7 +956,6 @@
     <Error Condition="!Exists('..\packages\Microsoft.SourceLink.GitHub.10.0.301\build\Microsoft.SourceLink.GitHub.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.SourceLink.GitHub.10.0.301\build\Microsoft.SourceLink.GitHub.props'))" />
     <Error Condition="!Exists('..\packages\Microsoft.SourceLink.GitHub.10.0.301\build\Microsoft.SourceLink.GitHub.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.SourceLink.GitHub.10.0.301\build\Microsoft.SourceLink.GitHub.targets'))" />
     <Error Condition="!Exists('..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets'))" />
-    <Error Condition="!Exists('..\packages\Serilog.4.4.0\build\Serilog.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Serilog.4.4.0\build\Serilog.targets'))" />
     <Error Condition="!Exists('..\packages\SkiaSharp.NativeAssets.Linux.NoDependencies.4.151.0\build\net48\SkiaSharp.NativeAssets.Linux.NoDependencies.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SkiaSharp.NativeAssets.Linux.NoDependencies.4.151.0\build\net48\SkiaSharp.NativeAssets.Linux.NoDependencies.targets'))" />
     <Error Condition="!Exists('..\packages\SkiaSharp.NativeAssets.macOS.4.151.0\build\net48\SkiaSharp.NativeAssets.macOS.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SkiaSharp.NativeAssets.macOS.4.151.0\build\net48\SkiaSharp.NativeAssets.macOS.targets'))" />
     <Error Condition="!Exists('..\packages\SkiaSharp.NativeAssets.Win32.4.151.0\build\net48\SkiaSharp.NativeAssets.Win32.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SkiaSharp.NativeAssets.Win32.4.151.0\build\net48\SkiaSharp.NativeAssets.Win32.targets'))" />
@@ -975,7 +974,6 @@
   <Import Project="..\packages\Microsoft.SourceLink.Common.10.0.301\build\Microsoft.SourceLink.Common.targets" Condition="Exists('..\packages\Microsoft.SourceLink.Common.10.0.301\build\Microsoft.SourceLink.Common.targets')" />
   <Import Project="..\packages\Microsoft.SourceLink.GitHub.10.0.301\build\Microsoft.SourceLink.GitHub.targets" Condition="Exists('..\packages\Microsoft.SourceLink.GitHub.10.0.301\build\Microsoft.SourceLink.GitHub.targets')" />
   <Import Project="..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets" Condition="Exists('..\packages\NETStandard.Library.2.0.3\build\netstandard2.0\NETStandard.Library.targets')" />
-  <Import Project="..\packages\Serilog.4.4.0\build\Serilog.targets" Condition="Exists('..\packages\Serilog.4.4.0\build\Serilog.targets')" />
   <Import Project="..\packages\SkiaSharp.NativeAssets.Linux.NoDependencies.4.151.0\build\net48\SkiaSharp.NativeAssets.Linux.NoDependencies.targets" Condition="Exists('..\packages\SkiaSharp.NativeAssets.Linux.NoDependencies.4.151.0\build\net48\SkiaSharp.NativeAssets.Linux.NoDependencies.targets')" />
   <Import Project="..\packages\SkiaSharp.NativeAssets.macOS.4.151.0\build\net48\SkiaSharp.NativeAssets.macOS.targets" Condition="Exists('..\packages\SkiaSharp.NativeAssets.macOS.4.151.0\build\net48\SkiaSharp.NativeAssets.macOS.targets')" />
   <Import Project="..\packages\SkiaSharp.NativeAssets.Win32.4.151.0\build\net48\SkiaSharp.NativeAssets.Win32.targets" Condition="Exists('..\packages\SkiaSharp.NativeAssets.Win32.4.151.0\build\net48\SkiaSharp.NativeAssets.Win32.targets')" />

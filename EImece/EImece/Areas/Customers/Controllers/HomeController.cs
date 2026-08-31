@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using EImece.Domain;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
@@ -13,7 +14,6 @@ using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using EImece.Domain.DependencyInjection;
 using EImece.Web.Filters;
-using NLog;
 using Resources;
 using System;
 using System.Net;
@@ -34,7 +34,8 @@ namespace EImece.Areas.Customers.Controllers
     [AuthorizationAttribute(Roles = Domain.Constants.CustomerRole)]
     public class HomeController : Controller
     {
-        private static readonly Logger HomeLogger = LogManager.GetCurrentClassLogger();
+        private readonly ILogger<HomeController> _logger;
+
         protected int CurrentLanguage
         {
             get
@@ -55,8 +56,7 @@ namespace EImece.Areas.Customers.Controllers
         private readonly ApplicationUserManager UserManager;
         private readonly IRazorEngineHelper RazorEngineHelper;
 
-        public HomeController(
-            ApplicationUserManager userManager,
+        public HomeController(ApplicationUserManager userManager,
             IAuthenticationManager authenticationManager,
             AutoMapper.IMapper mapper,
             ICustomerService customerService,
@@ -66,8 +66,9 @@ namespace EImece.Areas.Customers.Controllers
             ISettingService settingService,
             ApplicationSignInManager signInManager,
             IIdentityManager identityManager,
-            IRazorEngineHelper razorEngineHelper)
-        {
+            IRazorEngineHelper razorEngineHelper, ILogger<HomeController> logger)
+         {
+            _logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
             UserManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
             AuthenticationManager = authenticationManager ?? throw new ArgumentNullException(nameof(authenticationManager));
             Mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
@@ -343,7 +344,7 @@ namespace EImece.Areas.Customers.Controllers
                         }
                         catch (Exception ex)
                         {
-                            HomeLogger.Error(ex, "Background SendSellerMessage failed to send message to seller.");
+                            _logger.LogError(ex, "Background SendSellerMessage failed to send message to seller.");
                         }
                     });
                 }
@@ -357,7 +358,7 @@ namespace EImece.Areas.Customers.Controllers
                         }
                         catch (Exception ex)
                         {
-                            HomeLogger.Error(ex, "Async SendSellerMessage failed to send message to seller.");
+                            _logger.LogError(ex, "Async SendSellerMessage failed to send message to seller.");
                         }
                     });
                 }
@@ -367,7 +368,7 @@ namespace EImece.Areas.Customers.Controllers
             }
             catch (Exception ex)
             {
-                HomeLogger.Error(ex, "Error processing SendSellerMessage request.");
+                _logger.LogError(ex, "Error processing SendSellerMessage request.");
                 TempData["ErrorMessage"] = Resource.EmailSendingFailed;
                 TempData["ContactFormData"] = contact;
                 return RedirectToAction("SendMessageToSeller");

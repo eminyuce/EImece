@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using EImece.Web.Controllers;
 using EImece.Domain;
 using EImece.Web.Helpers;
@@ -23,7 +24,6 @@ using Microsoft.Owin.Security;
 using Newtonsoft.Json;
 using EImece.Domain.DependencyInjection;
 using EImece.Web.Filters;
-using NLog;
 using Resources;
 using System;
 using System.Collections.Generic;
@@ -38,8 +38,10 @@ namespace EImece.Controllers
 {
     public class PaymentController : BaseController
     {
-        
-        private static readonly Logger PaymentLogger = LogManager.GetCurrentClassLogger();
+        private static Microsoft.Extensions.Logging.ILogger StaticPaymentLogger =>
+            EImece.Domain.Observability.Logging.LoggingBootstrap.LoggerFactory?.CreateLogger(typeof(PaymentController))
+            ?? Microsoft.Extensions.Logging.Abstractions.NullLogger.Instance;
+
         private const string ShoppingCartAction = "shoppingcart";
         private const string LastCompletedOrderIdKey = "LastCompletedOrderId";
         private const string ThankYouForYourOrderAction = "ThankYouForYourOrder";
@@ -59,8 +61,7 @@ namespace EImece.Controllers
         private readonly ApplicationSignInManager SignInManager;
         private readonly ApplicationUserManager UserManager;
 
-        public PaymentController(
-            ISettingService settingService,
+        public PaymentController(ISettingService settingService,
             AutoMapper.IMapper mapper,
             ApplicationUserManager userManager,
             ApplicationSignInManager signInManager,
@@ -75,9 +76,8 @@ namespace EImece.Controllers
             PaymentContext paymentContext,
             IShoppingCartService shoppingCartService,
             IAuthenticationManager authenticationManager,
-            IProductService productService)
-            : base(settingService, mapper)
-        {
+            IProductService productService, ILogger<PaymentController> logger)
+            : base(settingService, mapper, logger) {
             UserManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
             SignInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
             MailTemplateService = mailTemplateService ?? throw new ArgumentNullException(nameof(mailTemplateService));
@@ -117,10 +117,10 @@ namespace EImece.Controllers
             var urlReferrer = Request.UrlReferrer;
             if (urlReferrer != null)
             {
-                PaymentLogger.Debug($"Setting UrlReferrer to: {urlReferrer}");
+                Logger.LogDebug($"Setting UrlReferrer to: {urlReferrer}");
                 shoppingCart.UrlReferrer = urlReferrer.ToStr();
             }
-            PaymentLogger.Debug("Returning ShoppingCart view.");
+            Logger.LogDebug("Returning ShoppingCart view.");
             return View(shoppingCart);
         }
 
@@ -135,26 +135,26 @@ namespace EImece.Controllers
         {
             if (quantity < 0 || quantity > 1000)
             {
-                PaymentLogger.Error("Quantity cannot be less than 0 or greater than 1000.");
+                Logger.LogError("Quantity cannot be less than 0 or greater than 1000.");
                 return Json("failed", JsonRequestBehavior.AllowGet);
             }
             if (string.IsNullOrEmpty(productId))
             {
-                PaymentLogger.Error("Product ID cannot be null or empty.");
+                Logger.LogError("Product ID cannot be null or empty.");
                 return Json("failed", JsonRequestBehavior.AllowGet);
             }
             if (string.IsNullOrEmpty(orderGuid))
             {
-                PaymentLogger.Error("OrderGuid cannot be null or empty.");
+                Logger.LogError("OrderGuid cannot be null or empty.");
                 return Json("failed", JsonRequestBehavior.AllowGet);
             }
-            PaymentLogger.Debug($"Entering AddToCart action with productId: {productId}, quantity: {quantity}, orderGuid: {orderGuid}");
+            Logger.LogDebug($"Entering AddToCart action with productId: {productId}, quantity: {quantity}, orderGuid: {orderGuid}");
             int pId = GeneralHelper.RevertId(productId);
-            PaymentLogger.Debug($"Reverted productId to: {pId}");
+            Logger.LogDebug($"Reverted productId to: {pId}");
             var product = await ProductService.GetStorefrontProductCardByIdAsync(pId);
             if (product != null)
             {
-                PaymentLogger.Debug($"Product found with ID: {pId}");
+                Logger.LogDebug($"Product found with ID: {pId}");
                 var shoppingCart = await GetShoppingCartAsync();
                 if (string.IsNullOrEmpty(shoppingCart.OrderGuid))
                 {
@@ -165,32 +165,32 @@ namespace EImece.Controllers
                     throw new Exception($"OrderGuid does not match. Setting new OrderGuid: {orderGuid}");
                 }
                
-                PaymentLogger.Debug($"Set shopping cart OrderGuid to: {orderGuid}");
+                Logger.LogDebug($"Set shopping cart OrderGuid to: {orderGuid}");
 
                 var item = new ShoppingCartItem();
                 var selectedTotalSpecs = new List<ProductSpecItem>();
                 if (!string.IsNullOrEmpty(productSpecItems))
                 {
-                    PaymentLogger.Debug("Deserializing productSpecItems.");
+                    Logger.LogDebug("Deserializing productSpecItems.");
                     var ooo = JsonConvert.DeserializeObject<ProductSpecItemRoot>(productSpecItems);
                     selectedTotalSpecs = ooo.selectedTotalSpecs;
-                    PaymentLogger.Debug($"Found {selectedTotalSpecs.Count} product specifications.");
+                    Logger.LogDebug($"Found {selectedTotalSpecs.Count} product specifications.");
                 }
                 item.Product = new ShoppingCartProduct(product, selectedTotalSpecs);
                 item.Quantity = quantity;
                 item.ShoppingCartItemId = Guid.NewGuid().ToString();
-                PaymentLogger.Debug($"Created shopping cart item with ID: {item.ShoppingCartItemId}");
+                Logger.LogDebug($"Created shopping cart item with ID: {item.ShoppingCartItemId}");
                 shoppingCart.Add(item);
-                PaymentLogger.Debug("Added item to shopping cart.");
+                Logger.LogDebug("Added item to shopping cart.");
                 // Revalidate coupon after cart change per spec 13
                 await RevalidateCouponAsync(shoppingCart);
                 await SaveShoppingCartAsync(shoppingCart);
-                PaymentLogger.Debug("Returning success JSON response.");
+                Logger.LogDebug("Returning success JSON response.");
                 return Json("success", JsonRequestBehavior.AllowGet);
             }
             else
             {
-                PaymentLogger.Error($"Product not found with ID: {pId}");
+                Logger.LogError($"Product not found with ID: {pId}");
                 return Json("failed", JsonRequestBehavior.AllowGet);
             }
         }
@@ -203,7 +203,7 @@ namespace EImece.Controllers
             var html = this.RenderPartialToString(
                         "ShoppingCartTemplates/_ShoppingCartSmallDetails",
                         new ViewDataDictionary(shoppingCart), tempData);
-            PaymentLogger.Debug("Returning JSON response with HTML.");
+            Logger.LogDebug("Returning JSON response with HTML.");
             return Json(html, JsonRequestBehavior.AllowGet);
         }
 
@@ -215,7 +215,7 @@ namespace EImece.Controllers
             var html = this.RenderPartialToString(
                         "ShoppingCartTemplates/_ShoppingCartLinks",
                         new ViewDataDictionary(shoppingCart), tempData);
-            PaymentLogger.Debug("Returning JSON response with HTML.");
+            Logger.LogDebug("Returning JSON response with HTML.");
             return Json(html, JsonRequestBehavior.AllowGet);
         }
 
@@ -228,7 +228,7 @@ namespace EImece.Controllers
                 return Content(string.Empty);
             }
             var shoppingCart = GetShoppingCartFromDataSourceSync();
-            PaymentLogger.Debug("Rendering _ShoppingCartLinks partial view.");
+            Logger.LogDebug("Rendering _ShoppingCartLinks partial view.");
             return PartialView("ShoppingCartTemplates/_ShoppingCartLinks", shoppingCart);
         }
 
@@ -276,11 +276,11 @@ namespace EImece.Controllers
             item.OrderGuid = shoppingCart.OrderGuid;
             string userId = shoppingCart.Customer != null ? shoppingCart.Customer.UserId : "";
             item.UserId = string.IsNullOrEmpty(userId) ? await getUserIdAsync() : userId;
-            PaymentLogger.Debug($"Saving shopping cart with OrderGuid: {item.OrderGuid}, UserId: {item.UserId}");
+            Logger.LogDebug($"Saving shopping cart with OrderGuid: {item.OrderGuid}, UserId: {item.UserId}");
 
             shoppingCart.CurrentLanguage = CurrentLanguage;
             await ShoppingCartService.SaveOrEditShoppingCartAsync(item);
-            PaymentLogger.Debug("Shopping cart saved to data source.");
+            Logger.LogDebug("Shopping cart saved to data source.");
 
             return item;
         }
@@ -289,26 +289,26 @@ namespace EImece.Controllers
         {
             if (Request.IsAuthenticated)
             {
-                PaymentLogger.Debug("Request is authenticated.");
+                Logger.LogDebug("Request is authenticated.");
                 var user = await UserManager.FindByNameAsync(User.Identity.GetUserName());
                 if (user != null)
                 {
-                    PaymentLogger.Debug($"User found with ID: {user.Id}");
+                    Logger.LogDebug($"User found with ID: {user.Id}");
                     return user.Id;
                 }
-                PaymentLogger.Debug("No user found.");
+                Logger.LogDebug("No user found.");
             }
             return string.Empty;
         }
 
         private async Task<ShoppingCartSession> GetShoppingCartFromDataSourceAsync()
         {
-            PaymentLogger.Debug("Entering GetShoppingCartFromDataSourceAsync method.");
+            Logger.LogDebug("Entering GetShoppingCartFromDataSourceAsync method.");
             HttpCookie orderGuid = Request.Cookies[Domain.Constants.OrderGuidCookieKey];
             string orderGuid2 = orderGuid == null ? null : orderGuid.Value;
-            PaymentLogger.Debug($"Retrieved OrderGuid from cookie: {orderGuid2}");
+            Logger.LogDebug($"Retrieved OrderGuid from cookie: {orderGuid2}");
             var result = await GetShoppingCartByOrderGuidAsync(orderGuid2);
-            PaymentLogger.Debug("Shopping cart retrieved from GetShoppingCartByOrderGuidAsync.");
+            Logger.LogDebug("Shopping cart retrieved from GetShoppingCartByOrderGuidAsync.");
             return result;
         }
 
@@ -318,23 +318,23 @@ namespace EImece.Controllers
             var item = orderGuid != null ? await ShoppingCartService.GetShoppingCartByOrderGuidAsync(orderGuid) : null;
             if (item == null)
             {
-                PaymentLogger.Debug("No existing shopping cart found. Creating default shopping cart.");
+                Logger.LogDebug("No existing shopping cart found. Creating default shopping cart.");
                 result = ShoppingCartSession.CreateDefaultShopingCard(CurrentLanguage, GeneralHelper.GetIpAddress());
                 await GetCustomerIfAuthenticatedAsync(result);
             }
             else
             {
-                PaymentLogger.Debug("Existing shopping cart found. Deserializing JSON.");
+                Logger.LogDebug("Existing shopping cart found. Deserializing JSON.");
                 result = JsonConvert.DeserializeObject<ShoppingCartSession>(item.ShoppingCartJson);
                 string userId = result.Customer != null ? result.Customer.UserId : "";
                 item.UserId = string.IsNullOrEmpty(userId) ? await getUserIdAsync() : userId;
-                PaymentLogger.Debug($"Updated shopping cart UserId to: {item.UserId}");
+                Logger.LogDebug($"Updated shopping cart UserId to: {item.UserId}");
             }
 
             result.CargoCompany = await SettingService.GetSettingValueDtoByKeyAsync(Domain.Constants.CargoCompany);
             result.BasketMinTotalPriceForCargo = await SettingService.GetSettingValueDtoByKeyAsync(Domain.Constants.BasketMinTotalPriceForCargo);
             result.CargoPrice = await SettingService.GetSettingValueDtoByKeyAsync(Domain.Constants.CargoPrice);
-            PaymentLogger.Debug("Set cargo details for shopping cart.");
+            Logger.LogDebug("Set cargo details for shopping cart.");
             return result;
         }
 
@@ -342,29 +342,29 @@ namespace EImece.Controllers
         {
             if (!Request.IsAuthenticated)
             {
-                PaymentLogger.Debug("Request is not authenticated. No customer assigned.");
+                Logger.LogDebug("Request is not authenticated. No customer assigned.");
                 return;
             }
 
             var userName = User.Identity.GetUserName();
             if (string.IsNullOrWhiteSpace(userName))
             {
-                PaymentLogger.Debug("Authenticated identity has no user name. No customer assigned.");
+                Logger.LogDebug("Authenticated identity has no user name. No customer assigned.");
                 return;
             }
 
             var user = await UserManager.FindByNameAsync(userName);
             if (user == null)
             {
-                PaymentLogger.Warn("No AspNet user for authenticated name '{0}'. Skipping customer assignment.", userName);
+                Logger.LogWarning("No AspNet user for authenticated name '{0}'. Skipping customer assignment.", userName);
                 return;
             }
 
-            PaymentLogger.Debug($"User found with ID: {user.Id}");
+            Logger.LogDebug($"User found with ID: {user.Id}");
             var c = await CustomerService.GetUserIdAsync(user.Id);
             if (c == null)
             {
-                PaymentLogger.Debug("No customer found. Creating new customer.");
+                Logger.LogDebug("No customer found. Creating new customer.");
                 var newCustomer = new CustomerDto();
                 newCustomer.UserId = user.Id;
                 newCustomer.CustomerType = (int)EImeceCustomerType.Normal;
@@ -381,9 +381,9 @@ namespace EImece.Controllers
 
         private async Task<ShoppingCartSession> GetShoppingCartAsync()
         {
-            PaymentLogger.Debug("Entering GetShoppingCartAsync method.");
+            Logger.LogDebug("Entering GetShoppingCartAsync method.");
             var shoppingCart = await GetShoppingCartFromDataSourceAsync();
-            PaymentLogger.Debug("Shopping cart retrieved.");
+            Logger.LogDebug("Shopping cart retrieved.");
             return shoppingCart;
         }
 
@@ -394,10 +394,10 @@ namespace EImece.Controllers
                 ShoppingCartSession shoppingCart = await GetShoppingCartAsync();
                 if (shoppingCart.ShoppingCartItems.IsNotEmpty())
                 {
-                    PaymentLogger.Debug("Shopping cart has items.");
+                    Logger.LogDebug("Shopping cart has items.");
                     if (shoppingCart.Customer == null)
                     {
-                        PaymentLogger.Debug("No customer in shopping cart. Creating new customer.");
+                        Logger.LogDebug("No customer in shopping cart. Creating new customer.");
                         shoppingCart.Customer = new CustomerDto();
                         shoppingCart.Customer.CustomerType = (int)EImeceCustomerType.Normal;
                         shoppingCart.Customer.Country = Domain.Constants.IYZICO_ADDRESS_COUNTRY;
@@ -405,15 +405,15 @@ namespace EImece.Controllers
                     }
                     if (shoppingCart.Customer.IsEmpty())
                     {
-                        PaymentLogger.Debug("Customer is empty. Populating from authenticated user.");
+                        Logger.LogDebug("Customer is empty. Populating from authenticated user.");
                         await GetCustomerIfAuthenticatedAsync(shoppingCart);
                     }
-                    PaymentLogger.Debug("Returning CheckoutBillingDetails view.");
+                    Logger.LogDebug("Returning CheckoutBillingDetails view.");
                     return View(shoppingCart);
                 }
                 else
                 {
-                    PaymentLogger.Debug("Shopping cart is empty. Redirecting to shoppingcart.");
+                    Logger.LogDebug("Shopping cart is empty. Redirecting to shoppingcart.");
                     TempData["StatusMessage"] = "Sepetiniz boÅŸ";
                     return RedirectToAction(ShoppingCartAction, Domain.Constants.PaymentAction);
                 }
@@ -422,7 +422,7 @@ namespace EImece.Controllers
             {
                 // Membership checkout requires an account + address; send guests to register
                 // (not login) so they can create a profile before billing details.
-                PaymentLogger.Debug("User is not authenticated. Redirecting to register for membership checkout.");
+                Logger.LogDebug("User is not authenticated. Redirecting to register for membership checkout.");
                 return RedirectToAction("Register", "Account",
                     new { returnUrl = Url.Action("CheckoutBillingDetails", Domain.Constants.PaymentAction) });
             }
@@ -432,14 +432,14 @@ namespace EImece.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> CheckoutBillingDetails(CustomerDto customer)
         {
-            PaymentLogger.Debug("Entering CheckoutBillingDetails POST action.");
+            Logger.LogDebug("Entering CheckoutBillingDetails POST action.");
             if (customer == null)
             {
-                PaymentLogger.Error("Customer is null. Throwing exception.");
+                Logger.LogError("Customer is null. Throwing exception.");
                 throw new NotSupportedException();
             }
             bool isValidCustomer = customer.isValidCustomer();
-            PaymentLogger.Debug($"Customer validation result: {isValidCustomer}");
+            Logger.LogDebug($"Customer validation result: {isValidCustomer}");
             if (isValidCustomer)
             {
                 ShoppingCartSession shoppingCart = await GetShoppingCartAsync();
@@ -447,26 +447,26 @@ namespace EImece.Controllers
                 shoppingCart.Customer = customer;
                 var user = await UserManager.FindByNameAsync(User.Identity.GetUserName());
                 shoppingCart.Customer.UserId = user.Id;
-                PaymentLogger.Debug($"Assigned UserId: {user.Id} to customer.");
+                Logger.LogDebug($"Assigned UserId: {user.Id} to customer.");
                 if (customer.IsSameAsShippingAddress)
                 {
-                    PaymentLogger.Debug("Shipping address is same as billing address.");
+                    Logger.LogDebug("Shipping address is same as billing address.");
                 }
 
                 shoppingCart.ShippingAddress = SetAddress(customer, shoppingCart.ShippingAddress);
                 shoppingCart.ShippingAddress.AddressType = (int)AddressType.ShippingAddress;
                 shoppingCart.BillingAddress = SetAddress(customer, shoppingCart.BillingAddress);
                 shoppingCart.BillingAddress.AddressType = (int)AddressType.BillingAddress;
-                PaymentLogger.Debug("Set shipping and billing addresses.");
+                Logger.LogDebug("Set shipping and billing addresses.");
 
                 await SaveShoppingCartAsync(shoppingCart);
-                PaymentLogger.Debug("Shopping cart saved with billing details.");
-                PaymentLogger.Debug("Redirecting to CheckoutPaymentOrderReview.");
+                Logger.LogDebug("Shopping cart saved with billing details.");
+                Logger.LogDebug("Redirecting to CheckoutPaymentOrderReview.");
                 return RedirectToAction("CheckoutPaymentOrderReview");
             }
             else
             {
-                PaymentLogger.Info("Customer validation failed. Informing customer.");
+                Logger.LogInformation("Customer validation failed. Informing customer.");
                 InformCustomerToFillOutForm(customer);
                 ShoppingCartSession shoppingCart = await GetShoppingCartAsync();
                 shoppingCart.Customer = customer;
@@ -511,12 +511,12 @@ namespace EImece.Controllers
             ShoppingCartSession shoppingCart = await GetShoppingCartAsync();
             if (shoppingCart.ShoppingCartItems.IsNotEmpty())
             {
-                PaymentLogger.Debug("Shopping cart has items. Returning view.");
+                Logger.LogDebug("Shopping cart has items. Returning view.");
                 return View(shoppingCart);
             }
             else
             {
-                PaymentLogger.Debug("Shopping cart is empty. Redirecting to shoppingcart.");
+                Logger.LogDebug("Shopping cart is empty. Redirecting to shoppingcart.");
                 return RedirectToAction(ShoppingCartAction, Domain.Constants.PaymentAction);
             }
         }
@@ -527,12 +527,12 @@ namespace EImece.Controllers
             String cargoPriceHtml = "";
             if (shoppingCart.CargoPriceValue == 0)
             {
-                PaymentLogger.Debug("Cargo price is 0. Setting free shipping HTML.");
+                Logger.LogDebug("Cargo price is 0. Setting free shipping HTML.");
                 cargoPriceHtml = string.Format("<span class='badge badge-pill badge-danger mr-2 mb-2'>{0}</span>", Resource.CargoFreeTextInfo);
             }
             else
             {
-                PaymentLogger.Debug($"Cargo price is {shoppingCart.CargoPriceValue}. Formatting HTML.");
+                Logger.LogDebug($"Cargo price is {shoppingCart.CargoPriceValue}. Formatting HTML.");
                 cargoPriceHtml = string.Format("<span>{0}:</span><span>{1}</span>", AdminResource.CargoPrice, shoppingCart.CargoPriceValue.CurrencySign());
             }
             return Json(new
@@ -552,49 +552,49 @@ namespace EImece.Controllers
 
         public async Task<JsonResult> sendOrderComments(string orderComments, string orderGuid)
         {
-            PaymentLogger.Debug($"Entering sendOrderComments with orderComments: {orderComments}, orderGuid: {orderGuid}");
+            Logger.LogDebug($"Entering sendOrderComments with orderComments: {orderComments}, orderGuid: {orderGuid}");
             ShoppingCartSession shoppingCart = await GetShoppingCartAsync();
             shoppingCart.OrderComments = orderComments;
-            PaymentLogger.Debug("Order comments assigned to shopping cart.");
+            Logger.LogDebug("Order comments assigned to shopping cart.");
             await SaveShoppingCartAsync(shoppingCart);
-            PaymentLogger.Debug("Returning success JSON response.");
+            Logger.LogDebug("Returning success JSON response.");
             return Json(new { status = Domain.Constants.SUCCESS }, JsonRequestBehavior.AllowGet);
         }
 
         public async Task<JsonResult> UpdateQuantity(String shoppingItemId, int quantity)
         {
-            PaymentLogger.Debug($"Entering UpdateQuantity with shoppingItemId: {shoppingItemId}, quantity: {quantity}");
+            Logger.LogDebug($"Entering UpdateQuantity with shoppingItemId: {shoppingItemId}, quantity: {quantity}");
             ShoppingCartSession shoppingCart = await GetShoppingCartAsync();
             var item = shoppingCart.ShoppingCartItems.FirstOrDefault(r => r.ShoppingCartItemId.Equals(shoppingItemId, StringComparison.InvariantCultureIgnoreCase));
             if (item != null)
             {
-                PaymentLogger.Debug($"Found item with ID: {shoppingItemId}. Updating quantity to: {quantity}");
+                Logger.LogDebug($"Found item with ID: {shoppingItemId}. Updating quantity to: {quantity}");
                 item.Quantity = quantity;
                 await RevalidateCouponAsync(shoppingCart);
                 await SaveShoppingCartAsync(shoppingCart);
-                PaymentLogger.Debug("Shopping cart saved with updated quantity.");
-                PaymentLogger.Debug("Returning success JSON response.");
+                Logger.LogDebug("Shopping cart saved with updated quantity.");
+                Logger.LogDebug("Returning success JSON response.");
                 return Json(new { status = Domain.Constants.SUCCESS, shoppingItemId }, JsonRequestBehavior.AllowGet);
             }
             else
             {
-                PaymentLogger.Error($"Item with ID: {shoppingItemId} not found.");
+                Logger.LogError($"Item with ID: {shoppingItemId} not found.");
                 return Json(new { status = Domain.Constants.FAILED, shoppingItemId }, JsonRequestBehavior.AllowGet);
             }
         }
 
         public async Task<JsonResult> RemoveCart(String shoppingItemId)
         {
-            PaymentLogger.Debug($"Entering RemoveCart with shoppingItemId: {shoppingItemId}");
+            Logger.LogDebug($"Entering RemoveCart with shoppingItemId: {shoppingItemId}");
             ShoppingCartSession shoppingCart = await GetShoppingCartAsync();
             var item = shoppingCart.ShoppingCartItems.FirstOrDefault(r => r.ShoppingCartItemId.Equals(shoppingItemId, StringComparison.InvariantCultureIgnoreCase));
             if (item != null)
             {
-                PaymentLogger.Debug($"Found item with ID: {shoppingItemId}. Removing from cart.");
+                Logger.LogDebug($"Found item with ID: {shoppingItemId}. Removing from cart.");
                 shoppingCart.ShoppingCartItems.Remove(item);
                 if (shoppingCart.ShoppingCartItems.IsEmpty())
                 {
-                    PaymentLogger.Debug("Shopping cart is now empty. Clearing coupon.");
+                    Logger.LogDebug("Shopping cart is now empty. Clearing coupon.");
                     shoppingCart.ClearValidatedCoupon();
                 }
                 else
@@ -606,8 +606,8 @@ namespace EImece.Controllers
             }
             else
             {
-                PaymentLogger.Error($"Item with ID: {shoppingItemId} not found.");
-                PaymentLogger.Debug("Returning failed JSON response.");
+                Logger.LogError($"Item with ID: {shoppingItemId} not found.");
+                Logger.LogDebug("Returning failed JSON response.");
                 return Json(new { status = Domain.Constants.FAILED, shoppingItemId, TotalItemCount = shoppingCart.TotalItemCount }, JsonRequestBehavior.AllowGet);
             }
         }
@@ -615,17 +615,17 @@ namespace EImece.Controllers
         [RateLimit("checkout", DefaultLimit = 5, DefaultWindowMinutes = 5)]
         public async Task<ActionResult> PlaceOrder()
         {
-            PaymentLogger.Debug("Entering PlaceOrder action.");
+            Logger.LogDebug("Entering PlaceOrder action.");
             ShoppingCartSession shoppingCart = await GetShoppingCartAsync();
 
             if (shoppingCart == null || shoppingCart.ShoppingCartItems.IsEmpty())
             {
-                PaymentLogger.Debug("Shopping cart is null or empty. Redirecting to shoppingcart.");
+                Logger.LogDebug("Shopping cart is null or empty. Redirecting to shoppingcart.");
                 return RedirectToAction(ShoppingCartAction, Domain.Constants.PaymentAction);
             }
             if (shoppingCart.Customer.isValidCustomer() && shoppingCart.ShoppingCartItems.IsNotEmpty())
             {
-                PaymentLogger.Debug("Customer is valid and cart has items.");
+                Logger.LogDebug("Customer is valid and cart has items.");
                 if (User?.Identity == null || !User.Identity.IsAuthenticated)
                 {
                     return RedirectToAction("Login", "Account");
@@ -635,12 +635,12 @@ namespace EImece.Controllers
                     await RevalidateCouponAsync(shoppingCart);
                     await SaveShoppingCartAsync(shoppingCart);
                     var user = await UserManager.FindByNameAsync(User.Identity.GetUserName());
-                    PaymentLogger.Info($"Initializing checkout form for user ID: {user.Id} via {PaymentContext.ProviderName}");
+                    Logger.LogInformation($"Initializing checkout form for user ID: {user.Id} via {PaymentContext.ProviderName}");
                     try
                     {
                         if (!AppConfig.HasConfiguredIyzicoCredentials)
                         {
-                            PaymentLogger.Warn("Iyzico API keys are empty; skipping checkout form initialize.");
+                            Logger.LogWarning("Iyzico API keys are empty; skipping checkout form initialize.");
                             ViewBag.CheckoutFormInitialize = new PaymentInitializeResult
                             {
                                 ErrorMessage = Resource.PaymentFormCouldNotBeInitializedConfig,
@@ -655,11 +655,11 @@ namespace EImece.Controllers
                     }
                     catch (Exception ex)
                     {
-                        PaymentLogger.Error(ex, "Failed to initialize payment checkout form via {0}.", PaymentContext.ProviderName);
+                        Logger.LogError(ex, "Failed to initialize payment checkout form via {0}.", PaymentContext.ProviderName);
                         ViewBag.CheckoutFormInitialize = null;
                         ModelState.AddModelError("", Resource.PaymentFormCouldNotBeInitializedSettings);
                     }
-                    PaymentLogger.Debug("Returning PlaceOrder view.");
+                    Logger.LogDebug("Returning PlaceOrder view.");
                     return View(shoppingCart);
                 }
             }
@@ -667,7 +667,7 @@ namespace EImece.Controllers
             {
                 // Guest contact details missing: send the customer to the billing details
                 // step (which shows the membership/registration gate) instead of raw text.
-                PaymentLogger.Info("PlaceOrder called without customer details. Redirecting to CheckoutBillingDetails.");
+                Logger.LogInformation("PlaceOrder called without customer details. Redirecting to CheckoutBillingDetails.");
                 return RedirectToAction("CheckoutBillingDetails", Domain.Constants.PaymentAction);
             }
         }
@@ -676,10 +676,10 @@ namespace EImece.Controllers
         {
             // iyzico Checkout Form callback POSTs "token" â€” same binding as the former RetrieveCheckoutFormRequest.
             PaymentResultDto paymentResult = await PaymentContext.RetrievePaymentResultAsync(model != null ? model.Token : null);
-            PaymentLogger.Info($"PaymentResult with ACCOUNT status: {paymentResult.PaymentStatus} ConversationId: {paymentResult.ConversationId}");
+            Logger.LogInformation($"PaymentResult with ACCOUNT status: {paymentResult.PaymentStatus} ConversationId: {paymentResult.ConversationId}");
             if (!IsSuccessfulPayment(paymentResult))
             {
-                PaymentLogger.Error($"Payment failed. Status: {paymentResult?.PaymentStatus}");
+                Logger.LogError($"Payment failed. Status: {paymentResult?.PaymentStatus}");
                 return RedirectToAction("NoSuccessForYourOrder");
             }
 
@@ -692,7 +692,7 @@ namespace EImece.Controllers
             }
             catch (Exception ex)
             {
-                PaymentLogger.Error(ex, "Failed to decrypt payment callback references.");
+                Logger.LogError(ex, "Failed to decrypt payment callback references.");
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
@@ -712,13 +712,13 @@ namespace EImece.Controllers
             ShoppingCartSession shoppingCart = await GetShoppingCartByOrderGuidAsync(orderGuid);
             if (shoppingCart == null || shoppingCart.ShoppingCartItems.IsEmpty())
             {
-                PaymentLogger.Error($"Shopping cart missing for OrderGuid after successful payment.");
+                Logger.LogError($"Shopping cart missing for OrderGuid after successful payment.");
                 return new HttpStatusCodeResult(HttpStatusCode.Conflict);
             }
 
             if (!PaidPriceMatches(paymentResult.PaidPrice, shoppingCart.TotalPriceWithCargoPrice))
             {
-                PaymentLogger.Error($"PaidPrice mismatch for OrderGuid. Expected cart total does not match payment.");
+                Logger.LogError($"PaidPrice mismatch for OrderGuid. Expected cart total does not match payment.");
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
@@ -726,10 +726,10 @@ namespace EImece.Controllers
                 ? orderNumber
                 : paymentResult.ConversationId;
             var order = await ShoppingCartService.SaveShoppingCartAsync(resolvedOrderNumber, shoppingCart, paymentResult, userId);
-            PaymentLogger.Debug($"Order saved with ID: {order.Id}. Cart cleared. Redirecting to ThankYouForYourOrder.");
+            Logger.LogDebug($"Order saved with ID: {order.Id}. Cart cleared. Redirecting to ThankYouForYourOrder.");
             await SendNotificationEmailsToCustomerAndAdminUsersForNewOrderAsync(order.Id);
             await ClearCartAsync(shoppingCart);
-            PaymentLogger.Debug("Cart cleared. Redirecting to ThankYouForYourOrder.");
+            Logger.LogDebug("Cart cleared. Redirecting to ThankYouForYourOrder.");
             TempData[LastCompletedOrderIdKey] = order.Id;
             return RedirectToAction(ThankYouForYourOrderAction, new { orderId = order.Id });
         }
@@ -766,10 +766,10 @@ namespace EImece.Controllers
 
         private async Task ClearCartAsync(ShoppingCartSession shoppingCart)
         {
-            PaymentLogger.Debug("Entering ClearCartAsync method.");
+            Logger.LogDebug("Entering ClearCartAsync method.");
             if (Request.Browser.Cookies)
             {
-                PaymentLogger.Debug("Removing OrderGuid cookie.");
+                Logger.LogDebug("Removing OrderGuid cookie.");
                 Response.Cookies.Remove(Domain.Constants.OrderGuidCookieKey);
                 var aCookie = new HttpCookie(Domain.Constants.OrderGuidCookieKey) { 
                     Expires = DateTime.Now.AddDays(-1),
@@ -777,30 +777,30 @@ namespace EImece.Controllers
                     Secure  = Request.IsSecureConnection
                 };
                 Response.Cookies.Add(aCookie);
-                PaymentLogger.Debug("Added expired cookie to response.");
+                Logger.LogDebug("Added expired cookie to response.");
             }
             await ShoppingCartService.DeleteByOrderGuidAsync(shoppingCart.OrderGuid);
-            PaymentLogger.Debug($"Deleted shopping cart with OrderGuid: {shoppingCart.OrderGuid}");
+            Logger.LogDebug($"Deleted shopping cart with OrderGuid: {shoppingCart.OrderGuid}");
         }
 
         public async Task<ActionResult> BuyNow(String id)
         {
-            PaymentLogger.Debug($"Entering BuyNow with id: {id}");
+            Logger.LogDebug($"Entering BuyNow with id: {id}");
             if (String.IsNullOrEmpty(id))
             {
-                PaymentLogger.Error("Product ID is null or empty.");
-                PaymentLogger.Debug("Returning BadRequest status.");
+                Logger.LogError("Product ID is null or empty.");
+                Logger.LogDebug("Returning BadRequest status.");
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             try
             {
                 var productId = id.GetId();
-                PaymentLogger.Debug($"Converted product ID to: {productId}");
+                Logger.LogDebug($"Converted product ID to: {productId}");
                 BuyNowModel buyNowModel = await CreateBuyNowModelAsync(productId);
-                PaymentLogger.Debug("Created BuyNow model.");
+                Logger.LogDebug("Created BuyNow model.");
                 ViewBag.SeoId = buyNowModel.ProductDetailViewModel.ProductDto.SeoUrl;
-                PaymentLogger.Debug($"Set SeoId in ViewBag: {ViewBag.SeoId}");
-                PaymentLogger.Debug("Returning BuyNow view.");
+                Logger.LogDebug($"Set SeoId in ViewBag: {ViewBag.SeoId}");
+                Logger.LogDebug("Returning BuyNow view.");
                 return View(buyNowModel);
             }
             catch (Exception e)
@@ -814,18 +814,18 @@ namespace EImece.Controllers
         [RateLimit("checkout", DefaultLimit = 5, DefaultWindowMinutes = 5)]
         public async Task<ActionResult> BuyNow(String productId, CustomerDto customer)
         {
-            PaymentLogger.Debug($"Entering BuyNow POST with productId: {productId}");
+            Logger.LogDebug($"Entering BuyNow POST with productId: {productId}");
             if (customer == null)
             {
-                PaymentLogger.Error("Customer is null. Throwing exception.");
+                Logger.LogError("Customer is null. Throwing exception.");
                 throw new NotSupportedException();
             }
 
             bool isValidCustomer = customer.isValidCustomer();
-            PaymentLogger.Debug($"Customer validation result: {isValidCustomer}");
+            Logger.LogDebug($"Customer validation result: {isValidCustomer}");
             BuyNowModel buyNowModel = await CreateBuyNowModelAsync(GeneralHelper.RevertId(productId));
             buyNowModel.Customer = customer;
-            PaymentLogger.Debug("Assigned customer to BuyNow model.");
+            Logger.LogDebug("Assigned customer to BuyNow model.");
 
             if (isValidCustomer)
             {
@@ -833,7 +833,7 @@ namespace EImece.Controllers
                 buyNowModel.ShippingAddress = SetAddress(customer, buyNowModel.ShippingAddress);
                 buyNowModel.ShippingAddress.AddressType = (int)AddressType.ShippingAddress;
                 buyNowModel.OrderGuid = Guid.NewGuid().ToString();
-                PaymentLogger.Debug($"Set shipping address and OrderGuid: {buyNowModel.OrderGuid}");
+                Logger.LogDebug($"Set shipping address and OrderGuid: {buyNowModel.OrderGuid}");
 
                 var item = new ShoppingCart();
                 item.CreatedDate = DateTime.Now;
@@ -846,48 +846,48 @@ namespace EImece.Controllers
                 item.OrderGuid = buyNowModel.OrderGuid;
                 item.UserId = Domain.Constants.BuyNowCustomerUserId;
                 await ShoppingCartService.SaveOrEditShoppingCartAsync(item);
-                PaymentLogger.Debug("Saved BuyNow shopping cart.");
+                Logger.LogDebug("Saved BuyNow shopping cart.");
 
                 ViewBag.CheckoutFormInitialize = await PaymentContext.InitializeBuyNowAsync(buyNowModel);
-                PaymentLogger.Info("Initialized checkout form for BuyNow.");
-                PaymentLogger.Debug("Returning BuyNowPayment view.");
+                Logger.LogInformation("Initialized checkout form for BuyNow.");
+                Logger.LogDebug("Returning BuyNowPayment view.");
                 return View("BuyNowPayment", buyNowModel);
             }
             else
             {
-                PaymentLogger.Info("Customer validation failed. Informing customer.");
+                Logger.LogInformation("Customer validation failed. Informing customer.");
                 InformCustomerToFillOutForm(customer);
-                PaymentLogger.Debug("Returning BuyNow view with validation errors.");
+                Logger.LogDebug("Returning BuyNow view with validation errors.");
                 return View(buyNowModel);
             }
         }
 
         private async Task<BuyNowModel> CreateBuyNowModelAsync(int productId)
         {
-            PaymentLogger.Debug($"Entering CreateBuyNowModelAsync with productId: {productId}");
+            Logger.LogDebug($"Entering CreateBuyNowModelAsync with productId: {productId}");
             BuyNowModel buyNowModel = new BuyNowModel();
             buyNowModel.ProductId = productId;
             buyNowModel.ProductDetailViewModel = await ProductService.GetProductDetailViewModelByIdAsync(productId);
-            PaymentLogger.Debug("Set product details in BuyNow model.");
+            Logger.LogDebug("Set product details in BuyNow model.");
             buyNowModel.ShoppingCartItem = new ShoppingCartItem();
             buyNowModel.ShoppingCartItem.Product = new ShoppingCartProduct(buyNowModel.ProductDetailViewModel.ProductDto, new List<ProductSpecItem>());
             buyNowModel.ShoppingCartItem.Quantity = 1;
             buyNowModel.ShoppingCartItem.ShoppingCartItemId = Guid.NewGuid().ToString();
-            PaymentLogger.Debug($"Created shopping cart item with ID: {buyNowModel.ShoppingCartItem.ShoppingCartItemId}");
+            Logger.LogDebug($"Created shopping cart item with ID: {buyNowModel.ShoppingCartItem.ShoppingCartItemId}");
             buyNowModel.CargoCompany = await SettingService.GetSettingValueDtoByKeyAsync(Domain.Constants.CargoCompany);
             buyNowModel.BasketMinTotalPriceForCargo = await SettingService.GetSettingValueDtoByKeyAsync(Domain.Constants.BasketMinTotalPriceForCargo);
             buyNowModel.CargoPrice = await SettingService.GetSettingValueDtoByKeyAsync(Domain.Constants.CargoPrice);
-            PaymentLogger.Debug("Set cargo details in BuyNow model.");
+            Logger.LogDebug("Set cargo details in BuyNow model.");
             return buyNowModel;
         }
 
         public async Task<ActionResult> BuyNowPaymentResult(PaymentCallbackRequest model, String o)
         {
             PaymentResultDto paymentResult = await PaymentContext.RetrievePaymentResultAsync(model != null ? model.Token : null);
-            PaymentLogger.Info("BuyNowPaymentResult. Payment status: {0}", paymentResult.PaymentStatus);
+            Logger.LogInformation("BuyNowPaymentResult. Payment status: {0}", paymentResult.PaymentStatus);
             if (!IsSuccessfulPayment(paymentResult))
             {
-                PaymentLogger.Error($"BuyNow payment failed. Status: {paymentResult?.PaymentStatus}");
+                Logger.LogError($"BuyNow payment failed. Status: {paymentResult?.PaymentStatus}");
                 return RedirectToAction("NoSuccessForYourOrder");
             }
 
@@ -898,13 +898,13 @@ namespace EImece.Controllers
             }
             catch (Exception ex)
             {
-                PaymentLogger.Error(ex, "Failed to decrypt BuyNow payment callback order reference.");
+                Logger.LogError(ex, "Failed to decrypt BuyNow payment callback order reference.");
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
             if (!string.Equals(paymentResult.BasketId, orderGuid, StringComparison.OrdinalIgnoreCase))
             {
-                PaymentLogger.Error("BuyNow payment BasketId does not match callback order reference.");
+                Logger.LogError("BuyNow payment BasketId does not match callback order reference.");
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
@@ -918,33 +918,33 @@ namespace EImece.Controllers
             var item = await ShoppingCartService.GetShoppingCartByOrderGuidAsync(orderGuid);
             if (item == null || string.IsNullOrEmpty(item.ShoppingCartJson))
             {
-                PaymentLogger.Error("BuyNow shopping cart missing after successful payment.");
+                Logger.LogError("BuyNow shopping cart missing after successful payment.");
                 return new HttpStatusCodeResult(HttpStatusCode.Conflict);
             }
 
             BuyNowModel buyNowModel = JsonConvert.DeserializeObject<BuyNowModel>(item.ShoppingCartJson);
-            PaymentLogger.Debug("Deserialized BuyNow model from shopping cart.");
+            Logger.LogDebug("Deserialized BuyNow model from shopping cart.");
             if (buyNowModel.ShoppingCartItem == null || buyNowModel.ShoppingCartItem.Product == null)
             {
-                PaymentLogger.Error("ShoppingCartItem or Product is null in BuyNow model.");
+                Logger.LogError("ShoppingCartItem or Product is null in BuyNow model.");
                 throw new ArgumentException("buyNowModel.ShoppingCartItem.Product cannot be null");
             }
             if (buyNowModel.Customer == null)
             {
-                PaymentLogger.Error("Customer is null in BuyNow model.");
+                Logger.LogError("Customer is null in BuyNow model.");
                 throw new ArgumentException("buyNowModel.Customer cannot be null");
             }
 
             if (!string.IsNullOrEmpty(buyNowModel.ConversationId)
                 && !string.Equals(paymentResult.ConversationId, buyNowModel.ConversationId, StringComparison.OrdinalIgnoreCase))
             {
-                PaymentLogger.Error("BuyNow ConversationId does not match payment ConversationId.");
+                Logger.LogError("BuyNow ConversationId does not match payment ConversationId.");
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
             if (!PaidPriceMatches(paymentResult.PaidPrice, buyNowModel.TotalPriceWithCargoPrice))
             {
-                PaymentLogger.Error("BuyNow PaidPrice mismatch.");
+                Logger.LogError("BuyNow PaidPrice mismatch.");
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
@@ -952,12 +952,12 @@ namespace EImece.Controllers
             buyNowModel.BasketMinTotalPriceForCargo = await SettingService.GetSettingValueDtoByKeyAsync(Domain.Constants.BasketMinTotalPriceForCargo);
             buyNowModel.CargoPrice = await SettingService.GetSettingValueDtoByKeyAsync(Domain.Constants.CargoPrice);
             buyNowModel.Customer.Lang = CurrentLanguage;
-            PaymentLogger.Debug("Updated BuyNow model with cargo and language details.");
+            Logger.LogDebug("Updated BuyNow model with cargo and language details.");
 
             var order = await ShoppingCartService.SaveBuyNowAsync(buyNowModel, paymentResult);
-            PaymentLogger.Debug($"Order saved with ID: {order.Id}. Cleared BuyNow cart. Redirecting to ThankYouForYourOrder.");
+            Logger.LogDebug($"Order saved with ID: {order.Id}. Cleared BuyNow cart. Redirecting to ThankYouForYourOrder.");
             await ClearBuyNowAsync(buyNowModel);
-            PaymentLogger.Debug("Cleared BuyNow cart. Redirecting to ThankYouForYourOrder.");
+            Logger.LogDebug("Cleared BuyNow cart. Redirecting to ThankYouForYourOrder.");
             TempData[LastCompletedOrderIdKey] = order.Id;
             return RedirectToAction(ThankYouForYourOrderAction, new { orderId = order.Id });
         }
@@ -1020,7 +1020,7 @@ namespace EImece.Controllers
                 }
                 catch (Exception ex)
                 {
-                    PaymentLogger.Error(ex, "ApplyCoupon validation failed");
+                    Logger.LogError(ex, "ApplyCoupon validation failed");
                     TempData["CouponMessage"] = "Coupon validation failed: " + ex.Message;
                     TempData["CouponMessageType"] = "danger";
                     return RedirectToAction(ShoppingCartAction);
@@ -1085,20 +1085,20 @@ namespace EImece.Controllers
                     }
                 }
             }
-            catch (Exception ex) { PaymentLogger.Warn(ex, "Failed to build coupon validation context"); }
+            catch (Exception ex) { Logger.LogWarning(ex, "Failed to build coupon validation context"); }
             return ctx;
         }
 
         private async Task ClearBuyNowAsync(BuyNowModel buyNowModel)
         {
-            PaymentLogger.Debug($"Entering ClearBuyNowAsync with OrderGuid: {buyNowModel.OrderGuid}");
+            Logger.LogDebug($"Entering ClearBuyNowAsync with OrderGuid: {buyNowModel.OrderGuid}");
             await ShoppingCartService.DeleteByOrderGuidAsync(buyNowModel.OrderGuid);
-            PaymentLogger.Debug("BuyNow cart deleted from data source.");
+            Logger.LogDebug("BuyNow cart deleted from data source.");
         }
 
         protected void InformCustomerToFillOutForm(CustomerDto customer)
         {
-            PaymentLogger.Debug("Entering InformCustomerToFillOutForm method.");
+            Logger.LogDebug("Entering InformCustomerToFillOutForm method.");
             if (customer == null)
             {
                 throw new NotSupportedException();
@@ -1167,20 +1167,20 @@ namespace EImece.Controllers
             }
              
             ModelState.AddModelError("", Resource.PleaseFillOutMandatoryBelowFields);
-            PaymentLogger.Debug("Completed InformCustomerToFillOutForm validation.");
+            Logger.LogDebug("Completed InformCustomerToFillOutForm validation.");
         }
 
         protected AddressDto SetAddress(CustomerDto customer, AddressDto address)
         {
-            PaymentLogger.Debug("Entering SetAddress method.");
+            Logger.LogDebug("Entering SetAddress method.");
             if (address == null)
             {
-                PaymentLogger.Debug("Address is null. Creating new address.");
+                Logger.LogDebug("Address is null. Creating new address.");
                 address = new AddressDto();
             }
             if (customer == null)
             {
-                PaymentLogger.Error("Customer is null. Throwing exception.");
+                Logger.LogError("Customer is null. Throwing exception.");
                 throw new NotSupportedException();
             }
             address.Street = customer.Street;
@@ -1195,13 +1195,13 @@ namespace EImece.Controllers
             address.IsActive = true;
             address.Position = 1;
             address.Lang = CurrentLanguage;
-            PaymentLogger.Debug("Address set with customer details.");
+            Logger.LogDebug("Address set with customer details.");
             return address;
         }
 
         protected async Task SendNotificationEmailsToCustomerAndAdminUsersForNewOrderAsync(int orderId)
         {
-            PaymentLogger.Debug($"Entering SendEmails for order ID: {orderId}");
+            Logger.LogDebug($"Entering SendEmails for order ID: {orderId}");
 
             var emailAccount = await SettingService.GetEmailAccountAsync();
             var customerTemplate = await TryRenderOrderConfirmationEmailAsync(orderId);
@@ -1209,7 +1209,7 @@ namespace EImece.Controllers
 
             if (customerTemplate == null && adminTemplate == null)
             {
-                PaymentLogger.Error($"No order notification email could be rendered. order.Id:{orderId}");
+                Logger.LogError($"No order notification email could be rendered. order.Id:{orderId}");
                 return;
             }
 
@@ -1218,11 +1218,11 @@ namespace EImece.Controllers
                 try
                 {
                     EmailSender.SendRenderedEmailTemplateToCustomer(emailAccount, customerTemplate, sendInBackground: true);
-                    PaymentLogger.Info($"Order confirmation email queued for customer. order.Id:{orderId}");
+                    Logger.LogInformation($"Order confirmation email queued for customer. order.Id:{orderId}");
                 }
                 catch (Exception e)
                 {
-                    PaymentLogger.Error(e, $"Failed to queue order confirmation email. order.Id:{orderId}: {e.Message}");
+                    Logger.LogError(e, $"Failed to queue order confirmation email. order.Id:{orderId}: {e.Message}");
                 }
             }
 
@@ -1231,11 +1231,11 @@ namespace EImece.Controllers
                 try
                 {
                     EmailSender.SendRenderedEmailTemplateToAdminUsers(emailAccount, adminTemplate, sendInBackground: true);
-                    PaymentLogger.Info($"New order email queued for admin users. order.Id:{orderId}");
+                    Logger.LogInformation($"New order email queued for admin users. order.Id:{orderId}");
                 }
                 catch (Exception e)
                 {
-                    PaymentLogger.Error(e, $"Failed to queue company new order email. order.Id:{orderId}: {e.Message}");
+                    Logger.LogError(e, $"Failed to queue company new order email. order.Id:{orderId}: {e.Message}");
                 }
             }
         }
@@ -1247,15 +1247,15 @@ namespace EImece.Controllers
                 var emailTemplate = await RazorEngineHelper.OrderConfirmationEmailAsync(orderId);
                 if (emailTemplate?.Item2?.Result == null)
                 {
-                    PaymentLogger.Error("RazorEngineHelper OrderConfirmationEmail template Is NULL.order.Id:" + orderId);
+                    Logger.LogError("RazorEngineHelper OrderConfirmationEmail template Is NULL.order.Id:" + orderId);
                     return null;
                 }
-                PaymentLogger.Debug("Generated order confirmation email template.");
+                Logger.LogDebug("Generated order confirmation email template.");
                 return emailTemplate;
             }
             catch (Exception e)
             {
-                PaymentLogger.Error(e, $"Failed to render order confirmation email: {e.Message}");
+                Logger.LogError(e, $"Failed to render order confirmation email: {e.Message}");
                 return null;
             }
         }
@@ -1267,15 +1267,15 @@ namespace EImece.Controllers
                 var emailTemplate = await RazorEngineHelper.CompanyGotNewOrderEmailAsync(orderId);
                 if (emailTemplate?.Item2?.Result == null)
                 {
-                    PaymentLogger.Error("RazorEngineHelper CompanyGotNewOrderEmail template Is NULL.order.Id:" + orderId);
+                    Logger.LogError("RazorEngineHelper CompanyGotNewOrderEmail template Is NULL.order.Id:" + orderId);
                     return null;
                 }
-                PaymentLogger.Debug("Generated company new order email template.");
+                Logger.LogDebug("Generated company new order email template.");
                 return emailTemplate;
             }
             catch (Exception e)
             {
-                PaymentLogger.Error(e, $"Failed to render company new order email: {e.Message}");
+                Logger.LogError(e, $"Failed to render company new order email: {e.Message}");
                 return null;
             }
         }
@@ -1288,7 +1288,7 @@ namespace EImece.Controllers
             buyWithNoAccountCreation.ShoppingCartItems = shoppingCart.ShoppingCartItems;
             buyWithNoAccountCreation.Coupon = shoppingCart.Coupon;
             buyWithNoAccountCreation.Customer = shoppingCart.Customer;
-            PaymentLogger.Debug("Returning ShoppingWithoutAccount view.");
+            Logger.LogDebug("Returning ShoppingWithoutAccount view.");
             return View(buyWithNoAccountCreation);
         }
 
@@ -1297,10 +1297,10 @@ namespace EImece.Controllers
         [RateLimit("checkout", DefaultLimit = 5, DefaultWindowMinutes = 5)]
         public async Task<ActionResult> ShoppingWithoutAccount(CustomerDto customer)
         {
-            PaymentLogger.Debug("Entering ContinueShoppingWithoutAccount POST action.");
+            Logger.LogDebug("Entering ContinueShoppingWithoutAccount POST action.");
             if (customer == null)
             {
-                PaymentLogger.Error("Customer is null. Throwing exception.");
+                Logger.LogError("Customer is null. Throwing exception.");
                 throw new NotSupportedException();
             }
             ShoppingCartSession shoppingCart = await GetShoppingCartAsync();
@@ -1311,10 +1311,10 @@ namespace EImece.Controllers
             buyWithNoAccountCreation.ShoppingCartItems = shoppingCart.ShoppingCartItems;
             buyWithNoAccountCreation.Coupon = shoppingCart.Coupon;
             bool isValidCustomer = customer.isValidCustomer();
-            PaymentLogger.Debug($"Customer validation result: {isValidCustomer}");
+            Logger.LogDebug($"Customer validation result: {isValidCustomer}");
             if (isValidCustomer)
             {
-                PaymentLogger.Debug("Saving customer information");
+                Logger.LogDebug("Saving customer information");
 
                 customer.CustomerType = (int)EImeceCustomerType.ShoppingWithoutAccount;
                 customer.Country = Domain.Constants.IYZICO_ADDRESS_COUNTRY;
@@ -1324,14 +1324,14 @@ namespace EImece.Controllers
                 customer.GsmNumber = GeneralHelper.CheckGsmNumber(customer.GsmNumber);
                 customer.UserId = Guid.NewGuid().ToString();
                 var customerEntity = await CustomerService.SaveOrEditEntityAsync(customer.ToEntity());
-                PaymentLogger.Debug("Saving customer information,customer.Id:"+ customerEntity.Id);
+                Logger.LogDebug("Saving customer information,customer.Id:"+ customerEntity.Id);
 
                 shoppingCart.Customer = Mapper.Map<CustomerDto>(customerEntity);
                 shoppingCart.ShippingAddress = SetAddress(customer, shoppingCart.ShippingAddress);
                 shoppingCart.ShippingAddress.AddressType = (int)AddressType.ShippingAddress;
                 shoppingCart.BillingAddress = SetAddress(customer, shoppingCart.BillingAddress);
                 shoppingCart.BillingAddress.AddressType = (int)AddressType.BillingAddress;
-                PaymentLogger.Debug("Set shipping and billing addresses.");
+                Logger.LogDebug("Set shipping and billing addresses.");
 
                 ShoppingCart item = await SaveShoppingCartAsync(shoppingCart);
           
@@ -1345,7 +1345,7 @@ namespace EImece.Controllers
             {
                 InformCustomerToFillOutForm(customer);
                 shoppingCart.Customer = customer;
-                PaymentLogger.Debug("Returning view with validation errors.");
+                Logger.LogDebug("Returning view with validation errors.");
                 return View(buyWithNoAccountCreation);
             }
         }
@@ -1353,11 +1353,11 @@ namespace EImece.Controllers
         public async Task<ActionResult> ShoppingWithoutAccountResult(PaymentCallbackRequest model, String o, String orderNumber)
         {
             PaymentResultDto paymentResult = await PaymentContext.RetrievePaymentResultAsync(model != null ? model.Token : null);
-            PaymentLogger.Info("ShoppingWithoutAccountResult. Status: {0} ConversationId: {1}", paymentResult.PaymentStatus, paymentResult.ConversationId);
+            Logger.LogInformation("ShoppingWithoutAccountResult. Status: {0} ConversationId: {1}", paymentResult.PaymentStatus, paymentResult.ConversationId);
 
             if (!IsSuccessfulPayment(paymentResult))
             {
-                PaymentLogger.Error($"BuyWithNoAccountCreation payment failed. Status: {paymentResult?.PaymentStatus}");
+                Logger.LogError($"BuyWithNoAccountCreation payment failed. Status: {paymentResult?.PaymentStatus}");
                 return RedirectToAction("NoSuccessForYourOrder");
             }
 
@@ -1368,7 +1368,7 @@ namespace EImece.Controllers
             }
             catch (Exception ex)
             {
-                PaymentLogger.Error(ex, "Failed to decrypt ShoppingWithoutAccount payment callback order reference.");
+                Logger.LogError(ex, "Failed to decrypt ShoppingWithoutAccount payment callback order reference.");
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
@@ -1389,26 +1389,26 @@ namespace EImece.Controllers
             ShoppingCartSession shoppingCart = await GetShoppingCartByOrderGuidAsync(orderGuid);
             if (item == null || string.IsNullOrEmpty(item.ShoppingCartJson) || shoppingCart == null)
             {
-                PaymentLogger.Error("ShoppingWithoutAccount cart missing after successful payment.");
+                Logger.LogError("ShoppingWithoutAccount cart missing after successful payment.");
                 return new HttpStatusCodeResult(HttpStatusCode.Conflict);
             }
 
             BuyWithNoAccountCreation buyWithNoAccountCreation = JsonConvert.DeserializeObject<BuyWithNoAccountCreation>(item.ShoppingCartJson);
-            PaymentLogger.Debug("Deserialized BuyWithNoAccountCreation model from shopping cart.");
+            Logger.LogDebug("Deserialized BuyWithNoAccountCreation model from shopping cart.");
             if (buyWithNoAccountCreation.ShoppingCartItems.IsEmpty())
             {
-                PaymentLogger.Error("ShoppingCartItem or Product is null in buyWithNoAccountCreation model.");
+                Logger.LogError("ShoppingCartItem or Product is null in buyWithNoAccountCreation model.");
                 throw new ArgumentException("buyWithNoAccountCreation.ShoppingCartItem.ShoppingCartItems cannot be empty");
             }
             if (buyWithNoAccountCreation.Customer == null)
             {
-                PaymentLogger.Error("Customer is null in BuyNow model.");
+                Logger.LogError("Customer is null in BuyNow model.");
                 throw new ArgumentException("buyWithNoAccountCreation.Customer cannot be null");
             }
 
             if (!PaidPriceMatches(paymentResult.PaidPrice, buyWithNoAccountCreation.TotalPriceWithCargoPrice))
             {
-                PaymentLogger.Error("ShoppingWithoutAccount PaidPrice mismatch.");
+                Logger.LogError("ShoppingWithoutAccount PaidPrice mismatch.");
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
@@ -1416,26 +1416,26 @@ namespace EImece.Controllers
             buyWithNoAccountCreation.BasketMinTotalPriceForCargo = await SettingService.GetSettingValueDtoByKeyAsync(Domain.Constants.BasketMinTotalPriceForCargo);
             buyWithNoAccountCreation.CargoPrice = await SettingService.GetSettingValueDtoByKeyAsync(Domain.Constants.CargoPrice);
             buyWithNoAccountCreation.Customer.Lang = CurrentLanguage;
-            PaymentLogger.Debug("Updated buyWithNoAccountCreation model with cargo and language details.");
+            Logger.LogDebug("Updated buyWithNoAccountCreation model with cargo and language details.");
 
             var resolvedOrderNumber = string.IsNullOrWhiteSpace(paymentResult.ConversationId)
                 ? orderNumber
                 : paymentResult.ConversationId;
             var order = await ShoppingCartService.SaveBuyWithNoAccountCreationAsync(resolvedOrderNumber, buyWithNoAccountCreation, paymentResult);
-            PaymentLogger.Debug($"Order saved with ID: {order.Id}. Cleared cart. Redirecting to ThankYouForYourOrder.");
+            Logger.LogDebug($"Order saved with ID: {order.Id}. Cleared cart. Redirecting to ThankYouForYourOrder.");
             await SendNotificationEmailsToCustomerAndAdminUsersForNewOrderAsync(order.Id);
             await ClearBuyWithNoAccountCreationAsync(buyWithNoAccountCreation);
             await ClearCartAsync(shoppingCart);
-            PaymentLogger.Debug("Cleared buyWithNoAccountCreation cart. Redirecting to ThankYouForYourOrder.");
+            Logger.LogDebug("Cleared buyWithNoAccountCreation cart. Redirecting to ThankYouForYourOrder.");
             TempData[LastCompletedOrderIdKey] = order.Id;
             return RedirectToAction(ThankYouForYourOrderAction, new { orderId = order.Id });
         }
 
         private async Task ClearBuyWithNoAccountCreationAsync(BuyWithNoAccountCreation buyWithNoAccountCreation)
         {
-            PaymentLogger.Debug($"Entering ClearBuyWithNoAccountCreationAsync with OrderGuid: {buyWithNoAccountCreation.OrderGuid}");
+            Logger.LogDebug($"Entering ClearBuyWithNoAccountCreationAsync with OrderGuid: {buyWithNoAccountCreation.OrderGuid}");
             await ShoppingCartService.DeleteByOrderGuidAsync(buyWithNoAccountCreation.OrderGuid);
-            PaymentLogger.Debug("BuyNow cart deleted from data source.");
+            Logger.LogDebug("BuyNow cart deleted from data source.");
         }
 
         private async Task RevalidateCouponAsync(ShoppingCartSession shoppingCart)
@@ -1458,7 +1458,7 @@ namespace EImece.Controllers
                 }
                 catch (Exception ex)
                 {
-                    PaymentLogger.Warn(ex, "Coupon revalidation failed; clearing coupon from cart.");
+                    Logger.LogWarning(ex, "Coupon revalidation failed; clearing coupon from cart.");
                     shoppingCart.ClearValidatedCoupon();
                 }
                 return;
@@ -1472,7 +1472,7 @@ namespace EImece.Controllers
                 var result = await CouponValidationService.RevalidateActiveCouponAsync(shoppingCart, ctx).ConfigureAwait(false);
                 if (!result.IsValid)
                 {
-                    PaymentLogger.Warn($"Coupon revalidation failed: {result.Reason} - {result.Message}. Removing coupon.");
+                    Logger.LogWarning($"Coupon revalidation failed: {result.Reason} - {result.Message}. Removing coupon.");
                     shoppingCart.ClearValidatedCoupon();
                     TempData["CouponMessage"] = $"Coupon removed: {result.Message}";
                     TempData["CouponMessageType"] = "warning";
@@ -1492,7 +1492,7 @@ namespace EImece.Controllers
             }
             catch (Exception ex)
             {
-                PaymentLogger.Warn(ex, "Coupon revalidation failed; clearing coupon from cart.");
+                Logger.LogWarning(ex, "Coupon revalidation failed; clearing coupon from cart.");
                 shoppingCart.ClearValidatedCoupon();
             }
         }
@@ -1508,13 +1508,13 @@ namespace EImece.Controllers
         {
             if (string.IsNullOrWhiteSpace(orderGuid))
             {
-                PaymentLogger.Error("Payment callback orderGuid is empty.");
+                StaticPaymentLogger.LogError("Payment callback orderGuid is empty.");
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
             if (!string.Equals(paymentResult.BasketId, orderGuid, StringComparison.OrdinalIgnoreCase))
             {
-                PaymentLogger.Error("Payment BasketId does not match callback order reference.");
+                StaticPaymentLogger.LogError("Payment BasketId does not match callback order reference.");
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
@@ -1522,7 +1522,7 @@ namespace EImece.Controllers
                 && !string.IsNullOrWhiteSpace(paymentResult.ConversationId)
                 && !string.Equals(paymentResult.ConversationId, orderNumber, StringComparison.OrdinalIgnoreCase))
             {
-                PaymentLogger.Error("Payment ConversationId does not match callback orderNumber.");
+                StaticPaymentLogger.LogError("Payment ConversationId does not match callback orderNumber.");
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
@@ -1534,7 +1534,7 @@ namespace EImece.Controllers
             var byPaymentId = await OrderService.GetByPaymentIdAsync(paymentId);
             if (byPaymentId != null)
             {
-                PaymentLogger.Info($"Idempotent payment callback: existing order {byPaymentId.Id} for PaymentId.");
+                Logger.LogInformation($"Idempotent payment callback: existing order {byPaymentId.Id} for PaymentId.");
                 return byPaymentId;
             }
 
@@ -1545,7 +1545,7 @@ namespace EImece.Controllers
                     && !string.IsNullOrEmpty(byOrderGuid.PaymentId)
                     && string.Equals(byOrderGuid.PaymentStatus, Domain.Constants.SUCCESS, StringComparison.OrdinalIgnoreCase))
                 {
-                    PaymentLogger.Info($"Idempotent payment callback: existing order {byOrderGuid.Id} for OrderGuid.");
+                    Logger.LogInformation($"Idempotent payment callback: existing order {byOrderGuid.Id} for OrderGuid.");
                     return byOrderGuid;
                 }
             }

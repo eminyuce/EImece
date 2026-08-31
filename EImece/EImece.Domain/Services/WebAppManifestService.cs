@@ -1,7 +1,7 @@
+using Microsoft.Extensions.Logging;
 using EImece.Domain.Caching;
 using EImece.Domain.Helpers;
 using EImece.Domain.Services.IServices;
-using NLog;
 using System;
 using System.Threading.Tasks;
 
@@ -9,13 +9,14 @@ namespace EImece.Domain.Services
 {
     public class WebAppManifestService : IWebAppManifestService
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private readonly ILogger<WebAppManifestService> _logger;
 
         private readonly ISettingService _settingService;
         private readonly IEimeceCacheProvider _cache;
 
-        public WebAppManifestService(ISettingService settingService, IEimeceCacheProvider cache)
-        {
+        public WebAppManifestService(ISettingService settingService, IEimeceCacheProvider cache, ILogger<WebAppManifestService> logger)
+         {
+            _logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
             _settingService = settingService ?? throw new ArgumentNullException(nameof(settingService));
             _cache = cache ?? throw new ArgumentNullException(nameof(cache));
         }
@@ -44,7 +45,7 @@ namespace EImece.Domain.Services
             }
             catch (Exception ex)
             {
-                Logger.Warn(ex, "Failed to load web app manifest branding from settings; using fallbacks.");
+                _logger.LogWarning(ex, "Failed to load web app manifest branding from settings; using fallbacks.");
             }
 
             return WebAppManifestHelper.BuildJson(
