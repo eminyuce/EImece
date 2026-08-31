@@ -2,7 +2,8 @@ using EImece.Domain.Caching;
 using EImece.Domain.Entities;
 using EImece.Domain.Models.HelperModels;
 using EImece.Domain.Repositories.IRepositories;
-using NLog;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -17,10 +18,10 @@ namespace EImece.Domain.Services
         private const string MAIN_PAGE = "mainpage";
         private const string IMAGE_STATE = "imagestate";
         private const string IS_CAMPAIGN = "IsCampaign";
-        private static readonly Logger BaseEntityServiceLogger = LogManager.GetCurrentClassLogger();
 
         private readonly IBaseEntityRepository<T> baseEntityRepository;
         protected readonly IEimeceCacheProvider DataCachingProvider;
+        protected readonly ILogger Logger;
 
         protected virtual string ActiveListCachePrefix
         {
@@ -28,22 +29,34 @@ namespace EImece.Domain.Services
         }
 
         protected BaseEntityService(IBaseEntityRepository<T> baseEntityRepository)
-            : this(baseEntityRepository, null)
+            : this(baseEntityRepository, NullLogger.Instance)
         {
         }
 
-        protected BaseEntityService(IBaseEntityRepository<T> baseEntityRepository, IEimeceCacheProvider dataCachingProvider)
+        protected BaseEntityService(IBaseEntityRepository<T> baseEntityRepository, ILogger logger)
+            : this(baseEntityRepository, null, logger)
+        {
+        }
+
+        protected BaseEntityService(IBaseEntityRepository<T> baseEntityRepository, IEimeceCacheProvider dataCachingProvider, ILogger logger)
             : base(baseEntityRepository)
         {
             this.baseEntityRepository = baseEntityRepository ?? throw new ArgumentNullException(nameof(baseEntityRepository));
             this.DataCachingProvider = dataCachingProvider;
+            Logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         protected BaseEntityService(IBaseEntityRepository<T> baseEntityRepository, bool isCachingActivated, IEimeceCacheProvider dataCachingProvider = null)
+            : this(baseEntityRepository, isCachingActivated, dataCachingProvider, NullLogger.Instance)
+        {
+        }
+
+        protected BaseEntityService(IBaseEntityRepository<T> baseEntityRepository, bool isCachingActivated, IEimeceCacheProvider dataCachingProvider, ILogger logger)
             : base(baseEntityRepository, isCachingActivated)
         {
             this.baseEntityRepository = baseEntityRepository ?? throw new ArgumentNullException(nameof(baseEntityRepository));
             this.DataCachingProvider = dataCachingProvider;
+            Logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public virtual List<T> GetActiveBaseEntities(bool? isActive, int? language)
@@ -151,7 +164,7 @@ namespace EImece.Domain.Services
                     }
                     catch (Exception exception)
                     {
-                        BaseEntityServiceLogger.Error(exception, "ChangeGridOrderingOrState<T> :" + item.Id, checkbox);
+                        Logger.LogError(exception, "ChangeGridOrderingOrState<T> :" + item.Id + " " + checkbox);
                     }
                 }
             }
@@ -187,7 +200,7 @@ namespace EImece.Domain.Services
                     }
                     catch (Exception exception)
                     {
-                        BaseEntityServiceLogger.Error(exception, "ChangeGridOrderingOrState<T> :" + item.Id, checkbox);
+                        Logger.LogError(exception, "ChangeGridOrderingOrState<T> :" + item.Id + " " + checkbox);
                     }
                 }
             }
