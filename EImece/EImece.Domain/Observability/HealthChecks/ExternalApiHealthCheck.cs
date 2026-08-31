@@ -1,3 +1,5 @@
+using EImece.Domain.Configuration;
+using Microsoft.Extensions.Options;
 using System;
 using System.Net;
 using System.Net.Http;
@@ -8,10 +10,14 @@ namespace EImece.Domain.Observability.HealthChecks
 {
     public sealed class ExternalApiHealthCheck : IHealthCheck
     {
-        private static readonly HttpClient SharedClient = new HttpClient
+        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IOptions<IyzicoOptions> _iyzicoOptions;
+
+        public ExternalApiHealthCheck(IHttpClientFactory httpClientFactory, IOptions<IyzicoOptions> iyzicoOptions)
         {
-            Timeout = TimeSpan.FromSeconds(5)
-        };
+            _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
+            _iyzicoOptions = iyzicoOptions ?? throw new ArgumentNullException(nameof(iyzicoOptions));
+        }
 
         public string Name
         {
@@ -20,7 +26,7 @@ namespace EImece.Domain.Observability.HealthChecks
 
         public async Task<HealthCheckResult> CheckAsync(CancellationToken cancellationToken)
         {
-            var baseUrl = AppConfig.IyzicoBaseUrl;
+            var baseUrl = _iyzicoOptions.Value?.BaseUrl;
             if (string.IsNullOrWhiteSpace(baseUrl))
             {
                 return HealthCheckResult.Down(Name, "External API base URL is not configured.");
@@ -28,8 +34,9 @@ namespace EImece.Domain.Observability.HealthChecks
 
             try
             {
+                var client = _httpClientFactory.CreateClient(HttpClientNames.ExternalApi);
                 using (var request = new HttpRequestMessage(HttpMethod.Get, baseUrl))
-                using (var response = await SharedClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false))
+                using (var response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false))
                 {
                     var statusCode = (int)response.StatusCode;
                     if (response.IsSuccessStatusCode || response.StatusCode == HttpStatusCode.NotFound || response.StatusCode == HttpStatusCode.MethodNotAllowed)

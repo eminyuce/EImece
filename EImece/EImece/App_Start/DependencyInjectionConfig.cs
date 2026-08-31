@@ -3,7 +3,9 @@ using EImece.Domain;
 using EImece.Domain.Abstractions;
 using EImece.Domain.ApiRepositories;
 using EImece.Domain.Caching;
+using EImece.Domain.Configuration;
 using EImece.Domain.DbContext;
+using EImece.Web.Services;
 using EImece.Domain.DependencyInjection;
 using EImece.Domain.Factories;
 using EImece.Domain.Factories.IFactories;
@@ -71,6 +73,8 @@ namespace EImece.App_Start
             DependencyResolver.SetResolver(new MsDiDependencyResolver(ServiceProvider));
             GlobalConfiguration.Configuration.DependencyResolver =
                 new MsDiWebApiDependencyResolver(ServiceProvider);
+
+            RecaptchaService.Configure(ServiceProvider);
         }
 
         /// <summary>
@@ -143,6 +147,9 @@ namespace EImece.App_Start
 
         private static void ConfigureServices(IServiceCollection services)
         {
+            services.AddEimeceOptions();
+            services.AddEimeceMemoryCache();
+            services.AddEimeceHttpClients();
             RegisterCaching(services);
             RegisterObservability(services);
             RegisterLogging(services);
@@ -165,7 +172,6 @@ namespace EImece.App_Start
 
         private static void RegisterObservability(IServiceCollection services)
         {
-            services.AddSingleton(_ => ObservabilityOptions.FromAppConfig());
             services.AddSingletonWithProps<IApplicationMetrics, ApplicationMetrics>();
             services.AddSingletonWithProps<IResilientHttpClient, ResilientHttpClient>();
             // Async, resilient image downloader — DI replacement for the removed static accessor.
@@ -184,6 +190,7 @@ namespace EImece.App_Start
             services.AddSingleton<IHealthCheck>(sp => PropertyInjector.Create<SqlServerHealthCheck>(sp));
             services.AddSingleton<IHealthCheck>(sp => PropertyInjector.Create<FileStorageHealthCheck>(sp));
             services.AddSingleton<IHealthCheck>(sp => PropertyInjector.Create<BackgroundServiceHealthCheck>(sp));
+            services.AddSingleton<IHealthCheck>(sp => PropertyInjector.Create<ExternalApiHealthCheck>(sp));
             services.AddSingletonWithProps<IHealthCheckService, HealthCheckService>();
 
             // OpenTelemetry providers are initialized once from ObservabilityBootstrap.Configure().
@@ -193,8 +200,6 @@ namespace EImece.App_Start
 
         private static void RegisterLogging(IServiceCollection services)
         {
-            services.AddSingleton(_ => LoggingOptions.FromAppConfig());
-
             services.AddSingleton<ILoggerFactory>(sp =>
             {
                 var options = sp.GetRequiredService<LoggingOptions>();

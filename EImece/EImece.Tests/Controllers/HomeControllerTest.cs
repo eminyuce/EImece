@@ -196,7 +196,7 @@ namespace EImece.Tests.Controllers
         public void GetProductDetailViewModelById()
         {
             var db = new EImeceContext(ConnectionString);
-            var cache = new LazyCacheProvider(TestNullLoggers.Create<LazyCacheProvider>());
+            var cache = TestNullLoggers.CreateLazyCacheProvider();
             var settingService = new SettingService(new SettingRepository(db));
             var filesHelper = (FilesHelper)System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof(FilesHelper));
             var categoryRepo = new ProductCategoryRepository(db);
@@ -255,7 +255,7 @@ namespace EImece.Tests.Controllers
         public void GetEmailTemplateById()
         {
             var db = new EImeceContext(ConnectionString);
-            var cache = new LazyCacheProvider(TestNullLoggers.Create<LazyCacheProvider>());
+            var cache = TestNullLoggers.CreateLazyCacheProvider();
             var orderRepo = new OrderRepository(db, TestNullLoggers.Create<OrderRepository>());
             var customerRepo = new CustomerRepository(db, TestNullLoggers.Create<CustomerRepository>());
             var addressRepo = new AddressRepository(db, TestNullLoggers.Create<AddressRepository>());
@@ -287,7 +287,7 @@ namespace EImece.Tests.Controllers
         public void GetBreadCrumb()
         {
             var db = new EImeceContext(ConnectionString);
-            var cache = new LazyCacheProvider(TestNullLoggers.Create<LazyCacheProvider>());
+            var cache = TestNullLoggers.CreateLazyCacheProvider();
             var settingService = new SettingService(new SettingRepository(db));
             var filesHelper = (FilesHelper)System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof(FilesHelper));
             var ProductCategoryService = new ProductCategoryService(new ProductCategoryRepository(db), cache, settingService, null, new EImece.Tests.Infrastructure.NullCurrentUserContext(), filesHelper, null, new ProductRepository(db, TestNullLoggers.Create<ProductRepository>()), null, TestNullLoggers.Create<ProductCategoryService>());
@@ -382,7 +382,7 @@ namespace EImece.Tests.Controllers
         {
             String search = "";
             var db = new EImeceContext(ConnectionString);
-            var cache = new LazyCacheProvider(TestNullLoggers.Create<LazyCacheProvider>());
+            var cache = TestNullLoggers.CreateLazyCacheProvider();
             var settingService = new SettingService(new SettingRepository(db));
             var filesHelper = (FilesHelper)System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof(FilesHelper));
             var ProductCategoryService = new ProductCategoryService(new ProductCategoryRepository(db), cache, settingService, null, new EImece.Tests.Infrastructure.NullCurrentUserContext(), filesHelper, null, new ProductRepository(db, TestNullLoggers.Create<ProductRepository>()), null, TestNullLoggers.Create<ProductCategoryService>());
@@ -510,7 +510,7 @@ QUITE
         public void DeleteProductCategory()
         {
             var dbContext = new EImeceContext(ConnectionString);
-            var cache = new LazyCacheProvider(TestNullLoggers.Create<LazyCacheProvider>());
+            var cache = TestNullLoggers.CreateLazyCacheProvider();
             var settingService = new SettingService(new SettingRepository(dbContext));
             var filesHelper = (FilesHelper)System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof(FilesHelper));
             var fileStorageRepo = new FileStorageRepository(dbContext);

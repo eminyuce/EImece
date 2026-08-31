@@ -1,3 +1,4 @@
+using EImece.Domain.Configuration;
 using EImece.Domain.Observability.Configuration;
 using EImece.Domain.Observability.Logging;
 using EImece.Domain.Observability.Metrics;
@@ -19,7 +20,7 @@ using System.Threading.Tasks;
 
 namespace EImece.Domain.Observability.Http
 {
-    public sealed class ResilientHttpClient : IResilientHttpClient, IDisposable
+    public sealed class ResilientHttpClient : IResilientHttpClient
     {
         private readonly HttpClient _httpClient;
         private readonly AsyncPolicyWrap<HttpResponseMessage> _policy;
@@ -31,22 +32,20 @@ namespace EImece.Domain.Observability.Http
         // for GetBytes (4.7.2 has no RandomNumberGenerator.GetInt32).
         private static readonly RandomNumberGenerator JitterRng = RandomNumberGenerator.Create();
 
-        public ResilientHttpClient(ILogger<ResilientHttpClient> logger, IApplicationMetrics metrics, ObservabilityOptions options)
+        public ResilientHttpClient(
+            IHttpClientFactory httpClientFactory,
+            ILogger<ResilientHttpClient> logger,
+            IApplicationMetrics metrics,
+            ObservabilityOptions options)
         {
+            if (httpClientFactory == null) throw new ArgumentNullException(nameof(httpClientFactory));
+
             _logger = logger;
             _metrics = metrics;
             _options = options ?? ObservabilityOptions.FromAppConfig();
 
-            _httpClient = new HttpClient
-            {
-                // FIX: never InfiniteTimeSpan. Polly's optimistic TimeoutPolicy (BuildTimeoutPolicy)
-                // enforces the intended per-attempt timeout via CancellationToken, but if a socket
-                // stall fails to observe cancellation, HttpClient.Timeout is the hard backstop that
-                // still aborts the attempt. A small buffer above the Polly timeout guarantees Polly
-                // wins under normal conditions while capping the absolute per-attempt wall-clock time.
-                // This bounds a blocked call to (HttpTimeoutSeconds+buffer) per attempt instead of forever.
-                Timeout = TimeSpan.FromSeconds(_options.HttpTimeoutSeconds + 5)
-            };
+            // Factory-managed handler lifetime; do not dispose this client instance.
+            _httpClient = httpClientFactory.CreateClient(HttpClientNames.Resilient);
 
             // Retry (outer) -> Circuit Breaker (middle) -> Timeout (inner, per-attempt).
             // The inner timeout applies to each individual try so a single hung host cannot
@@ -120,11 +119,6 @@ namespace EImece.Domain.Observability.Http
                 var bytes = await response.Content.ReadAsByteArrayAsync().ConfigureAwait(false);
                 return bytes == null ? null : System.Text.Encoding.UTF8.GetString(bytes);
             }
-        }
-
-        public void Dispose()
-        {
-            _httpClient.Dispose();
         }
 
         private Task<HttpResponseMessage> SendAsync(HttpMethod method, string url, HttpContent content, CancellationToken cancellationToken)

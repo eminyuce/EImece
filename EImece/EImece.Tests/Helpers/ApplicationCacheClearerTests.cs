@@ -24,7 +24,7 @@ namespace EImece.Tests.Helpers
         [TestMethod]
         public void LazyCacheProvider_ClearAll_ReturnsNonNegativeCount()
         {
-            var cache = new LazyCacheProvider(TestNullLoggers.Create<LazyCacheProvider>());
+            var cache = TestNullLoggers.CreateLazyCacheProvider();
             var key = "test:clearall:" + Guid.NewGuid().ToString("N");
             cache.Set(key, 1, CachePolicy.Absolute(60));
 

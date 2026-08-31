@@ -17,7 +17,8 @@ namespace EImece.Domain.Caching
         private readonly IHttpRuntimeCacheClearer _httpRuntimeCacheClearer;
 
         public MemoryCacheProvider(ILogger<MemoryCacheProvider> logger, IHttpRuntimeCacheClearer httpRuntimeCacheClearer = null)
-         {
+        {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _httpRuntimeCacheClearer = httpRuntimeCacheClearer;
         }
 
