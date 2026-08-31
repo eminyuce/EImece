@@ -1,14 +1,17 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.Extensions.Options;
 using EImece.Domain;
+using EImece.Domain.Configuration;
 using EImece.Domain.Helpers;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Observability.Logging;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Specialized;
+using System.Collections.Generic;
 using System.Net;
-using System.Text;
+using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -22,9 +25,27 @@ namespace EImece.Web.Services
         public const string ResponseFormKey = "g-recaptcha-response";
         public const string ModelStateKey = "Recaptcha";
 
+        private static IHttpClientFactory _httpClientFactory;
+        private static OutboundHttpOptions _httpOptions;
+
         private static ILogger Logger =>
             LoggingBootstrap.LoggerFactory?.CreateLogger(typeof(RecaptchaService))
             ?? NullLogger.Instance;
+
+        /// <summary>
+        /// Called once from the composition root for static entry points that cannot use constructor DI.
+        /// </summary>
+        public static void Configure(IServiceProvider serviceProvider)
+        {
+            if (serviceProvider == null)
+            {
+                throw new ArgumentNullException(nameof(serviceProvider));
+            }
+
+            _httpClientFactory = serviceProvider.GetService(typeof(IHttpClientFactory)) as IHttpClientFactory;
+            var options = serviceProvider.GetService(typeof(IOptions<OutboundHttpOptions>)) as IOptions<OutboundHttpOptions>;
+            _httpOptions = options?.Value ?? OutboundHttpOptions.FromAppConfig();
+        }
 
         public static bool HasValidationError(ModelStateDictionary modelState)
         {
@@ -60,7 +81,13 @@ namespace EImece.Web.Services
             }
 
             var remoteIp = GetClientIp(request);
-            return VerifyWithGoogle(AppConfig.RecaptchaSecretKey, response, remoteIp);
+            var secretKey = _httpOptions?.RecaptchaSecretKey;
+            if (string.IsNullOrWhiteSpace(secretKey))
+            {
+                secretKey = AppConfig.RecaptchaSecretKey;
+            }
+
+            return VerifyWithGoogle(secretKey, response, remoteIp);
         }
 
         public static bool VerifyWithGoogle(string secretKey, string responseToken, string remoteIp = null)
@@ -79,22 +106,46 @@ namespace EImece.Web.Services
             try
             {
                 EnsureTls12();
+                return VerifyWithGoogleAsync(secretKey, responseToken, remoteIp)
+                    .GetAwaiter()
+                    .GetResult();
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, "reCAPTCHA siteverify request failed.");
+                return false;
+            }
+        }
 
-                using (var client = new WebClient())
+        private static async Task<bool> VerifyWithGoogleAsync(string secretKey, string responseToken, string remoteIp)
+        {
+            var verifyUrl = _httpOptions?.RecaptchaSiteVerifyUrl;
+            if (string.IsNullOrWhiteSpace(verifyUrl))
+            {
+                verifyUrl = AppConfig.RecaptchaSiteVerifyUrl;
+            }
+
+            var form = new Dictionary<string, string>
+            {
+                { "secret", secretKey },
+                { "response", responseToken }
+            };
+
+            if (!string.IsNullOrWhiteSpace(remoteIp))
+            {
+                form["remoteip"] = remoteIp;
+            }
+
+            HttpClient client = _httpClientFactory != null
+                ? _httpClientFactory.CreateClient(HttpClientNames.Recaptcha)
+                : new HttpClient { Timeout = TimeSpan.FromSeconds(15) };
+
+            try
+            {
+                using (var content = new FormUrlEncodedContent(form))
+                using (var response = await client.PostAsync(verifyUrl, content).ConfigureAwait(false))
                 {
-                    var values = new NameValueCollection
-                    {
-                        { "secret", secretKey },
-                        { "response", responseToken }
-                    };
-
-                    if (!string.IsNullOrWhiteSpace(remoteIp))
-                    {
-                        values.Add("remoteip", remoteIp);
-                    }
-
-                    var resultBytes = client.UploadValues(AppConfig.RecaptchaSiteVerifyUrl, "POST", values);
-                    var json = Encoding.UTF8.GetString(resultBytes);
+                    var json = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                     var result = JsonConvert.DeserializeObject<RecaptchaVerifyResponse>(json);
 
                     if (result == null)
@@ -108,16 +159,18 @@ namespace EImece.Web.Services
                         var errors = result.ErrorCodes != null
                             ? string.Join(", ", result.ErrorCodes)
                             : "(none)";
-                        Logger.LogWarning($"reCAPTCHA siteverify failed. Error codes: {errors}");
+                        Logger.LogWarning("reCAPTCHA siteverify failed. Error codes: {ErrorCodes}", errors);
                     }
 
                     return result.Success;
                 }
             }
-            catch (Exception ex)
+            finally
             {
-                Logger.LogError(ex, "reCAPTCHA siteverify request failed.");
-                return false;
+                if (_httpClientFactory == null)
+                {
+                    client.Dispose();
+                }
             }
         }
 

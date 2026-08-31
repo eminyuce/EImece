@@ -1,3 +1,4 @@
+using EImece.Domain.Configuration;
 using EImece.Domain.Observability.Configuration;
 using EImece.Domain.Observability.Http;
 using EImece.Domain.Observability.Metrics;
@@ -15,12 +16,12 @@ namespace EImece.Tests.Infrastructure
         {
             var services = new ServiceCollection();
 
-            services.AddSingleton(_ => ObservabilityOptions.FromAppConfig());
+            services.AddEimeceOptions();
+            services.AddEimeceHttpClients();
             services.AddSingleton<IApplicationMetrics, ApplicationMetrics>();
             services.AddSingleton<ILoggerFactory>(_ => new LoggerFactory());
             services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
 
-            // Register ResilientHttpClient as Singleton
             services.AddSingleton<ResilientHttpClient>();
             services.AddSingleton<IResilientHttpClient>(sp => sp.GetRequiredService<ResilientHttpClient>());
 

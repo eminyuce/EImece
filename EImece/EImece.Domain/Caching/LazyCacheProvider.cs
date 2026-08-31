@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Logging;
 using EImece.Domain.Abstractions;
 using LazyCache;
+using LazyCache.Providers;
 using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Concurrent;
@@ -14,11 +15,17 @@ namespace EImece.Domain.Caching
         private readonly ILogger<LazyCacheProvider> _logger;
 
         private const string PhysicalKeyPrefix = "Memory:";
-        private readonly IAppCache _lazyCache = new CachingService();
+        private readonly IAppCache _lazyCache;
         private readonly IHttpRuntimeCacheClearer _httpRuntimeCacheClearer;
 
-        public LazyCacheProvider(ILogger<LazyCacheProvider> logger, IHttpRuntimeCacheClearer httpRuntimeCacheClearer = null)
-         {
+        public LazyCacheProvider(
+            ILogger<LazyCacheProvider> logger,
+            IMemoryCache memoryCache,
+            IHttpRuntimeCacheClearer httpRuntimeCacheClearer = null)
+        {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            if (memoryCache == null) throw new ArgumentNullException(nameof(memoryCache));
+            _lazyCache = new CachingService(new Lazy<ICacheProvider>(() => new LazyCache.Providers.MemoryCacheProvider(memoryCache)));
             _httpRuntimeCacheClearer = httpRuntimeCacheClearer;
         }
 

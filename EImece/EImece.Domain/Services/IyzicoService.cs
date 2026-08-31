@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Logging;
+using EImece.Domain.Configuration;
 using EImece.Domain.DependencyInjection;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
@@ -14,23 +15,27 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
 using System.Threading.Tasks;
+using IyzipayOptions = Iyzipay.Options;
+using Microsoft.Extensions.Options;
 
 namespace EImece.Domain.Services
 {
     public class IyzicoService
     {
         private readonly ILogger<IyzicoService> _logger;
+        private readonly IOptions<IyzicoOptions> _iyzicoOptions;
 
-        public IyzicoService(ILogger<IyzicoService> logger)
+        public IyzicoService(ILogger<IyzicoService> logger, IOptions<IyzicoOptions> iyzicoOptions)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _iyzicoOptions = iyzicoOptions ?? throw new ArgumentNullException(nameof(iyzicoOptions));
         }
 
         public async Task<CheckoutForm> GetCheckoutFormAsync(RetrieveCheckoutFormRequest model)
         {
             using (var activity = StartPaymentActivity("callback"))
             {
-                Options options = GetOptions();
+                IyzipayOptions options = GetOptions();
                 var request = new RetrieveCheckoutFormRequest();
                 request.Token = model.Token;
 
@@ -73,7 +78,7 @@ namespace EImece.Domain.Services
             }
 
             // Configure iyzico options
-            Options options = GetOptions();
+            IyzipayOptions options = GetOptions();
 
             // Build callback URL
             string orderNumber = GeneralHelper.GenerateOrderNumber();
@@ -215,7 +220,7 @@ namespace EImece.Domain.Services
         {
             _logger.LogInformation("Initializing CheckoutForm for BuyNow with OrderGuid: " + buyNowModel.OrderGuid);
 
-            Options options = GetOptions();
+            IyzipayOptions options = GetOptions();
             var customer = buyNowModel.Customer;
 
             if (string.IsNullOrEmpty(callbackUrl))
@@ -317,11 +322,12 @@ namespace EImece.Domain.Services
             }
         }
 
-        private Options GetOptions()
+        private IyzipayOptions GetOptions()
         {
             _logger.LogDebug("Fetching Iyzico API options...");
-            var apiKey = AppConfig.IyzicoApiKey;
-            var secretKey = AppConfig.IyzicoSecretKey;
+            var config = _iyzicoOptions.Value;
+            var apiKey = config.ApiKey;
+            var secretKey = config.SecretKey;
 
             if (string.IsNullOrWhiteSpace(apiKey) || string.IsNullOrWhiteSpace(secretKey))
             {
@@ -330,11 +336,11 @@ namespace EImece.Domain.Services
                     "Iyzico payment gateway is not configured. Both IyzicoApiKey and IyzicoSecretKey must be set in secure configuration.");
             }
 
-            Options options = new Options
+            IyzipayOptions options = new IyzipayOptions
             {
                 ApiKey = apiKey,
                 SecretKey = secretKey,
-                BaseUrl = AppConfig.IyzicoBaseUrl
+                BaseUrl = config.BaseUrl
             };
             _logger.LogDebug("Iyzico API options fetched successfully.");
             return options;

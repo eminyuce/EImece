@@ -130,6 +130,9 @@
     <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=10.0.0.10, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.10.0.10\lib\net462\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Extensions.Http, Version=10.0.0.10, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Http.10.0.10\lib\net462\Microsoft.Extensions.Http.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Extensions.Logging, Version=10.0.0.10, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.Logging.10.0.10\lib\net462\Microsoft.Extensions.Logging.dll</HintPath>
     </Reference>
@@ -384,6 +387,13 @@
     <Compile Include="Caching\CacheKeys.cs" />
     <Compile Include="Caching\CachePolicy.cs" />
     <Compile Include="Caching\MemoryCacheProvider.cs" />
+    <Compile Include="Configuration\CacheOptions.cs" />
+    <Compile Include="Configuration\EimeceHttpClientRegistration.cs" />
+    <Compile Include="Configuration\EimeceMemoryCacheRegistration.cs" />
+    <Compile Include="Configuration\EimeceOptionsRegistration.cs" />
+    <Compile Include="Configuration\HttpClientNames.cs" />
+    <Compile Include="Configuration\IyzicoOptions.cs" />
+    <Compile Include="Configuration\OutboundHttpOptions.cs" />
     <Compile Include="Observability\Configuration\ObservabilityOptions.cs" />
     <Compile Include="Observability\Exceptions\ApiErrorResponse.cs" />
     <Compile Include="Observability\HealthChecks\BackgroundServiceHealthCheck.cs" />
