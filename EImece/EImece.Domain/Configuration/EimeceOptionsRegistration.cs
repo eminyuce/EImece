@@ -23,7 +23,7 @@ namespace EImece.Domain.Configuration
         private static void RegisterOptions<TOptions>(IServiceCollection services, System.Func<TOptions> factory)
             where TOptions : class
         {
-            services.AddSingleton(factory);
+            services.AddSingleton<TOptions>(_ => factory());
             services.AddSingleton<IOptions<TOptions>>(sp => Options.Create(sp.GetRequiredService<TOptions>()));
             services.AddSingleton<IOptionsMonitor<TOptions>>(sp => new OptionsMonitorWrapper<TOptions>(sp.GetRequiredService<TOptions>()));
         }

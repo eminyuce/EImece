@@ -6,6 +6,7 @@ using EImece.Domain.Observability.Http;
 using EImece.Domain.Observability.Logging;
 using EImece.Domain.Observability.Metrics;
 using EImece.Tests.Infrastructure;
+using EImece.Web.Services;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -42,7 +43,7 @@ namespace EImece.Tests.Infrastructure
             var services = new ServiceCollection();
             services.AddEimeceOptions();
 
-            using (var provider = services.BuildServiceProvider())
+            using (var provider = services.BuildServiceProvider(validateScopes: true))
             {
                 var iyzico = provider.GetRequiredService<IOptions<IyzicoOptions>>().Value;
                 Assert.AreEqual("https://test-iyzico.example/", iyzico.BaseUrl);
@@ -50,6 +51,44 @@ namespace EImece.Tests.Infrastructure
                 var cache = provider.GetRequiredService<IOptions<CacheOptions>>().Value;
                 Assert.IsTrue(cache.IsActive);
                 Assert.AreEqual(900, cache.LongSeconds);
+            }
+        }
+
+        [TestMethod]
+        public void ServiceCollection_ResolvesConcreteAndIOptions_WithValidateScopes()
+        {
+            var services = new ServiceCollection();
+            services.AddEimeceOptions();
+
+            using (var provider = services.BuildServiceProvider(validateScopes: true))
+            {
+                var outboundConcrete = provider.GetRequiredService<OutboundHttpOptions>();
+                var outboundWrapped = provider.GetRequiredService<IOptions<OutboundHttpOptions>>().Value;
+                Assert.IsNotNull(outboundConcrete);
+                Assert.AreSame(outboundConcrete, outboundWrapped);
+
+                var iyzicoConcrete = provider.GetRequiredService<IyzicoOptions>();
+                var iyzicoWrapped = provider.GetRequiredService<IOptions<IyzicoOptions>>().Value;
+                Assert.IsNotNull(iyzicoConcrete);
+                Assert.AreSame(iyzicoConcrete, iyzicoWrapped);
+
+                var cacheConcrete = provider.GetRequiredService<CacheOptions>();
+                var cacheWrapped = provider.GetRequiredService<IOptions<CacheOptions>>().Value;
+                Assert.IsNotNull(cacheConcrete);
+                Assert.AreSame(cacheConcrete, cacheWrapped);
+            }
+        }
+
+        [TestMethod]
+        public void RecaptchaService_Configure_SucceedsWithCompositionRootRegistrations()
+        {
+            var services = new ServiceCollection();
+            services.AddEimeceOptions();
+            services.AddEimeceHttpClients();
+
+            using (var provider = services.BuildServiceProvider(validateScopes: true))
+            {
+                RecaptchaService.Configure(provider);
             }
         }
 
