@@ -166,11 +166,14 @@ namespace EImece.Domain.Entities
             get
             {
                 if (!HasDiscount) return 0;
+                double raw;
                 if (Discount.HasValue && Discount.Value > 0 && Price > 0)
-                    return (double)((Discount.Value / Price) * 100);
-                if (ProductCategory != null && ProductCategory.DiscountPercantage.HasValue)
-                    return ProductCategory.DiscountPercantage.Value;
-                return 0;
+                    raw = (double)((Discount.Value / Price) * 100);
+                else if (ProductCategory != null && ProductCategory.DiscountPercantage.HasValue)
+                    raw = ProductCategory.DiscountPercantage.Value;
+                else
+                    return 0;
+                return Math.Round(raw, 2, MidpointRounding.AwayFromZero);
             }
         }
 

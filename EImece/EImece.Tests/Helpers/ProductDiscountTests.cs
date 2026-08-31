@@ -2,6 +2,7 @@ using EImece.Domain.Entities;
 using EImece.Domain.Models.DTOs;
 using EImece.Domain.Models.DTOs.Storefront;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Globalization;
 
 namespace EImece.Tests.Helpers
 {
@@ -73,6 +74,19 @@ namespace EImece.Tests.Helpers
             Assert.IsFalse(dtoOutOfStock.IsOnSale);
             Assert.IsFalse(dtoNotForSale.IsOnSale);
             Assert.IsFalse(dtoZeroPrice.IsOnSale);
+        }
+
+        [TestMethod]
+        public void Product_DiscountPercentage_RoundsToTwoDecimals_AwayFromZero()
+        {
+            var product = new Product
+            {
+                Price = 499m,
+                Discount = 49m
+            };
+
+            Assert.AreEqual(9.82, product.DiscountPercentage);
+            Assert.AreEqual("9,82", product.DiscountPercentage.ToString("N2", CultureInfo.GetCultureInfo("tr-TR")));
         }
     }
 }

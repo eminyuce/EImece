@@ -8,7 +8,7 @@
     @if (o.HasDiscount)
     {
         <div class="eg-price-current">@o.PriceWithDiscount.CurrencySign()</div>
-        <span class="eg-price-discount">%@o.DiscountPercentage @Resource.Discount</span>
+        <span class="eg-price-discount">%@o.DiscountPercentage.ToString("N2") @Resource.Discount</span>
         <div class="eg-price-was"><del>@o.Price.CurrencySign()</del></div>
     }
     else
