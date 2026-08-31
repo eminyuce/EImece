@@ -386,6 +386,7 @@
     <Compile Include="Caching\CacheExpirationMode.cs" />
     <Compile Include="Caching\CacheKeys.cs" />
     <Compile Include="Caching\CachePolicy.cs" />
+    <Compile Include="Caching\MemoryCacheEntrySizing.cs" />
     <Compile Include="Caching\MemoryCacheProvider.cs" />
     <Compile Include="Configuration\CacheOptions.cs" />
     <Compile Include="Configuration\EimeceHttpClientRegistration.cs" />

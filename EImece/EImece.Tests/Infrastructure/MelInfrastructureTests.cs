@@ -115,6 +115,35 @@ namespace EImece.Tests.Infrastructure
         }
 
         [TestMethod]
+        public void LazyCacheProvider_GetOrAdd_WithSizeLimitedMemoryCache_DoesNotThrow()
+        {
+            var memoryCache = new MemoryCache(new MemoryCacheOptions { SizeLimit = 100 });
+            var cache = new LazyCacheProvider(TestNullLoggers.Create<LazyCacheProvider>(), memoryCache);
+            var key = CacheKeys.CategoryPrefix + "tree:mel-test";
+
+            var tree = cache.GetOrAdd(key, () => new[] { "Electronics", "Headphones" }, AppConfig.CacheLongSeconds);
+
+            Assert.IsNotNull(tree);
+            Assert.AreEqual(2, tree.Length);
+        }
+
+        [TestMethod]
+        public void LazyCacheProvider_GetOrAdd_WithDefaultEimeceMemoryCacheRegistration_Succeeds()
+        {
+            var services = new ServiceCollection();
+            services.AddLogging();
+            services.AddEimeceMemoryCache();
+            services.AddSingleton<IEimeceCacheProvider, LazyCacheProvider>();
+
+            using (var provider = services.BuildServiceProvider())
+            {
+                var cache = provider.GetRequiredService<IEimeceCacheProvider>();
+                var value = cache.GetOrAdd("menu:page:mel-test", () => "page-content", 300);
+                Assert.AreEqual("page-content", value);
+            }
+        }
+
+        [TestMethod]
         public void LazyCacheProvider_CacheHit_SkipsLoader_AndInvalidatesAfterClear()
         {
             var services = new ServiceCollection();

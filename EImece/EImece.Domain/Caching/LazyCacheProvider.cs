@@ -188,6 +188,8 @@ namespace EImece.Domain.Caching
 
         private static void ApplyPolicy(ICacheEntry entry, CachePolicy policy)
         {
+            MemoryCacheEntrySizing.Apply(entry);
+
             if (policy.Mode == CacheExpirationMode.Sliding)
             {
                 entry.SlidingExpiration = TimeSpan.FromSeconds(policy.DurationSeconds);
@@ -200,6 +202,8 @@ namespace EImece.Domain.Caching
 
         private static void ApplyPolicy(MemoryCacheEntryOptions options, CachePolicy policy)
         {
+            MemoryCacheEntrySizing.Apply(options);
+
             if (policy.Mode == CacheExpirationMode.Sliding)
             {
                 options.SlidingExpiration = TimeSpan.FromSeconds(policy.DurationSeconds);

@@ -12,8 +12,9 @@ namespace EImece.Domain.Configuration
         public int VeryLongSeconds { get; set; } = 86400;
 
         /// <summary>
-        /// Optional bounded size for the shared <see cref="Microsoft.Extensions.Caching.Memory.IMemoryCache"/> instance.
-        /// Zero disables the size limit.
+        /// Optional bounded size read from Web.config (<c>Cache:SizeLimit</c>).
+        /// Not applied to the LazyCache-backed <see cref="Microsoft.Extensions.Caching.Memory.IMemoryCache"/>
+        /// instance because LazyCache does not set per-entry sizes (would throw when SizeLimit is enabled).
         /// </summary>
         public int SizeLimit { get; set; } = 10_000;
 
