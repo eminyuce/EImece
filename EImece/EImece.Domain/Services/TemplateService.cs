@@ -1,7 +1,7 @@
+using Microsoft.Extensions.Logging;
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
-using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,12 +12,9 @@ namespace EImece.Domain.Services
 {
     public class TemplateService : BaseEntityService<Template>, ITemplateService
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
         public ITemplateRepository TemplateRepository { get; set; }
 
-        public TemplateService(ITemplateRepository repository) : base(repository)
-        {
+        public TemplateService(ITemplateRepository repository, ILogger<TemplateService> logger) : base(repository, logger) {
             TemplateRepository = repository;
         }
 
@@ -56,16 +53,16 @@ namespace EImece.Domain.Services
                 result = TemplateRepository.GetSingle(id);
                 if (result == null)
                 {
-                    Logger.Error("GetTemplate is null for id" + id);
+                    Logger.LogError("GetTemplate is null for id" + id);
                 }
                 else if (!result.IsActive)
                 {
-                    Logger.Warn("GetTemplate found inactive template id" + id);
+                    Logger.LogWarning("GetTemplate found inactive template id" + id);
                     result = null;
                 }
                 else
                 {
-                    Logger.Warn("GetTemplate cache miss for id" + id + "; loaded from database.");
+                    Logger.LogWarning("GetTemplate cache miss for id" + id + "; loaded from database.");
                     DataCachingProvider.Clear(Constants.GetAllActiveTemplatesCacheKey);
                 }
             }
@@ -84,16 +81,16 @@ namespace EImece.Domain.Services
                 result = await TemplateRepository.GetSingleAsync(id).ConfigureAwait(false);
                 if (result == null)
                 {
-                    Logger.Error("GetTemplateAsync is null for id" + id);
+                    Logger.LogError("GetTemplateAsync is null for id" + id);
                 }
                 else if (!result.IsActive)
                 {
-                    Logger.Warn("GetTemplateAsync found inactive template id" + id);
+                    Logger.LogWarning("GetTemplateAsync found inactive template id" + id);
                     result = null;
                 }
                 else
                 {
-                    Logger.Warn("GetTemplateAsync cache miss for id" + id + "; loaded from database.");
+                    Logger.LogWarning("GetTemplateAsync cache miss for id" + id + "; loaded from database.");
                     DataCachingProvider.Clear(Constants.GetAllActiveTemplatesCacheKey);
                     DataCachingProvider.Clear(Constants.GetAllActiveTemplatesCacheKey + AsyncCacheKeySuffix);
                 }

@@ -1,7 +1,7 @@
+using Microsoft.Extensions.Logging;
 using EImece.Domain.Abstractions;
 using LazyCache;
 using Microsoft.Extensions.Caching.Memory;
-using NLog;
 using System;
 using System.Collections.Concurrent;
 using System.Linq;
@@ -11,13 +11,14 @@ namespace EImece.Domain.Caching
 {
     public class LazyCacheProvider : IEimeceCacheProvider
     {
-        protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private readonly ILogger<LazyCacheProvider> _logger;
+
         private const string PhysicalKeyPrefix = "Memory:";
         private readonly IAppCache _lazyCache = new CachingService();
         private readonly IHttpRuntimeCacheClearer _httpRuntimeCacheClearer;
 
-        public LazyCacheProvider(IHttpRuntimeCacheClearer httpRuntimeCacheClearer = null)
-        {
+        public LazyCacheProvider(ILogger<LazyCacheProvider> logger, IHttpRuntimeCacheClearer httpRuntimeCacheClearer = null)
+         {
             _httpRuntimeCacheClearer = httpRuntimeCacheClearer;
         }
 
@@ -72,7 +73,7 @@ namespace EImece.Domain.Caching
             int httpRuntimeRemoved;
             int memoryCacheRemoved;
             ApplicationCacheClearer.ClearAspNetCaches(_httpRuntimeCacheClearer, out httpRuntimeRemoved, out memoryCacheRemoved);
-            Logger.Info(
+            _logger.LogInformation(
                 "LazyCacheProvider.ClearAll removed {0} data keys (+ {1} HttpRuntime, {2} MemoryCache.Default)",
                 keys.Count,
                 httpRuntimeRemoved,

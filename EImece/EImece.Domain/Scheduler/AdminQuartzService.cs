@@ -1,5 +1,6 @@
 using EImece.Domain.Helpers;
 using EImece.Domain.Scheduler.Jobs;
+using Microsoft.Extensions.Logging;
 using Quartz;
 using System;
 using System.Threading.Tasks;
@@ -11,17 +12,19 @@ namespace EImece.Domain.Scheduler
     /// </summary>
     public class AdminQuartzService : BaseQuartzService
     {
-        public AdminQuartzService(IScheduler scheduler = null) : base(scheduler)
+        public AdminQuartzService(IScheduler scheduler, ILogger<AdminQuartzService> logger)
+            : base(scheduler, logger)
         {
         }
+
         public override async Task StartSchedulerServiceAsync()
         {
-            Logger.Info("AdminQuartzService has started");
+            Logger.LogInformation("AdminQuartzService has started");
 
             var quartzEnabled = AppConfig.GetConfigBool("Quartz_Scheduler_IsEnabled", true);
             if (!quartzEnabled)
             {
-                Logger.Info("AdminQuartzService skipped: Quartz_Scheduler_IsEnabled is false");
+                Logger.LogInformation("AdminQuartzService skipped: Quartz_Scheduler_IsEnabled is false");
                 return;
             }
 
@@ -31,7 +34,7 @@ namespace EImece.Domain.Scheduler
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "AdminQuartzService failed to execute admin tasks.");
+                Logger.LogError(ex, "AdminQuartzService failed to execute admin tasks.");
             }
         }
 
@@ -40,7 +43,7 @@ namespace EImece.Domain.Scheduler
             IScheduler sched = Scheduler;
             if (sched == null)
             {
-                Logger.Error("AdminQuartzService.ExecuteAdminTasksAsync: Scheduler is null");
+                Logger.LogError("AdminQuartzService.ExecuteAdminTasksAsync: Scheduler is null");
                 return;
             }
 
@@ -52,15 +55,18 @@ namespace EImece.Domain.Scheduler
                 try
                 {
                     var jobId = runningCronJob.JobDetail.Key.Name.Replace("Name-", "").ToInt();
-                    Logger.Info("RunningCron Job:" + runningCronJob.JobDetail.Key.Name + " " + runningCronJob.JobDetail.Key.Group + " JobId:" + jobId);
+                    Logger.LogInformation(
+                        "Running cron job {JobName} {JobGroup} JobId={JobId}",
+                        runningCronJob.JobDetail.Key.Name,
+                        runningCronJob.JobDetail.Key.Group,
+                        jobId);
                 }
                 catch (Exception ex)
                 {
-                    Logger.Warn(ex, "Error reading running cron job details");
+                    Logger.LogWarning(ex, "Error reading running cron job details");
                 }
             }
 
-            // Job 1: HelloJob (test / heartbeat)
             await ScheduleOrReschedule(sched, new ScheduleJob
             {
                 JobId = 1,
@@ -71,7 +77,6 @@ namespace EImece.Domain.Scheduler
                 TaskId = "Task-1"
             }, typeof(HelloJob)).ConfigureAwait(false);
 
-            // Job 2: ClearExpiredShoppingCarts (every 3 days at 02:30)
             await ScheduleOrReschedule(sched, new ScheduleJob
             {
                 JobId = 2,
@@ -82,7 +87,6 @@ namespace EImece.Domain.Scheduler
                 TaskId = "Task-2"
             }, typeof(ClearExpiredShoppingCartsJob)).ConfigureAwait(false);
 
-            // Job 3: ClearLogsFromDb (every 7 days at 02:30)
             await ScheduleOrReschedule(sched, new ScheduleJob
             {
                 JobId = 3,

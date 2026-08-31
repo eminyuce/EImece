@@ -1,3 +1,4 @@
+using EImece.Tests.Infrastructure;
 using EImece.Domain.Caching;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -23,7 +24,7 @@ namespace EImece.Tests.Helpers
         [TestMethod]
         public void LazyCacheProvider_ClearAll_ReturnsNonNegativeCount()
         {
-            var cache = new LazyCacheProvider();
+            var cache = new LazyCacheProvider(TestNullLoggers.Create<LazyCacheProvider>());
             var key = "test:clearall:" + Guid.NewGuid().ToString("N");
             cache.Set(key, 1, CachePolicy.Absolute(60));
 

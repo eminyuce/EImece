@@ -3,7 +3,9 @@ using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
 using Microsoft.Extensions.DependencyInjection;
-using NLog;
+using EImece.Domain.Observability.Logging;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -26,7 +28,9 @@ namespace EImece.App_Start
     /// </summary>
     public static class CacheWarmUpJob
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private static ILogger Logger =>
+            LoggingBootstrap.LoggerFactory?.CreateLogger(typeof(CacheWarmUpJob))
+            ?? NullLogger.Instance;
 
         // 0 = idle, 1 = a warm-up is currently in progress. Prevents overlapping (stacking)
         // warm-ups when the admin clicks Refresh repeatedly, which protects the DB and server.
@@ -41,7 +45,7 @@ namespace EImece.App_Start
         {
             if (Interlocked.CompareExchange(ref _running, 1, 0) != 0)
             {
-                Logger.Info("Cache warm-up already in progress; skipping duplicate request.");
+                Logger.LogInformation("Cache warm-up already in progress; skipping duplicate request.");
                 return;
             }
 
@@ -61,7 +65,7 @@ namespace EImece.App_Start
             {
                 // Queueing must never break the user's request; release the gate if it failed.
                 Interlocked.Exchange(ref _running, 0);
-                Logger.Error(ex, "Failed to queue cache warm-up.");
+                Logger.LogError(ex, "Failed to queue cache warm-up.");
             }
         }
 
@@ -73,7 +77,7 @@ namespace EImece.App_Start
                 var provider = DependencyInjectionConfig.ServiceProvider;
                 if (provider == null)
                 {
-                    Logger.Warn("Cache warm-up skipped: DI ServiceProvider is not initialised.");
+                    Logger.LogWarning("Cache warm-up skipped: DI ServiceProvider is not initialised.");
                     return;
                 }
 
@@ -155,22 +159,22 @@ namespace EImece.App_Start
                                 .ReadSiteMapXmlAndRequestAsync(sitemapXml, cancellationToken)
                                 .ConfigureAwait(false);
                         }
-                        Logger.Info("Cache warm-up step 'SitemapCrawl' finished in {0} ms", sitemapSw.ElapsedMilliseconds);
+                        Logger.LogInformation("Cache warm-up step 'SitemapCrawl' finished in {0} ms", sitemapSw.ElapsedMilliseconds);
                     }
                     catch (Exception ex)
                     {
-                        Logger.Error(ex, "Cache warm-up step 'SitemapCrawl' failed after {0} ms", sitemapSw.ElapsedMilliseconds);
+                        Logger.LogError(ex, "Cache warm-up step 'SitemapCrawl' failed after {0} ms", sitemapSw.ElapsedMilliseconds);
                     }
                 }
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Cache warm-up failed.");
+                Logger.LogError(ex, "Cache warm-up failed.");
             }
             finally
             {
                 Interlocked.Exchange(ref _running, 0);
-                Logger.Info("Cache warm-up completed in {0} ms", total.ElapsedMilliseconds);
+                Logger.LogInformation("Cache warm-up completed in {0} ms", total.ElapsedMilliseconds);
             }
         }
 
@@ -180,12 +184,12 @@ namespace EImece.App_Start
             try
             {
                 action();
-                Logger.Info("Cache warm-up step '{0}' finished in {1} ms", step, sw.ElapsedMilliseconds);
+                Logger.LogInformation("Cache warm-up step '{0}' finished in {1} ms", step, sw.ElapsedMilliseconds);
             }
             catch (Exception ex)
             {
                 // Resilient per-step: a failing warm-up step is logged but does not abort the rest.
-                Logger.Error(ex, "Cache warm-up step '{0}' failed after {1} ms", step, sw.ElapsedMilliseconds);
+                Logger.LogError(ex, "Cache warm-up step '{0}' failed after {1} ms", step, sw.ElapsedMilliseconds);
             }
         }
     }

@@ -35,7 +35,7 @@ namespace EImece.Domain.Repositories
             }
             catch (Exception exception)
             {
-                Logger.LogError(exception);
+                Logger.LogError(exception, "GetActiveBaseEntities failed");
                 throw;
             }
         }

@@ -1,3 +1,4 @@
+using EImece.Tests.Infrastructure;
 using EImece.Domain.Observability.HealthChecks;
 using EImece.Domain.Scheduler;
 using EImece.Domain.Scheduler.Jobs;
@@ -70,20 +71,22 @@ namespace EImece.Tests.Scheduler
                     IsActive = true
                 };
 
+                var quartzService = new QuartzService(sched, TestNullLoggers.Create<QuartzService>());
+
                 // Schedule first time
-                await QuartzService.ScheduleOrReschedule(sched, job, typeof(ClearExpiredShoppingCartsJob));
+                await quartzService.ScheduleOrReschedule(sched, job, typeof(ClearExpiredShoppingCartsJob));
                 bool exists = await sched.CheckExists(job.JobKey);
                 Assert.IsTrue(exists, "Job should exist in scheduler after ScheduleOrReschedule.");
 
                 // Reschedule with different cron
                 job.CronExp = "0 30 3 */3 * ?";
-                await QuartzService.ScheduleOrReschedule(sched, job, typeof(ClearExpiredShoppingCartsJob));
+                await quartzService.ScheduleOrReschedule(sched, job, typeof(ClearExpiredShoppingCartsJob));
                 exists = await sched.CheckExists(job.JobKey);
                 Assert.IsTrue(exists, "Job should still exist after rescheduling.");
 
                 // Inactive job should not throw and should be skipped
                 job.IsActive = false;
-                await QuartzService.ScheduleOrReschedule(sched, job, typeof(ClearExpiredShoppingCartsJob));
+                await quartzService.ScheduleOrReschedule(sched, job, typeof(ClearExpiredShoppingCartsJob));
             }
             finally
             {
@@ -134,7 +137,7 @@ namespace EImece.Tests.Scheduler
 
             try
             {
-                var adminService = new AdminQuartzService(sched);
+                var adminService = new AdminQuartzService(sched, TestNullLoggers.Create<AdminQuartzService>());
 
                 await adminService.ExecuteAdminTasksAsync();
 
@@ -156,7 +159,7 @@ namespace EImece.Tests.Scheduler
 
             try
             {
-                var userService = new UserQuartzService(sched);
+                var userService = new UserQuartzService(sched, TestNullLoggers.Create<UserQuartzService>());
 
                 // Currently no active jobs for end-users; should execute cleanly
                 await userService.ExecuteUserTasksAsync();

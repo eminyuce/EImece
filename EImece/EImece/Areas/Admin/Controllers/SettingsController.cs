@@ -1,10 +1,10 @@
+using Microsoft.Extensions.Logging;
 using EImece.Web.Areas.Admin.Controllers;
 using EImece.Domain;
 using EImece.Web.Helpers;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Web.Filters;
-using NLog;
 using Resources;
 using System;
 using System.Data;
@@ -23,17 +23,13 @@ namespace EImece.Areas.Admin.Controllers
 {
     public class SettingsController : BaseAdminController
     {
-        protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
         protected IEntityFactory EntityFactory { get; }
         protected FilesHelper FilesHelper { get; }
 
-        public SettingsController(
-            ISettingService settingService,
+        public SettingsController(ISettingService settingService,
             IEntityFactory entityFactory,
-            FilesHelper filesHelper)
-            : base(settingService)
-        {
+            FilesHelper filesHelper, ILogger<SettingsController> logger)
+            : base(settingService, logger) {
             EntityFactory = entityFactory ?? throw new ArgumentNullException(nameof(entityFactory));
             FilesHelper = filesHelper ?? throw new ArgumentNullException(nameof(filesHelper));
         }
@@ -128,13 +124,13 @@ namespace EImece.Areas.Admin.Controllers
                     webSiteLogoSetting.Position = 1;
                     webSiteLogoSetting.Lang = CurrentLanguage;
                     await SettingService.SaveOrEditEntityAsync(webSiteLogoSetting);
-                    Logger.Info("Website logo uploaded. SettingId={0}, File={1}", webSiteLogoSetting.Id, result.NewFileName);
+                    Logger.LogInformation("Website logo uploaded. SettingId={0}, File={1}", webSiteLogoSetting.Id, result.NewFileName);
                     SetSuccessMessage(AdminResource.SuccessfullySavedCompleted);
                     return RedirectToAction(Constants.WebSiteLogo, new { id = webSiteLogoSetting.Id });
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error(ex, "UploadWebSiteLogo failed. id={0}, file={1}", id, postedImage.FileName);
+                    Logger.LogError(ex, "UploadWebSiteLogo failed. id={0}, file={1}", id, postedImage.FileName);
                     SetErrorMessage("Logo yüklenirken hata oluştu: " + ex.Message);
                     return RedirectToLogoPage(id, null);
                 }
@@ -176,7 +172,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Unable to delete product:" + ex.StackTrace, Setting);
+                Logger.LogError(ex, "Unable to delete product:" + ex.StackTrace, Setting);
                 SetErrorMessage();
                 return RedirectToAction("Index");
             }

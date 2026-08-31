@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using EImece.Domain.DependencyInjection;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
@@ -8,7 +9,6 @@ using EImece.Domain.Observability.Telemetry;
 using Iyzipay;
 using Iyzipay.Model;
 using Iyzipay.Request;
-using NLog;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -19,7 +19,12 @@ namespace EImece.Domain.Services
 {
     public class IyzicoService
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private readonly ILogger<IyzicoService> _logger;
+
+        public IyzicoService(ILogger<IyzicoService> logger)
+        {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        }
 
         public async Task<CheckoutForm> GetCheckoutFormAsync(RetrieveCheckoutFormRequest model)
         {
@@ -48,22 +53,22 @@ namespace EImece.Domain.Services
 
         public async Task<CheckoutFormInitialize> CreateCheckoutFormInitializeAsync(ShoppingCartSession shoppingCart, string userId, string actionName = "PaymentResult", string callbackUrl = null)
         {
-            Logger.Info("Initializing CheckoutForm for user: " + userId);
+            _logger.LogInformation("Initializing CheckoutForm for user: " + userId);
 
             // Validation checks
             if (shoppingCart == null)
             {
-                Logger.Error("ShoppingCartSession cannot be null");
+                _logger.LogError("ShoppingCartSession cannot be null");
                 throw new ArgumentNullException("ShoppingCartSession cannot be null");
             }
             if (shoppingCart.ShoppingCartItems.IsEmpty())
             {
-                Logger.Error("ShoppingCartSession.ShoppingCartItems cannot be null");
+                _logger.LogError("ShoppingCartSession.ShoppingCartItems cannot be null");
                 throw new ArgumentNullException("ShoppingCartSession.ShoppingCartItems cannot be null");
             }
             if (shoppingCart.Customer == null)
             {
-                Logger.Error("ShoppingCartSession.Customer cannot be null");
+                _logger.LogError("ShoppingCartSession.Customer cannot be null");
                 throw new ArgumentNullException("ShoppingCartSession.Customer cannot be null");
             }
 
@@ -74,7 +79,7 @@ namespace EImece.Domain.Services
             string orderNumber = GeneralHelper.GenerateOrderNumber();
             if (string.IsNullOrEmpty(callbackUrl))
             {
-                Logger.Debug("Building callback URL for Payment Result...");
+                _logger.LogDebug("Building callback URL for Payment Result...");
                 string o = WebUtility.UrlEncode(EncryptDecryptQueryString.Encrypt(shoppingCart.OrderGuid));
                 string u = WebUtility.UrlEncode(EncryptDecryptQueryString.Encrypt(userId));
                 var baseUrl = EntityExtension.GetAbsoluteApplicationBaseUrl(AppConfig.HttpProtocol);
@@ -167,8 +172,8 @@ namespace EImece.Domain.Services
                 basketItems.Add(basketItem);
             }
 
-            Logger.Debug("Total Price: " + totalPrice);
-            Logger.Debug("TotalPriceWithCargoPrice: " + shoppingCart.TotalPriceWithCargoPrice);
+            _logger.LogDebug("Total Price: " + totalPrice);
+            _logger.LogDebug("TotalPriceWithCargoPrice: " + shoppingCart.TotalPriceWithCargoPrice);
 
             // Set price fields
             request.Price = CurrencyHelper.CurrencySignForIyizo(totalPrice);
@@ -176,16 +181,16 @@ namespace EImece.Domain.Services
             request.BasketItems = basketItems;
 
             // Log prices and request details (never log full payment payloads / secrets).
-            Logger.Debug("Total Price after CurrencySignForIyizo: " + request.Price);
-            Logger.Debug("Shipping & Paid Price after CurrencySignForIyizo: " + request.PaidPrice);
-            Logger.Info(SensitiveDataMasker.Mask(
+            _logger.LogDebug("Total Price after CurrencySignForIyizo: " + request.Price);
+            _logger.LogDebug("Shipping & Paid Price after CurrencySignForIyizo: " + request.PaidPrice);
+            _logger.LogInformation(SensitiveDataMasker.Mask(
                 "Iyzico Request prepared for CheckoutFormInitialization: ConversationId="
                 + request.ConversationId
                 + " BasketId="
                 + request.BasketId));
 
             // Execute the request
-            Logger.Debug("Initializing CheckoutFormInitialize.Create for user: " + userId);
+            _logger.LogDebug("Initializing CheckoutFormInitialize.Create for user: " + userId);
             using (var activity = StartPaymentActivity("authorize"))
             {
                 activity?.SetTag("order.conversation_id", request.ConversationId);
@@ -208,14 +213,14 @@ namespace EImece.Domain.Services
 
         public async Task<CheckoutFormInitialize> CreateCheckoutFormInitializeBuyNowAsync(BuyNowModel buyNowModel, string callbackUrl = null)
         {
-            Logger.Info("Initializing CheckoutForm for BuyNow with OrderGuid: " + buyNowModel.OrderGuid);
+            _logger.LogInformation("Initializing CheckoutForm for BuyNow with OrderGuid: " + buyNowModel.OrderGuid);
 
             Options options = GetOptions();
             var customer = buyNowModel.Customer;
 
             if (string.IsNullOrEmpty(callbackUrl))
             {
-                Logger.Debug("Building callback URL for BuyNow Payment Result...");
+                _logger.LogDebug("Building callback URL for BuyNow Payment Result...");
                 string o = WebUtility.UrlEncode(EncryptDecryptQueryString.Encrypt(buyNowModel.OrderGuid));
                 var baseUrl = EntityExtension.GetAbsoluteApplicationBaseUrl(AppConfig.HttpProtocol);
                 callbackUrl = $"{baseUrl}/payment/buynowpaymentresult?o={o}";
@@ -232,7 +237,7 @@ namespace EImece.Domain.Services
                 EnabledInstallments = GetEnabledInstallments()
             };
 
-            Logger.Debug("CheckoutFormInitializeRequest object populated");
+            _logger.LogDebug("CheckoutFormInitializeRequest object populated");
 
             // Buyer details
             Buyer buyer = new Buyer
@@ -282,13 +287,13 @@ namespace EImece.Domain.Services
             totalPrice += item.Price;
             basketItems.Add(firstBasketItem);
 
-            Logger.Debug("Total Price for BuyNow: " + totalPrice);
+            _logger.LogDebug("Total Price for BuyNow: " + totalPrice);
             request.Price = decimal.Round(totalPrice, 2, MidpointRounding.AwayFromZero).ToString().Replace(",", ".");
             request.PaidPrice = decimal.Round(item.Price, 2, MidpointRounding.AwayFromZero).ToString().Replace(",", ".");
 
             request.BasketItems = basketItems;
 
-            Logger.Info(SensitiveDataMasker.Mask(
+            _logger.LogInformation(SensitiveDataMasker.Mask(
                 "Iyzico Request prepared for BuyNow CheckoutFormInitialization: ConversationId="
                 + request.ConversationId
                 + " BasketId="
@@ -314,13 +319,13 @@ namespace EImece.Domain.Services
 
         private Options GetOptions()
         {
-            Logger.Debug("Fetching Iyzico API options...");
+            _logger.LogDebug("Fetching Iyzico API options...");
             var apiKey = AppConfig.IyzicoApiKey;
             var secretKey = AppConfig.IyzicoSecretKey;
 
             if (string.IsNullOrWhiteSpace(apiKey) || string.IsNullOrWhiteSpace(secretKey))
             {
-                Logger.Error("Iyzico API credentials are not configured. Set IyzicoApiKey and IyzicoSecretKey via environment variables or AppSettings.");
+                _logger.LogError("Iyzico API credentials are not configured. Set IyzicoApiKey and IyzicoSecretKey via environment variables or AppSettings.");
                 throw new InvalidOperationException(
                     "Iyzico payment gateway is not configured. Both IyzicoApiKey and IyzicoSecretKey must be set in secure configuration.");
             }
@@ -331,7 +336,7 @@ namespace EImece.Domain.Services
                 SecretKey = secretKey,
                 BaseUrl = AppConfig.IyzicoBaseUrl
             };
-            Logger.Debug("Iyzico API options fetched successfully.");
+            _logger.LogDebug("Iyzico API options fetched successfully.");
             return options;
         }
 

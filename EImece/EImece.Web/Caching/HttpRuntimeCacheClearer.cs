@@ -1,5 +1,5 @@
+using Microsoft.Extensions.Logging;
 using EImece.Domain.Abstractions;
-using NLog;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,7 +9,12 @@ namespace EImece.Web.Caching
 {
     public sealed class HttpRuntimeCacheClearer : IHttpRuntimeCacheClearer
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private readonly ILogger<HttpRuntimeCacheClearer> _logger;
+
+        public HttpRuntimeCacheClearer(ILogger<HttpRuntimeCacheClearer> logger)
+        {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        }
 
         public int ClearHttpRuntimeCache()
         {
@@ -37,7 +42,7 @@ namespace EImece.Web.Caching
             }
             catch (Exception ex)
             {
-                Logger.Warn(ex, "ClearHttpRuntimeCache failed after removing {0} keys", keys.Count);
+                _logger.LogWarning(ex, "ClearHttpRuntimeCache failed after removing {0} keys", keys.Count);
             }
 
             return keys.Count;

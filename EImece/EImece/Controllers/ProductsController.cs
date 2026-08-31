@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using EImece.Web.Controllers;
 using EImece.Domain;
 using EImece.Web.Services;
@@ -12,7 +13,6 @@ using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
 using EImece.Domain.DependencyInjection;
 using EImece.Web.Filters;
-using NLog;
 using System;
 using System.Data.Entity;
 using System.Linq;
@@ -26,7 +26,6 @@ namespace EImece.Controllers
     [RoutePrefix(Constants.ProductsControllerRoutingPrefix)]
     public class ProductsController : BaseController
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private const string ErrorKey = "Error";
         private readonly IProductCommentService productCommentService;
         private readonly IProductService ProductService;
@@ -34,17 +33,15 @@ namespace EImece.Controllers
         private readonly ICustomerService CustomerService;
         private readonly IUsersService UsersService;
 
-        public ProductsController(
-            ISettingService settingService,
+        public ProductsController(ISettingService settingService,
             AutoMapper.IMapper mapper,
             IProductCommentService productCommentService,
             IProductService productService,
             IAddressService addressService,
             ICustomerService customerService,
-            IUsersService usersService)
-            : base(settingService, mapper)
-        {
-            Logger.Debug("ProductsController constructor called. Initializing dependencies.");
+            IUsersService usersService, ILogger<ProductsController> logger)
+            : base(settingService, mapper, logger) {
+            Logger.LogDebug("ProductsController constructor called. Initializing dependencies.");
             this.productCommentService = productCommentService ?? throw new ArgumentNullException(nameof(productCommentService));
             ProductService = productService ?? throw new ArgumentNullException(nameof(productService));
             AddressService = addressService ?? throw new ArgumentNullException(nameof(addressService));
@@ -60,11 +57,11 @@ namespace EImece.Controllers
         [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
         public async Task<ActionResult> Index(CancellationToken cancellationToken, int page = 1)
         {
-            Logger.Debug($"Entering Index action with page: {page}, language: {CurrentLanguage}");
+            Logger.LogDebug($"Entering Index action with page: {page}, language: {CurrentLanguage}");
 
             if (page < 1)
             {
-                Logger.Error($"Invalid page number: {page}. Returning BadRequest status.");
+                Logger.LogError($"Invalid page number: {page}. Returning BadRequest status.");
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
@@ -76,8 +73,8 @@ namespace EImece.Controllers
             products.Page = page;
             products.RecordPerPage = AppConfig.RecordPerPage;
 
-            Logger.Debug($"Retrieved {products.Products.Count} of {products.Products.TotalCount} products for page: {page}");
-            Logger.Debug("Returning Index view.");
+            Logger.LogDebug($"Retrieved {products.Products.Count} of {products.Products.TotalCount} products for page: {page}");
+            Logger.LogDebug("Returning Index view.");
             return View(products);
         }
 
@@ -85,45 +82,45 @@ namespace EImece.Controllers
         [RateLimit("search", DefaultLimit = 30, DefaultWindowMinutes = 1)]
         public async Task<ActionResult> AdvancedSearchProducts(CancellationToken cancellationToken, String search = "", string filters = "", String page = "")
         {
-            Logger.Debug($"Entering AdvancedSearchProducts with search: '{search}', filters: '{filters}', page: '{page}'");
+            Logger.LogDebug($"Entering AdvancedSearchProducts with search: '{search}', filters: '{filters}', page: '{page}'");
             var products = await ProductService.GetProductsSearchResultAsync(search, filters, page, CurrentLanguage, cancellationToken);
-            Logger.Debug($"Retrieved {products.Products.Count} products for search: '{search}', language: {CurrentLanguage}");
-            Logger.Debug("Returning AdvancedSearchProducts view.");
+            Logger.LogDebug($"Retrieved {products.Products.Count} products for search: '{search}', language: {CurrentLanguage}");
+            Logger.LogDebug("Returning AdvancedSearchProducts view.");
             return View(products);
         }
 
         [CustomOutputCache(CacheProfile = Constants.Cache20Minutes)]
         public async Task<ActionResult> Detail(CancellationToken cancellationToken, String id, int page = 0)
         {
-            Logger.Debug($"Entering Detail action with id: '{id}'");
+            Logger.LogDebug($"Entering Detail action with id: '{id}'");
             if (String.IsNullOrEmpty(id))
             {
-                Logger.Error("Product ID is null or empty.");
-                Logger.Debug("Redirecting to BadRequest error page.");
+                Logger.LogError("Product ID is null or empty.");
+                Logger.LogDebug("Redirecting to BadRequest error page.");
                 return RedirectToAction("BadRequest", ErrorKey);
             }
             try
             {
                 var productId = id.GetId();
-                Logger.Debug($"Parsed product ID: {productId}");
+                Logger.LogDebug($"Parsed product ID: {productId}");
                 var product = await ProductService.GetProductDetailViewModelByIdAsync(productId, cancellationToken);
                 string fullPath = Request.Path;
 
-                Logger.Debug($"Retrieved product details for ID: {productId}, Name: {product?.ProductDto?.Name}, IsActive: {product?.ProductDto?.IsActive}");
+                Logger.LogDebug($"Retrieved product details for ID: {productId}, Name: {product?.ProductDto?.Name}, IsActive: {product?.ProductDto?.IsActive}");
 
                 if (product == null || product.ProductDto == null)
                 {
-                    Logger.Info($"Product with ID: {productId} was not found in database. Returning 404 NotFound.");
+                    Logger.LogInformation($"Product with ID: {productId} was not found in database. Returning 404 NotFound.");
                     return HttpNotFoundView();
                 }
                 if (!product.ProductDto.IsActive)
                 {
-                    Logger.Info($"Product with ID: {productId} is inactive. Returning 410 Gone.");
+                    Logger.LogInformation($"Product with ID: {productId} is inactive. Returning 410 Gone.");
                     return HttpGoneView(Resources.Resource.NotFoundText);
                 }
                 if (product.ProductDto.ProductCategoryId <= 0)
                 {
-                    Logger.Info($"ProductCategory for product ID: {productId} is invalid. Returning 404 NotFound.");
+                    Logger.LogInformation($"ProductCategory for product ID: {productId} is invalid. Returning 404 NotFound.");
                     return HttpNotFoundView();
                 }
                 ViewBag.SeoId = product.ProductDto.SeoUrl;
@@ -131,13 +128,13 @@ namespace EImece.Controllers
                 product.RecordPerPage = AppConfig.ProductCommentsRecordPerPage;
                 product.SeoId = product.ProductDto.SeoUrl;
 
-                Logger.Debug($"Set SEO ID: {ViewBag.SeoId} for product ID: {productId}");
-                Logger.Debug("Returning Detail view.");
+                Logger.LogDebug($"Set SEO ID: {ViewBag.SeoId} for product ID: {productId}");
+                Logger.LogDebug("Returning Detail view.");
                 return View(product);
             }
             catch (ArgumentNullException ex)
             {
-                Logger.Info(ex, "Product not found for id '{0}'. Returning 404 NotFound.", id);
+                Logger.LogInformation(ex, "Product not found for id '{0}'. Returning 404 NotFound.", id);
                 return HttpNotFoundView();
             }
             catch (Exception e)
@@ -150,28 +147,28 @@ namespace EImece.Controllers
         [Route(Constants.ProductTagPrefix)]
         public async Task<ActionResult> Tag(CancellationToken cancellationToken, String id, int page = 1, int sorting = 0)
         {
-            Logger.Debug($"Entering Tag action with id: '{id}', page: {page}, sorting: {sorting}");
+            Logger.LogDebug($"Entering Tag action with id: '{id}', page: {page}, sorting: {sorting}");
             if (String.IsNullOrEmpty(id))
             {
-                Logger.Error("Tag ID is null or empty.");
-                Logger.Debug("Returning BadRequest status.");
+                Logger.LogError("Tag ID is null or empty.");
+                Logger.LogDebug("Returning BadRequest status.");
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             var tagId = id.GetId();
-            Logger.Debug($"Parsed tag ID: {tagId}");
+            Logger.LogDebug($"Parsed tag ID: {tagId}");
             int pageSize = AppConfig.ProductDefaultRecordPerPage;
-            Logger.Debug($"Using page size: {pageSize}");
+            Logger.LogDebug($"Using page size: {pageSize}");
 
             SimiliarProductTagsViewModel products = await ProductService.GetProductByTagIdAsync(tagId, page, pageSize, CurrentLanguage, (SortingType)sorting, cancellationToken);
-            Logger.Debug($"Retrieved products for tag ID: {tagId}, page: {page}, language: {CurrentLanguage}");
+            Logger.LogDebug($"Retrieved products for tag ID: {tagId}, page: {page}, language: {CurrentLanguage}");
 
             products.Page = page;
             products.RecordPerPage = pageSize;
             products.Sorting = (SortingType)sorting;
             products.TagId = id;
             ViewBag.SeoId = products.Tag.GetSeoUrl();
-            Logger.Debug($"Set model properties: Page={page}, RecordPerPage={pageSize}, Sorting={(SortingType)sorting}, TagId={id}, SeoId={ViewBag.SeoId}");
-            Logger.Debug("Returning Tag view.");
+            Logger.LogDebug($"Set model properties: Page={page}, RecordPerPage={pageSize}, Sorting={(SortingType)sorting}, TagId={id}, SeoId={ViewBag.SeoId}");
+            Logger.LogDebug("Returning Tag view.");
             return View(products);
         }
 
@@ -184,20 +181,20 @@ namespace EImece.Controllers
         [RateLimit("search", DefaultLimit = 30, DefaultWindowMinutes = 1)]
         public async Task<ActionResult> SearchProducts(String search, CancellationToken cancellationToken, int page = 1, int sorting = 0)
         {
-            Logger.Debug($"Entering SearchProducts with search: '{search}', page: {page}, sorting: {sorting}");
+            Logger.LogDebug($"Entering SearchProducts with search: '{search}', page: {page}, sorting: {sorting}");
             search = search?.Trim() ?? string.Empty;
             int pageSize = AppConfig.ProductDefaultRecordPerPage;
-            Logger.Debug($"Using page size: {pageSize}");
+            Logger.LogDebug($"Using page size: {pageSize}");
 
             var products = await ProductService.SearchProductsAsync(page, pageSize, search, CurrentLanguage, (SortingType)sorting, cancellationToken);
-            Logger.Debug($"Retrieved {products.Products.Count} products for search: '{search}', page: {page}, language: {CurrentLanguage}");
+            Logger.LogDebug($"Retrieved {products.Products.Count} products for search: '{search}', page: {page}, language: {CurrentLanguage}");
 
             products.RecordPerPage = pageSize;
             products.Page = page;
             products.Sorting = (SortingType)sorting;
-            Logger.Debug($"Set model properties: RecordPerPage={pageSize}, Page={page}, Sorting={(SortingType)sorting}");
+            Logger.LogDebug($"Set model properties: RecordPerPage={pageSize}, Page={page}, Sorting={(SortingType)sorting}");
 
-            Logger.Debug("Returning SearchProducts view.");
+            Logger.LogDebug("Returning SearchProducts view.");
             return View("SearchProducts", products);
         }
 
@@ -205,11 +202,11 @@ namespace EImece.Controllers
         [ValidateCaptcha(Prefix = "ProductReview")]
         public async Task<ActionResult> Review(ProductCommentDto productComment)
         {
-            Logger.Debug($"Entering Review POST action with productComment Email: {productComment?.Email}, ProductId: {productComment?.ProductId}");
+            Logger.LogDebug($"Entering Review POST action with productComment Email: {productComment?.Email}, ProductId: {productComment?.ProductId}");
             if (productComment == null)
             {
-                Logger.Error("ProductComment is null.");
-                Logger.Debug("Returning BadRequest status.");
+                Logger.LogError("ProductComment is null.");
+                Logger.LogDebug("Returning BadRequest status.");
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
@@ -220,20 +217,20 @@ namespace EImece.Controllers
                     .Select(e => e.ErrorMessage)
                     .FirstOrDefault(m => !string.IsNullOrWhiteSpace(m));
                 var message = firstError ?? CaptchaService.GetErrorMessage();
-                Logger.Error($"Product review validation failed: {message}");
+                Logger.LogError($"Product review validation failed: {message}");
                 TempData["ReviewFormError"] = message;
                 TempData["RecaptchaError"] = message;
-                Logger.Debug($"Redirecting to Detail action with SeoUrl: {productComment.SeoUrl}");
+                Logger.LogDebug($"Redirecting to Detail action with SeoUrl: {productComment.SeoUrl}");
                 return RedirectToAction("Detail", new { id = productComment.SeoUrl });
             }
 
-            Logger.Debug($"Looking up user by email: {productComment.Email}");
+            Logger.LogDebug($"Looking up user by email: {productComment.Email}");
 
             // Compared with == rather than String.Equals(StringComparison): EF6 cannot translate the
             // StringComparison overloads, and the database collation is already case-insensitive.
             var email = productComment.Email.ToStr().Trim();
             var user = await UsersService.GetUserByEmailAsync(email);
-            Logger.Debug($"User found: {(user != null ? $"ID: {user.Id}" : "None")}");
+            Logger.LogDebug($"User found: {(user != null ? $"ID: {user.Id}" : "None")}");
 
             var entity = new ProductComment
             {
@@ -252,9 +249,9 @@ namespace EImece.Controllers
             };
 
             await productCommentService.SaveOrEditEntityAsync(entity);
-            Logger.Info($"Saved product comment with ID: {entity.Id}");
+            Logger.LogInformation($"Saved product comment with ID: {entity.Id}");
 
-            Logger.Debug($"Redirecting to Detail action with SeoUrl: {productComment.SeoUrl}");
+            Logger.LogDebug($"Redirecting to Detail action with SeoUrl: {productComment.SeoUrl}");
             return RedirectToAction("Detail", new { id = productComment.SeoUrl });
         }
     }

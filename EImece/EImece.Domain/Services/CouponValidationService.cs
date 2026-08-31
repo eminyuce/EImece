@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Models;
@@ -6,7 +7,6 @@ using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Observability.Telemetry;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
-using NLog;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -18,7 +18,6 @@ namespace EImece.Domain.Services
 {
     public class CouponValidationService : ICouponValidationService
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly ICouponRepository _couponRepository;
         private readonly ICouponRedemptionRepository _redemptionRepository;
         private readonly ICouponProductRepository _couponProductRepository;
@@ -27,15 +26,14 @@ namespace EImece.Domain.Services
         private readonly IProductCategoryRepository _productCategoryRepository;
         private readonly IOrderRepository _orderRepository;
 
-        public CouponValidationService(
-            ICouponRepository couponRepository,
+        public CouponValidationService(ICouponRepository couponRepository,
             ICouponRedemptionRepository redemptionRepository,
             ICouponProductRepository couponProductRepository,
             ICouponCategoryRepository couponCategoryRepository,
             IProductRepository productRepository,
             IProductCategoryRepository productCategoryRepository,
-            IOrderRepository orderRepository)
-        {
+            IOrderRepository orderRepository, ILogger<CouponValidationService> logger)
+         {
             _couponRepository = couponRepository;
             _redemptionRepository = redemptionRepository;
             _couponProductRepository = couponProductRepository;

@@ -1,9 +1,9 @@
+using Microsoft.Extensions.Logging;
 ﻿using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository.EntityFramework.Enums;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Repositories.IRepositories;
-using NLog;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -16,10 +16,10 @@ namespace EImece.Domain.Repositories
 {
     public class TagCategoryRepository : BaseEntityRepository<TagCategory>, ITagCategoryRepository
     {
-        protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private readonly ILogger<TagCategoryRepository> _logger;
 
-        public TagCategoryRepository(IEImeceContext dbContext) : base(dbContext)
-        {
+        public TagCategoryRepository(IEImeceContext dbContext, ILogger<TagCategoryRepository> logger) : base(dbContext, logger) {
+            _logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
         }
 
         public TagCategory GetTagCategoryById(int tagCategoryId)
@@ -45,7 +45,7 @@ namespace EImece.Domain.Repositories
             }
             catch (Exception exception)
             {
-                Logger.Error(exception, exception.Message);
+                _logger.LogError(exception, exception.Message);
                 throw;
             }
         }
@@ -64,7 +64,7 @@ namespace EImece.Domain.Repositories
             }
             catch (Exception exception)
             {
-                Logger.Error(exception, "GetTagsByTagTypeAsync failed.");
+                _logger.LogError(exception, "GetTagsByTagTypeAsync failed.");
                 throw new InvalidOperationException("GetTagsByTagTypeAsync failed.", exception);
             }
         }

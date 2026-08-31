@@ -7,7 +7,8 @@ using ImageProcessor;
 using ImageProcessor.Imaging.Formats;
 using ImageProcessor.Plugins.WebP.Imaging.Formats;
 using EImece.Domain.Observability.Telemetry;
-using NLog;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -26,16 +27,25 @@ namespace EImece.Domain.Helpers
         internal readonly IFileStorageService FileStorageService;
         private readonly ISettingService _settingService;
 
-        public FilesHelper(IFileStorageService fileStorageService = null, ISettingService settingService = null)
+        private readonly ILogger<FilesHelper> _logger;
+
+        public FilesHelper(
+            IFileStorageService fileStorageService = null,
+            ISettingService settingService = null,
+            ILogger<FilesHelper> logger = null)
         {
             FileStorageService = fileStorageService;
             _settingService = settingService;
+            _logger = logger ?? NullLogger<FilesHelper>.Instance;
         }
+
+        private static ILogger StaticLogger =>
+            Observability.Logging.LoggingBootstrap.LoggerFactory?.CreateLogger(typeof(FilesHelper))
+            ?? NullLogger.Instance;
 
         private const string THUMBS = "thumbs";
         private const string THB = "thb";
         public const string EXTERNAL_IMAGE = "external-image";
-        private static Logger Logger = LogManager.GetCurrentClassLogger();
 
         public int CurrentLanguage { get; set; }
 
@@ -142,7 +152,7 @@ namespace EImece.Domain.Helpers
                 }
                 catch (Exception ex)
                 {
-                    Logger.Debug(ex, "Could not auto-generate thumbnail on disk for {0}", fileName);
+                    _logger.LogDebug(ex, "Could not auto-generate thumbnail on disk for {0}", fileName);
                     // Fallback to calculated target thumbnail size
                     Size calculated = ResolveThumbnailTargetSize(0, 0, originalWidth, originalHeight);
                     thumpBitmapWidth = calculated.Width;
@@ -191,7 +201,7 @@ namespace EImece.Domain.Helpers
                 }
                 catch (Exception ex)
                 {
-                    Logger.Debug(ex, "Could not read image dimensions from {0}", path);
+                    StaticLogger.LogDebug(ex, "Could not read image dimensions from {0}", path);
                 }
             }
 
@@ -291,7 +301,7 @@ namespace EImece.Domain.Helpers
             }
             catch (Exception ex)
             {
-                Logger.Debug(ex, "Could not delete WebP sidecar for {0}", file);
+                _logger.LogDebug(ex, "Could not delete WebP sidecar for {0}", file);
             }
         }
 
@@ -408,7 +418,7 @@ namespace EImece.Domain.Helpers
                 }
                 catch (Exception retryEx)
                 {
-                    Logger.Error(retryEx, "Failed to delete image file {0} (first error: {1})", path, ex.Message);
+                    StaticLogger.LogError(retryEx, "Failed to delete image file {0} (first error: {1})", path, ex.Message);
                     return false;
                 }
             }
@@ -546,7 +556,7 @@ namespace EImece.Domain.Helpers
             EnsureStorageInitialized();
             if (string.IsNullOrWhiteSpace(StorageRoot))
             {
-                Logger.Error("StorageRoot is empty after initialization. ServerMapPath={0}", Constants.ServerMapPath);
+                _logger.LogError("StorageRoot is empty after initialization. ServerMapPath={0}", Constants.ServerMapPath);
                 throw new InvalidOperationException("Media storage folder could not be resolved.");
             }
 
@@ -576,7 +586,7 @@ namespace EImece.Domain.Helpers
                 catch (Exception ex)
                 {
                     // Intentionally ignored: deleting a locked existing file is best-effort; the file is overwritten next.
-                    Logger.Debug(ex, "Could not delete existing file before save: {0}", filePath);
+                    StaticLogger.LogDebug(ex, "Could not delete existing file before save: {0}", filePath);
                 }
             }
 
@@ -628,7 +638,7 @@ namespace EImece.Domain.Helpers
                     }
                     catch (Exception ex)
                     {
-                        Logger.Warn(ex, "WebP sidecar save failed for {0}", fullPath);
+                        _logger.LogWarning(ex, "WebP sidecar save failed for {0}", fullPath);
                     }
                 }
 
@@ -638,7 +648,7 @@ namespace EImece.Domain.Helpers
                 contentType = fullOpt.MimeType;
                 fileHash = HashHelpers.GetSha256Hash(fullOpt.Bytes);
 
-                Logger.Info(
+                _logger.LogInformation(
                     "Image upload optimized. file={0} originalBytes={1} originalSize={2}x{3} storedBytes={4} storedSize={5}x{6} mime={7} keptOriginal={8} thumbBytes={9} thumbSize={10}x{11}",
                     newFileName,
                     fullOpt.OriginalSize,
@@ -656,7 +666,7 @@ namespace EImece.Domain.Helpers
             else
             {
                 fileHash = "Image Extension is not CORRECT:" + fileName;
-                Logger.Error("Image Extension is not CORRECT:" + fileName);
+                _logger.LogError("Image Extension is not CORRECT:" + fileName);
             }
 
             return new SavedImage(newFileName, width, height, imageSize, contentType, fileName, fileHash);
@@ -685,7 +695,7 @@ namespace EImece.Domain.Helpers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Image optimization failed for {0}; storing a best-effort re-encode.", fileName);
+                _logger.LogError(ex, "Image optimization failed for {0}; storing a best-effort re-encode.", fileName);
                 var fallback = new ImageUploadOptimizeOptions
                 {
                     MaxWidth = GetSettingInt(Constants.ImageUploadMaxWidth, Constants.DefaultImageUploadMaxWidth),
@@ -746,7 +756,7 @@ namespace EImece.Domain.Helpers
                 }
                 catch (Exception ex)
                 {
-                    Logger.Debug(ex, "Could not delete existing file before save: {0}", filePath);
+                    StaticLogger.LogDebug(ex, "Could not delete existing file before save: {0}", filePath);
                 }
             }
 
@@ -856,7 +866,7 @@ namespace EImece.Domain.Helpers
             }
             catch (Exception ex)
             {
-                Logger.Warn(ex, "WebP conversion failed for fileStorageId={0}; falling back to original mime type", fileStorageId);
+                _logger.LogWarning(ex, "WebP conversion failed for fileStorageId={0}; falling back to original mime type", fileStorageId);
                 return await GetResizedImageAsync(fileStorageId, width, height, cancellationToken).ConfigureAwait(false);
             }
         }
@@ -902,7 +912,7 @@ namespace EImece.Domain.Helpers
             }
             catch (Exception ex)
             {
-                Logger.Warn(ex, "WebP conversion failed for fileStorageId={0}; falling back to original mime type", fileStorageId);
+                _logger.LogWarning(ex, "WebP conversion failed for fileStorageId={0}; falling back to original mime type", fileStorageId);
                 return GetResizedImage(fileStorageId, width, height);
             }
         }
@@ -1370,7 +1380,7 @@ namespace EImece.Domain.Helpers
                 catch (Exception ex)
                 {
                     // Intentionally ignored: deleting a locked existing file is best-effort; the resized file is overwritten next.
-                    Logger.Debug(ex, "Could not delete existing file before resize save: {0}", filePath);
+                    _logger.LogDebug(ex, "Could not delete existing file before resize save: {0}", filePath);
                 }
             }
 

@@ -17,6 +17,7 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using System.Web.Mvc;
 using static EImece.Controllers.ManageController;
 
@@ -39,8 +40,9 @@ namespace EImece.Areas.Admin.Controllers
             ICustomerService customerService,
             ApplicationSignInManager signInManager,
             ApplicationUserManager userManager,
-            IIdentityManager identityManager)
-            : base(settingService)
+            IIdentityManager identityManager,
+            ILogger<UsersController> logger)
+            : base(settingService, logger)
         {
             UsersService = usersService ?? throw new ArgumentNullException(nameof(usersService));
             CustomerService = customerService ?? throw new ArgumentNullException(nameof(customerService));

@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using EImece.Web.Areas.Admin.Controllers;
 using EImece.Domain.Entities;
 using Newtonsoft.Json;
@@ -10,7 +11,6 @@ using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
 using Griddly.Mvc;
 using Griddly.Mvc.Results;
-using NLog;
 using Resources;
 using System;
 using System.Collections.Generic;
@@ -30,20 +30,17 @@ namespace EImece.Areas.Admin.Controllers
 {
     public class MenusController : BaseAdminController
     {
-        protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private const string IndexAction = "Index";
 
         protected IMenuService MenuService { get; }
         protected IEntityFactory EntityFactory { get; }
         protected FilesHelper FilesHelper { get; }
 
-        public MenusController(
-            ISettingService settingService,
+        public MenusController(ISettingService settingService,
             IMenuService menuService,
             IEntityFactory entityFactory,
-            FilesHelper filesHelper)
-            : base(settingService)
-        {
+            FilesHelper filesHelper, ILogger<MenusController> logger)
+            : base(settingService, logger) {
             MenuService = menuService ?? throw new ArgumentNullException(nameof(menuService));
             EntityFactory = entityFactory ?? throw new ArgumentNullException(nameof(entityFactory));
             FilesHelper = filesHelper ?? throw new ArgumentNullException(nameof(filesHelper));
@@ -219,7 +216,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Unable to save changes:" + ex.Message, menu);
+                Logger.LogError(ex, "Unable to save changes:" + ex.Message, menu);
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace + ex.Message.ToString());
             }
             ViewBag.MenuTree = await MenuService.BuildTreeAsync(null, CurrentLanguage, cancellationToken);
@@ -253,7 +250,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Unable to delete menu:" +
+                Logger.LogError(ex, "Unable to delete menu:" +
                     ex.StackTrace, menu);
                 SetErrorMessage();
                 return ReturnIndexIfNotUrlReferrer(IndexAction);

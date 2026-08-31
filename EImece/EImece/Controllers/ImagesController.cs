@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using EImece.Web.Controllers;
 using EImece.Domain;
 using EImece.Domain.Caching;
@@ -5,7 +6,6 @@ using EImece.Domain.Helpers;
 using EImece.Web.Filters;
 using EImece.Domain.Services.IServices;
 using EImece.Domain.DependencyInjection;
-using NLog;
 using System;
 using System.Diagnostics;
 using System.Drawing;
@@ -25,8 +25,6 @@ namespace EImece.Controllers
         private readonly IFileStorageService _fileStorageService;
         private readonly IEimeceCacheProvider _memoryCacheProvider;
         private readonly FilesHelper _filesHelper;
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
         public IFileStorageService FileStorageService => _fileStorageService;
         public IEimeceCacheProvider MemoryCacheProvider => _memoryCacheProvider;
         public FilesHelper FilesHelper
@@ -38,14 +36,12 @@ namespace EImece.Controllers
             }
         }
 
-        public ImagesController(
-            ISettingService settingService,
+        public ImagesController(ISettingService settingService,
             AutoMapper.IMapper mapper,
             IFileStorageService fileStorageService,
             IEimeceCacheProvider memoryCacheProvider,
-            FilesHelper filesHelper)
-            : base(settingService, mapper)
-        {
+            FilesHelper filesHelper, ILogger<ImagesController> logger)
+            : base(settingService, mapper, logger) {
             _fileStorageService = fileStorageService ?? throw new ArgumentNullException(nameof(fileStorageService));
             _memoryCacheProvider = memoryCacheProvider ?? throw new ArgumentNullException(nameof(memoryCacheProvider));
             _filesHelper = filesHelper ?? throw new ArgumentNullException(nameof(filesHelper));
@@ -97,7 +93,7 @@ namespace EImece.Controllers
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error(ex, "Failed to generate image id={0} size={1}", id, imageSize);
+                    Logger.LogError(ex, "Failed to generate image id={0} size={1}", id, imageSize);
                 }
 
                 return this.GetDefaultFileContentResult((string)imageSize);
@@ -170,7 +166,7 @@ namespace EImece.Controllers
             timer.Start();
             byte[] fileContents = FilesHelper.GenerateDefaultImg(Constants.DefaultImageText, width, height);
             timer.Stop();
-            //Logger.Info("FilesHelper.GenerateDefaultImg width:" + width + " height:" + height + " timer:" + timer.ElapsedMilliseconds);
+            //Logger.LogInformation("FilesHelper.GenerateDefaultImg width:" + width + " height:" + height + " timer:" + timer.ElapsedMilliseconds);
 
             return this.File(fileContents, MediaTypeNames.Image.Jpeg);
         }
@@ -208,7 +204,7 @@ namespace EImece.Controllers
                 var webSiteLogo = await SettingService.GetSettingObjectByKeyAsync(Constants.WebSiteLogo);
                 if (webSiteLogo == null || string.IsNullOrWhiteSpace(webSiteLogo.SettingValue))
                 {
-                    Logger.Warn("WebSiteLogo setting is empty; serving default placeholder logo.");
+                    Logger.LogWarning("WebSiteLogo setting is empty; serving default placeholder logo.");
                     Response.Cache.SetCacheability(HttpCacheability.NoCache);
                     return GetDefaultImage("w200h60");
                 }
@@ -226,7 +222,7 @@ namespace EImece.Controllers
 
             if (result == null)
             {
-                Logger.Warn("WebSiteLogo setting or file is missing; serving default placeholder logo.");
+                Logger.LogWarning("WebSiteLogo setting or file is missing; serving default placeholder logo.");
                 Response.Cache.SetCacheability(HttpCacheability.NoCache);
                 return GetDefaultImage("w200h60");
             }

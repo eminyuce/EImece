@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using EImece.Web.Areas.Admin.Controllers;
 using EImece.Domain.Entities;
 using EImece.Web.Helpers;
@@ -18,8 +19,6 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using NLog;
-
 using EImece.Domain.Factories.IFactories;
 
 namespace EImece.Areas.Admin.Controllers
@@ -27,8 +26,6 @@ namespace EImece.Areas.Admin.Controllers
     [ValidateJsonAntiForgeryToken]
     public class AjaxController : BaseAdminController
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
         protected IAppLogService AppLogService { get; }
         protected IShoppingCartService ShoppingCartService { get; }
         protected IUsersService UsersService { get; }
@@ -54,8 +51,7 @@ namespace EImece.Areas.Admin.Controllers
         protected IMainPageImageService MainPageImageService { get; }
         protected IEntityFactory EntityFactory { get; }
 
-        public AjaxController(
-            ISettingService settingService,
+        public AjaxController(ISettingService settingService,
             IAppLogService appLogService,
             IShoppingCartService shoppingCartService,
             IUsersService usersService,
@@ -79,9 +75,8 @@ namespace EImece.Areas.Admin.Controllers
             IFaqService faqService,
             IProductCommentService productCommentService,
             IMainPageImageService mainPageImageService,
-            IEntityFactory entityFactory)
-            : base(settingService)
-        {
+            IEntityFactory entityFactory, ILogger<AjaxController> logger)
+            : base(settingService, logger) {
             AppLogService = appLogService ?? throw new ArgumentNullException(nameof(appLogService));
             ShoppingCartService = shoppingCartService ?? throw new ArgumentNullException(nameof(shoppingCartService));
             UsersService = usersService ?? throw new ArgumentNullException(nameof(usersService));
@@ -119,7 +114,7 @@ namespace EImece.Areas.Admin.Controllers
                 var user = filterContext.HttpContext?.User?.Identity?.Name ?? "-";
                 var url = filterContext.HttpContext?.Request?.Url?.ToString() ?? "-";
                 var message = $"Unhandled exception in Admin AjaxController - Controller:{controller} Action:{action} User:{user} Url:{url}";
-                Logger.Error(ex, message);
+                Logger.LogError(ex, message);
             }
             catch (Exception logEx)
             {
@@ -131,7 +126,7 @@ namespace EImece.Areas.Admin.Controllers
                 catch (Exception fallbackEx)
                 {
                     // Ignore: NLog and Trace both failed; further logging from OnException could recurse.
-                    Logger.Debug(fallbackEx, "AjaxController OnException fallback Trace.TraceError failed.");
+                    Logger.LogDebug(fallbackEx, "AjaxController OnException fallback Trace.TraceError failed.");
                 }
             }
 
@@ -143,26 +138,26 @@ namespace EImece.Areas.Admin.Controllers
         {
             if (!IsProductPriceEnabled)
             {
-                Logger.Warn("UpdatePrices blocked because IsProductPriceEnable is false");
+                Logger.LogWarning("UpdatePrices blocked because IsProductPriceEnable is false");
                 return Json(new { success = false, message = "Fiyat işlemleri devre dışı." }, JsonRequestBehavior.AllowGet);
             }
 
-            Logger.Info($"UpdatePrices called by {User?.Identity?.Name ?? "-"} with Percentage={request?.PercentageOfIncreaseOrDecrease}, ProductId={request?.ProductId}, CategoryId={request?.CategoryId}, BrandId={request?.BrandId}, TagId={request?.TagId}");
+            Logger.LogInformation($"UpdatePrices called by {User?.Identity?.Name ?? "-"} with Percentage={request?.PercentageOfIncreaseOrDecrease}, ProductId={request?.ProductId}, CategoryId={request?.CategoryId}, BrandId={request?.BrandId}, TagId={request?.TagId}");
             try
             {
                 if (request == null || request.PercentageOfIncreaseOrDecrease == null)
                 {
-                    Logger.Warn("UpdatePrices: missing percentage in request");
+                    Logger.LogWarning("UpdatePrices: missing percentage in request");
                     return Json(new { success = false, message = "Yüzde değeri gerekli." }, JsonRequestBehavior.AllowGet);
                 }
                 var affectedRows = await ProductService.UpdatePricesAsync(request);
-                Logger.Info($"UpdatePrices completed. AffectedRows={affectedRows}");
+                Logger.LogInformation($"UpdatePrices completed. AffectedRows={affectedRows}");
                 // Başarılı yanıt döndür
                 return Json(new { success = true, affectedRows = affectedRows }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "UpdatePrices failed");
+                Logger.LogError(ex, "UpdatePrices failed");
                 return Json(new { success = false, message = "İşlem başarısız." }, JsonRequestBehavior.AllowGet);
             }
         }
@@ -171,10 +166,10 @@ namespace EImece.Areas.Admin.Controllers
         [ValidateJsonAntiForgeryToken]
         public async Task<JsonResult> DeleteBaseContentMainImage(int contentId, int imageId, String contentClass)
         {
-            Logger.Info($"DeleteBaseContentMainImage called by {User?.Identity?.Name ?? "-"} ContentId={contentId} ImageId={imageId} ContentClass={contentClass}");
+            Logger.LogInformation($"DeleteBaseContentMainImage called by {User?.Identity?.Name ?? "-"} ContentId={contentId} ImageId={imageId} ContentClass={contentClass}");
             if (string.IsNullOrEmpty(contentClass))
             {
-                Logger.Warn("DeleteBaseContentMainImage: contentClass is empty");
+                Logger.LogWarning("DeleteBaseContentMainImage: contentClass is empty");
                 return Json("Error contentClassName does not exists", JsonRequestBehavior.AllowGet);
             }
 

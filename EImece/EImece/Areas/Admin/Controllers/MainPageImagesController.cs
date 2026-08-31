@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using EImece.Web.Areas.Admin.Controllers;
 using EImece.Domain.Entities;
 using EImece.Web.Helpers;
@@ -6,7 +7,6 @@ using EImece.Web.Filters;
 using EImece.Domain.Models.Enums;
 using Griddly.Mvc;
 using Griddly.Mvc.Results;
-using NLog;
 using Resources;
 using System;
 using System.Linq;
@@ -24,19 +24,15 @@ namespace EImece.Areas.Admin.Controllers
 {
     public class MainPageImagesController : BaseAdminController
     {
-        protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
         protected IMainPageImageService MainPageImageService { get; }
         protected IEntityFactory EntityFactory { get; }
         protected FilesHelper FilesHelper { get; }
 
-        public MainPageImagesController(
-            ISettingService settingService,
+        public MainPageImagesController(ISettingService settingService,
             IMainPageImageService mainPageImageService,
             IEntityFactory entityFactory,
-            FilesHelper filesHelper)
-            : base(settingService)
-        {
+            FilesHelper filesHelper, ILogger<MainPageImagesController> logger)
+            : base(settingService, logger) {
             MainPageImageService = mainPageImageService ?? throw new ArgumentNullException(nameof(mainPageImageService));
             EntityFactory = entityFactory ?? throw new ArgumentNullException(nameof(entityFactory));
             FilesHelper = filesHelper ?? throw new ArgumentNullException(nameof(filesHelper));
@@ -115,7 +111,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Unable to save changes:" + ex.StackTrace, mainpageimage);
+                Logger.LogError(ex, "Unable to save changes:" + ex.StackTrace, mainpageimage);
                 //Log the error (uncomment dex variable name and add a line here to write a log.
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace + ex.Message);
             }
@@ -146,7 +142,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Unable to delete MainPageImages:" + ex.StackTrace, id);
+                Logger.LogError(ex, "Unable to delete MainPageImages:" + ex.StackTrace, id);
                 SetErrorMessage();
                 return RedirectToAction("Index");
             }

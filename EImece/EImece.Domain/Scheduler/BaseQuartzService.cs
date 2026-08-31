@@ -1,7 +1,6 @@
 using CronExpressionDescriptor;
-using EImece.Domain.DependencyInjection;
 using EImece.Domain.Helpers;
-using NLog;
+using Microsoft.Extensions.Logging;
 using Quartz;
 using System;
 using System.Threading;
@@ -11,18 +10,18 @@ namespace EImece.Domain.Scheduler
 {
     public abstract class BaseQuartzService
     {
-        protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        protected readonly ILogger Logger;
+        protected readonly IScheduler Scheduler;
 
         static BaseQuartzService()
         {
             Quartz.Logging.LogProvider.IsDisabled = true;
         }
 
-        protected readonly IScheduler Scheduler;
-
-        protected BaseQuartzService(IScheduler scheduler = null)
+        protected BaseQuartzService(IScheduler scheduler, ILogger logger)
         {
             Scheduler = scheduler;
+            Logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public abstract Task StartSchedulerServiceAsync();
@@ -43,12 +42,17 @@ namespace EImece.Domain.Scheduler
                 {
                     bool result = await sched.Interrupt(jobKey).ConfigureAwait(false);
                     bool result2 = await sched.DeleteJob(jobKey).ConfigureAwait(false);
-                    Logger.Info("DeleteJob Job: {0} {1}, Interrupt: {2}, DeleteJob: {3}", jobKey.Name, jobKey.Group, result, result2);
+                    Logger.LogInformation(
+                        "DeleteJob {JobName} {JobGroup} Interrupt={Interrupt} Deleted={Deleted}",
+                        jobKey.Name,
+                        jobKey.Group,
+                        result,
+                        result2);
                 }
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Error deleting job {0}", jobKey);
+                Logger.LogError(ex, "Error deleting job {JobName} {JobGroup}", jobKey.Name, jobKey.Group);
             }
         }
 
@@ -64,11 +68,11 @@ namespace EImece.Domain.Scheduler
             using (var cancellationTokenSource = new CancellationTokenSource())
             {
                 bool result = await sched.Interrupt(jobKey, cancellationTokenSource.Token).ConfigureAwait(false);
-                Logger.Trace("Job is Interrupted jobKey: {0}, Interrupt Result: {1}", jobKey, result);
+                Logger.LogTrace("Job interrupted {JobKey} Result={Result}", jobKey, result);
             }
         }
 
-        public static async Task ScheduleOrReschedule(IScheduler sched, ScheduleJob job, Type jobType)
+        public async Task ScheduleOrReschedule(IScheduler sched, ScheduleJob job, Type jobType)
         {
             if (sched == null || job == null || jobType == null)
             {
@@ -77,7 +81,7 @@ namespace EImece.Domain.Scheduler
 
             if (!job.IsActive)
             {
-                Logger.Info("Skipping inactive job: {0}", job.Name);
+                Logger.LogInformation("Skipping inactive job {JobName}", job.Name);
                 return;
             }
 
@@ -98,12 +102,12 @@ namespace EImece.Domain.Scheduler
 
             if (isExists)
             {
-                Logger.Info("RescheduleJob: " + job.ToString());
+                Logger.LogInformation("RescheduleJob {Job}", job);
                 await sched.RescheduleJob(triggerKey, trigger).ConfigureAwait(false);
             }
             else
             {
-                Logger.Info("ScheduleJob: " + job.ToString());
+                Logger.LogInformation("ScheduleJob {Job}", job);
                 await sched.ScheduleJob(cronJob, trigger).ConfigureAwait(false);
             }
         }

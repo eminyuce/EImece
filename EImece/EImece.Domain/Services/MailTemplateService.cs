@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using EImece.Domain.Abstractions;
 using EImece.Domain.Caching;
 using EImece.Domain.Entities;
@@ -5,7 +6,6 @@ using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Observability.Telemetry;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
-using NLog;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -16,21 +16,17 @@ namespace EImece.Domain.Services
 {
     public class MailTemplateService : BaseEntityService<MailTemplate>, IMailTemplateService
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
         private readonly IMailTemplateRepository MailTemplateRepository;
         private readonly IOrderService OrderService;
         private readonly ISettingService SettingService;
         private readonly ISiteUrlProvider SiteUrlProvider;
 
-        public MailTemplateService(
-            IMailTemplateRepository repository,
+        public MailTemplateService(IMailTemplateRepository repository,
             IEimeceCacheProvider dataCachingProvider,
             IOrderService orderService,
             ISettingService settingService,
-            ISiteUrlProvider siteUrlProvider)
-            : base(repository, dataCachingProvider)
-        {
+            ISiteUrlProvider siteUrlProvider, ILogger<MailTemplateService> logger)
+            : base(repository, dataCachingProvider, logger) {
             MailTemplateRepository = repository ?? throw new ArgumentNullException(nameof(repository));
             OrderService = orderService ?? throw new ArgumentNullException(nameof(orderService));
             SettingService = settingService ?? throw new ArgumentNullException(nameof(settingService));

@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using EImece.Domain.Caching;
 using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository.EntityFramework.Enums;
@@ -7,7 +8,6 @@ using EImece.Domain.Models.HelperModels;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
 using EImece.Domain.DependencyInjection;
-using NLog;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -21,29 +21,29 @@ namespace EImece.Domain.Services
 {
     public class FileStorageService : BaseEntityService<FileStorage>, IFileStorageService
     {
-        protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
         public IFileStorageRepository FileStorageRepository { get; }
         private readonly IProductFileRepository ProductFileRepository;
         private readonly IStoryFileRepository StoryFileRepository;
         private readonly IMenuFileRepository MenuFileRepository;
         private readonly IFileStorageTagRepository FileStorageTagRepository;
 
-        public FileStorageService(
-            IFileStorageRepository repository,
+        public FileStorageService(IFileStorageRepository repository,
             IEimeceCacheProvider dataCachingProvider,
             IProductFileRepository productFileRepository,
             IStoryFileRepository storyFileRepository,
             IMenuFileRepository menuFileRepository,
-            IFileStorageTagRepository fileStorageTagRepository)
-            : base(repository, dataCachingProvider)
-        {
+            IFileStorageTagRepository fileStorageTagRepository, ILogger<FileStorageService> logger)
+            : base(repository, dataCachingProvider, logger) {
             FileStorageRepository = repository ?? throw new ArgumentNullException(nameof(repository));
             ProductFileRepository = productFileRepository ?? throw new ArgumentNullException(nameof(productFileRepository));
             StoryFileRepository = storyFileRepository ?? throw new ArgumentNullException(nameof(storyFileRepository));
             MenuFileRepository = menuFileRepository ?? throw new ArgumentNullException(nameof(menuFileRepository));
             FileStorageTagRepository = fileStorageTagRepository ?? throw new ArgumentNullException(nameof(fileStorageTagRepository));
         }
+
+        private static ILogger StaticLogger =>
+            Observability.Logging.LoggingBootstrap.LoggerFactory?.CreateLogger(typeof(FileStorageService))
+            ?? Microsoft.Extensions.Logging.Abstractions.NullLogger.Instance;
 
         private static bool PhysicalFileExists(string fileName)
         {
@@ -68,7 +68,7 @@ namespace EImece.Domain.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "TryDeletePhysicalFile failed for {0}", fileName);
+                StaticLogger.LogError(ex, "TryDeletePhysicalFile failed for {FileName}", fileName);
             }
         }
 
@@ -222,11 +222,11 @@ namespace EImece.Domain.Services
                 catch (DbEntityValidationException ex)
                 {
                     var message = ExceptionHelper.GetDbEntityValidationExceptionDetail(ex);
-                    Logger.Error(ex, Constants.DbEntityValidationExceptionPrefix + message);
+                    Logger.LogError(ex, Constants.DbEntityValidationExceptionPrefix + message);
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error(ex, "ContentId:" + contentId +
+                    Logger.LogError(ex, "ContentId:" + contentId +
                         " contentImageType:" + contentImageType.Value
                         + " contentMediaType:" + contentMediaType.Value);
                 }
@@ -323,11 +323,11 @@ namespace EImece.Domain.Services
                 catch (DbEntityValidationException ex)
                 {
                     var message = ExceptionHelper.GetDbEntityValidationExceptionDetail(ex);
-                    Logger.Error(ex, Constants.DbEntityValidationExceptionPrefix + message);
+                    Logger.LogError(ex, Constants.DbEntityValidationExceptionPrefix + message);
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error(ex, "ContentId:" + contentId +
+                    Logger.LogError(ex, "ContentId:" + contentId +
                         " contentImageType:" + contentImageType.Value
                         + " contentMediaType:" + contentMediaType.Value);
                 }
@@ -340,7 +340,7 @@ namespace EImece.Domain.Services
             if (f == null)
             {
                 TryDeletePhysicalFile(fileName);
-                Logger.Info("Deleted orphan media file {0} (no FileStorage row) contentId={1}", fileName, contentId);
+                Logger.LogInformation("Deleted orphan media file {0} (no FileStorage row) contentId={1}", fileName, contentId);
                 return;
             }
 
@@ -352,7 +352,7 @@ namespace EImece.Domain.Services
             FileStorage f = FileStorageRepository.GetSingle(fileStorageId);
             if (f == null)
             {
-                Logger.Warn("DeleteUploadImage skipped missing FileStorageId={0}", fileStorageId);
+                Logger.LogWarning("DeleteUploadImage skipped missing FileStorageId={0}", fileStorageId);
                 return;
             }
 
@@ -364,7 +364,7 @@ namespace EImece.Domain.Services
             FileStorage f = await FileStorageRepository.GetSingleAsync(fileStorageId).ConfigureAwait(false);
             if (f == null)
             {
-                Logger.Warn("DeleteUploadImageAsync skipped missing FileStorageId={0}", fileStorageId);
+                Logger.LogWarning("DeleteUploadImageAsync skipped missing FileStorageId={0}", fileStorageId);
                 return;
             }
 
@@ -470,7 +470,7 @@ namespace EImece.Domain.Services
                 {
                     DeleteUploadImageByFileStorage(contentId, mod, fileStorage.Id);
                     deletedCount++;
-                    Logger.Warn("Deleted orphan FileStorage record Id={0} FileName={1} (physical file missing on disk) for contentId={2}, mod={3}, imageType={4}",
+                    Logger.LogWarning("Deleted orphan FileStorage record Id={0} FileName={1} (physical file missing on disk) for contentId={2}, mod={3}, imageType={4}",
                         fileStorage.Id, fileStorage.FileName, contentId, mod, imageType);
                 }
             }
@@ -497,7 +497,7 @@ namespace EImece.Domain.Services
                 {
                     await DeleteUploadImageByFileStorageAsync(contentId, mod, fileStorage.Id).ConfigureAwait(false);
                     deletedCount++;
-                    Logger.Warn("Deleted orphan FileStorage record Id={0} FileName={1} (physical file missing on disk) for contentId={2}, mod={3}, imageType={4}",
+                    Logger.LogWarning("Deleted orphan FileStorage record Id={0} FileName={1} (physical file missing on disk) for contentId={2}, mod={3}, imageType={4}",
                         fileStorage.Id, fileStorage.FileName, contentId, mod, imageType);
                 }
             }
@@ -633,7 +633,7 @@ namespace EImece.Domain.Services
                     var parts = v.Split('-');
                     if (parts.Length < 3)
                     {
-                        Logger.Error("DeleteBaseEntity skipped invalid media key '" + v + "'. Expected fileStorageId-contentId-mod[-imageType].");
+                        Logger.LogError("DeleteBaseEntity skipped invalid media key '" + v + "'. Expected fileStorageId-contentId-mod[-imageType].");
                         continue;
                     }
 
@@ -642,7 +642,7 @@ namespace EImece.Domain.Services
                     MediaModType? enumMod = EnumHelper.Parse<MediaModType>(parts[2].ToStr());
                     if (!enumMod.HasValue || fileStorageId <= 0 || contentId <= 0)
                     {
-                        Logger.Error("DeleteBaseEntity skipped unparseable media key '" + v + "'.");
+                        Logger.LogError("DeleteBaseEntity skipped unparseable media key '" + v + "'.");
                         continue;
                     }
 
@@ -652,11 +652,11 @@ namespace EImece.Domain.Services
             catch (DbEntityValidationException ex)
             {
                 var message = ExceptionHelper.GetDbEntityValidationExceptionDetail(ex);
-                Logger.Error(ex, Constants.DbEntityValidationExceptionPrefix + message);
+                Logger.LogError(ex, Constants.DbEntityValidationExceptionPrefix + message);
             }
             catch (Exception exception)
             {
-                Logger.Error(exception, "DeleteBaseEntity :" + String.Join(",", values));
+                Logger.LogError(exception, "DeleteBaseEntity :" + String.Join(",", values));
             }
         }
 
@@ -679,7 +679,7 @@ namespace EImece.Domain.Services
                     var parts = v.Split('-');
                     if (parts.Length < 3)
                     {
-                        Logger.Error("DeleteBaseEntity skipped invalid media key '" + v + "'. Expected fileStorageId-contentId-mod[-imageType].");
+                        Logger.LogError("DeleteBaseEntity skipped invalid media key '" + v + "'. Expected fileStorageId-contentId-mod[-imageType].");
                         continue;
                     }
 
@@ -688,7 +688,7 @@ namespace EImece.Domain.Services
                     MediaModType? enumMod = EnumHelper.Parse<MediaModType>(parts[2].ToStr());
                     if (!enumMod.HasValue || fileStorageId <= 0 || contentId <= 0)
                     {
-                        Logger.Error("DeleteBaseEntity skipped unparseable media key '" + v + "'.");
+                        Logger.LogError("DeleteBaseEntity skipped unparseable media key '" + v + "'.");
                         continue;
                     }
 
@@ -698,11 +698,11 @@ namespace EImece.Domain.Services
             catch (DbEntityValidationException ex)
             {
                 var message = ExceptionHelper.GetDbEntityValidationExceptionDetail(ex);
-                Logger.Error(ex, Constants.DbEntityValidationExceptionPrefix + message);
+                Logger.LogError(ex, Constants.DbEntityValidationExceptionPrefix + message);
             }
             catch (Exception exception)
             {
-                Logger.Error(exception, "DeleteBaseEntity :" + String.Join(",", values));
+                Logger.LogError(exception, "DeleteBaseEntity :" + String.Join(",", values));
             }
         }
 
@@ -723,7 +723,7 @@ namespace EImece.Domain.Services
                     }
 
                     DeleteEntity(fileStorage);
-                    Logger.Info("Deleted FileStorage Id={0} FileName={1}", id, fileName);
+                    Logger.LogInformation("Deleted FileStorage Id={0} FileName={1}", id, fileName);
                     return "Ok";
                 }
 
@@ -732,7 +732,7 @@ namespace EImece.Domain.Services
             catch (Exception exception)
             {
                 var innerExpMessage = exception.InnerException == null ? "" : exception.InnerException.Message;
-                Logger.Error(exception, exception.Message + " - DeleteFileStorage Id :" + id + "" + innerExpMessage);
+                Logger.LogError(exception, exception.Message + " - DeleteFileStorage Id :" + id + "" + innerExpMessage);
             }
             return Constants.ErrorResult;
         }
@@ -754,7 +754,7 @@ namespace EImece.Domain.Services
                     }
 
                     await DeleteEntityAsync(fileStorage).ConfigureAwait(false);
-                    Logger.Info("Deleted FileStorage Id={0} FileName={1}", id, fileName);
+                    Logger.LogInformation("Deleted FileStorage Id={0} FileName={1}", id, fileName);
                     return "Ok";
                 }
 
@@ -763,7 +763,7 @@ namespace EImece.Domain.Services
             catch (Exception exception)
             {
                 var innerExpMessage = exception.InnerException == null ? "" : exception.InnerException.Message;
-                Logger.Error(exception, exception.Message + " - DeleteFileStorage Id :" + id + "" + innerExpMessage);
+                Logger.LogError(exception, exception.Message + " - DeleteFileStorage Id :" + id + "" + innerExpMessage);
             }
             return Constants.ErrorResult;
         }

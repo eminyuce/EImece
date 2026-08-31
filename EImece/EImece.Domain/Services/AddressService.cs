@@ -1,18 +1,14 @@
+using Microsoft.Extensions.Logging;
 ﻿using EImece.Domain.Entities;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
-using NLog;
-
 namespace EImece.Domain.Services
 {
     public class AddressService : BaseEntityService<Address>, IAddressService
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
         private IAddressRepository AddressRepository { get; set; }
 
-        public AddressService(IAddressRepository repository) : base(repository)
-        {
+        public AddressService(IAddressRepository repository, ILogger<AddressService> logger) : base(repository, logger) {
             AddressRepository = repository;
         }
     }

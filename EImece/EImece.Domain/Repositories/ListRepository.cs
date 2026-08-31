@@ -1,8 +1,8 @@
+using Microsoft.Extensions.Logging;
 ﻿using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository.EntityFramework.Enums;
 using EImece.Domain.Repositories.IRepositories;
-using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +13,7 @@ namespace EImece.Domain.Repositories
 {
     public class ListRepository : BaseEntityRepository<List>, IListRepository
     {
-        protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
-        public ListRepository(IEImeceContext dbContext) : base(dbContext)
-        {
+        public ListRepository(IEImeceContext dbContext, ILogger<ListRepository> logger) : base(dbContext, logger) {
         }
 
         public List<List> GetAllListItems()

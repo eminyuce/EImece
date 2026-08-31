@@ -1,9 +1,9 @@
+using Microsoft.Extensions.Logging;
 using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.Models.DTOs;
 using EImece.Domain.Observability.Telemetry;
 using EImece.Domain.Repositories.IRepositories;
-using NLog;
 using System;
 using System.Data.Entity;
 using System.Linq;
@@ -14,10 +14,7 @@ namespace EImece.Domain.Repositories
 {
     public class CouponRepository : BaseEntityRepository<Coupon>, ICouponRepository
     {
-        protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
-        public CouponRepository(IEImeceContext dbContext) : base(dbContext)
-        {
+        public CouponRepository(IEImeceContext dbContext, ILogger<CouponRepository> logger) : base(dbContext, logger) {
         }
 
         [Timed("repo.coupons.get_by_code_sync")]

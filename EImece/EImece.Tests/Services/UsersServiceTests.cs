@@ -1,3 +1,4 @@
+using EImece.Tests.Infrastructure;
 using EImece.Domain;
 using EImece.Domain.Services;
 using EImece.Models;
@@ -67,7 +68,7 @@ namespace EImece.Tests.Services
         {
             try
             {
-                var service = new UsersService(null, null, null, null);
+                var service = new UsersService(null, null, null, null, TestNullLoggers.Create<UsersService>());
                 Assert.Fail("Expected ArgumentNullException was not thrown.");
             }
             catch (ArgumentNullException)

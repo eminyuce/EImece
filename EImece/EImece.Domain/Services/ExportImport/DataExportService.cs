@@ -1,10 +1,10 @@
+using Microsoft.Extensions.Logging;
 using EImece.Domain.DependencyInjection;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Observability.Logging;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
-using NLog;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -20,13 +20,14 @@ namespace EImece.Domain.Services.ExportImport
 {
     public class DataExportService : IDataExportService
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private readonly ILogger<DataExportService> _logger;
 
         private readonly IDataExportRepository Repository;
         private readonly IUsersService UsersService;
 
-        public DataExportService(IDataExportRepository repository, IUsersService usersService)
-        {
+        public DataExportService(IDataExportRepository repository, IUsersService usersService, ILogger<DataExportService> logger)
+         {
+            _logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
             Repository = repository ?? throw new ArgumentNullException(nameof(repository));
             UsersService = usersService ?? throw new ArgumentNullException(nameof(usersService));
         }
@@ -397,7 +398,7 @@ namespace EImece.Domain.Services.ExportImport
                 result.Metadata = metadata;
                 result.Duration = stopwatch.Elapsed;
 
-                Logger.Info("Data export completed successfully. TotalRecords={0}, SizeBytes={1}, Duration={2}ms",
+                _logger.LogInformation("Data export completed successfully. TotalRecords={0}, SizeBytes={1}, Duration={2}ms",
                     totalRecords, compressedSize, stopwatch.ElapsedMilliseconds);
 
                 return result;
@@ -405,7 +406,7 @@ namespace EImece.Domain.Services.ExportImport
             catch (Exception ex)
             {
                 stopwatch.Stop();
-                Logger.Error(ex, "Data export failed after {0}ms", stopwatch.ElapsedMilliseconds);
+                _logger.LogError(ex, "Data export failed after {0}ms", stopwatch.ElapsedMilliseconds);
                 result.Success = false;
                 result.ErrorMessage = ex.Message;
                 result.Duration = stopwatch.Elapsed;

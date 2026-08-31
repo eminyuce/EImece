@@ -1,9 +1,9 @@
+using Microsoft.Extensions.Logging;
 using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository.EntityFramework.Enums;
 using EImece.Domain.Models.DTOs.Storefront;
 using EImece.Domain.Repositories.IRepositories;
-using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,10 +16,7 @@ namespace EImece.Domain.Repositories
 {
     public class StoryCategoryRepository : BaseContentRepository<StoryCategory>, IStoryCategoryRepository
     {
-        private static readonly Logger StoryCategoryLogger = LogManager.GetCurrentClassLogger();
-
-        public StoryCategoryRepository(IEImeceContext dbContext) : base(dbContext)
-        {
+        public StoryCategoryRepository(IEImeceContext dbContext, ILogger<StoryCategoryRepository> logger) : base(dbContext, logger) {
         }
 
         #region Storefront Read Methods (LINQ Projection, AsNoTracking, Main Entity Activation)

@@ -1,10 +1,10 @@
+using Microsoft.Extensions.Logging;
 using EImece.Web.Areas.Admin.Controllers;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Web.Filters;
 using Griddly.Mvc;
 using Griddly.Mvc.Results;
-using NLog;
 using Resources;
 using System;
 using System.Collections.Generic;
@@ -21,18 +21,13 @@ namespace EImece.Areas.Admin.Controllers
     public class ProductCommentsController : BaseAdminController
     {
         private const string IsoDateFormat = "yyyy-MM-dd";
-
-        protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
         protected IProductCommentService ProductCommentService { get; }
         protected IProductService ProductService { get; }
 
-        public ProductCommentsController(
-            ISettingService settingService,
+        public ProductCommentsController(ISettingService settingService,
             IProductCommentService productCommentService,
-            IProductService productService)
-            : base(settingService)
-        {
+            IProductService productService, ILogger<ProductCommentsController> logger)
+            : base(settingService, logger) {
             ProductCommentService = productCommentService ?? throw new ArgumentNullException(nameof(productCommentService));
             ProductService = productService ?? throw new ArgumentNullException(nameof(productService));
         }
@@ -112,7 +107,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Unable to delete item:" + ex.StackTrace, productComment);
+                Logger.LogError(ex, "Unable to delete item:" + ex.StackTrace, productComment);
                 SetErrorMessage();
                 return RedirectToCommentsList(productComment.ProductId);
             }

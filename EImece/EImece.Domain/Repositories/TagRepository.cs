@@ -1,8 +1,8 @@
+using Microsoft.Extensions.Logging;
 ﻿using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.Models.DTOs.Storefront;
 using EImece.Domain.Repositories.IRepositories;
-using NLog;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -15,10 +15,7 @@ namespace EImece.Domain.Repositories
 {
     public class TagRepository : BaseEntityRepository<Tag>, ITagRepository
     {
-        protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
-        public TagRepository(IEImeceContext dbContext) : base(dbContext)
-        {
+        public TagRepository(IEImeceContext dbContext, ILogger<TagRepository> logger) : base(dbContext, logger) {
         }
 
         #region Storefront Read Methods (LINQ Projection, AsNoTracking, Main Entity Activation)

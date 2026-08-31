@@ -1,10 +1,10 @@
+using Microsoft.Extensions.Logging;
 using EImece.Web.Areas.Admin.Controllers;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Web.Filters;
 using Griddly.Mvc;
 using Griddly.Mvc.Results;
-using NLog;
 using Resources;
 using System;
 using System.Data;
@@ -22,17 +22,13 @@ namespace EImece.Areas.Admin.Controllers
 {
     public class TagCategoriesController : BaseAdminController
     {
-        protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
         protected ITagCategoryService TagCategoryService { get; }
         protected IEntityFactory EntityFactory { get; }
 
-        public TagCategoriesController(
-            ISettingService settingService,
+        public TagCategoriesController(ISettingService settingService,
             ITagCategoryService tagCategoryService,
-            IEntityFactory entityFactory)
-            : base(settingService)
-        {
+            IEntityFactory entityFactory, ILogger<TagCategoriesController> logger)
+            : base(settingService, logger) {
             TagCategoryService = tagCategoryService ?? throw new ArgumentNullException(nameof(tagCategoryService));
             EntityFactory = entityFactory ?? throw new ArgumentNullException(nameof(entityFactory));
         }
@@ -102,7 +98,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Unable to save changes:" + ex.StackTrace, TagCategory);
+                Logger.LogError(ex, "Unable to save changes:" + ex.StackTrace, TagCategory);
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
             }
 
@@ -128,7 +124,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Unable to delete product:" + ex.StackTrace, tagCategory);
+                Logger.LogError(ex, "Unable to delete product:" + ex.StackTrace, tagCategory);
                 SetErrorMessage();
                 return RedirectToAction("Index");
             }

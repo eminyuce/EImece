@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using EImece.Domain.DependencyInjection;
 using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository;
@@ -7,7 +8,6 @@ using EImece.Domain.Models.DTOs;
 using EImece.Domain.Observability.Telemetry;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
-using NLog;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -20,19 +20,16 @@ namespace EImece.Domain.Services
 {
     public class OrderService : BaseEntityService<Order>, IOrderService
     {
-        protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
         private readonly IOrderRepository OrderRepository;
         private readonly IOrderProductService OrderProductService;
         private readonly ICustomerService CustomerService;
         private readonly IAddressService AddressService;
 
-        public OrderService(
-            IOrderRepository repository,
+        public OrderService(IOrderRepository repository,
+            ILogger<OrderService> logger,
             ICustomerService customerService = null,
             IOrderProductService orderProductService = null,
-            IAddressService addressService = null) : base(repository)
-        {
+            IAddressService addressService = null) : base(repository, logger) {
             OrderRepository = repository ?? throw new ArgumentNullException(nameof(repository));
             CustomerService = customerService;
             OrderProductService = orderProductService;
@@ -178,11 +175,11 @@ namespace EImece.Domain.Services
             catch (DbEntityValidationException ex)
             {
                 var message = ExceptionHelper.GetDbEntityValidationExceptionDetail(ex);
-                Logger.Error(ex, "DbEntityValidationException:" + message);
+                Logger.LogError(ex, "DbEntityValidationException:" + message);
             }
             catch (Exception exception)
             {
-                Logger.Error(exception, "DeleteBaseEntity :" + String.Join(",", values));
+                Logger.LogError(exception, "DeleteBaseEntity :" + String.Join(",", values));
             }
         }
 
@@ -203,11 +200,11 @@ namespace EImece.Domain.Services
             catch (DbEntityValidationException ex)
             {
                 var message = ExceptionHelper.GetDbEntityValidationExceptionDetail(ex);
-                Logger.Error(ex, "DbEntityValidationException:" + message);
+                Logger.LogError(ex, "DbEntityValidationException:" + message);
             }
             catch (Exception exception)
             {
-                Logger.Error(exception, "DeleteBaseEntity :" + String.Join(",", values));
+                Logger.LogError(exception, "DeleteBaseEntity :" + String.Join(",", values));
             }
         }
 

@@ -1,3 +1,4 @@
+using EImece.Tests.Infrastructure;
 using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository.EntityFramework;
@@ -80,7 +81,7 @@ namespace EImece.Tests.Helpers
             // Arrange
             var proxy = new FakeContextProxy();
             var fakeContext = proxy.Context;
-            var addressRepo = new AddressRepository(fakeContext);
+            var addressRepo = new AddressRepository(fakeContext, TestNullLoggers.Create<AddressRepository>());
 
             // Act
             addressRepo.Dispose();

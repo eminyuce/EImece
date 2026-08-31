@@ -1,10 +1,10 @@
+using Microsoft.Extensions.Logging;
 using EImece.Domain.Abstractions;
 using EImece.Domain.Entities;
 using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Observability.Telemetry;
 using EImece.Domain.Services.IServices;
 using EImece.Domain.DependencyInjection;
-using NLog;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -20,16 +20,16 @@ namespace EImece.Domain.Helpers.EmailHelper
     /// </summary>
     public class EmailSender : IEmailSender
     {
+        private readonly ILogger<EmailSender> _logger;
+
         private readonly ISettingService SettingService;
         private readonly IBackgroundWorkQueue BackgroundWorkQueue;
 
-        public EmailSender(ISettingService settingService, IBackgroundWorkQueue backgroundWorkQueue = null)
-        {
+        public EmailSender(ISettingService settingService, ILogger<EmailSender> logger, IBackgroundWorkQueue backgroundWorkQueue = null)
+         {
             SettingService = settingService ?? throw new ArgumentNullException(nameof(settingService));
             BackgroundWorkQueue = backgroundWorkQueue;
         }
-
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private const string FromAddressRequiredMessage = "From Address cannot be null";
         private const string FromDisplayNameRequiredMessage = "from Address DisplayName cannot be null";
 
@@ -119,9 +119,9 @@ namespace EImece.Domain.Helpers.EmailHelper
                     smtpClient.Port = emailAccount.Port;
                     smtpClient.EnableSsl = emailAccount.EnableSsl;
                     smtpClient.Credentials = new NetworkCredential(emailAccount.Username, emailAccount.Password);
-                    Logger.Debug($"Sending email. Subject: '{subject}', To: '{to.Address}', Host: '{emailAccount.Host}:{emailAccount.Port}', SSL: {emailAccount.EnableSsl}");
+                    _logger.LogDebug($"Sending email. Subject: '{subject}', To: '{to.Address}', Host: '{emailAccount.Host}:{emailAccount.Port}', SSL: {emailAccount.EnableSsl}");
                     smtpClient.Send(message);
-                    Logger.Info($"Email sent successfully. Subject: '{subject}', To: '{to.Address}'");
+                    _logger.LogInformation($"Email sent successfully. Subject: '{subject}', To: '{to.Address}'");
                 }
             }
         }
@@ -193,7 +193,7 @@ namespace EImece.Domain.Helpers.EmailHelper
                     }
                     catch (Exception ex)
                     {
-                        Logger.Error(ex, "Background email send failed. Subject: " + subjectForLog);
+                        _logger.LogError(ex, "Background email send failed. Subject: " + subjectForLog);
                     }
                 });
             }
@@ -207,7 +207,7 @@ namespace EImece.Domain.Helpers.EmailHelper
                     }
                     catch (Exception ex)
                     {
-                        Logger.Error(ex, "Background email send failed. Subject: " + subjectForLog);
+                        _logger.LogError(ex, "Background email send failed. Subject: " + subjectForLog);
                     }
                 });
             }
@@ -243,25 +243,25 @@ namespace EImece.Domain.Helpers.EmailHelper
         {
             if (renderedEmailTemplate == null || string.IsNullOrEmpty(renderedEmailTemplate.Item1) && renderedEmailTemplate.Item2 != null)
             {
-                Logger.Error("renderedEmailTemplate cannot be empty");
+                _logger.LogError("renderedEmailTemplate cannot be empty");
                 return;
             }
 
             Customer customer = renderedEmailTemplate.Item3;
             if (emailAccount == null)
             {
-                Logger.Error("renderedEmailTemplate for emailAccount cannot be empty");
+                _logger.LogError("renderedEmailTemplate for emailAccount cannot be empty");
                 return;
             }
             if (customer == null)
             {
-                Logger.Error("renderedEmailTemplate for customer cannot be empty");
+                _logger.LogError("renderedEmailTemplate for customer cannot be empty");
                 return;
             }
 
             if (renderedEmailTemplate.Item2.GeneralError != null)
             {
-                Logger.Error("renderedEmailTemplate cannot be empty");
+                _logger.LogError("renderedEmailTemplate cannot be empty");
                 throw renderedEmailTemplate.Item2.GeneralError;
             }
 
@@ -278,7 +278,7 @@ namespace EImece.Domain.Helpers.EmailHelper
             var from = new MailAddress(fromAddress, fromAddressDisplayName);
             var to = new MailAddress(customer.Email, customer.FullName);
 
-            Logger.Debug("Queuing customer email. Subject: '{0}', To: '{1}'", renderedEmailTemplate.Item1, to.Address);
+            _logger.LogDebug("Queuing customer email. Subject: '{0}', To: '{1}'", renderedEmailTemplate.Item1, to.Address);
             // Validation and address building above run synchronously (so config/render errors
             // surface to the caller); only the SMTP round-trip is deferred when requested.
             if (sendInBackground)
@@ -297,25 +297,25 @@ namespace EImece.Domain.Helpers.EmailHelper
         {
             if (renderedEmailTemplate == null || string.IsNullOrEmpty(renderedEmailTemplate.Item1) && renderedEmailTemplate.Item2 != null)
             {
-                Logger.Error("renderedEmailTemplate cannot be empty");
+                _logger.LogError("renderedEmailTemplate cannot be empty");
                 return;
             }
 
             Customer customer = renderedEmailTemplate.Item3;
             if (emailAccount == null)
             {
-                Logger.Error("renderedEmailTemplate for emailAccount cannot be empty");
+                _logger.LogError("renderedEmailTemplate for emailAccount cannot be empty");
                 return;
             }
             if (customer == null)
             {
-                Logger.Error("renderedEmailTemplate for customer cannot be empty");
+                _logger.LogError("renderedEmailTemplate for customer cannot be empty");
                 return;
             }
 
             if (renderedEmailTemplate.Item2.GeneralError != null)
             {
-                Logger.Error("renderedEmailTemplate cannot be empty");
+                _logger.LogError("renderedEmailTemplate cannot be empty");
                 throw renderedEmailTemplate.Item2.GeneralError;
             }
 
@@ -331,7 +331,7 @@ namespace EImece.Domain.Helpers.EmailHelper
             }
             var from = new MailAddress(fromAddress, fromAddressDisplayName);
 
-            Logger.Debug("Queuing admin email. Subject: '{0}', To: '{1}'", renderedEmailTemplate.Item1, from.Address);
+            _logger.LogDebug("Queuing admin email. Subject: '{0}', To: '{1}'", renderedEmailTemplate.Item1, from.Address);
             // Validation and address building above run synchronously (so config/render errors
             // surface to the caller); only the SMTP round-trip is deferred when requested.
             if (sendInBackground)

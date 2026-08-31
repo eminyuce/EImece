@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
@@ -6,7 +7,6 @@ using EImece.Domain.Models.Enums;
 using EImece.Domain.Observability.Telemetry;
 using EImece.Domain.Services.IServices;
 using EImece.Domain.DependencyInjection;
-using NLog;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -19,7 +19,7 @@ namespace EImece.Domain.Services
 {
     public class SiteMapService
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private readonly ILogger<SiteMapService> _logger;
 
         private readonly IMainPageImageService MainPageImageService;
         private readonly ISettingService SettingService;
@@ -36,8 +36,7 @@ namespace EImece.Domain.Services
         private readonly ITemplateService TemplateService;
         private readonly IMailTemplateService MailTemplateService;
 
-        public SiteMapService(
-            IMainPageImageService mainPageImageService,
+        public SiteMapService(IMainPageImageService mainPageImageService,
             ISettingService settingService,
             IProductService productService,
             IProductCategoryService productCategoryService,
@@ -50,8 +49,9 @@ namespace EImece.Domain.Services
             IFileStorageService fileStorageService,
             IImageDownloadService imageDownloadService,
             ITemplateService templateService,
-            IMailTemplateService mailTemplateService)
-        {
+            IMailTemplateService mailTemplateService, ILogger<SiteMapService> logger)
+         {
+            _logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
             MainPageImageService = mainPageImageService ?? throw new ArgumentNullException(nameof(mainPageImageService));
             SettingService = settingService ?? throw new ArgumentNullException(nameof(settingService));
             ProductService = productService ?? throw new ArgumentNullException(nameof(productService));
@@ -121,7 +121,7 @@ namespace EImece.Domain.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, ex.Message);
+                _logger.LogError(ex, ex.Message);
             }
         }
 
@@ -146,7 +146,7 @@ namespace EImece.Domain.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, ex.Message);
+                _logger.LogError(ex, ex.Message);
             }
 
             return productCategories;
@@ -174,7 +174,7 @@ namespace EImece.Domain.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, ex.Message);
+                _logger.LogError(ex, ex.Message);
             }
         }
 
@@ -199,7 +199,7 @@ namespace EImece.Domain.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, ex.Message);
+                _logger.LogError(ex, ex.Message);
             }
 
             return storyCategories;
@@ -232,7 +232,7 @@ namespace EImece.Domain.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, ex.Message);
+                _logger.LogError(ex, ex.Message);
             }
         }
 
@@ -274,7 +274,7 @@ namespace EImece.Domain.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, ex.Message);
+                _logger.LogError(ex, ex.Message);
             }
         }
 
@@ -316,7 +316,7 @@ namespace EImece.Domain.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, ex.Message);
+                _logger.LogError(ex, ex.Message);
             }
         }
 
@@ -369,7 +369,7 @@ namespace EImece.Domain.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, ex.Message);
+                _logger.LogError(ex, ex.Message);
             }
         }
 
@@ -392,7 +392,7 @@ namespace EImece.Domain.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, ex.Message);
+                _logger.LogError(ex, ex.Message);
             }
 
             return storyCategories;
@@ -419,7 +419,7 @@ namespace EImece.Domain.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, ex.Message);
+                _logger.LogError(ex, ex.Message);
             }
         }
 
@@ -443,7 +443,7 @@ namespace EImece.Domain.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, ex.Message);
+                _logger.LogError(ex, ex.Message);
             }
 
             return productCategories;
@@ -458,7 +458,7 @@ namespace EImece.Domain.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, ex.Message);
+                _logger.LogError(ex, ex.Message);
             }
         }
 
@@ -482,7 +482,7 @@ namespace EImece.Domain.Services
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error(ex, ex.Message);
+                    _logger.LogError(ex, ex.Message);
                 }
             }
         }
@@ -517,7 +517,7 @@ namespace EImece.Domain.Services
             var parts = p[0].Split('-');
             if (parts.Length < 2)
             {
-                Logger.Warn("Skipping sitemap menu Id={0} with invalid MenuLink '{1}'", c.Id, c.MenuLink);
+                _logger.LogWarning("Skipping sitemap menu Id={0} with invalid MenuLink '{1}'", c.Id, c.MenuLink);
                 return null;
             }
 
@@ -582,12 +582,12 @@ namespace EImece.Domain.Services
                     await Task.WhenAll(tasks).ConfigureAwait(false);
                 }
 
-                Logger.Info("ReadSiteMapXmlAndRequestAsync warmed {0} url(s) in {1} ms",
+                _logger.LogInformation("ReadSiteMapXmlAndRequestAsync warmed {0} url(s) in {1} ms",
                     urlSet.Url.Count, stopwatch.ElapsedMilliseconds);
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "ReadSiteMapXmlAndRequestAsync failed");
+                _logger.LogError(ex, "ReadSiteMapXmlAndRequestAsync failed");
             }
         }
 
@@ -600,7 +600,7 @@ namespace EImece.Domain.Services
             catch (Exception ex)
             {
                 // One bad URL must not fail the whole warm-up.
-                Logger.Warn(ex, "Sitemap warm-up request failed for {0}", loc);
+                _logger.LogWarning(ex, "Sitemap warm-up request failed for {0}", loc);
             }
             finally
             {

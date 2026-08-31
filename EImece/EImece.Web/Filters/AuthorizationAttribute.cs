@@ -1,4 +1,6 @@
-using NLog;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
+using EImece.Domain.Observability.Logging;
 using System;
 using System.Linq;
 using System.Security.Claims;
@@ -9,7 +11,9 @@ namespace EImece.Web.Filters
 {
     public class AuthorizationAttribute : AuthorizeAttribute
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private static ILogger Logger =>
+            LoggingBootstrap.LoggerFactory?.CreateLogger(typeof(AuthorizationAttribute))
+            ?? NullLogger.Instance;
 
         protected override bool AuthorizeCore(HttpContextBase actionContext)
         {
@@ -27,7 +31,7 @@ namespace EImece.Web.Filters
         private bool CheckRoles(ClaimsPrincipal principal)
         {
             string[] roles = RolesSplit;
-            Logger.Info("Roles=" + string.Join(",", roles));
+            Logger.LogInformation("Roles=" + string.Join(",", roles));
             if (roles.Length == 0) return true;
             return roles.Any(principal.IsInRole);
         }

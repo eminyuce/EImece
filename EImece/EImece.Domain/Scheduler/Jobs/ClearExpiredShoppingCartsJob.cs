@@ -2,9 +2,10 @@ using EImece.Domain.DependencyInjection;
 using EImece.Domain.Helpers;
 using EImece.Domain.Services.IServices;
 using Microsoft.Extensions.DependencyInjection;
-using NLog;
+using Microsoft.Extensions.Logging;
 using Quartz;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,23 +14,34 @@ namespace EImece.Domain.Scheduler.Jobs
 {
     public class ClearExpiredShoppingCartsJob : IJob
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private readonly ILogger<ClearExpiredShoppingCartsJob> _logger;
+
+        public ClearExpiredShoppingCartsJob(ILogger<ClearExpiredShoppingCartsJob> logger)
+        {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        }
 
         public async Task Execute(IJobExecutionContext context)
         {
             var sw = Stopwatch.StartNew();
             var jobKey = context?.JobDetail?.Key;
-            var correlationId = $"job-cart-cleanup-{Guid.NewGuid():N}";
-            using (ScopeContext.PushProperty("CorrelationId", correlationId))
+            var executionId = Guid.NewGuid().ToString("N");
+
+            using (_logger.BeginScope(new Dictionary<string, object>
             {
-                Logger.Debug("ClearExpiredShoppingCartsJob started. JobKey: {0} (CorrelationId: {1})", jobKey, correlationId);
+                ["JobName"] = jobKey?.Name,
+                ["JobGroup"] = jobKey?.Group,
+                ["ExecutionId"] = executionId,
+            }))
+            {
+                _logger.LogDebug("ClearExpiredShoppingCartsJob started");
 
                 try
                 {
                     var provider = DomainServiceProvider.Instance;
                     if (provider == null)
                     {
-                        Logger.Warn("ClearExpiredShoppingCartsJob skipped: DI ServiceProvider is null.");
+                        _logger.LogWarning("ClearExpiredShoppingCartsJob skipped: DI ServiceProvider is null.");
                         return;
                     }
 
@@ -39,29 +51,24 @@ namespace EImece.Domain.Scheduler.Jobs
                         expirationDays = 30;
                     }
 
-                    int deletedCount = 0;
+                    int deletedCount;
                     using (var scope = provider.CreateScope())
                     {
-                        var cartService = scope.ServiceProvider.GetService<IShoppingCartService>();
-                        if (cartService == null)
-                        {
-                            Logger.Error("ClearExpiredShoppingCartsJob: IShoppingCartService could not be resolved from scope.");
-                            return;
-                        }
-
-                        var ct = context != null ? context.CancellationToken : CancellationToken.None;
+                        var cartService = scope.ServiceProvider.GetRequiredService<IShoppingCartService>();
+                        var ct = context?.CancellationToken ?? CancellationToken.None;
                         deletedCount = await cartService.ClearExpiredShoppingCartsAsync(expirationDays, ct).ConfigureAwait(false);
                     }
 
                     sw.Stop();
-                    Logger.Info("ClearExpiredShoppingCartsJob finished successfully in {0} ms. Total expired carts cleaned: {1}",
-                        sw.ElapsedMilliseconds, deletedCount);
+                    _logger.LogInformation(
+                        "ClearExpiredShoppingCartsJob finished {ElapsedMs} ms deleted={DeletedCount}",
+                        sw.ElapsedMilliseconds,
+                        deletedCount);
                 }
                 catch (Exception ex)
                 {
                     sw.Stop();
-                    Logger.Error(ex, "ClearExpiredShoppingCartsJob encountered an error after {0} ms: {1}",
-                        sw.ElapsedMilliseconds, ex.Message);
+                    _logger.LogError(ex, "ClearExpiredShoppingCartsJob failed after {ElapsedMs} ms", sw.ElapsedMilliseconds);
                 }
             }
         }

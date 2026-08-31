@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using EImece.Web.Areas.Admin.Controllers;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
@@ -8,7 +9,6 @@ using EImece.Domain.DependencyInjection;
 using Griddly.Mvc;
 using Griddly.Mvc.Results;
 using Newtonsoft.Json.Linq;
-using NLog;
 using System;
 using System.Linq;
 using System.Threading;
@@ -19,15 +19,11 @@ namespace EImece.Areas.Admin.Controllers
 {
     public class ShoppingCartsController : BaseAdminController
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
         protected IShoppingCartService ShoppingCartService { get; }
 
-        public ShoppingCartsController(
-            ISettingService settingService,
-            IShoppingCartService shoppingCartService)
-            : base(settingService)
-        {
+        public ShoppingCartsController(ISettingService settingService,
+            IShoppingCartService shoppingCartService, ILogger<ShoppingCartsController> logger)
+            : base(settingService, logger) {
             ShoppingCartService = shoppingCartService ?? throw new ArgumentNullException(nameof(shoppingCartService));
         }
 
@@ -157,7 +153,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Unable to delete item:" + ex.StackTrace, item);
+                Logger.LogError(ex, "Unable to delete item:" + ex.StackTrace, item);
                 SetErrorMessage();
                 return ReturnIndexIfNotUrlReferrer("Index");
             }

@@ -6,6 +6,7 @@ using EImece.Web.Filters;
 using EImece.Domain.Models.HelperModels;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 using System.Web.Mvc;
 
 using EImece.Domain.Services.IServices;
@@ -19,8 +20,9 @@ namespace EImece.Areas.Admin.Controllers
 
         public FileUploadController(
             ISettingService settingService,
-            FilesHelper fh)
-            : base(settingService)
+            FilesHelper fh,
+            ILogger<FileUploadController> logger)
+            : base(settingService, logger)
         {
             filesHelper = fh ?? throw new ArgumentNullException(nameof(fh));
             filesHelper.InitFilesMediaFolder(Constants.FileUploadDeleteURL);

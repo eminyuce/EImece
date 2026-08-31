@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using EImece.Web.Areas.Admin.Controllers;
 using EImece.Domain;
 using EImece.Web.Helpers;
@@ -9,7 +10,6 @@ using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.HelperModels;
 using Griddly.Mvc;
 using Griddly.Mvc.Results;
-using NLog;
 using Resources;
 using System;
 using System.Collections.Generic;
@@ -25,7 +25,6 @@ namespace EImece.Areas.Admin.Controllers
 {
     public class MediaController : BaseAdminController
     {
-        protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private const string IndexAction = "Index";
         private const string ContentIdKey = "contentId";
         private const string ImageTypeKey = "imageType";
@@ -48,15 +47,13 @@ namespace EImece.Areas.Admin.Controllers
             }
         }
 
-        public MediaController(
-            ISettingService settingService,
+        public MediaController(ISettingService settingService,
             FilesHelper filesHelper,
             IFileStorageService fileStorageService,
             IStoryService storyService,
             IProductService productService,
-            IMenuService menuService)
-            : base(settingService)
-        {
+            IMenuService menuService, ILogger<MediaController> logger)
+            : base(settingService, logger) {
             this.filesHelper = filesHelper ?? throw new ArgumentNullException(nameof(filesHelper));
             this.filesHelper.InitFilesMediaFolder();
             FileStorageService = fileStorageService ?? throw new ArgumentNullException(nameof(fileStorageService));
@@ -270,7 +267,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Unable to delete fileStorage:" + ex.StackTrace, fileStorage);
+                Logger.LogError(ex, "Unable to delete fileStorage:" + ex.StackTrace, fileStorage);
                 SetErrorMessage();
                 return RedirectToAction(IndexAction,
                     new
@@ -322,7 +319,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Error deleting missing files for contentId={0}, mod={1}, imageType={2}", id, modStr, imageTypeStr);
+                Logger.LogError(ex, "Error deleting missing files for contentId={0}, mod={1}, imageType={2}", id, modStr, imageTypeStr);
                 SetErrorMessage();
             }
 

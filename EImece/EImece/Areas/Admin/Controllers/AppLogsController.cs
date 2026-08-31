@@ -1,9 +1,9 @@
+using Microsoft.Extensions.Logging;
 using EImece.Web.Areas.Admin.Controllers;
 using EImece.Domain.Entities;
 using EImece.Web.Filters;
 using Griddly.Mvc;
 using Griddly.Mvc.Results;
-using NLog;
 using System;
 using System.Linq;
 using System.Text;
@@ -22,13 +22,9 @@ namespace EImece.Areas.Admin.Controllers
         };
 
         private readonly IAppLogService AppLogService;
-        protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
-        public AppLogsController(
-            ISettingService settingService,
-            IAppLogService appLogService)
-            : base(settingService)
-        {
+        public AppLogsController(ISettingService settingService,
+            IAppLogService appLogService, ILogger<AppLogsController> logger)
+            : base(settingService, logger) {
             this.AppLogService = appLogService ?? throw new ArgumentNullException(nameof(appLogService));
         }
 

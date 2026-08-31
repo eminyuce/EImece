@@ -80,9 +80,6 @@
     <Reference Include="Iyzipay, Version=2.1.78.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Iyzipay.2.1.78\lib\net45\Iyzipay.dll</HintPath>
     </Reference>
-    <Reference Include="Serilog, Version=4.4.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
-      <HintPath>..\packages\Serilog.4.4.0\lib\net471\Serilog.dll</HintPath>
-    </Reference>
     <Reference Include="Azure.Core, Version=1.54.0.0, Culture=neutral, PublicKeyToken=92742159e12e44c8, processorArchitecture=MSIL">
       <HintPath>..\packages\Azure.Core.1.54.0\lib\net462\Azure.Core.dll</HintPath>
     </Reference>

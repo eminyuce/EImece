@@ -1,8 +1,8 @@
+using Microsoft.Extensions.Logging;
 ﻿using EImece.Domain;
 using EImece.Domain.Helpers;
 using EImece.Web.Filters;
 using EImece.Domain.Services.IServices;
-using NLog;
 using System;
 using System.Net;
 using System.Net.Http;
@@ -13,12 +13,13 @@ namespace EImece.Controllers
     [AuthorizeRoles(Constants.AdministratorRole)]  // NOT ALLOWED TO GET THAT PAGES
     public class UrlController : ApiController
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private readonly ILogger<UrlController> _logger;
 
         private readonly IShortUrlService _shortUrlService;
 
-        public UrlController(IShortUrlService shortUrlService)
-        {
+        public UrlController(IShortUrlService shortUrlService, ILogger<UrlController> logger)
+         {
+            _logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
             _shortUrlService = shortUrlService ?? throw new ArgumentNullException(nameof(shortUrlService));
         }
 
@@ -26,7 +27,7 @@ namespace EImece.Controllers
         [Route("{key}")]
         public HttpResponseMessage Get(string key)
         {
-            Logger.Info("Get key:" + key);
+            _logger.LogInformation("Get key:" + key);
             var response = Request.CreateResponse(HttpStatusCode.Moved);
             var shortUrlObj = _shortUrlService.GetShortUrlByKey(key);
             if (shortUrlObj != null)
@@ -34,7 +35,7 @@ namespace EImece.Controllers
                 Uri safeUri;
                 if (!SecurityHelper.IsSafeHttpRedirectUrl(shortUrlObj.Url, out safeUri))
                 {
-                    Logger.Warn("Blocked unsafe short URL redirect for key: " + key);
+                    _logger.LogWarning("Blocked unsafe short URL redirect for key: " + key);
                     return Request.CreateResponse(HttpStatusCode.BadRequest);
                 }
 
@@ -49,7 +50,7 @@ namespace EImece.Controllers
         [Route("short")]
         public HttpResponseMessage Post([FromBody] String url, [FromBody] String email = "", [FromBody] String groupName = "")
         {
-            Logger.Info("Post Short:" + url);
+            _logger.LogInformation("Post Short:" + url);
             return Request.CreateResponse(HttpStatusCode.OK, _shortUrlService.GenerateShortUrl(url, email, groupName));
         }
     }

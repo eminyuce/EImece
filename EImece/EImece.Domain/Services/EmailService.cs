@@ -1,6 +1,6 @@
+using Microsoft.Extensions.Logging;
 using EImece.Domain.Helpers.EmailHelper;
 using Microsoft.AspNet.Identity;
-using NLog;
 using System;
 using System.Threading.Tasks;
 
@@ -10,13 +10,10 @@ namespace EImece.Domain.Services
     {
         private readonly IEmailSender EmailSender;
 
-        public EmailService(IEmailSender emailSender)
-        {
+        public EmailService(IEmailSender emailSender, ILogger<EmailService> logger)
+         {
             EmailSender = emailSender ?? throw new ArgumentNullException(nameof(emailSender));
         }
-
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
         public Task SendAsync(IdentityMessage message)
         {
             // Identity email (confirmation, password reset) must not block the request thread on

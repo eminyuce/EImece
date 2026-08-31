@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using EImece.Web.Areas.Admin.Controllers;
 using EImece.Domain;
 using EImece.Domain.Abstractions;
@@ -11,7 +12,6 @@ using EImece.Domain.Services;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using EImece.Domain.DependencyInjection;
-using NLog;
 using Resources;
 using System;
 using System.Collections.Generic;
@@ -30,7 +30,6 @@ namespace EImece.Areas.Admin.Controllers
 {
     public class DashboardController : BaseAdminController
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private const string IndexAction = "Index";
         private const string AdminAreaName = "admin";
 
@@ -42,17 +41,15 @@ namespace EImece.Areas.Admin.Controllers
         protected IEimeceCacheProvider MemoryCacheProvider { get; }
         private readonly IHttpRuntimeCacheClearer _httpRuntimeCacheClearer;
 
-        public DashboardController(
-            ISettingService settingService,
+        public DashboardController(ISettingService settingService,
             IProductService productService,
             IProductCategoryService productCategoryService,
             IStoryService storyService,
             IStoryCategoryService storyCategoryService,
             IMenuService menuService,
             IEimeceCacheProvider memoryCacheProvider,
-            IHttpRuntimeCacheClearer httpRuntimeCacheClearer)
-            : base(settingService)
-        {
+            IHttpRuntimeCacheClearer httpRuntimeCacheClearer, ILogger<DashboardController> logger)
+            : base(settingService, logger) {
             ProductService = productService ?? throw new ArgumentNullException(nameof(productService));
             ProductCategoryService = productCategoryService ?? throw new ArgumentNullException(nameof(productCategoryService));
             StoryService = storyService ?? throw new ArgumentNullException(nameof(storyService));
@@ -141,7 +138,7 @@ namespace EImece.Areas.Admin.Controllers
             SettingService.ClearCache();
             ProductService.InvalidateProductListCaches();
             var dataKeysRemoved = MemoryCacheProvider.ClearAll();
-            Logger.Info(
+            Logger.LogInformation(
                 "ClearCache: eviction completed in {0} ms (provider data keys removed: {1})",
                 evictionSw.ElapsedMilliseconds,
                 dataKeysRemoved);
@@ -239,7 +236,7 @@ namespace EImece.Areas.Admin.Controllers
                 ApplicationCacheClearer.ClearAspNetCaches(_httpRuntimeCacheClearer, out htmlRemoved, out memoryDefaultRemoved);
             }
 
-            Logger.Info(
+            Logger.LogInformation(
                 "InvalidateCache target={0} removed={1} in {2} ms (fullWipe={3}) by {4}",
                 target,
                 removed,
@@ -299,7 +296,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Warn(ex, "NormalizeClearCacheReturnUrl failed for {0}", redirectUrl);
+                Logger.LogWarning(ex, "NormalizeClearCacheReturnUrl failed for {0}", redirectUrl);
                 return Url.Action(IndexAction, "Dashboard", new { area = AdminAreaName });
             }
 

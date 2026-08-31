@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using EImece.Web.Areas.Admin.Controllers;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
@@ -5,7 +6,6 @@ using EImece.Web.Filters;
 using Griddly.Mvc;
 using Griddly.Mvc.Results;
 using Microsoft.AspNet.Identity;
-using NLog;
 using Resources;
 using System;
 using System.Data;
@@ -23,17 +23,13 @@ namespace EImece.Areas.Admin.Controllers
 {
     public class FaqController : BaseAdminController
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
         protected IFaqService FaqService { get; }
         protected IEntityFactory EntityFactory { get; }
 
-        public FaqController(
-            ISettingService settingService,
+        public FaqController(ISettingService settingService,
             IFaqService faqService,
-            IEntityFactory entityFactory)
-            : base(settingService)
-        {
+            IEntityFactory entityFactory, ILogger<FaqController> logger)
+            : base(settingService, logger) {
             FaqService = faqService ?? throw new ArgumentNullException(nameof(faqService));
             EntityFactory = entityFactory ?? throw new ArgumentNullException(nameof(entityFactory));
         }
@@ -111,7 +107,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Unable to save changes:" + ex.StackTrace, faq);
+                Logger.LogError(ex, "Unable to save changes:" + ex.StackTrace, faq);
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace + ex.StackTrace);
             }
 
@@ -137,7 +133,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Unable to delete item:" + ex.StackTrace, Faq);
+                Logger.LogError(ex, "Unable to delete item:" + ex.StackTrace, Faq);
                 SetErrorMessage();
                 return RedirectToAction("Index");
             }

@@ -5,7 +5,7 @@ using EImece.Web.Filters;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Services.IServices;
 using EImece.Domain.DependencyInjection;
-using NLog;
+using Microsoft.Extensions.Logging;
 using Resources;
 using System;
 using System.Globalization;
@@ -27,14 +27,14 @@ namespace EImece.Web.Controllers
     {
         protected readonly ISettingService SettingService;
         protected readonly AutoMapper.IMapper Mapper;
+        protected readonly ILogger Logger;
 
-        protected BaseController(ISettingService settingService, AutoMapper.IMapper mapper)
+        protected BaseController(ISettingService settingService, AutoMapper.IMapper mapper, ILogger logger)
         {
             SettingService = settingService;
             Mapper = mapper;
+            Logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
-
-        private static readonly Logger BaseLogger = LogManager.GetCurrentClassLogger();
 
         public void CreateLanguageCookie(EImeceLanguage selectedLanguage, string cookieName)
         {
@@ -62,7 +62,7 @@ namespace EImece.Web.Controllers
         {
             if (filterContext != null && filterContext.Exception != null)
             {
-                BaseLogger.Error("OnException:" + filterContext.Exception.ToFormattedString());
+                Logger.LogError("OnException:" + filterContext.Exception.ToFormattedString());
             }
 
             var exposeDetails = ShouldExposeDetailedErrors(filterContext != null ? filterContext.HttpContext : null);
@@ -92,7 +92,7 @@ namespace EImece.Web.Controllers
 
         protected ActionResult HandleUnexpectedError(Exception exception, string contextMessage)
         {
-            BaseLogger.Error(exception, contextMessage);
+            Logger.LogError(exception, contextMessage);
             if (ShouldExposeDetailedErrors(HttpContext))
             {
                 System.Runtime.ExceptionServices.ExceptionDispatchInfo.Capture(exception).Throw();

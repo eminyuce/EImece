@@ -1,6 +1,8 @@
 using EImece.Domain.Helpers;
 using EImece.Domain.Models.Enums;
-using NLog;
+using EImece.Domain.Observability.Logging;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Resources;
 using System;
 using System.Web;
@@ -17,7 +19,9 @@ namespace EImece.Web.Services
         public const string FormFieldName = "Captcha";
         public const string SessionKeyPrefix = "Captcha";
 
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private static ILogger Logger =>
+            LoggingBootstrap.LoggerFactory?.CreateLogger(typeof(CaptchaService))
+            ?? NullLogger.Instance;
 
         public static bool HasValidationError(ModelStateDictionary modelState)
         {
@@ -33,7 +37,6 @@ namespace EImece.Web.Services
                 return true;
             }
 
-            // reCAPTCHA mode may still use the Recaptcha ModelState key
             return RecaptchaService.HasValidationError(modelState);
         }
 
@@ -59,9 +62,6 @@ namespace EImece.Web.Services
             return SessionKeyPrefix + (prefix ?? string.Empty);
         }
 
-        /// <summary>
-        /// Validates the current request according to <see cref="CaptchaSettings.Provider"/>.
-        /// </summary>
         public static bool ValidateRequest(HttpContextBase httpContext, string legacyPrefix)
         {
             if (httpContext == null)
@@ -72,7 +72,7 @@ namespace EImece.Web.Services
             switch (CaptchaSettings.Provider)
             {
                 case CaptchaProviderType.None:
-                    Logger.Debug("Captcha validation skipped (CaptchaProvider=None).");
+                    Logger.LogDebug("Captcha validation skipped (CaptchaProvider=None).");
                     return true;
 
                 case CaptchaProviderType.Recaptcha:
@@ -88,7 +88,7 @@ namespace EImece.Web.Services
         {
             if (httpContext?.Session == null || httpContext.Request == null)
             {
-                Logger.Error("Legacy captcha validation failed: Session or Request is null.");
+                Logger.LogError("Legacy captcha validation failed: Session or Request is null.");
                 return false;
             }
 
@@ -98,14 +98,18 @@ namespace EImece.Web.Services
 
             if (expected == null || string.IsNullOrWhiteSpace(submitted))
             {
-                Logger.Warn($"Legacy captcha validation failed. SessionKey={sessionKey}, hasSession={(expected != null)}, hasInput={!string.IsNullOrWhiteSpace(submitted)}");
+                Logger.LogWarning(
+                    "Legacy captcha validation failed. SessionKey={SessionKey} HasSession={HasSession} HasInput={HasInput}",
+                    sessionKey,
+                    expected != null,
+                    !string.IsNullOrWhiteSpace(submitted));
                 return false;
             }
 
             var isValid = expected.ToString().Equals(submitted.Trim(), StringComparison.InvariantCultureIgnoreCase);
             if (!isValid)
             {
-                Logger.Warn($"Legacy captcha mismatch. SessionKey={sessionKey}, Expected={expected}, Input={submitted}");
+                Logger.LogWarning("Legacy captcha mismatch. SessionKey={SessionKey}", sessionKey);
             }
 
             return isValid;

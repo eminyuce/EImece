@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
+using Microsoft.Extensions.Logging;
 using System.Web.Mvc;
 using Resources;
 
@@ -22,8 +23,9 @@ namespace EImece.Areas.Admin.Controllers
 
         public ImportDataController(
             ISettingService settingService,
-            IProductCategoryService productCategoryService)
-            : base(settingService)
+            IProductCategoryService productCategoryService,
+            ILogger<ImportDataController> logger)
+            : base(settingService, logger)
         {
             ProductCategoryService = productCategoryService ?? throw new ArgumentNullException(nameof(productCategoryService));
         }

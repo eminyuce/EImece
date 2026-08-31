@@ -1,3 +1,5 @@
+using EImece.Tests.Infrastructure;
+using Microsoft.Extensions.Logging;
 using EImece.App_Start;
 using EImece.Domain;
 using EImece.Domain.Caching;
@@ -16,7 +18,6 @@ using HtmlAgilityPack;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using EImece.Domain.DependencyInjection;
-using NLog;
 using RazorEngine;
 using RazorEngine.Templating;
 using System;
@@ -51,9 +52,6 @@ namespace EImece.Tests.Controllers
     public class HomeControllerTest
     {
         private IServiceProvider serviceProvider;
-
-        protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
         private static void BindByReflection(Type typeOfInterface, string typeofText)
         {
             var baseServiceTypes = Assembly.GetAssembly(typeOfInterface)
@@ -103,7 +101,7 @@ namespace EImece.Tests.Controllers
                 var SettingService = new SettingService(repository);
                 EmailAccount emailAccount = SettingService.GetEmailAccount();
                 Console.WriteLine(emailAccount.ToString());
-                EmailSender emailSender = new EmailSender(SettingService);
+                EmailSender emailSender = new EmailSender(SettingService, TestNullLoggers.Create<EmailSender>());
                 //    emailSender.SendEmail("eminyuce@gmail.com", "Test", "TESTING", emailAccount);
             }
         }
@@ -198,22 +196,22 @@ namespace EImece.Tests.Controllers
         public void GetProductDetailViewModelById()
         {
             var db = new EImeceContext(ConnectionString);
-            var cache = new LazyCacheProvider();
+            var cache = new LazyCacheProvider(TestNullLoggers.Create<LazyCacheProvider>());
             var settingService = new SettingService(new SettingRepository(db));
             var filesHelper = (FilesHelper)System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof(FilesHelper));
             var categoryRepo = new ProductCategoryRepository(db);
-            var categoryBrandService = new BrandService(new BrandRepository(db), cache, settingService, null, new EImece.Tests.Infrastructure.NullCurrentUserContext(), filesHelper);
-            var productRepo = new ProductRepository(db);
-            var menuService = new MenuService(new MenuRepository(db), cache, settingService, null, new EImece.Tests.Infrastructure.NullCurrentUserContext(), filesHelper, null);
-            var categoryServ = new ProductCategoryService(categoryRepo, cache, settingService, null, new EImece.Tests.Infrastructure.NullCurrentUserContext(), filesHelper, categoryBrandService, productRepo, menuService);
-            var commentRepo = new ProductCommentRepository(db);
+            var categoryBrandService = new BrandService(new BrandRepository(db, TestNullLoggers.Create<BrandRepository>()), cache, settingService, null, new EImece.Tests.Infrastructure.NullCurrentUserContext(), filesHelper, TestNullLoggers.Create<BrandService>());
+            var productRepo = new ProductRepository(db, TestNullLoggers.Create<ProductRepository>());
+            var menuService = new MenuService(new MenuRepository(db), cache, settingService, null, new EImece.Tests.Infrastructure.NullCurrentUserContext(), filesHelper, null, TestNullLoggers.Create<MenuService>());
+            var categoryServ = new ProductCategoryService(categoryRepo, cache, settingService, null, new EImece.Tests.Infrastructure.NullCurrentUserContext(), filesHelper, categoryBrandService, productRepo, menuService, TestNullLoggers.Create<ProductCategoryService>());
+            var commentRepo = new ProductCommentRepository(db, TestNullLoggers.Create<ProductCommentRepository>());
             var orderProductRepo = new OrderProductRepository(db);
-            var tagServ = new TagService(new TagRepository(db), cache, new ProductTagRepository(db), new StoryTagRepository(db));
-            var templateServ = new EImece.Domain.Services.TemplateService(new TemplateRepository(db));
+            var tagServ = new TagService(new TagRepository(db, TestNullLoggers.Create<TagRepository>()), cache, new ProductTagRepository(db), new StoryTagRepository(db), TestNullLoggers.Create<TagService>());
+            var templateServ = new EImece.Domain.Services.TemplateService(new TemplateRepository(db), TestNullLoggers.Create<EImece.Domain.Services.TemplateService>());
             var productTagRepo = new ProductTagRepository(db);
             var specRepo = new ProductSpecificationRepository(db);
             var entityFactory = new EntityFactory(settingService);
-            var tagCategoryServ = new TagCategoryService(new TagCategoryRepository(db), tagServ);
+            var tagCategoryServ = new TagCategoryService(new TagCategoryRepository(db, TestNullLoggers.Create<TagCategoryRepository>()), tagServ, TestNullLoggers.Create<TagCategoryService>());
             var ProductService = new ProductService(
                 productRepo,
                 cache,
@@ -230,7 +228,8 @@ namespace EImece.Tests.Controllers
                 specRepo,
                 entityFactory,
                 menuService,
-                tagCategoryServ);
+                tagCategoryServ,
+                TestNullLoggers.Create<ProductService>());
             var product = ProductService.GetProductDetailViewModelById(175363);
             Assert.IsTrue(product.RelatedProducts.Count > 0);
         }
@@ -256,18 +255,18 @@ namespace EImece.Tests.Controllers
         public void GetEmailTemplateById()
         {
             var db = new EImeceContext(ConnectionString);
-            var cache = new LazyCacheProvider();
-            var orderRepo = new OrderRepository(db);
-            var customerRepo = new CustomerRepository(db);
-            var addressRepo = new AddressRepository(db);
+            var cache = new LazyCacheProvider(TestNullLoggers.Create<LazyCacheProvider>());
+            var orderRepo = new OrderRepository(db, TestNullLoggers.Create<OrderRepository>());
+            var customerRepo = new CustomerRepository(db, TestNullLoggers.Create<CustomerRepository>());
+            var addressRepo = new AddressRepository(db, TestNullLoggers.Create<AddressRepository>());
             var orderProductRepo = new OrderProductRepository(db);
-            var aservice = new AddressService(addressRepo);
-            var opservice = new OrderProductService(orderProductRepo);
-            var oservice = new OrderService(orderRepo, null, opservice, aservice);
-            var cservice = new CustomerService(customerRepo, aservice, orderRepo, oservice, null, null);
+            var aservice = new AddressService(addressRepo, TestNullLoggers.Create<AddressService>());
+            var opservice = new OrderProductService(orderProductRepo, TestNullLoggers.Create<OrderProductService>());
+            var oservice = new OrderService(orderRepo, TestNullLoggers.Create<OrderService>(), null, opservice, aservice);
+            var cservice = new CustomerService(customerRepo, TestNullLoggers.Create<CustomerService>(), aservice, orderRepo, oservice, null, null);
             var settingRepo = new SettingRepository(db);
             var settingService = new SettingService(settingRepo);
-            var service = new MailTemplateService(new MailTemplateRepository(db), cache, oservice, settingService, new EImece.Tests.Infrastructure.NullSiteUrlProvider());
+            var service = new MailTemplateService(new MailTemplateRepository(db, TestNullLoggers.Create<MailTemplateRepository>()), cache, oservice, settingService, new EImece.Tests.Infrastructure.NullSiteUrlProvider(), TestNullLoggers.Create<MailTemplateService>());
             var orderConfirmationEmailTemplate = service.GetMailTemplateByName("OrderConfirmationEmail");
             Assert.IsNotNull(orderConfirmationEmailTemplate);
             String orderConfirmationEmailTemplateHtml = File.ReadAllText(@"C:\Users\YUCE\Documents\GitHub\EImece\EImece\EImece.Tests\dataFolder\emailTemplates\OrderConfirmationEmail.html");
@@ -288,10 +287,10 @@ namespace EImece.Tests.Controllers
         public void GetBreadCrumb()
         {
             var db = new EImeceContext(ConnectionString);
-            var cache = new LazyCacheProvider();
+            var cache = new LazyCacheProvider(TestNullLoggers.Create<LazyCacheProvider>());
             var settingService = new SettingService(new SettingRepository(db));
             var filesHelper = (FilesHelper)System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof(FilesHelper));
-            var ProductCategoryService = new ProductCategoryService(new ProductCategoryRepository(db), cache, settingService, null, new EImece.Tests.Infrastructure.NullCurrentUserContext(), filesHelper, null, new ProductRepository(db), null);
+            var ProductCategoryService = new ProductCategoryService(new ProductCategoryRepository(db), cache, settingService, null, new EImece.Tests.Infrastructure.NullCurrentUserContext(), filesHelper, null, new ProductRepository(db, TestNullLoggers.Create<ProductRepository>()), null, TestNullLoggers.Create<ProductCategoryService>());
             var breadCrumb = ProductCategoryService.GetBreadCrumb(215, 1);
             foreach (var item in breadCrumb)
             {
@@ -383,10 +382,10 @@ namespace EImece.Tests.Controllers
         {
             String search = "";
             var db = new EImeceContext(ConnectionString);
-            var cache = new LazyCacheProvider();
+            var cache = new LazyCacheProvider(TestNullLoggers.Create<LazyCacheProvider>());
             var settingService = new SettingService(new SettingRepository(db));
             var filesHelper = (FilesHelper)System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof(FilesHelper));
-            var ProductCategoryService = new ProductCategoryService(new ProductCategoryRepository(db), cache, settingService, null, new EImece.Tests.Infrastructure.NullCurrentUserContext(), filesHelper, null, new ProductRepository(db), null);
+            var ProductCategoryService = new ProductCategoryService(new ProductCategoryRepository(db), cache, settingService, null, new EImece.Tests.Infrastructure.NullCurrentUserContext(), filesHelper, null, new ProductRepository(db, TestNullLoggers.Create<ProductRepository>()), null, TestNullLoggers.Create<ProductCategoryService>());
             Expression<Func<ProductCategory, bool>> whereLambda = r => r.Name.Contains(search);
             var productCategories = ProductCategoryService.SearchEntities(whereLambda, search, CurrentLanguage);
             foreach (var item in productCategories)
@@ -511,12 +510,12 @@ QUITE
         public void DeleteProductCategory()
         {
             var dbContext = new EImeceContext(ConnectionString);
-            var cache = new LazyCacheProvider();
+            var cache = new LazyCacheProvider(TestNullLoggers.Create<LazyCacheProvider>());
             var settingService = new SettingService(new SettingRepository(dbContext));
             var filesHelper = (FilesHelper)System.Runtime.Serialization.FormatterServices.GetUninitializedObject(typeof(FilesHelper));
             var fileStorageRepo = new FileStorageRepository(dbContext);
-            var fileStorageService = new FileStorageService(fileStorageRepo, cache, new ProductFileRepository(dbContext), new StoryFileRepository(dbContext), new MenuFileRepository(dbContext), new FileStorageTagRepository(dbContext));
-            var productCategoryService = new ProductCategoryService(new ProductCategoryRepository(dbContext), cache, settingService, fileStorageService, new EImece.Tests.Infrastructure.NullCurrentUserContext(), filesHelper, null, new ProductRepository(dbContext), null);
+            var fileStorageService = new FileStorageService(fileStorageRepo, cache, new ProductFileRepository(dbContext), new StoryFileRepository(dbContext), new MenuFileRepository(dbContext), new FileStorageTagRepository(dbContext, TestNullLoggers.Create<FileStorageTagRepository>()), TestNullLoggers.Create<FileStorageService>());
+            var productCategoryService = new ProductCategoryService(new ProductCategoryRepository(dbContext), cache, settingService, fileStorageService, new EImece.Tests.Infrastructure.NullCurrentUserContext(), filesHelper, null, new ProductRepository(dbContext, TestNullLoggers.Create<ProductRepository>()), null, TestNullLoggers.Create<ProductCategoryService>());
             productCategoryService.DeleteProductCategory(308);
         }
 
@@ -528,16 +527,16 @@ QUITE
             Console.WriteLine(new FileStorageRepository(dbContext).GetAll().ToList().Count());
             Console.WriteLine(new MenuRepository(dbContext).GetAll().ToList().Count());
             Console.WriteLine(new ProductCategoryRepository(dbContext).GetAll().ToList().Count());
-            Console.WriteLine(new ProductRepository(dbContext).GetAll().ToList().Count());
+            Console.WriteLine(new ProductRepository(dbContext, TestNullLoggers.Create<ProductRepository>()).GetAll().ToList().Count());
             Console.WriteLine(new ProductSpecificationRepository(dbContext).GetAll().ToList().Count());
             Console.WriteLine(new ProductTagRepository(dbContext).GetAll().ToList().Count());
-            Console.WriteLine(new StoryCategoryRepository(dbContext).GetAll().ToList().Count());
+            Console.WriteLine(new StoryCategoryRepository(dbContext, TestNullLoggers.Create<StoryCategoryRepository>()).GetAll().ToList().Count());
             Console.WriteLine(new StoryFileRepository(dbContext).GetAll().ToList().Count());
-            Console.WriteLine(new StoryRepository(dbContext).GetAll().ToList().Count());
+            Console.WriteLine(new StoryRepository(dbContext, TestNullLoggers.Create<StoryRepository>()).GetAll().ToList().Count());
             Console.WriteLine(new StoryTagRepository(dbContext).GetAll().ToList().Count());
             Console.WriteLine(new SubscriberRepository(dbContext).GetAll().ToList().Count());
-            Console.WriteLine(new TagCategoryRepository(dbContext).GetAll().ToList().Count());
-            Console.WriteLine(new TagRepository(dbContext).GetAll().ToList().Count());
+            Console.WriteLine(new TagCategoryRepository(dbContext, TestNullLoggers.Create<TagCategoryRepository>()).GetAll().ToList().Count());
+            Console.WriteLine(new TagRepository(dbContext, TestNullLoggers.Create<TagRepository>()).GetAll().ToList().Count());
         }
 
         [TestMethod]

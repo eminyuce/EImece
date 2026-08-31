@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using EImece.Web.Areas.Admin.Controllers;
 using EImece.Domain;
 using EImece.Domain.Helpers;
@@ -5,7 +6,6 @@ using EImece.Web.Filters;
 using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Observability.Logging;
 using EImece.Domain.Services.ExportImport;
-using NLog;
 using Resources;
 using System;
 using System.IO;
@@ -23,20 +23,15 @@ namespace EImece.Areas.Admin.Controllers
 {
     public class AdminSettingsController : BaseAdminController
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
- 
         private readonly IEmailSender _emailSender;
         private readonly IEimeceCacheProvider _memoryCacheProvider;
         private readonly IDataExportService _dataExportService;
 
-        public AdminSettingsController(
-            ISettingService settingService,
+        public AdminSettingsController(ISettingService settingService,
             IEmailSender emailSender,
             IEimeceCacheProvider memoryCacheProvider,
-            IDataExportService dataExportService)
-            : base(settingService)
-        {
+            IDataExportService dataExportService, ILogger<AdminSettingsController> logger)
+            : base(settingService, logger) {
             _emailSender = emailSender ?? throw new ArgumentNullException(nameof(emailSender));
             _memoryCacheProvider = memoryCacheProvider ?? throw new ArgumentNullException(nameof(memoryCacheProvider));
             _dataExportService = dataExportService ?? throw new ArgumentNullException(nameof(dataExportService));
@@ -138,7 +133,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Debug("It could not sent sample Email:" + info);
+                Logger.LogDebug("It could not sent sample Email:" + info);
                 ModelState.AddModelError("", ex.ToFormattedString());
             }
 
@@ -152,7 +147,7 @@ namespace EImece.Areas.Admin.Controllers
         [HttpGet]
         public async Task<ActionResult> ExportBackup(CancellationToken cancellationToken)
         {
-            Logger.Debug("Full database JSON backup export requested.");
+            Logger.LogDebug("Full database JSON backup export requested.");
             var exportRequest = new DataExportRequest
             {
                 ExportedBy = $"{User?.Identity?.Name ?? "Admin"}"
@@ -164,12 +159,12 @@ namespace EImece.Areas.Admin.Controllers
                 if (result == null || !result.Success)
                 {
                     var errorMessage = result?.ErrorMessage ?? AdminResource.Error;
-                    Logger.Error("Database JSON backup export failed: {0}", errorMessage);
+                    Logger.LogError("Database JSON backup export failed: {0}", errorMessage);
                     ModelState.AddModelError("", errorMessage);
                     return View("SystemSettings", await SettingService.GetSystemSettingModelAsync(cancellationToken));
                 }
 
-                Logger.Info("Database JSON backup generated: {0} records, {1} bytes.", result.TotalRecords, result.CompressedSizeBytes);
+                Logger.LogInformation("Database JSON backup generated: {0} records, {1} bytes.", result.TotalRecords, result.CompressedSizeBytes);
                 string fileName = $"eimece-db-backup-{DateTime.UtcNow:yyyyMMdd-HHmmss}.zip";
                 string contentType = MediaTypeNames.Application.Zip;
                 return File(outputStream.ToArray(), contentType, fileName);

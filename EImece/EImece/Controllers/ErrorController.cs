@@ -2,11 +2,11 @@ using EImece.Web.Controllers;
 using EImece.Domain;
 using EImece.Web.Filters;
 using EImece.Domain.Models.HelperModels;
-using NLog;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using System;
 using System.Net;
 using System.Web.Mvc;
-
 using EImece.Domain.Services.IServices;
 
 namespace EImece.Controllers
@@ -16,10 +16,13 @@ namespace EImece.Controllers
     /// </summary>
     public class ErrorController : BaseController
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        public ErrorController()
+            : this(null, null, NullLogger<ErrorController>.Instance)
+        {
+        }
 
-        public ErrorController(ISettingService settingService = null, AutoMapper.IMapper mapper = null)
-            : base(settingService, mapper)
+        public ErrorController(ISettingService settingService, AutoMapper.IMapper mapper, ILogger<ErrorController> logger)
+            : base(settingService, mapper, logger ?? NullLogger<ErrorController>.Instance)
         {
         }
 
@@ -122,7 +125,7 @@ namespace EImece.Controllers
                 ReferrerUrl = (this.Request.UrlReferrer == null) ? null : this.Request.UrlReferrer.ToString()
             };
 
-            Logger.Debug("HTTP {0} {1}. Url={2} Referrer={3}",
+            Logger.LogDebug("HTTP {0} {1}. Url={2} Referrer={3}",
                 (int)statusCode,
                 viewName,
                 error.RequestedUrl,

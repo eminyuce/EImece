@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using EImece.Web.Areas.Admin.Controllers;
 using EImece.Domain.Entities;
 using EImece.Web.Helpers;
@@ -6,7 +7,6 @@ using EImece.Web.Filters;
 using EImece.Domain.Models.Enums;
 using Griddly.Mvc;
 using Griddly.Mvc.Results;
-using NLog;
 using Resources;
 using System;
 using System.Data;
@@ -24,19 +24,15 @@ namespace EImece.Areas.Admin.Controllers
 {
     public class BrandsController : BaseAdminController
     {
-        protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
         protected IBrandService BrandService { get; }
         protected IEntityFactory EntityFactory { get; }
         protected FilesHelper FilesHelper { get; }
 
-        public BrandsController(
-            ISettingService settingService,
+        public BrandsController(ISettingService settingService,
             IBrandService brandService,
             IEntityFactory entityFactory,
-            FilesHelper filesHelper)
-            : base(settingService)
-        {
+            FilesHelper filesHelper, ILogger<BrandsController> logger)
+            : base(settingService, logger) {
             BrandService = brandService ?? throw new ArgumentNullException(nameof(brandService));
             EntityFactory = entityFactory ?? throw new ArgumentNullException(nameof(entityFactory));
             FilesHelper = filesHelper ?? throw new ArgumentNullException(nameof(filesHelper));
@@ -119,7 +115,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Unable to save changes:" + ex.StackTrace, brand);
+                Logger.LogError(ex, "Unable to save changes:" + ex.StackTrace, brand);
                 //Log the error (uncomment dex variable name and add a line here to write a log.
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace + ex.StackTrace);
             }
@@ -147,7 +143,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Unable to delete product:" + ex.StackTrace, Brand);
+                Logger.LogError(ex, "Unable to delete product:" + ex.StackTrace, Brand);
                 SetErrorMessage();
                 return ReturnIndexIfNotUrlReferrer("Index");
             }

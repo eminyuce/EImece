@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using EImece.Web.Areas.Admin.Controllers;
 using EImece.Domain.Entities;
 using EImece.Web.Helpers;
@@ -9,7 +10,6 @@ using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
 using Griddly.Mvc;
 using Griddly.Mvc.Results;
-using NLog;
 using Resources;
 using System;
 using System.Collections.Generic;
@@ -29,21 +29,17 @@ namespace EImece.Areas.Admin.Controllers
     public class ProductCategoriesController : BaseAdminController
     {
         // GET: Admin/ProductCategories
-        protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
         protected IProductCategoryService ProductCategoryService { get; }
         protected ITemplateService TemplateService { get; }
         protected IEntityFactory EntityFactory { get; }
         protected FilesHelper FilesHelper { get; }
 
-        public ProductCategoriesController(
-            ISettingService settingService,
+        public ProductCategoriesController(ISettingService settingService,
             IProductCategoryService productCategoryService,
             ITemplateService templateService,
             IEntityFactory entityFactory,
-            FilesHelper filesHelper)
-            : base(settingService)
-        {
+            FilesHelper filesHelper, ILogger<ProductCategoriesController> logger)
+            : base(settingService, logger) {
             ProductCategoryService = productCategoryService ?? throw new ArgumentNullException(nameof(productCategoryService));
             TemplateService = templateService ?? throw new ArgumentNullException(nameof(templateService));
             EntityFactory = entityFactory ?? throw new ArgumentNullException(nameof(entityFactory));
@@ -233,7 +229,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Unable to save changes:" + ex.StackTrace, productCategory);
+                Logger.LogError(ex, "Unable to save changes:" + ex.StackTrace, productCategory);
                 //Log the error (uncomment dex variable name and add a line here to write a log.
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace);
             }
@@ -270,7 +266,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Unable to delete product:" + ex.StackTrace, productCategory);
+                Logger.LogError(ex, "Unable to delete product:" + ex.StackTrace, productCategory);
                 SetErrorMessage();
                 return ReturnIndexIfNotUrlReferrer("Index");
             }

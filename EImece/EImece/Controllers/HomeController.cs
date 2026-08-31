@@ -1,3 +1,6 @@
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
+using EImece.Domain.Observability.Logging;
 using EImece.Web.Controllers;
 using EImece.Domain;
 using EImece.Web.Services;
@@ -13,7 +16,6 @@ using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
 using EImece.Web.Filters;
 using EImece.Web.Helpers;
-using NLog;
 using Resources;
 using System;
 using System.Collections;
@@ -32,8 +34,6 @@ namespace EImece.Controllers
 {
     public class HomeController : BaseController
     {
-        private static readonly Logger HomeLogger = LogManager.GetCurrentClassLogger();
-
         private readonly IEimeceCacheProvider MemoryCacheProvider;
         private readonly IEmailSender EmailSender;
         private readonly ISubscriberService SubsciberService;
@@ -44,8 +44,7 @@ namespace EImece.Controllers
         private readonly IRazorEngineHelper RazorEngineHelper;
         private readonly IProductService ProductService;
 
-        public HomeController(
-            ISettingService settingService,
+        public HomeController(ISettingService settingService,
             AutoMapper.IMapper mapper,
             IEimeceCacheProvider memoryCacheProvider,
             IEmailSender emailSender,
@@ -55,9 +54,8 @@ namespace EImece.Controllers
             IMenuService menuService,
             IMailTemplateService mailTemplateService,
             IRazorEngineHelper razorEngineHelper,
-            IProductService productService)
-            : base(settingService, mapper)
-        {
+            IProductService productService, ILogger<HomeController> logger)
+            : base(settingService, mapper, logger) {
             MemoryCacheProvider = memoryCacheProvider ?? throw new ArgumentNullException(nameof(memoryCacheProvider));
             EmailSender = emailSender ?? throw new ArgumentNullException(nameof(emailSender));
             SubsciberService = subsciberService ?? throw new ArgumentNullException(nameof(subsciberService));
@@ -87,7 +85,7 @@ namespace EImece.Controllers
             var emailChecker = new EmailAddressAttribute();
             if (subscriber == null || string.IsNullOrEmpty(subscriber.Email.ToStr().Trim()) || !emailChecker.IsValid(subscriber.Email.ToStr().Trim()))
             {
-                HomeLogger.Error($"Invalid subscriber data.BadRequest status. Subscriber: {subscriber?.Email ?? "null"}");
+                Logger.LogError($"Invalid subscriber data.BadRequest status. Subscriber: {subscriber?.Email ?? "null"}");
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             else
@@ -103,14 +101,14 @@ namespace EImece.Controllers
         {
             if (!id.HasValue)
             {
-                HomeLogger.Error("ID is null ThanksForSubscription.");
+                Logger.LogError("ID is null ThanksForSubscription.");
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
             var email = await SubsciberService.GetSubscriberEmailByIdAsync(id.Value);
             if (string.IsNullOrEmpty(email))
             {
-                HomeLogger.Error($"Subscriber not found for ThanksForSubscription id={id.Value}.");
+                Logger.LogError($"Subscriber not found for ThanksForSubscription id={id.Value}.");
                 return RedirectToAction("NotFound", "Error");
             }
             return View("ThanksForSubscription", email);
@@ -234,7 +232,7 @@ namespace EImece.Controllers
         {
             if (contact == null)
             {
-                HomeLogger.Error("Contact form data is null.");
+                Logger.LogError("Contact form data is null.");
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             string ipAddress = Request.Headers["X-Forwarded-For"];
@@ -245,13 +243,13 @@ namespace EImece.Controllers
             contact.IPAddress = ipAddress;
             if (CaptchaService.HasValidationError(ModelState))
             {
-                HomeLogger.Error("Captcha validation failed for SendContactUs.");
+                Logger.LogError("Captcha validation failed for SendContactUs.");
                 ModelState.AddModelError("", CaptchaService.GetErrorMessage());
                 return await ReturnContactCaptchaErrorAsync(contact);
             }
             else if (!validateContactUsFormViewModel(contact))
             {
-                HomeLogger.Debug("Contact form validation failed.");
+                Logger.LogDebug("Contact form validation failed.");
                 return View("_ContactUsFormViewModel", contact);
             }
             else
@@ -263,11 +261,11 @@ namespace EImece.Controllers
                 catch (DbEntityValidationException ex)
                 {
                     var message = ExceptionHelper.GetDbEntityValidationExceptionDetail(ex);
-                    HomeLogger.Error($"DbEntityValidationException while saving subscriber: {message}", ex);
+                    Logger.LogError($"DbEntityValidationException while saving subscriber: {message}", ex);
                 }
                 catch (Exception ex)
                 {
-                    HomeLogger.Error($"Exception while saving subscriber: {ex.Message}", ex);
+                    Logger.LogError($"Exception while saving subscriber: {ex.Message}", ex);
                 }
 
                 try
@@ -275,17 +273,17 @@ namespace EImece.Controllers
                     if (contact.ItemType == EImeceItemType.Product)
                     {
                         await RazorEngineHelper.SendContactUsAboutProductDetailEmailAsync(contact);
-                        HomeLogger.Info("Product contact email sent. ProductId={0}", contact.ItemId);
+                        Logger.LogInformation("Product contact email sent. ProductId={0}", contact.ItemId);
                     }
                     else
                     {
                         await RazorEngineHelper.SendContactUsForCommunicationAsync(contact);
-                        HomeLogger.Info("General contact email sent.");
+                        Logger.LogInformation("General contact email sent.");
                     }
                 }
                 catch (Exception ex)
                 {
-                    HomeLogger.Error($"Exception while sending email: {ex.Message}", ex);
+                    Logger.LogError($"Exception while sending email: {ex.Message}", ex);
                 }
                 return View("_pThankYouForContactingUs", contact);
             }
@@ -326,7 +324,7 @@ namespace EImece.Controllers
                 var page = await MenuService.GetPageByIdAsync(contact.ItemId);
                 if (page == null || page.Menu == null)
                 {
-                    HomeLogger.Warn($"Menu page not found for contact ItemId: {contact.ItemId}");
+                    Logger.LogWarning($"Menu page not found for contact ItemId: {contact.ItemId}");
                     return RedirectToAction("NotFound", "Error");
                 }
 
@@ -350,7 +348,7 @@ namespace EImece.Controllers
             s.Note = string.Format("{0} {4} {1} {4} {2} {4} {3} ",
                 contact.CompanyName, contact.Phone, contact.Address, contact.Message, Environment.NewLine);
             await SubsciberService.SaveOrEditEntityAsync(s);
-            HomeLogger.Info("Subscriber saved successfully. Email={0}", s.Email);
+            Logger.LogInformation("Subscriber saved successfully. Email={0}", s.Email);
         }
 
         public ActionResult Language(string id)
@@ -363,7 +361,7 @@ namespace EImece.Controllers
                 {
                     SetLanguage(id);
                     MemoryCacheProvider.ClearAll();
-                    HomeLogger.Info("Language set and cache cleared. Language={0}", id);
+                    Logger.LogInformation("Language set and cache cleared. Language={0}", id);
                 }
             }
             return RedirectToAction("Index", "Home");
@@ -373,7 +371,7 @@ namespace EImece.Controllers
         {
             var emailTemplate = await RazorEngineHelper.OrderConfirmationEmailAsync(orderId);
             EmailSender.SendRenderedEmailTemplateToCustomer(await SettingService.GetEmailAccountAsync(), emailTemplate);
-            HomeLogger.Info("Order confirmation email sent to customer. OrderId={0}", orderId);
+            Logger.LogInformation("Order confirmation email sent to customer. OrderId={0}", orderId);
             return View(emailTemplate.Item2);
         }
 
@@ -389,13 +387,15 @@ namespace EImece.Controllers
                 keys.Add(key);
             }
             var approximateSize = GetApproximateSize(cache);
-            HomeLogger.Debug("DisplayAllCache MemoryKeys={0} HttpRuntimeKeys={1} ApproximateSize={2}",
+            Logger.LogDebug("DisplayAllCache MemoryKeys={0} HttpRuntimeKeys={1} ApproximateSize={2}",
                 cacheKeys.Count, keys.Count, approximateSize);
             return View(new AllCacheList() { HttpRuntimeKey = keys, MemoryCacheKey = cacheKeys, ApproximateSize = approximateSize });
         }
 
         public static long GetApproximateSize(MemoryCache cache)
         {
+            var staticLogger = LoggingBootstrap.LoggerFactory?.CreateLogger(typeof(HomeController))
+                ?? NullLogger.Instance;
             try
             {
                 var statsField = typeof(MemoryCache).GetField("_stats", BindingFlags.NonPublic | BindingFlags.Instance);
@@ -409,7 +409,7 @@ namespace EImece.Controllers
             }
             catch (Exception ex)
             {
-                HomeLogger.Error($"Exception in GetApproximateSize: {ex.Message}", ex);
+                staticLogger.LogError(ex, "Exception in GetApproximateSize: {Message}", ex.Message);
                 return -1;
             }
         }

@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository;
@@ -5,7 +6,6 @@ using EImece.Domain.GenericRepository.EntityFramework.Enums;
 using EImece.Domain.Models.DTOs.Storefront;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Observability.Telemetry;
-using NLog;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -18,11 +18,12 @@ namespace EImece.Domain.Repositories
 {
     public class StoryRepository : BaseContentRepository<Story>, IStoryRepository
     {
-        protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private readonly ILogger<StoryRepository> _logger;
+
         private readonly IEImeceContext dbContext;
 
-        public StoryRepository(IEImeceContext dbContext) : base(dbContext)
-        {
+        public StoryRepository(IEImeceContext dbContext, ILogger<StoryRepository> logger) : base(dbContext, logger) {
+            _logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
             this.dbContext = dbContext;
         }
 
@@ -200,7 +201,7 @@ namespace EImece.Domain.Repositories
             }
             catch (Exception exception)
             {
-                Logger.Error(exception, exception.Message);
+                _logger.LogError(exception, exception.Message);
                 throw;
             }
         }
@@ -220,7 +221,7 @@ namespace EImece.Domain.Repositories
             }
             catch (Exception exception)
             {
-                Logger.Error(exception, "GetMainPageStoriesAsync failed.");
+                _logger.LogError(exception, "GetMainPageStoriesAsync failed.");
                 throw new InvalidOperationException("GetMainPageStoriesAsync failed.", exception);
             }
         }
@@ -268,7 +269,7 @@ namespace EImece.Domain.Repositories
             }
             catch (Exception exception)
             {
-                Logger.Error(exception, exception.Message);
+                _logger.LogError(exception, exception.Message);
                 throw;
             }
         }
@@ -288,7 +289,7 @@ namespace EImece.Domain.Repositories
             }
             catch (Exception exception)
             {
-                Logger.Error(exception, "GetStoriesByStoryCategoryIdAsync failed.");
+                _logger.LogError(exception, "GetStoriesByStoryCategoryIdAsync failed.");
                 throw new InvalidOperationException("GetStoriesByStoryCategoryIdAsync failed.", exception);
             }
         }

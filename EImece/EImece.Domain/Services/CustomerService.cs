@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
@@ -7,7 +8,6 @@ using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
 using EImece.Domain.Models.DTOs;
 using EImece.Domain.DependencyInjection;
-using NLog;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -18,8 +18,6 @@ namespace EImece.Domain.Services
 {
     public class CustomerService : BaseEntityService<Customer>, ICustomerService
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
         private readonly IOrderService OrderService;
         private readonly IOrderRepository OrderRepository;
         private readonly ICustomerRepository CustomerRepository;
@@ -27,26 +25,25 @@ namespace EImece.Domain.Services
         private readonly IUserRepository UserRepository;
         private readonly ApplicationUserManager UserManager;
 
-        public CustomerService(
-            ICustomerRepository repository,
+        public CustomerService(ICustomerRepository repository,
+            ILogger<CustomerService> logger,
             IAddressService addressService = null,
             IOrderRepository orderRepository = null,
             IOrderService orderService = null,
             IUserRepository userRepository = null,
-            ApplicationUserManager userManager = null) : base(repository)
-        {
+            ApplicationUserManager userManager = null) : base(repository, logger) {
             CustomerRepository = repository ?? throw new ArgumentNullException(nameof(repository));
             AddressService = addressService;
             OrderRepository = orderRepository;
             OrderService = orderService;
             UserRepository = userRepository;
             UserManager = userManager;
-            Logger.Debug("CustomerService initialized.");
+            Logger.LogDebug("CustomerService initialized.");
         }
 
         public void SaveRegisterViewModel(string userId, CustomerRegistrationDto model)
         {
-            Logger.Debug($"Saving RegisterViewModel for user: {userId}");
+            Logger.LogDebug($"Saving RegisterViewModel for user: {userId}");
             try
             {
                 var item = new Customer
@@ -70,18 +67,18 @@ namespace EImece.Domain.Services
                 };
 
                 CustomerRepository.SaveOrEdit(item);
-                Logger.Debug("Customer successfully saved. UserId={0}", userId);
+                Logger.LogDebug("Customer successfully saved. UserId={0}", userId);
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Error saving RegisterViewModel.");
+                Logger.LogError(ex, "Error saving RegisterViewModel.");
                 throw;
             }
         }
 
         public async Task SaveRegisterViewModelAsync(string userId, CustomerRegistrationDto model)
         {
-            Logger.Debug($"Saving RegisterViewModel for user: {userId}");
+            Logger.LogDebug($"Saving RegisterViewModel for user: {userId}");
             try
             {
                 var item = new Customer
@@ -105,11 +102,11 @@ namespace EImece.Domain.Services
                 };
 
                 await CustomerRepository.SaveOrEditAsync(item).ConfigureAwait(false);
-                Logger.Debug("Customer successfully saved. UserId={0}", userId);
+                Logger.LogDebug("Customer successfully saved. UserId={0}", userId);
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Error saving RegisterViewModel.");
+                Logger.LogError(ex, "Error saving RegisterViewModel.");
                 throw new InvalidOperationException("Error saving RegisterViewModel.", ex);
             }
         }
@@ -117,7 +114,7 @@ namespace EImece.Domain.Services
         [Timed("service.customers.get_by_user_sync")]
         public virtual Customer GetUserId(string userId)
         {
-            Logger.Debug($"Retrieving customer by userId: {userId}");
+            Logger.LogDebug($"Retrieving customer by userId: {userId}");
             var item = CustomerRepository.GetUserId(userId);
             GetUserFields(item);
             return item;
@@ -126,7 +123,7 @@ namespace EImece.Domain.Services
         [Timed("service.customers.get_by_user")]
         public virtual async Task<Customer> GetUserIdAsync(string userId)
         {
-            Logger.Debug($"Retrieving customer by userId: {userId}");
+            Logger.LogDebug($"Retrieving customer by userId: {userId}");
             var item = await CustomerRepository.GetUserIdAsync(userId).ConfigureAwait(false);
             await GetUserFieldsAsync(item).ConfigureAwait(false);
             return item;
@@ -146,69 +143,69 @@ namespace EImece.Domain.Services
 
         public void DeleteByUserId(string userId)
         {
-            Logger.Debug($"Deleting customer by userId: {userId}");
+            Logger.LogDebug($"Deleting customer by userId: {userId}");
             var customer = CustomerRepository.GetUserId(userId);
             if (customer != null)
             {
                 DeleteEntity(customer);
-                Logger.Info("Customer successfully deleted.");
+                Logger.LogInformation("Customer successfully deleted.");
             }
             else
             {
-                Logger.Warn(Constants.CustomerNotFoundMessage);
+                Logger.LogWarning(Constants.CustomerNotFoundMessage);
             }
         }
 
         public async Task DeleteByUserIdAsync(string userId)
         {
-            Logger.Debug($"Deleting customer by userId: {userId}");
+            Logger.LogDebug($"Deleting customer by userId: {userId}");
             var customer = await CustomerRepository.GetUserIdAsync(userId).ConfigureAwait(false);
             if (customer != null)
             {
                 await DeleteEntityAsync(customer).ConfigureAwait(false);
-                Logger.Info("Customer successfully deleted.");
+                Logger.LogInformation("Customer successfully deleted.");
             }
             else
             {
-                Logger.Warn(Constants.CustomerNotFoundMessage);
+                Logger.LogWarning(Constants.CustomerNotFoundMessage);
             }
         }
 
         public virtual void SaveCustomerTypeToNormal(string userId)
         {
-            Logger.Debug($"Updating customer type to Normal for userId: {userId}");
+            Logger.LogDebug($"Updating customer type to Normal for userId: {userId}");
             var customer = CustomerRepository.GetUserId(userId);
             if (customer != null)
             {
                 customer.CustomerType = (int)EImeceCustomerType.Normal;
                 customer.GsmNumber = GeneralHelper.CheckGsmNumber(customer.GsmNumber);
                 SaveOrEditEntity(customer);
-                Logger.Debug("Customer type updated successfully.");
+                Logger.LogDebug("Customer type updated successfully.");
             }
             else
             {
-                Logger.Warn(Constants.CustomerNotFoundMessage);
+                Logger.LogWarning(Constants.CustomerNotFoundMessage);
             }
         }
 
         public virtual async Task SaveCustomerTypeToNormalAsync(string userId)
         {
-            Logger.Debug($"Updating customer type to Normal for userId: {userId}");
+            Logger.LogDebug($"Updating customer type to Normal for userId: {userId}");
             // Targeted 2-column update — no full-entity load/save round trip
             var updated = await CustomerRepository.PromoteCustomerToNormalTypeAsync(userId, (int)EImeceCustomerType.Normal).ConfigureAwait(false);
             if (updated)
             {
-                Logger.Debug("Customer type updated successfully.");
+                Logger.LogDebug("Customer type updated successfully.");
             }
             else
             {
-                Logger.Warn(Constants.CustomerNotFoundMessage);
+                Logger.LogWarning(Constants.CustomerNotFoundMessage);
             }
         }
 
         public List<Customer> GetCustomerServices(string search)
         {
-            Logger.Debug($"Retrieving customer services with search term: {search}");
+            Logger.LogDebug($"Retrieving customer services with search term: {search}");
             search = search.ToStr().Trim();
 
             // AsNoTracking avoids change-tracker overhead for read-only admin grid.
@@ -270,13 +267,13 @@ namespace EImece.Domain.Services
                 resultList = customers.OrderByDescending(r => r.UpdatedDate).ThenByDescending(r => r.Id).ToList();
             }
 
-            Logger.Debug("Customer services retrieved successfully. Customers={0} OrdersRows={1}", customers.Count, orderRows.Count);
+            Logger.LogDebug("Customer services retrieved successfully. Customers={0} OrdersRows={1}", customers.Count, orderRows.Count);
             return resultList;
         }
 
         public async Task<List<Customer>> GetCustomerServicesAsync(string search)
         {
-            Logger.Debug($"Retrieving customer services with search term: {search}");
+            Logger.LogDebug($"Retrieving customer services with search term: {search}");
             search = search.ToStr().Trim();
 
             var customers = await CustomerRepository.GetAll().AsNoTracking()
@@ -335,7 +332,7 @@ namespace EImece.Domain.Services
                 resultList = customers.OrderByDescending(r => r.UpdatedDate).ThenByDescending(r => r.Id).ToList();
             }
 
-            Logger.Debug("Customer services retrieved successfully. Customers={0} OrdersRows={1}", customers.Count, orderRows.Count);
+            Logger.LogDebug("Customer services retrieved successfully. Customers={0} OrdersRows={1}", customers.Count, orderRows.Count);
             return resultList;
         }
 
@@ -355,7 +352,7 @@ namespace EImece.Domain.Services
             }
             catch (Exception ex)
             {
-                Logger.Warn(ex, "BuildUsersDictionary batch fetch failed, falling back to per-item lookup.");
+                Logger.LogWarning(ex, "BuildUsersDictionary batch fetch failed, falling back to per-item lookup.");
                 return new Dictionary<string, (string, string, string)>(StringComparer.OrdinalIgnoreCase);
             }
         }
@@ -376,7 +373,7 @@ namespace EImece.Domain.Services
             }
             catch (Exception ex)
             {
-                Logger.Warn(ex, "BuildUsersDictionaryAsync batch fetch failed, falling back to per-item lookup.");
+                Logger.LogWarning(ex, "BuildUsersDictionaryAsync batch fetch failed, falling back to per-item lookup.");
                 return new Dictionary<string, (string, string, string)>(StringComparer.OrdinalIgnoreCase);
             }
         }
@@ -385,21 +382,21 @@ namespace EImece.Domain.Services
         {
             if (item == null)
             {
-                Logger.Warn("GetUserFields called with a null item.");
+                Logger.LogWarning("GetUserFields called with a null item.");
                 return;
             }
-            Logger.Debug($"Fetching user fields for userId: {item.UserId}");
+            Logger.LogDebug($"Fetching user fields for userId: {item.UserId}");
             var user = UserRepository.GetById(item.UserId);
             if (user != null)
             {
                 item.Email = user.Email;
                 item.Name = user.FirstName;
                 item.Surname = user.LastName;
-                Logger.Debug("User fields populated successfully.");
+                Logger.LogDebug("User fields populated successfully.");
             }
             else
             {
-                Logger.Warn("User not found in UserRepository.");
+                Logger.LogWarning("User not found in UserRepository.");
             }
         }
 
@@ -407,21 +404,21 @@ namespace EImece.Domain.Services
         {
             if (item == null)
             {
-                Logger.Warn("GetUserFields called with a null item.");
+                Logger.LogWarning("GetUserFields called with a null item.");
                 return;
             }
-            Logger.Debug($"Fetching user fields for userId: {item.UserId}");
+            Logger.LogDebug($"Fetching user fields for userId: {item.UserId}");
             var user = await UserRepository.GetByIdAsync(item.UserId).ConfigureAwait(false);
             if (user != null)
             {
                 item.Email = user.Email;
                 item.Name = user.FirstName;
                 item.Surname = user.LastName;
-                Logger.Debug("User fields populated successfully.");
+                Logger.LogDebug("User fields populated successfully.");
             }
             else
             {
-                Logger.Warn("User not found in UserRepository.");
+                Logger.LogWarning("User not found in UserRepository.");
             }
         }
 
@@ -438,7 +435,7 @@ namespace EImece.Domain.Services
                 return deleted;
             }
 
-            Logger.Debug($"DeleteCustomersAsync called for {userIds.Count} userIds");
+            Logger.LogDebug($"DeleteCustomersAsync called for {userIds.Count} userIds");
             foreach (var userId in userIds.Where(v => !string.IsNullOrWhiteSpace(v)).Distinct(StringComparer.OrdinalIgnoreCase))
             {
                 if (!string.IsNullOrEmpty(currentUserId)
@@ -473,7 +470,7 @@ namespace EImece.Domain.Services
                 deleted.Add(userId);
             }
 
-            Logger.Info($"DeleteCustomersAsync finished. Total deleted: {deleted.Count}");
+            Logger.LogInformation($"DeleteCustomersAsync finished. Total deleted: {deleted.Count}");
             return deleted;
         }
     }

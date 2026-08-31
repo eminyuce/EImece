@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using EImece.Web.Areas.Admin.Controllers;
 using EImece.Domain;
 using EImece.Domain.Entities;
@@ -5,7 +6,6 @@ using EImece.Domain.Helpers;
 using EImece.Web.Filters;
 using Griddly.Mvc;
 using Griddly.Mvc.Results;
-using NLog;
 using Resources;
 using System;
 using System.Collections.Generic;
@@ -23,19 +23,15 @@ namespace EImece.Areas.Admin.Controllers
 {
     public class TagsController : BaseAdminController
     {
-        protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
         protected ITagService TagService { get; }
         protected ITagCategoryService TagCategoryService { get; }
         protected IEntityFactory EntityFactory { get; }
 
-        public TagsController(
-            ISettingService settingService,
+        public TagsController(ISettingService settingService,
             ITagService tagService,
             ITagCategoryService tagCategoryService,
-            IEntityFactory entityFactory)
-            : base(settingService)
-        {
+            IEntityFactory entityFactory, ILogger<TagsController> logger)
+            : base(settingService, logger) {
             TagService = tagService ?? throw new ArgumentNullException(nameof(tagService));
             TagCategoryService = tagCategoryService ?? throw new ArgumentNullException(nameof(tagCategoryService));
             EntityFactory = entityFactory ?? throw new ArgumentNullException(nameof(entityFactory));
@@ -120,7 +116,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Unable to save changes:" + ex.StackTrace, tag);
+                Logger.LogError(ex, "Unable to save changes:" + ex.StackTrace, tag);
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace + ex.Message);
             }
             RemoveModelState();
@@ -146,7 +142,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Unable to delete product:" + ex.StackTrace, tag);
+                Logger.LogError(ex, "Unable to delete product:" + ex.StackTrace, tag);
                 SetErrorMessage();
                 return ReturnIndexIfNotUrlReferrer("Index");
             }

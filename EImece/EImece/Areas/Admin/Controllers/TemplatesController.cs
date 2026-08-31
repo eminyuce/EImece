@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using EImece.Web.Areas.Admin.Controllers;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
@@ -5,7 +6,6 @@ using EImece.Domain.DependencyInjection;
 using EImece.Web.Filters;
 using Griddly.Mvc;
 using Griddly.Mvc.Results;
-using NLog;
 using Resources;
 using System;
 using System.Collections.Generic;
@@ -33,16 +33,12 @@ namespace EImece.Areas.Admin.Controllers
         protected XmlEditorHelper XmlEditorHelper { get; }
 
         private const string ProductSpescUrl = "ProductSpescUrl";
-        protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
-        public TemplatesController(
-            ISettingService settingService,
+        public TemplatesController(ISettingService settingService,
             ITemplateService templateService,
             IListService listService,
             IEntityFactory entityFactory,
-            XmlEditorHelper xmlEditorHelper)
-            : base(settingService)
-        {
+            XmlEditorHelper xmlEditorHelper, ILogger<TemplatesController> logger)
+            : base(settingService, logger) {
             TemplateService = templateService ?? throw new ArgumentNullException(nameof(templateService));
             ListService = listService ?? throw new ArgumentNullException(nameof(listService));
             EntityFactory = entityFactory ?? throw new ArgumentNullException(nameof(entityFactory));
@@ -130,7 +126,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Unable to save changes:" + ex.Message, template);
+                Logger.LogError(ex, "Unable to save changes:" + ex.Message, template);
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace + ex.Message.ToString());
             }
             ViewBag.XmlEditorConfiguration = XmlEditorHelper.GenerateXmlEditor();
@@ -153,7 +149,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Warn(ex, "Unable to load list names for template builder");
+                Logger.LogWarning(ex, "Unable to load list names for template builder");
                 ViewBag.ListNames = new List<string>();
             }
         }
@@ -177,7 +173,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Unable to delete template:" + ex.StackTrace, template);
+                Logger.LogError(ex, "Unable to delete template:" + ex.StackTrace, template);
                 SetErrorMessage();
                 return RedirectToAction("Index");
             }

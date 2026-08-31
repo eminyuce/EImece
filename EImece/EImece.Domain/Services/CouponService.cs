@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using System;
 using EImece.Domain.DependencyInjection;
 using EImece.Domain.Entities;
@@ -7,7 +8,6 @@ using EImece.Domain.Models.DTOs;
 using EImece.Domain.Observability.Telemetry;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
-using NLog;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -18,7 +18,6 @@ namespace EImece.Domain.Services
 {
     public class CouponService : BaseEntityService<Coupon>, ICouponService
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly ICouponRepository CouponRepository;
         private readonly ICouponProductRepository CouponProductRepository;
         private readonly ICouponCategoryRepository CouponCategoryRepository;
@@ -26,15 +25,13 @@ namespace EImece.Domain.Services
         private readonly IOrderRepository OrderRepository;
         private readonly ICustomerRepository CustomerRepository;
 
-        public CouponService(
-            ICouponRepository repository,
+        public CouponService(ICouponRepository repository,
             ICouponProductRepository couponProductRepository,
             ICouponCategoryRepository couponCategoryRepository,
             ICouponRedemptionRepository couponRedemptionRepository,
             IOrderRepository orderRepository,
-            ICustomerRepository customerRepository)
-            : base(repository)
-        {
+            ICustomerRepository customerRepository, ILogger<CouponService> logger)
+            : base(repository, logger) {
             CouponRepository = repository ?? throw new ArgumentNullException(nameof(repository));
             CouponProductRepository = couponProductRepository ?? throw new ArgumentNullException(nameof(couponProductRepository));
             CouponCategoryRepository = couponCategoryRepository ?? throw new ArgumentNullException(nameof(couponCategoryRepository));
@@ -82,7 +79,7 @@ namespace EImece.Domain.Services
         {
             if (CouponProductRepository == null || CouponCategoryRepository == null)
             {
-                Logger.Warn("CouponProductRepository or CouponCategoryRepository not injected, skipping restriction save");
+                Logger.LogWarning("CouponProductRepository or CouponCategoryRepository not injected, skipping restriction save");
                 return;
             }
 

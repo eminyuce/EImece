@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using EImece.Web.Controllers;
 using EImece.Domain;
 using EImece.Domain.Helpers;
@@ -5,7 +6,6 @@ using EImece.Web.Filters;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Services.IServices;
 using EImece.Domain.DependencyInjection;
-using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,16 +18,12 @@ namespace EImece.Controllers
     [RoutePrefix(Constants.PagesControllerRoutingPrefix)]
     public class PagesController : BaseController
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
         private readonly IMenuService MenuService;
 
-        public PagesController(
-            ISettingService settingService,
+        public PagesController(ISettingService settingService,
             AutoMapper.IMapper mapper,
-            IMenuService menuService)
-            : base(settingService, mapper)
-        {
+            IMenuService menuService, ILogger<PagesController> logger)
+            : base(settingService, mapper, logger) {
             MenuService = menuService ?? throw new ArgumentNullException(nameof(menuService));
         }
 
@@ -56,7 +52,7 @@ namespace EImece.Controllers
                 var page = await MenuService.GetPageByIdAsync(menuId);
                 if (page == null || page.Menu == null)
                 {
-                    Logger.Warn("Pages/Detail: menu not found for id '{0}' (parsed {1}).", id, menuId);
+                    Logger.LogWarning("Pages/Detail: menu not found for id '{0}' (parsed {1}).", id, menuId);
                     return RedirectToAction("NotFound", "Error");
                 }
 

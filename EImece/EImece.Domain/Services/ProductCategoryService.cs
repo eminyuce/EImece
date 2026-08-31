@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using EImece.Domain.Entities;
 using EImece.Domain.Caching;
 using EImece.Domain.Helpers;
@@ -10,7 +11,6 @@ using EImece.Domain.Services.IServices;
 using EImece.Domain.Abstractions;
 using EImece.Domain.DependencyInjection;
 using EImece.Domain.Observability.Telemetry;
-using NLog;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Validation;
@@ -22,15 +22,12 @@ namespace EImece.Domain.Services
 {
     public class ProductCategoryService : BaseContentService<ProductCategory>, IProductCategoryService
     {
-        protected static readonly Logger ProductCategoryServiceLogger = LogManager.GetCurrentClassLogger();
-
         private readonly IBrandService BrandService;
         private readonly IProductRepository ProductRepository;
         private readonly IProductCategoryRepository ProductCategoryRepository;
         private readonly IMenuService MenuService;
 
-        public ProductCategoryService(
-            IProductCategoryRepository repository,
+        public ProductCategoryService(IProductCategoryRepository repository,
             IEimeceCacheProvider dataCachingProvider,
             ISettingService settingService,
             IFileStorageService fileStorageService,
@@ -38,9 +35,8 @@ namespace EImece.Domain.Services
             FilesHelper filesHelper,
             IBrandService brandService,
             IProductRepository productRepository,
-            IMenuService menuService)
-            : base(repository, dataCachingProvider, settingService, fileStorageService, currentUserContext, filesHelper)
-        {
+            IMenuService menuService, ILogger<ProductCategoryService> logger)
+            : base(repository, dataCachingProvider, settingService, fileStorageService, currentUserContext, filesHelper, logger) {
             ProductCategoryRepository = repository ?? throw new ArgumentNullException(nameof(repository));
             BrandService = brandService ?? throw new ArgumentNullException(nameof(brandService));
             ProductRepository = productRepository ?? throw new ArgumentNullException(nameof(productRepository));
@@ -346,11 +342,11 @@ namespace EImece.Domain.Services
             catch (DbEntityValidationException ex)
             {
                 var message = ExceptionHelper.GetDbEntityValidationExceptionDetail(ex);
-                ProductCategoryServiceLogger.Error(ex, "DbEntityValidationException:" + message);
+                Logger.LogError(ex, "DbEntityValidationException:" + message);
             }
             catch (Exception exception)
             {
-                ProductCategoryServiceLogger.Error(exception, "DeleteBaseEntity :" + String.Join(",", values));
+                Logger.LogError(exception, "DeleteBaseEntity :" + String.Join(",", values));
             }
         }
 
@@ -367,11 +363,11 @@ namespace EImece.Domain.Services
             catch (DbEntityValidationException ex)
             {
                 var message = ExceptionHelper.GetDbEntityValidationExceptionDetail(ex);
-                ProductCategoryServiceLogger.Error(ex, "DbEntityValidationException:" + message);
+                Logger.LogError(ex, "DbEntityValidationException:" + message);
             }
             catch (Exception exception)
             {
-                ProductCategoryServiceLogger.Error(exception, "DeleteBaseEntity :" + String.Join(",", values));
+                Logger.LogError(exception, "DeleteBaseEntity :" + String.Join(",", values));
             }
         }
 

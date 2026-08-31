@@ -1,6 +1,8 @@
+using EImece.Domain.Observability.Logging;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using EImece.Domain;
 using EImece.Domain.Helpers;
-using NLog;
 using System;
 using System.Net;
 using System.Net.Mime;
@@ -17,7 +19,9 @@ namespace EImece.Web.Filters
     [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public class RateLimitAttribute : ActionFilterAttribute
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private static ILogger Logger =>
+            LoggingBootstrap.LoggerFactory?.CreateLogger(typeof(RateLimitAttribute))
+            ?? NullLogger.Instance;
 
         /// <summary>
         /// Feature partition identifier (e.g. "login", "contact", "checkout", "search").
@@ -35,7 +39,7 @@ namespace EImece.Web.Filters
         public int DefaultWindowMinutes { get; set; }
 
         public RateLimitAttribute(string featureKey, int defaultLimit = 10, int defaultWindowMinutes = 1)
-        {
+         {
             FeatureKey = featureKey ?? throw new ArgumentNullException(nameof(featureKey));
             DefaultLimit = defaultLimit;
             DefaultWindowMinutes = defaultWindowMinutes;
@@ -93,7 +97,7 @@ namespace EImece.Web.Filters
 
             if (!checkResult.IsAllowed)
             {
-                Logger.Warn($"Rate limit exceeded for feature '{FeatureKey}' from IP '{clientIp}'. Window: {windowMinutes}m, Limit: {limit}. Retry-After: {checkResult.RetryAfterSeconds}s.");
+                Logger.LogWarning($"Rate limit exceeded for feature '{FeatureKey}' from IP '{clientIp}'. Window: {windowMinutes}m, Limit: {limit}. Retry-After: {checkResult.RetryAfterSeconds}s.");
 
                 filterContext.HttpContext.Response.StatusCode = 429;
                 filterContext.HttpContext.Response.Headers["Retry-After"] = checkResult.RetryAfterSeconds.ToString();

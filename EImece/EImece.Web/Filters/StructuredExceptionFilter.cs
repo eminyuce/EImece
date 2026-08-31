@@ -1,7 +1,9 @@
 using EImece.Domain.Observability.Configuration;
 using EImece.Domain.Observability.Exceptions;
 using EImece.Domain.Observability.Logging;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using System;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
@@ -11,10 +13,12 @@ namespace EImece.Web.Filters
     public sealed class StructuredExceptionFilter : IExceptionFilter
     {
         private readonly ObservabilityOptions _options;
+        private readonly ILogger<StructuredExceptionFilter> _logger;
 
-        public StructuredExceptionFilter()
+        public StructuredExceptionFilter(ObservabilityOptions options, ILogger<StructuredExceptionFilter> logger)
         {
-            _options = ObservabilityOptions.FromAppConfig();
+            _options = options ?? ObservabilityOptions.FromAppConfig();
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public void OnException(ExceptionContext filterContext)

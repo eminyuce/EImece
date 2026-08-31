@@ -1,10 +1,10 @@
+using Microsoft.Extensions.Logging;
 using EImece.Web.Areas.Admin.Controllers;
 using EImece.Domain.Entities;
 using EImece.Web.Filters;
 using EImece.Domain.Helpers.Extensions;
 using Griddly.Mvc;
 using Griddly.Mvc.Results;
-using NLog;
 using Resources;
 using System;
 using System.Linq;
@@ -20,19 +20,15 @@ namespace EImece.Areas.Admin.Controllers
 {
     public class ListsController : BaseAdminController
     {
-        protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
         protected IListService ListService { get; }
         protected IListItemService ListItemService { get; }
         protected IEntityFactory EntityFactory { get; }
 
-        public ListsController(
-            ISettingService settingService,
+        public ListsController(ISettingService settingService,
             IListService listService,
             IListItemService listItemService,
-            IEntityFactory entityFactory)
-            : base(settingService)
-        {
+            IEntityFactory entityFactory, ILogger<ListsController> logger)
+            : base(settingService, logger) {
             ListService = listService ?? throw new ArgumentNullException(nameof(listService));
             ListItemService = listItemService ?? throw new ArgumentNullException(nameof(listItemService));
             EntityFactory = entityFactory ?? throw new ArgumentNullException(nameof(entityFactory));
@@ -103,7 +99,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Unable to save changes:" + ex.StackTrace, list);
+                Logger.LogError(ex, "Unable to save changes:" + ex.StackTrace, list);
                 ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage + "  " + ex.StackTrace + ex.Message);
             }
             return View(list);
@@ -127,7 +123,7 @@ namespace EImece.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Unable to delete product:" + ex.StackTrace, List);
+                Logger.LogError(ex, "Unable to delete product:" + ex.StackTrace, List);
                 SetErrorMessage();
                 return RedirectToAction("Index");
             }

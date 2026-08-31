@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using EImece.Web.Controllers;
 using EImece.Domain;
 using EImece.Web.Infrastructure.ActionResults;
@@ -5,7 +6,6 @@ using EImece.Web.Filters;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Services.IServices;
 using EImece.Domain.DependencyInjection;
-using NLog;
 using System;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,20 +15,16 @@ namespace EImece.Controllers
 {
     public class RssController : BaseController
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
         private readonly IProductService ProductService;
         private readonly IStoryService StoryService;
         private readonly IStoryCategoryService StoryCategoryService;
 
-        public RssController(
-            ISettingService settingService,
+        public RssController(ISettingService settingService,
             AutoMapper.IMapper mapper,
             IProductService productService,
             IStoryService storyService,
-            IStoryCategoryService storyCategoryService)
-            : base(settingService, mapper)
-        {
+            IStoryCategoryService storyCategoryService, ILogger<RssController> logger)
+            : base(settingService, mapper, logger) {
             ProductService = productService ?? throw new ArgumentNullException(nameof(productService));
             StoryService = storyService ?? throw new ArgumentNullException(nameof(storyService));
             StoryCategoryService = storyCategoryService ?? throw new ArgumentNullException(nameof(storyCategoryService));
@@ -52,7 +48,7 @@ namespace EImece.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, ex.Message);
+                Logger.LogError(ex, ex.Message);
                 return Content(ex.Message);
             }
         }
@@ -73,7 +69,7 @@ namespace EImece.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, ex.Message);
+                Logger.LogError(ex, ex.Message);
                 return Content(ex.Message);
             }
         }
@@ -94,7 +90,7 @@ namespace EImece.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, ex.Message);
+                Logger.LogError(ex, ex.Message);
                 return Content(ex.Message);
             }
         }

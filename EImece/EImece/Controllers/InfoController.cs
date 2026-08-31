@@ -11,6 +11,7 @@ using System;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using System.Web.Mvc;
 
 namespace EImece.Controllers
@@ -22,8 +23,9 @@ namespace EImece.Controllers
         public InfoController(
             ISettingService settingService,
             AutoMapper.IMapper mapper,
-            IMenuService menuService)
-            : base(settingService, mapper)
+            IMenuService menuService,
+            ILogger<InfoController> logger)
+            : base(settingService, mapper, logger)
         {
             MenuService = menuService ?? throw new ArgumentNullException(nameof(menuService));
         }

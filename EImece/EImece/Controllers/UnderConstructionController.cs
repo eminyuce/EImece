@@ -1,9 +1,9 @@
+using Microsoft.Extensions.Logging;
 using System;
 using EImece.Domain;
 using EImece.Domain.DependencyInjection;
 using EImece.Domain.Helpers;
 using EImece.Domain.Services.IServices;
-using NLog;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -12,12 +12,13 @@ namespace EImece.Controllers
 {
     public class UnderConstructionController : Controller
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private readonly ILogger<UnderConstructionController> _logger;
 
         private readonly ISettingService SettingService;
 
-        public UnderConstructionController(ISettingService settingService)
-        {
+        public UnderConstructionController(ISettingService settingService, ILogger<UnderConstructionController> logger)
+         {
+            _logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
             SettingService = settingService ?? throw new ArgumentNullException(nameof(settingService));
         }
 
@@ -46,7 +47,7 @@ namespace EImece.Controllers
 
             if (isSiteUnderConstruction)
             {
-                Logger.Debug("Site is under construction. Returning ServiceUnavailable (503).");
+                _logger.LogDebug("Site is under construction. Returning ServiceUnavailable (503).");
                 var response = HttpContext?.Response;
                 if (response != null)
                 {

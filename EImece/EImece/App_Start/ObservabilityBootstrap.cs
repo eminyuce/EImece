@@ -2,7 +2,7 @@ using EImece.Domain.Observability;
 using EImece.Domain.Observability.Configuration;
 using EImece.Domain.Observability.Logging;
 using Microsoft.ApplicationInsights.Extensibility;
-using NLog;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Configuration;
 
@@ -10,7 +10,6 @@ namespace EImece.App_Start
 {
     public static class ObservabilityBootstrap
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private static OpenTelemetryBootstrap _openTelemetry;
 
         /// <summary>
@@ -21,14 +20,14 @@ namespace EImece.App_Start
         public static void Configure()
         {
             var options = ObservabilityOptions.FromAppConfig();
+            var logger = LoggingBootstrap.LoggerFactory?.CreateLogger(typeof(ObservabilityBootstrap))
+                ?? Microsoft.Extensions.Logging.Abstractions.NullLogger.Instance;
 
-            // The resilient HTTP client is now consumed via constructor injection
-            // (see IImageDownloadService); no global static accessor to prime here.
             StructuredLoggingBootstrap.Configure(options);
             _openTelemetry = OpenTelemetryBootstrap.Initialize(options);
-            ConfigureApplicationInsights();
+            ConfigureApplicationInsights(logger);
 
-            Logger.Info(
+            logger.LogInformation(
                 "Observability configured. Tracing={EnableTracing} Metrics={EnableMetrics} Otlp={HasOtlp} AzureMonitor={HasAzure} SamplingRatio={SamplingRatio}",
                 options.EnableTracing,
                 options.EnableMetrics,
@@ -39,6 +38,7 @@ namespace EImece.App_Start
 
         public static void Shutdown()
         {
+            var logger = LoggingBootstrap.LoggerFactory?.CreateLogger(typeof(ObservabilityBootstrap));
             try
             {
                 var telemetry = _openTelemetry;
@@ -53,18 +53,15 @@ namespace EImece.App_Start
             }
             catch (Exception ex)
             {
-                Logger.Warn(ex, "Observability shutdown encountered an error.");
+                logger?.LogWarning(ex, "Observability shutdown encountered an error.");
             }
         }
 
         /// <summary>
         /// Applies the Application Insights connection string from environment or appSettings
         /// so deployments can avoid baking secrets into ApplicationInsights.config.
-        /// Automatic request/dependency/exception/perf-counter collection is enabled via
-        /// Microsoft.ApplicationInsights.Web 3.x + ApplicationInsights.config toggles.
-        /// Prefer OpenTelemetry + Azure Monitor exporter for new vendor-neutral pipelines.
         /// </summary>
-        private static void ConfigureApplicationInsights()
+        private static void ConfigureApplicationInsights(ILogger logger)
         {
             try
             {
@@ -77,24 +74,23 @@ namespace EImece.App_Start
 
                 if (string.IsNullOrWhiteSpace(connectionString))
                 {
-                    // Avoid request-time crashes from ApplicationInsightsHttpModule when no CS is configured.
                     if (string.IsNullOrWhiteSpace(configuration.ConnectionString))
                     {
                         configuration.DisableTelemetry = true;
-                        Logger.Debug("Application Insights disabled: no connection string in environment/appSettings or ApplicationInsights.config.");
+                        logger.LogDebug("Application Insights disabled: no connection string in environment/appSettings or ApplicationInsights.config.");
                         return;
                     }
 
-                    Logger.Debug("Application Insights connection string not set in environment/appSettings; using ApplicationInsights.config.");
+                    logger.LogDebug("Application Insights connection string not set in environment/appSettings; using ApplicationInsights.config.");
                     return;
                 }
 
                 configuration.ConnectionString = connectionString.Trim();
-                Logger.Info("Application Insights connection string applied from environment/appSettings.");
+                logger.LogInformation("Application Insights connection string applied from environment/appSettings.");
             }
             catch (Exception ex)
             {
-                Logger.Warn(ex, "Failed to configure Application Insights connection string.");
+                logger.LogWarning(ex, "Failed to configure Application Insights connection string.");
             }
         }
     }
