@@ -27,8 +27,8 @@
     
     <!-- Main Theme Styles + Bootstrap-->
     @Styles.Render("~/Content/siteBootstrapCss")
-    <!-- Customizer styles and scripts-->
     @Styles.Render("~/Content/themes/base/css")
+    <link rel="stylesheet" href="~/Content/admin-vendor/fontawesome/css/all.min.css?v=7.3.1">
 </head>
 
 <body class="fullscreen-container">
@@ -56,8 +56,6 @@
     @Scripts.Render("~/bundles/siteJquery")
     @Scripts.Render("~/bundles/siteJqueryMigrate")
     @Scripts.Render("~/bundles/siteBootstrap")
-    
-    <script src="~/Scripts/cookie-consent.js?v=1"></script>
     @Scripts.Render("~/bundles/eimeceScripts")
     @RenderSection("scripts", required: false)
 </body>

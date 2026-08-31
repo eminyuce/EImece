@@ -1,4 +1,4 @@
-@using EImece.Domain.Entities;
+﻿@using EImece.Domain.Entities;
 @using EImece.Domain.Helpers;
 @using EImece.Domain.Models.Enums;
 @using EImece.Domain.Helpers.Extensions;
@@ -20,7 +20,7 @@
         <section class="customer-panel__section customer-panel__section--last">
             <header class="customer-panel__section-head">
                 <h2 class="customer-panel__section-title">
-                    <i class="fas fa-question-circle mr-2 text-primary" aria-hidden="true"></i>
+                    <i class="fas fa-question-circle me-2 text-primary" aria-hidden="true"></i>
                     @Resource.FrequentlyAskedQuestions
                 </h2>
                 <p class="customer-panel__section-lead">Sipariş, kargo, teslimat, iade ve hesap işlemleri hakkında sıkça sorulan sorular.</p>
@@ -49,22 +49,22 @@
 
                     <div class="customer-faq-chips" id="faqCategoryChips">
                         <button type="button" class="customer-faq-chip is-active" data-filter="">
-                            <i class="fas fa-layer-group mr-1" aria-hidden="true"></i> Tümü
+                            <i class="fas fa-layer-group me-1" aria-hidden="true"></i> Tümü
                         </button>
                         <button type="button" class="customer-faq-chip" data-filter="kargo teslimat">
-                            <i class="fas fa-truck mr-1" aria-hidden="true"></i> Kargo & Teslimat
+                            <i class="fas fa-truck me-1" aria-hidden="true"></i> Kargo & Teslimat
                         </button>
                         <button type="button" class="customer-faq-chip" data-filter="iade değişim">
-                            <i class="fas fa-undo mr-1" aria-hidden="true"></i> İade & Değişim
+                            <i class="fas fa-undo me-1" aria-hidden="true"></i> İade & Değişim
                         </button>
                         <button type="button" class="customer-faq-chip" data-filter="ödeme taksit fatura">
-                            <i class="fas fa-credit-card mr-1" aria-hidden="true"></i> Ödeme & Fatura
+                            <i class="fas fa-credit-card me-1" aria-hidden="true"></i> Ödeme & Fatura
                         </button>
                         <button type="button" class="customer-faq-chip" data-filter="sipariş iptal">
-                            <i class="fas fa-box mr-1" aria-hidden="true"></i> Sipariş & İptal
+                            <i class="fas fa-box me-1" aria-hidden="true"></i> Sipariş & İptal
                         </button>
                         <button type="button" class="customer-faq-chip" data-filter="şifre üyelik hesap">
-                            <i class="fas fa-user-shield mr-1" aria-hidden="true"></i> Üyelik & Güvenlik
+                            <i class="fas fa-user-shield me-1" aria-hidden="true"></i> Üyelik & Güvenlik
                         </button>
                     </div>
                 </div>
@@ -76,10 +76,10 @@
                     </span>
                     <div class="customer-faq-actions">
                         <button type="button" class="customer-faq-btn-toggle" id="btnExpandAll">
-                            <i class="fas fa-chevron-down mr-1" aria-hidden="true"></i> Tümünü Aç
+                            <i class="fas fa-chevron-down me-1" aria-hidden="true"></i> Tümünü Aç
                         </button>
                         <button type="button" class="customer-faq-btn-toggle" id="btnCollapseAll">
-                            <i class="fas fa-chevron-up mr-1" aria-hidden="true"></i> Tümünü Kapat
+                            <i class="fas fa-chevron-up me-1" aria-hidden="true"></i> Tümünü Kapat
                         </button>
                     </div>
                 </div>
@@ -121,7 +121,7 @@
                     <h3 class="customer-orders-empty__title h5 mb-2">Aramanıza uygun soru bulunamadı</h3>
                     <p class="customer-orders-empty__text text-muted mb-3">Farklı anahtar kelimeler deneyebilir veya filtreyi temizleyebilirsiniz.</p>
                     <button type="button" class="btn customer-btn-primary" id="btnResetSearch">
-                        <i class="fas fa-redo mr-2" aria-hidden="true"></i> Filtreyi Temizle
+                        <i class="fas fa-redo me-2" aria-hidden="true"></i> Filtreyi Temizle
                     </button>
                 </div>
 
@@ -129,7 +129,7 @@
                 <div class="customer-faq-help-card">
                     <div>
                         <h3 class="customer-faq-help-card__title">
-                            <i class="fas fa-headset mr-2" aria-hidden="true"></i>
+                            <i class="fas fa-headset me-2" aria-hidden="true"></i>
                             Aradığınız sorunun cevabını bulamadınız mı?
                         </h3>
                         <p class="customer-faq-help-card__text">
@@ -137,7 +137,7 @@
                         </p>
                     </div>
                     <a href="@Url.Action("SendMessageToSeller", "Home", new { area = "customers" })" class="btn customer-btn-primary text-nowrap">
-                        <i class="fas fa-paper-plane mr-2" aria-hidden="true"></i>
+                        <i class="fas fa-paper-plane me-2" aria-hidden="true"></i>
                         <span>@Resource.SendMessageToSeller</span>
                     </a>
                 </div>
@@ -151,7 +151,7 @@
                     <h3 class="customer-orders-empty__title h5 mb-2">Henüz SSS eklenmemiş</h3>
                     <p class="customer-orders-empty__text text-muted mb-4">Sorularınız için satıcıya doğrudan mesaj gönderebilirsiniz.</p>
                     <a href="@Url.Action("SendMessageToSeller", "Home", new { area = "customers" })" class="btn customer-btn-primary">
-                        <i class="fas fa-paper-plane mr-2" aria-hidden="true"></i>
+                        <i class="fas fa-paper-plane me-2" aria-hidden="true"></i>
                         <span>@Resource.SendMessageToSeller</span>
                     </a>
                 </div>

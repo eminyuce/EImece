@@ -1,4 +1,4 @@
-@model EImece.Domain.Models.DTOs.Storefront.CustomerSummaryDto
+﻿@model EImece.Domain.Models.DTOs.Storefront.CustomerSummaryDto
 @using Resources;
 @using EImece.Domain.Helpers;
 @using EImece.Domain.Helpers.Extensions;
@@ -20,22 +20,22 @@
             <span class="customer-chrome__eyebrow">@Resource.CustomerAccount</span>
             <h1 class="customer-chrome__name">@fullName</h1>
             <div class="customer-chrome__email">
-                <i class="fas fa-envelope mr-1" aria-hidden="true"></i>
+                <i class="fas fa-envelope me-1" aria-hidden="true"></i>
                 <span>@email</span>
             </div>
     </div>
 
     <div class="customer-summary">
         <div class="customer-summary__item">
-            <span class="customer-summary__label"><i class="far fa-calendar-alt mr-1" aria-hidden="true"></i> @Resource.CreatedDate</span>
+            <span class="customer-summary__label"><i class="far fa-calendar-alt me-1" aria-hidden="true"></i> @Resource.CreatedDate</span>
             <span class="customer-summary__value">@(Model != null && Model.CreatedDate != DateTime.MinValue ? Model.CreatedDate.ToString("dd MMMM yyyy") : "-")</span>
         </div>
         <div class="customer-summary__item">
-            <span class="customer-summary__label"><i class="fas fa-shopping-bag mr-1" aria-hidden="true"></i> Toplam Sipariş</span>
+            <span class="customer-summary__label"><i class="fas fa-shopping-bag me-1" aria-hidden="true"></i> Toplam Sipariş</span>
             <span class="customer-summary__value">@(Model != null ? Model.TotalOrderCount : 0)</span>
         </div>
         <div class="customer-summary__item">
-            <span class="customer-summary__label"><i class="fas fa-wallet mr-1" aria-hidden="true"></i> Toplam Harcama</span>
+            <span class="customer-summary__label"><i class="fas fa-wallet me-1" aria-hidden="true"></i> Toplam Harcama</span>
             <span class="customer-summary__value">@((Model != null ? Model.TotalPaid : 0).CurrencySign())</span>
         </div>
     </div>

@@ -1,4 +1,4 @@
-@model EImece.Domain.Models.DTOs.CustomerDto
+﻿@model EImece.Domain.Models.DTOs.CustomerDto
 @using Resources;
 @using EImece.Domain;
 @using EImece.Domain.Entities;
@@ -19,11 +19,11 @@
 
 <div class="container customer-page pt-lg-3 pb-5 mb-sm-3">
     <div class="toast-container toast-bottom-center">
-        <div class="toast mb-3" id="profile-toast" data-delay="5000" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast mb-3" id="profile-toast" data-bs-delay="5000" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-header bg-success text-white">
-                <i class="fas fa-check-circle mr-2" aria-hidden="true"></i>
-                <span class="font-weight-semibold me-auto">Güncellendi</span>
-                <button class="close text-white ml-2 mb-1" type="button" data-bs-dismiss="toast" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <i class="fas fa-check-circle me-2" aria-hidden="true"></i>
+                <span class="fw-semibold me-auto">Güncellendi</span>
+                <button class="btn-close text-white ms-2 mb-1" type="button" data-bs-dismiss="toast" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="toast-body">@Resource.YourProfileUpdatedSuccessfully</div>
         </div>
@@ -176,7 +176,7 @@
                     <label class="custom-control-label" for="IsPermissionGranted">@Resource.IsPermissionGrantedDescription</label>
                 </div>
                 <button class="btn customer-btn-primary customer-profile-actions__submit" type="submit" data-bs-toggle="toast" data-bs-target="#profile-toast">
-                    <i class="fas fa-check mr-2" aria-hidden="true"></i>
+                    <i class="fas fa-check me-2" aria-hidden="true"></i>
                     <span>@Resource.Update</span>
                 </button>
             </div>

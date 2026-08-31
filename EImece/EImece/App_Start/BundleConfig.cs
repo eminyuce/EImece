@@ -9,9 +9,9 @@ namespace EImece
         {
             BundleTable.EnableOptimizations = true;
             bundles.IgnoreList.Clear();
-            // Customers/Account still render datepicker via this bundle. Admin uses adminJqueryUi 1.14.2.
+            // Storefront Register / Customers Index still Render this bundle. Same 1.14.2 file as admin.
             bundles.Add(new ScriptBundle("~/bundles/jqueryui").Include(
-                  "~/Scripts/jquery-ui-{version}.js"));
+                  "~/Scripts/admin-vendor/jquery-ui-1.14.2.js"));
 
             // Admin-only stack (jQuery 4 / Bootstrap 5). Storefront uses siteJquery / Crizal vendor bundles.
             bundles.Add(new ScriptBundle("~/bundles/adminJquery").Include(
@@ -36,18 +36,6 @@ namespace EImece
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
 
-            // Core theme + tiny vendor CSS. Skin duplicates removed from layout (see perf-overrides.css).
-            bundles.Add(new StyleBundle("~/Content/eimeceTheme").Include(
-                 "~/Content/mstore/css/theme.min.css",
-                  "~/Content/mstore/css/vendor.min.css",
-                  "~/Content/mstore/css/perf-overrides.css",
-                  "~/Content/pageThemes.css"
-                 ));
-
-            // vendor.min.js already includes jQuery 3.3.1 + Bootstrap + Owl + Feather + Fancybox.
-            bundles.Add(new ScriptBundle("~/bundles/mstore").Include(
-                    "~/Content/mstore/js/vendor.min.js",
-                    "~/Content/mstore/js/theme.min.js"));
             // Storefront site-wide Bootstrap 5.3.8 + jQuery 4 (shared vendor files with admin).
             bundles.Add(new ScriptBundle("~/bundles/siteJquery").Include(
                         "~/Scripts/admin-vendor/jquery-4.0.0.js"));
@@ -129,7 +117,6 @@ namespace EImece
                     "~/Scripts/blueimp-gallery2/js/blueimp-gallery-indicator.js",
                     "~/Scripts/blueimp-gallery2/js/jquery.blueimp-gallery.js"));
 
-            // Do NOT re-include jQuery here — mstore vendor.min.js already ships jQuery 3.3.1 (~85KB saved).
             bundles.Add(new ScriptBundle("~/bundles/eimeceScripts").Include(
                     "~/Scripts/eimece.js",
                     "~/Scripts/cookie-consent.js",

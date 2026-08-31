@@ -1,4 +1,4 @@
-@using EImece.Domain.Helpers;
+﻿@using EImece.Domain.Helpers;
 @using EImece.Domain;
 @using Resources;
 @using EImece.Domain.Models.FrontModels;
@@ -27,7 +27,7 @@
                 <h3 class="customer-orders-empty__title h4 mb-2">Henüz siparişiniz bulunmuyor</h3>
                 <p class="customer-orders-empty__text text-muted mb-4">Verdiğiniz siparişlerin durumunu ve kargo takiplerini bu sayfadan kolayca takip edebilirsiniz.</p>
                 <a href="@Url.Action("Index", "Home", new { area = "" })" class="btn customer-btn-primary">
-                    <i class="fas fa-shopping-cart mr-2" aria-hidden="true"></i>
+                    <i class="fas fa-shopping-cart me-2" aria-hidden="true"></i>
                     <span>@Resource.ContinueShopping</span>
                 </a>
             </div>
@@ -39,7 +39,7 @@
             <section class="customer-panel__section customer-panel__section--last">
                 <header class="customer-panel__section-head">
                     <h2 class="customer-panel__section-title">
-                        <i class="fas fa-boxes mr-2 text-primary" aria-hidden="true"></i>
+                        <i class="fas fa-boxes me-2 text-primary" aria-hidden="true"></i>
                         @Resource.MyOrder
                     </h2>
                     <p class="customer-panel__section-lead">Tüm siparişlerinizi, kargo takip durumunu ve fatura özetlerinizi görüntüleyin.</p>
@@ -78,9 +78,9 @@
                                             <a class="badge badge-light border text-primary text-decoration-none p-2"
                                                href="@string.Format("{0}/{1}", Constants.ShipmentTrackingCompanyLink, HttpUtility.HtmlEncode(o.ShipmentTrackingNumber.ToStr()))"
                                                target="_blank" rel="noopener noreferrer" title="@Resource.TrackYourCargo">
-                                                <i class="fas fa-truck mr-1" aria-hidden="true"></i>
+                                                <i class="fas fa-truck me-1" aria-hidden="true"></i>
                                                 @o.ShipmentTrackingNumber
-                                                <i class="fas fa-external-link-alt ml-1 small" aria-hidden="true"></i>
+                                                <i class="fas fa-external-link-alt ms-1 small" aria-hidden="true"></i>
                                             </a>
                                         }
                                         else
@@ -97,7 +97,7 @@
                                     <td class="text-center">
                                         <a href="@Url.Action("CustomerOrderDetail", "Home", new { id = o.Id, area = "customers" })"
                                            class="btn btn-sm customer-btn-primary" title="@Resource.OrderSummary">
-                                            <i class="fas fa-eye mr-1" aria-hidden="true"></i>
+                                            <i class="fas fa-eye me-1" aria-hidden="true"></i>
                                             <span>@Resource.OrderSummary</span>
                                         </a>
                                     </td>
@@ -140,8 +140,8 @@
                                         @if (!string.IsNullOrEmpty(o.ShipmentTrackingNumber))
                                         {
                                             <a href="@string.Format("{0}/{1}", Constants.ShipmentTrackingCompanyLink, HttpUtility.HtmlEncode(o.ShipmentTrackingNumber.ToStr()))"
-                                               target="_blank" rel="noopener noreferrer" class="text-primary font-weight-semibold">
-                                                <i class="fas fa-truck mr-1" aria-hidden="true"></i> @o.ShipmentTrackingNumber
+                                               target="_blank" rel="noopener noreferrer" class="text-primary fw-semibold">
+                                                <i class="fas fa-truck me-1" aria-hidden="true"></i> @o.ShipmentTrackingNumber
                                             </a>
                                         }
                                         else
@@ -153,7 +153,7 @@
                             </div>
                             <a href="@Url.Action("CustomerOrderDetail", "Home", new { id = o.Id, area = "customers" })"
                                class="btn customer-btn-primary btn-block text-center">
-                                <i class="fas fa-eye mr-1" aria-hidden="true"></i>
+                                <i class="fas fa-eye me-1" aria-hidden="true"></i>
                                 <span>@Resource.OrderSummary</span>
                             </a>
                         </div>
@@ -180,28 +180,28 @@
     switch (os)
     {
         case EImeceOrderStatus.NewlyOrder:
-            <span class="badge badge-info bg-info text-white p-2"><i class="fas fa-clock mr-1" aria-hidden="true"></i> @resourceDisplayName</span>
+            <span class="badge badge-info bg-info text-white p-2"><i class="fas fa-clock me-1" aria-hidden="true"></i> @resourceDisplayName</span>
             break;
         case EImeceOrderStatus.PaymentPending:
-            <span class="badge badge-warning bg-warning text-dark p-2"><i class="fas fa-hourglass-half mr-1" aria-hidden="true"></i> @resourceDisplayName</span>
+            <span class="badge badge-warning bg-warning text-dark p-2"><i class="fas fa-hourglass-half me-1" aria-hidden="true"></i> @resourceDisplayName</span>
             break;
         case EImeceOrderStatus.InProgress:
-            <span class="badge badge-primary bg-primary text-white p-2"><i class="fas fa-cog fa-spin mr-1" aria-hidden="true"></i> @resourceDisplayName</span>
+            <span class="badge badge-primary bg-primary text-white p-2"><i class="fas fa-cog fa-spin me-1" aria-hidden="true"></i> @resourceDisplayName</span>
             break;
         case EImeceOrderStatus.Shipped:
-            <span class="badge badge-dark bg-dark text-white p-2"><i class="fas fa-shipping-fast mr-1" aria-hidden="true"></i> @resourceDisplayName</span>
+            <span class="badge badge-dark bg-dark text-white p-2"><i class="fas fa-shipping-fast me-1" aria-hidden="true"></i> @resourceDisplayName</span>
             break;
         case EImeceOrderStatus.Delivered:
-            <span class="badge badge-success bg-success text-white p-2"><i class="fas fa-check-circle mr-1" aria-hidden="true"></i> @resourceDisplayName</span>
+            <span class="badge badge-success bg-success text-white p-2"><i class="fas fa-check-circle me-1" aria-hidden="true"></i> @resourceDisplayName</span>
             break;
         case EImeceOrderStatus.Cancelled:
-            <span class="badge badge-danger bg-danger text-white p-2"><i class="fas fa-times-circle mr-1" aria-hidden="true"></i> @resourceDisplayName</span>
+            <span class="badge badge-danger bg-danger text-white p-2"><i class="fas fa-times-circle me-1" aria-hidden="true"></i> @resourceDisplayName</span>
             break;
         case EImeceOrderStatus.Returned:
-            <span class="badge badge-secondary bg-secondary text-white p-2"><i class="fas fa-undo mr-1" aria-hidden="true"></i> @resourceDisplayName</span>
+            <span class="badge badge-secondary bg-secondary text-white p-2"><i class="fas fa-undo me-1" aria-hidden="true"></i> @resourceDisplayName</span>
             break;
         case EImeceOrderStatus.Refunded:
-            <span class="badge badge-light bg-light border text-dark p-2"><i class="fas fa-money-bill-wave mr-1" aria-hidden="true"></i> @resourceDisplayName</span>
+            <span class="badge badge-light bg-light border text-dark p-2"><i class="fas fa-money-bill-wave me-1" aria-hidden="true"></i> @resourceDisplayName</span>
             break;
         default:
             <span class="badge badge-secondary bg-secondary text-white p-2">@Resource.UnknownStatus</span>
