@@ -18,7 +18,7 @@
 }
 
 <!-- DTO Verification Fields -->
-<input type="hidden" id="dto-verification-products" data-source="dto" data-type="StorefrontProductCardDto" value="@productsAll?.Count" />
+<input type="hidden" id="dto-verification-products" data-source="dto" data-type="StorefrontProductCardDto" value="@(productsAll != null ? productsAll.Count : 0)" />
 <input type="hidden" id="dto-verification-page" data-source="dto" data-page="Products/Index" />
 
 <section class="page-title-wrapper" aria-label="Page title">

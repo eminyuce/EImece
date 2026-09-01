@@ -1,4 +1,4 @@
-﻿@model EImece.Domain.Models.DTOs.Storefront.CustomerSummaryDto
+@model EImece.Domain.Models.DTOs.Storefront.CustomerSummaryDto
 @using Resources;
 @using EImece.Domain.Helpers;
 @using EImece.Domain.Helpers.Extensions;
@@ -91,7 +91,7 @@
             <a class="customer-segment__item @(isOrders ? "is-active" : "")" href="@Url.Action("CustomerOrders", "Home", new { area = "customers" })">
                 <i class="fas fa-shopping-bag" aria-hidden="true"></i>
                 <span>@Resource.MyOrder</span>
-                @if ((Model?.TotalOrderCount ?? 0) > 0)
+                @if (Model != null && Model.TotalOrderCount > 0)
                 {
                     <span class="customer-segment__badge">@(Model.TotalOrderCount)</span>
                 }

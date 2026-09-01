@@ -57,8 +57,8 @@
 
 <!-- DTO Verification Fields -->
 <input type="hidden" id="dto-verification-product" data-source="dto" data-type="StorefrontProductDetailDto" value="@product.Id" />
-<input type="hidden" id="dto-verification-related" data-source="dto" data-type="StorefrontProductCardDto" value="@relatedProducts?.Count" />
-<input type="hidden" id="dto-verification-comments" data-source="dto" data-type="StorefrontProductCommentDto" value="@productComments?.Count" />
+<input type="hidden" id="dto-verification-related" data-source="dto" data-type="StorefrontProductCardDto" value="@(relatedProducts != null ? relatedProducts.Count : 0)" />
+<input type="hidden" id="dto-verification-comments" data-source="dto" data-type="StorefrontProductCommentDto" value="@(productComments != null ? productComments.Count : 0)" />
 <input type="hidden" id="dto-verification-page" data-source="dto" data-page="Products/Detail" />
 
 <input type="hidden" name="productReviewEnable" value="@productReviewEnable.ToString().ToLower()" />

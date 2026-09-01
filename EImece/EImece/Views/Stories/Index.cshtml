@@ -1,4 +1,4 @@
-﻿@model StoryIndexViewModel
+@model StoryIndexViewModel
 @using EImece.Web.Helpers.HtmlHelpers
 @using EImece.Domain.Helpers.Extensions
 @using EImece.Domain.Models.FrontModels
@@ -12,7 +12,7 @@
 }
 
 <!-- DTO Verification Fields -->
-<input type="hidden" id="dto-verification-stories" data-source="dto" data-type="StorefrontStoryCardDto" value="@stories?.Count" />
+<input type="hidden" id="dto-verification-stories" data-source="dto" data-type="StorefrontStoryCardDto" value="@(stories != null ? stories.Count : 0)" />
 <input type="hidden" id="dto-verification-page" data-source="dto" data-page="Stories/Index" />
 
 <div class="container mt-4 mb-5">

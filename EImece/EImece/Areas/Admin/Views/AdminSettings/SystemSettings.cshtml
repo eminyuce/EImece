@@ -203,7 +203,7 @@
                         <a class="list-group-item list-group-item-action d-flex align-items-center justify-content-between" data-bs-toggle="pill" href="#tab-products" role="tab" id="nav-tab-products">
                             <span><i class="fa-solid fa-tags text-secondary me-2"></i> Ürün &amp; Fiyatlandırma</span>
                             <span class="d-flex align-items-center gap-1">
-                                <span class="badge bg-light text-dark border small">@(Model.ProductPriceFilterSetting?.Split(new[]{'|',';'}, StringSplitOptions.RemoveEmptyEntries).Length ?? 0) filtre</span>
+                                <span class="badge bg-light text-dark border small">@(Model.ProductPriceFilterSetting != null ? Model.ProductPriceFilterSetting.Split(new[]{'|',';'}, StringSplitOptions.RemoveEmptyEntries).Length : 0) filtre</span>
                                 @if (!isPriceActive) { <span class="badge bg-warning text-dark small">Katalog</span> }
                             </span>
                         </a>

@@ -216,7 +216,7 @@
     }
     if (settings.AllowedFilterModes != FilterMode.None && settings.AllowedFilterModes.Value.HasFlag(FilterMode.Form) && !settings.IsFilterFormInline)
     {
-        <div class="griddly-filters griddly-filters-form" style="@(settings.InitialFilterMode?.HasFlag(FilterMode.Form) == true ? null : "display:none")">
+        <div class="griddly-filters griddly-filters-form" style="@(settings.InitialFilterMode != null && settings.InitialFilterMode.Value.HasFlag(FilterMode.Form) ? null : "display:none")">
             @if (settings.FilterTemplate != null)
             {
                 @settings.FilterTemplate(settings)
@@ -254,7 +254,7 @@
         }
         @if (settings.AllowedFilterModes != FilterMode.None && settings.AllowedFilterModes.Value.HasFlag(FilterMode.Form) && settings.IsFilterFormInline)
         {
-        <tr class="griddly-filters griddly-filters-form" style="@(settings.InitialFilterMode?.HasFlag(FilterMode.Form) == true ? null : "display:none")">
+        <tr class="griddly-filters griddly-filters-form" style="@(settings.InitialFilterMode != null && settings.InitialFilterMode.Value.HasFlag(FilterMode.Form) ? null : "display:none")">
             <td colspan="@settings.Columns.Where(x => x.Visible).Count()">
                 @if (settings.FilterTemplate != null)
                 {
@@ -296,7 +296,7 @@
         </tr>
         @if (settings.AllowedFilterModes != FilterMode.None && settings.AllowedFilterModes.Value.HasFlag(FilterMode.Inline))
         {
-            <tr class="griddly-filters griddly-filters-inline" style="@(settings.InitialFilterMode?.HasFlag(FilterMode.Inline) == true ? null : "display:none")">@settings.InlineFilterTemplate(settings)</tr>
+            <tr class="griddly-filters griddly-filters-inline" style="@(settings.InitialFilterMode != null && settings.InitialFilterMode.Value.HasFlag(FilterMode.Inline) ? null : "display:none")">@settings.InlineFilterTemplate(settings)</tr>
         }
         @if (settings.HeaderTemplate != null)
         {
@@ -331,9 +331,9 @@
                 var underlyingValue = column.RenderUnderlyingValue(row, Html);
                 var htmlAttributes = column.GenerateHtmlAttributes(row, Model);
                 string additionalClassNames = null;
-                if (htmlAttributes?.ContainsKey("class") == true)
+                if (htmlAttributes != null && htmlAttributes.ContainsKey("class"))
                 {
-                    additionalClassNames = htmlAttributes["class"]?.ToString();
+                    additionalClassNames = htmlAttributes["class"] != null ? htmlAttributes["class"].ToString() : null;
                     htmlAttributes.Remove("class");
                 }
                 <td class="@column.RenderClassName(row, Model) @(!column.Visible ? "column-hidden" : null) @additionalClassNames" @htmlAttributes.ToHtmlAttributes() @if (underlyingValue != null) { <text> data-value="@underlyingValue" </text> }>@column.RenderCell(row, settings, Html)</td>

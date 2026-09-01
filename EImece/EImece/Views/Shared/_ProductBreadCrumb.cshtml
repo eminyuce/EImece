@@ -24,7 +24,7 @@
 
     for (int i = categories.Count() - 1; i >= 0; i--)
     {
-        var cat = categories[i]?.ProductCategory;
+        var cat = categories[i] != null ? categories[i].ProductCategory : null;
         if (cat != null && !string.IsNullOrWhiteSpace(cat.Name))
         {
             string catUrl = cat.DetailPageUrl;
@@ -72,7 +72,7 @@
         @for (int i = categories.Count() - 1; i >= 0; i--)
         {
             var category = categories[i];
-            if (category?.ProductCategory != null)
+            if (category != null && category.ProductCategory != null)
             {
                 <li class="breadcrumb-item">
                     <a href="@category.ProductCategory.DetailPageUrl">@category.ProductCategory.Name</a>

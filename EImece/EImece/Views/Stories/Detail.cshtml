@@ -21,8 +21,8 @@
 
 <!-- DTO Verification Fields -->
 <input type="hidden" id="dto-verification-story" data-source="dto" data-type="StorefrontStoryDetailDto" value="@storyDetail.Id" />
-<input type="hidden" id="dto-verification-related-products" data-source="dto" data-type="StorefrontProductCardDto" value="@RelatedProducts?.Count" />
-<input type="hidden" id="dto-verification-related-stories" data-source="dto" data-type="StorefrontStoryCardDto" value="@relatedStories?.Count" />
+<input type="hidden" id="dto-verification-related-products" data-source="dto" data-type="StorefrontProductCardDto" value="@(RelatedProducts != null ? RelatedProducts.Count : 0)" />
+<input type="hidden" id="dto-verification-related-stories" data-source="dto" data-type="StorefrontStoryCardDto" value="@(relatedStories != null ? relatedStories.Count : 0)" />
 <input type="hidden" id="dto-verification-page" data-source="dto" data-page="Stories/Detail" />
 
 <!-- Page Title-->

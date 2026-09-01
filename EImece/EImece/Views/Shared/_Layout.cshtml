@@ -39,7 +39,7 @@
         }
         if (string.IsNullOrWhiteSpace(pageMetaDesc))
         {
-            pageMetaDesc = companyName?.ToString() ?? AppConfig.Domain;
+            pageMetaDesc = companyName != null ? companyName.ToString() : AppConfig.Domain;
         }
     }
     <meta name="description" content="@pageMetaDesc">

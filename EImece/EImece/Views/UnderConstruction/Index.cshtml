@@ -4,14 +4,14 @@
     var domain = AppConfig.Domain;
     if (string.IsNullOrWhiteSpace(domain))
     {
-        domain = Request?.Url?.Host ?? "EImece";
+        domain = (Request != null && Request.Url != null) ? Request.Url.Host : "EImece";
     }
     var themeColor = Constants.DefaultThemeColor;
     var customHtml = ViewBag.CustomHtml as string;
     if (string.IsNullOrWhiteSpace(customHtml))
     {
-        var settingService = DependencyResolver.Current?.GetService(typeof(EImece.Domain.Services.IServices.ISettingService)) as EImece.Domain.Services.IServices.ISettingService;
-        customHtml = settingService?.GetSettingByKey(Constants.UnderConstructionHtml);
+        var settingService = DependencyResolver.Current != null ? DependencyResolver.Current.GetService(typeof(EImece.Domain.Services.IServices.ISettingService)) as EImece.Domain.Services.IServices.ISettingService : null;
+        customHtml = settingService != null ? settingService.GetSettingByKey(Constants.UnderConstructionHtml) : null;
     }
 }
 <!DOCTYPE html>

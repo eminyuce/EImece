@@ -34,7 +34,7 @@
 }
 
 <!-- DTO Verification Fields -->
-<input type="hidden" id="dto-verification-products" data-source="dto" data-type="StorefrontProductCardDto" value="@pagedDtos?.Count" />
+<input type="hidden" id="dto-verification-products" data-source="dto" data-type="StorefrontProductCardDto" value="@(pagedDtos != null ? pagedDtos.Count : 0)" />
 <input type="hidden" id="dto-verification-page" data-source="dto" data-page="ProductCategories/Category" />
 
 <div class="page-title-wrapper" role="region" aria-label="Page title">

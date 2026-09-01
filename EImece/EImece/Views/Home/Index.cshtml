@@ -1,4 +1,4 @@
-﻿@using EImece.Domain.Entities;
+@using EImece.Domain.Entities;
 @using EImece.Domain.Models.DTOs.Storefront;
 @using EImece.Domain.Models.FrontModels;
 @using EImece.Domain.Helpers.Extensions;
@@ -33,10 +33,10 @@
 }
 
 <!-- DTO Verification Fields -->
-<input type="hidden" id="dto-verification-products" data-source="dto" data-type="StorefrontProductCardDto" value="@mainPageProducts?.Count" />
-<input type="hidden" id="dto-verification-banners" data-source="dto" data-type="StorefrontBannerDto" value="@mainPageImages?.Count" />
-<input type="hidden" id="dto-verification-categories" data-source="dto" data-type="StorefrontCategoryDto" value="@mainPageProductCategories?.Count" />
-<input type="hidden" id="dto-verification-stories" data-source="dto" data-type="StorefrontStoryCardDto" value="@latestStories?.Count" />
+<input type="hidden" id="dto-verification-products" data-source="dto" data-type="StorefrontProductCardDto" value="@(mainPageProducts != null ? mainPageProducts.Count : 0)" />
+<input type="hidden" id="dto-verification-banners" data-source="dto" data-type="StorefrontBannerDto" value="@(mainPageImages != null ? mainPageImages.Count : 0)" />
+<input type="hidden" id="dto-verification-categories" data-source="dto" data-type="StorefrontCategoryDto" value="@(mainPageProductCategories != null ? mainPageProductCategories.Count : 0)" />
+<input type="hidden" id="dto-verification-stories" data-source="dto" data-type="StorefrontStoryCardDto" value="@(latestStories != null ? latestStories.Count : 0)" />
 <input type="hidden" id="dto-verification-page" data-source="dto" data-page="Home/Index" />
 
 <h1 class="sr-only">@ViewBag.Title</h1>

@@ -6,7 +6,7 @@
 @using EImece.Domain.Helpers;
 
 @{
-    var product = Model?.ProductDto;
+    var product = Model != null ? Model.ProductDto : null;
 }
 
 <h2>pProductDetailToolTip</h2>

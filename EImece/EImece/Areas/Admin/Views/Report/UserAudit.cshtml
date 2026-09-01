@@ -398,7 +398,7 @@
         <div class="tab-pane fade @(Model.ActiveTab == "summary" || string.IsNullOrEmpty(Model.ActiveTab) ? "show active" : "")" id="tab-summary" role="tabpanel" aria-labelledby="summary-tab">
             <div class="audit-table-card">
                 <div class="audit-table-header">
-                    <h4>@AdminResource.ReportByUser (@(Model.UserSummaryData?.Rows.Count ?? 0))</h4>
+                    <h4>@AdminResource.ReportByUser (@(Model.UserSummaryData != null && Model.UserSummaryData.Rows != null ? Model.UserSummaryData.Rows.Count : 0))</h4>
                     <span class="text-muted small">@AdminResource.TablesModified &amp; @AdminResource.TotalActivity</span>
                 </div>
                 <div class="audit-table-responsive table-responsive">
@@ -417,13 +417,13 @@
                             {
                                 foreach (DataRow row in Model.UserSummaryData.Rows)
                                 {
-                                    var fullName = row["FullName"]?.ToString();
-                                    var userName = row["UserName"]?.ToString();
-                                    var userId = row["UserId"]?.ToString();
+                                    var fullName = row["FullName"] != null && row["FullName"] != DBNull.Value ? row["FullName"].ToString() : null;
+                                    var userName = row["UserName"] != null && row["UserName"] != DBNull.Value ? row["UserName"].ToString() : null;
+                                    var userId = row["UserId"] != null && row["UserId"] != DBNull.Value ? row["UserId"].ToString() : null;
                                     var createdCount = row["CreatedCount"] != DBNull.Value ? Convert.ToInt32(row["CreatedCount"]) : 0;
                                     var updatedCount = row["UpdatedCount"] != DBNull.Value ? Convert.ToInt32(row["UpdatedCount"]) : 0;
                                     var totalActivity = row["TotalActivity"] != DBNull.Value ? Convert.ToInt32(row["TotalActivity"]) : 0;
-                                    var tablesStr = row["TablesModified"]?.ToString() ?? "";
+                                    var tablesStr = row["TablesModified"] != null && row["TablesModified"] != DBNull.Value ? row["TablesModified"].ToString() : "";
                                     var tablesList = tablesStr.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
 
                                     <tr>
@@ -473,7 +473,7 @@
         <div class="tab-pane fade @(Model.ActiveTab == "monthly" ? "show active" : "")" id="tab-monthly" role="tabpanel" aria-labelledby="monthly-tab">
             <div class="audit-table-card">
                 <div class="audit-table-header">
-                    <h4>@AdminResource.MonthlyBreakdown (@(Model.MonthlyBreakdownData?.Rows.Count ?? 0))</h4>
+                    <h4>@AdminResource.MonthlyBreakdown (@(Model.MonthlyBreakdownData != null && Model.MonthlyBreakdownData.Rows != null ? Model.MonthlyBreakdownData.Rows.Count : 0))</h4>
                     <span class="text-muted small">@AdminResource.MonthlyBreakdown (Newest to Oldest)</span>
                 </div>
                 <div class="audit-table-responsive table-responsive">
@@ -492,9 +492,9 @@
                             {
                                 foreach (DataRow row in Model.MonthlyBreakdownData.Rows)
                                 {
-                                    var yearMonth = row["YearMonth"]?.ToString();
-                                    var fullName = row["FullName"]?.ToString();
-                                    var userName = row["UserName"]?.ToString();
+                                    var yearMonth = row["YearMonth"] != null && row["YearMonth"] != DBNull.Value ? row["YearMonth"].ToString() : null;
+                                    var fullName = row["FullName"] != null && row["FullName"] != DBNull.Value ? row["FullName"].ToString() : null;
+                                    var userName = row["UserName"] != null && row["UserName"] != DBNull.Value ? row["UserName"].ToString() : null;
                                     var createdCount = row["CreatedCount"] != DBNull.Value ? Convert.ToInt32(row["CreatedCount"]) : 0;
                                     var updatedCount = row["UpdatedCount"] != DBNull.Value ? Convert.ToInt32(row["UpdatedCount"]) : 0;
                                     var totalCount = row["TotalCount"] != DBNull.Value ? Convert.ToInt32(row["TotalCount"]) : 0;
@@ -536,7 +536,7 @@
         <div class="tab-pane fade @(Model.ActiveTab == "detailed" ? "show active" : "")" id="tab-detailed" role="tabpanel" aria-labelledby="detailed-tab">
             <div class="audit-table-card">
                 <div class="audit-table-header">
-                    <h4>@AdminResource.DetailedRecords (@(Model.DetailedRecordsData?.Rows.Count ?? 0))</h4>
+                    <h4>@AdminResource.DetailedRecords (@(Model.DetailedRecordsData != null && Model.DetailedRecordsData.Rows != null ? Model.DetailedRecordsData.Rows.Count : 0))</h4>
                     <span class="text-muted small">@AdminResource.CreatedDate &amp; @AdminResource.UpdatedDate</span>
                 </div>
                 <div class="audit-table-responsive table-responsive">
@@ -557,15 +557,15 @@
                             {
                                 foreach (DataRow row in Model.DetailedRecordsData.Rows)
                                 {
-                                    var tbl = row["TableName"]?.ToString() ?? "-";
-                                    var recId = row["RecordId"]?.ToString() ?? "-";
-                                    var recName = row["RecordName"]?.ToString() ?? "-";
+                                    var tbl = row["TableName"] != null && row["TableName"] != DBNull.Value ? row["TableName"].ToString() : "-";
+                                    var recId = row["RecordId"] != null && row["RecordId"] != DBNull.Value ? row["RecordId"].ToString() : "-";
+                                    var recName = row["RecordName"] != null && row["RecordName"] != DBNull.Value ? row["RecordName"].ToString() : "-";
                                     var createdDateObj = row["CreatedDate"] != DBNull.Value ? (DateTime?)Convert.ToDateTime(row["CreatedDate"]) : null;
                                     var updatedDateObj = row["UpdatedDate"] != DBNull.Value ? (DateTime?)Convert.ToDateTime(row["UpdatedDate"]) : null;
-                                    var creatorFullName = row["CreatorFullName"]?.ToString();
-                                    var updaterFullName = row["UpdaterFullName"]?.ToString();
-                                    var addUserId = row["AddUserId"]?.ToString();
-                                    var updateUserId = row["UpdateUserId"]?.ToString();
+                                    var creatorFullName = row["CreatorFullName"] != null && row["CreatorFullName"] != DBNull.Value ? row["CreatorFullName"].ToString() : null;
+                                    var updaterFullName = row["UpdaterFullName"] != null && row["UpdaterFullName"] != DBNull.Value ? row["UpdaterFullName"].ToString() : null;
+                                    var addUserId = row["AddUserId"] != null && row["AddUserId"] != DBNull.Value ? row["AddUserId"].ToString() : null;
+                                    var updateUserId = row["UpdateUserId"] != null && row["UpdateUserId"] != DBNull.Value ? row["UpdateUserId"].ToString() : null;
 
                                     <tr>
                                         <td>
