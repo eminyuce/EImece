@@ -11,7 +11,7 @@
     <!-- Breadcrumb & Header -->
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 12px;">
         <div>
-            @Html.AdminBreadcrumb(AdminResource.SystemHealth, (AdminResource.System, ""))
+            @Html.AdminBreadcrumb(AdminResource.SystemHealth, AdminResource.System)
             <h1 style="font-size: 24px; font-weight: 700; color: #102a43; margin: 0; display: flex; align-items: center; gap: 10px;">
                 <i class="fa-solid fa-heart-pulse text-danger" aria-hidden="true"></i> @AdminResource.SystemHealth
             </h1>

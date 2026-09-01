@@ -10,7 +10,17 @@ namespace EImece.Web.Helpers.HtmlHelpers
     /// </summary>
     public static class AdminBreadcrumbHtmlHelper
     {
-        public static MvcHtmlString AdminBreadcrumb(this HtmlHelper htmlHelper, string currentTitle, params (string Label, string Url)[] ancestors)
+        public static MvcHtmlString AdminBreadcrumb(this HtmlHelper htmlHelper, string currentTitle)
+        {
+            return AdminBreadcrumbInternal(htmlHelper, currentTitle, null, null);
+        }
+
+        public static MvcHtmlString AdminBreadcrumb(this HtmlHelper htmlHelper, string currentTitle, string ancestorLabel, string ancestorUrl = null)
+        {
+            return AdminBreadcrumbInternal(htmlHelper, currentTitle, ancestorLabel, ancestorUrl);
+        }
+
+        private static MvcHtmlString AdminBreadcrumbInternal(HtmlHelper htmlHelper, string currentTitle, string ancestorLabel, string ancestorUrl)
         {
             if (string.IsNullOrWhiteSpace(currentTitle))
             {
@@ -29,26 +39,18 @@ namespace EImece.Web.Helpers.HtmlHelpers
                 Encode(homeUrl),
                 Encode(homeLabel));
 
-            if (ancestors != null)
+            if (!string.IsNullOrWhiteSpace(ancestorLabel))
             {
-                foreach (var ancestor in ancestors)
+                if (string.IsNullOrWhiteSpace(ancestorUrl))
                 {
-                    if (string.IsNullOrWhiteSpace(ancestor.Label))
-                    {
-                        continue;
-                    }
-
-                    if (string.IsNullOrWhiteSpace(ancestor.Url))
-                    {
-                        sb.AppendFormat("<li class=\"breadcrumb-item\"><span>{0}</span></li>", Encode(ancestor.Label));
-                    }
-                    else
-                    {
-                        sb.AppendFormat(
-                            "<li class=\"breadcrumb-item\"><a href=\"{0}\"><span>{1}</span></a></li>",
-                            Encode(ancestor.Url),
-                            Encode(ancestor.Label));
-                    }
+                    sb.AppendFormat("<li class=\"breadcrumb-item\"><span>{0}</span></li>", Encode(ancestorLabel));
+                }
+                else
+                {
+                    sb.AppendFormat(
+                        "<li class=\"breadcrumb-item\"><a href=\"{0}\"><span>{1}</span></a></li>",
+                        Encode(ancestorUrl),
+                        Encode(ancestorLabel));
                 }
             }
 
