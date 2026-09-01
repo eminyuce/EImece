@@ -47,5 +47,44 @@ namespace EImece.Web.Caching
 
             return keys.Count;
         }
+
+        public void RemoveOutputCacheItem(string virtualPath)
+        {
+            if (string.IsNullOrWhiteSpace(virtualPath))
+            {
+                return;
+            }
+
+            try
+            {
+                var path = virtualPath.Trim();
+                if (path.StartsWith("~", StringComparison.Ordinal))
+                {
+                    path = VirtualPathUtility.ToAbsolute(path);
+                }
+                else if (!path.StartsWith("/", StringComparison.Ordinal))
+                {
+                    path = "/" + path;
+                }
+
+                HttpResponse.RemoveOutputCacheItem(path);
+
+                var app = HttpRuntime.AppDomainAppVirtualPath;
+                if (!string.IsNullOrEmpty(app) &&
+                    !string.Equals(app, "/", StringComparison.Ordinal) &&
+                    path.IndexOf(app, StringComparison.OrdinalIgnoreCase) < 0)
+                {
+                    var prefixed = (app.TrimEnd('/') + path);
+                    if (!string.Equals(prefixed, path, StringComparison.OrdinalIgnoreCase))
+                    {
+                        HttpResponse.RemoveOutputCacheItem(prefixed);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "RemoveOutputCacheItem failed for {0}", virtualPath);
+            }
+        }
     }
 }

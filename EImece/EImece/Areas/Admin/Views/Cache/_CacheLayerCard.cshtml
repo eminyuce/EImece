@@ -1,0 +1,150 @@
+@model EImece.Areas.Admin.Models.CacheLayerCardModel
+@using EImece.Domain.Caching
+@using Resources
+@{
+    var layer = Model.Layer ?? new CacheLayerSnapshot();
+    var cannot = AdminResource.CachePerformanceNotMeasured;
+    var prefix = Model.Prefix ?? "layer";
+    var avgCached = CacheHealth.FormatMilliseconds(layer.AvgCachedMs) ?? cannot;
+    var avgUncached = CacheHealth.FormatMilliseconds(layer.AvgUncachedMs) ?? cannot;
+    var improvement = CacheHealth.FormatImprovement(layer.ImprovementPercent) ?? cannot;
+    var saved = CacheHealth.FormatSaved(layer.SavedMs) ?? cannot;
+    var cachedBar = 0d;
+    if (layer.HasTiming && layer.AvgUncachedMs.HasValue && layer.AvgUncachedMs.Value > 0 && layer.AvgCachedMs.HasValue)
+    {
+        cachedBar = Math.Max(2d, Math.Min(100d, layer.AvgCachedMs.Value / layer.AvgUncachedMs.Value * 100d));
+    }
+
+    string healthClass, healthIcon, healthTitle, healthBody;
+    if (!layer.IsEnabled)
+    {
+        healthClass = "cache-health-noteffective";
+        healthIcon = "🔴";
+        healthTitle = AdminResource.CacheStatusNotEffective;
+        healthBody = AdminResource.CacheHealthNotEffectiveBody;
+    }
+    else if (layer.TotalReads < CacheHealth.MinReadsForHitRate)
+    {
+        healthClass = "cache-health-limited";
+        healthIcon = "🟡";
+        healthTitle = AdminResource.CacheStatusLimited;
+        healthBody = AdminResource.CacheHealthWaitingBody;
+    }
+    else if (layer.Effectiveness == CacheEffectivenessLevel.Effective)
+    {
+        healthClass = "cache-health-effective";
+        healthIcon = "🟢";
+        healthTitle = AdminResource.CacheStatusEffective;
+        healthBody = AdminResource.CacheHealthEffectiveBody;
+    }
+    else if (layer.Effectiveness == CacheEffectivenessLevel.Limited)
+    {
+        healthClass = "cache-health-limited";
+        healthIcon = "🟡";
+        healthTitle = AdminResource.CacheStatusLimited;
+        healthBody = AdminResource.CacheHealthLimitedBody;
+    }
+    else
+    {
+        healthClass = "cache-health-noteffective";
+        healthIcon = "🔴";
+        healthTitle = AdminResource.CacheStatusNotEffective;
+        healthBody = AdminResource.CacheHealthNotEffectiveBody;
+    }
+}
+
+<div class="card shadow-sm mb-4 setting-section-card cache-layer-card @healthClass" id="@(prefix)Card" data-health="@healthClass">
+    <div class="card-header bg-white py-3 border-bottom">
+        <h5 class="mb-1 fw-bold">@Model.Title</h5>
+        <div class="small text-muted">
+            @AdminResource.CacheTechnicalName: <code>@Model.TechnicalName</code>
+            @if (!string.IsNullOrEmpty(Model.ProfileLabel))
+            {
+                <span class="ms-2">@AdminResource.CacheProfileLabel: <code>@Model.ProfileLabel</code></span>
+            }
+        </div>
+        <p class="small text-muted mb-0 mt-2">@Model.Lead</p>
+    </div>
+    <div class="card-body">
+        <div class="cache-health-message mb-3" id="@(prefix)Health">
+            <div class="fw-bold"><span id="@(prefix)HealthIcon">@healthIcon</span> <span id="@(prefix)HealthTitle">@healthTitle</span></div>
+            <p class="small text-muted mb-0" id="@(prefix)HealthBody">@healthBody</p>
+        </div>
+        <div class="row g-3 mb-3">
+            <div class="col-6 col-md-3">
+                <div class="text-muted small text-uppercase fw-bold">
+                    @AdminResource.CacheHits
+                </div>
+                <div class="h4 fw-bold mb-0 text-success" id="@(prefix)Hits">@layer.Hits.ToString("N0")</div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="text-muted small text-uppercase fw-bold">
+                    @AdminResource.CacheMisses
+                    <i class="fa-solid fa-circle-question cache-help" title="@AdminResource.CacheMissHelp"></i>
+                </div>
+                <div class="h4 fw-bold mb-0 text-warning" id="@(prefix)Misses">@layer.Misses.ToString("N0")</div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="text-muted small text-uppercase fw-bold">
+                    @AdminResource.CacheHitRate
+                    <i class="fa-solid fa-circle-question cache-help" title="@AdminResource.CacheHitRateHelp"></i>
+                </div>
+                <div class="h4 fw-bold mb-0 text-info" id="@(prefix)HitRate">@layer.HitRatioPercent.ToString("N1")%</div>
+            </div>
+            @if (Model.ShowDatabaseAvoided)
+            {
+                <div class="col-6 col-md-3">
+                    <div class="text-muted small text-uppercase fw-bold">@AdminResource.CacheDbOpsAvoided</div>
+                    <div class="h4 fw-bold mb-0" id="@(prefix)DbAvoided">@(layer.EstimatedDatabaseOperationsAvoided.HasValue ? layer.EstimatedDatabaseOperationsAvoided.Value.ToString("N0") : cannot)</div>
+                </div>
+            }
+            else
+            {
+                <div class="col-6 col-md-3">
+                    <div class="text-muted small text-uppercase fw-bold">
+                        @AdminResource.CachePerformanceImprovement
+                        <i class="fa-solid fa-circle-question cache-help" title="@AdminResource.CacheImprovementHelp"></i>
+                    </div>
+                    <div class="h4 fw-bold mb-0" id="@(prefix)ImprovementTop">@improvement</div>
+                </div>
+            }
+        </div>
+
+        <div class="cache-time-compare" id="@(prefix)Timing">
+            <div class="fw-bold mb-2">@AdminResource.CacheAvgResponseTime</div>
+            @if (layer.HasTiming)
+            {
+                <div class="d-flex justify-content-between small mb-1">
+                    <span>@AdminResource.CacheAvgWithoutCache</span>
+                    <strong id="@(prefix)AvgUncached">@avgUncached</strong>
+                </div>
+                <div class="progress mb-3" style="height: 8px;">
+                    <div class="progress-bar bg-warning" id="@(prefix)UncachedBar" style="width: 100%"></div>
+                </div>
+                <div class="d-flex justify-content-between small mb-1">
+                    <span>@AdminResource.CacheAvgWithCache</span>
+                    <strong id="@(prefix)AvgCached">@avgCached</strong>
+                </div>
+                <div class="progress mb-3" style="height: 8px;">
+                    <div class="progress-bar bg-success" id="@(prefix)CachedBar" style="width: @cachedBar.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture)%"></div>
+                </div>
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                    <span class="fw-bold">
+                        @AdminResource.CachePerformanceImprovement
+                        <i class="fa-solid fa-circle-question cache-help" title="@AdminResource.CacheImprovementHelp"></i>
+                    </span>
+                    <span class="h5 mb-0 text-success" id="@(prefix)Improvement">@improvement</span>
+                </div>
+            }
+            else
+            {
+                <p class="small text-muted mb-0" id="@(prefix)NoTiming">@cannot</p>
+                <span class="d-none" id="@(prefix)AvgUncached">@cannot</span>
+                <span class="d-none" id="@(prefix)AvgCached">@cannot</span>
+                <span class="d-none" id="@(prefix)Improvement">@cannot</span>
+                <div class="progress mb-3 d-none" style="height: 8px;"><div class="progress-bar bg-warning" id="@(prefix)UncachedBar"></div></div>
+                <div class="progress mb-3 d-none" style="height: 8px;"><div class="progress-bar bg-success" id="@(prefix)CachedBar"></div></div>
+            }
+        </div>
+    </div>
+</div>

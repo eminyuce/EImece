@@ -1,6 +1,8 @@
 using Microsoft.Extensions.Logging;
 using EImece.Web.Areas.Admin.Controllers;
 using EImece.Domain;
+using EImece.Domain.Abstractions;
+using EImece.Domain.Caching;
 using EImece.Web.Helpers;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
@@ -25,13 +27,20 @@ namespace EImece.Areas.Admin.Controllers
     {
         protected IEntityFactory EntityFactory { get; }
         protected FilesHelper FilesHelper { get; }
+        private readonly IEimeceCacheProvider _cache;
+        private readonly IHttpRuntimeCacheClearer _httpRuntimeCacheClearer;
 
         public SettingsController(ISettingService settingService,
             IEntityFactory entityFactory,
-            FilesHelper filesHelper, ILogger<SettingsController> logger)
+            FilesHelper filesHelper,
+            IEimeceCacheProvider cache,
+            IHttpRuntimeCacheClearer httpRuntimeCacheClearer,
+            ILogger<SettingsController> logger)
             : base(settingService, logger) {
             EntityFactory = entityFactory ?? throw new ArgumentNullException(nameof(entityFactory));
             FilesHelper = filesHelper ?? throw new ArgumentNullException(nameof(filesHelper));
+            _cache = cache ?? throw new ArgumentNullException(nameof(cache));
+            _httpRuntimeCacheClearer = httpRuntimeCacheClearer;
         }
 
         public ActionResult Index()
@@ -124,6 +133,7 @@ namespace EImece.Areas.Admin.Controllers
                     webSiteLogoSetting.Position = 1;
                     webSiteLogoSetting.Lang = CurrentLanguage;
                     await SettingService.SaveOrEditEntityAsync(webSiteLogoSetting);
+                    EvictWebsiteLogoCache();
                     Logger.LogInformation("Website logo uploaded. SettingId={0}, File={1}", webSiteLogoSetting.Id, result.NewFileName);
                     SetSuccessMessage(AdminResource.SuccessfullySavedCompleted);
                     return RedirectToAction(Constants.WebSiteLogo, new { id = webSiteLogoSetting.Id });
@@ -150,6 +160,12 @@ namespace EImece.Areas.Admin.Controllers
             return RedirectToAction("AddWebSiteLogo");
         }
 
+        private void EvictWebsiteLogoCache()
+        {
+            AdminCacheMaintenance.InvalidateWebsiteLogo(SettingService, _cache, _httpRuntimeCacheClearer);
+            Logger.LogInformation("Evicted /images/logo.jpg application and output cache after logo change.");
+        }
+
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [DeleteAuthorize()]
@@ -166,7 +182,12 @@ namespace EImece.Areas.Admin.Controllers
             }
             try
             {
+                var isLogo = string.Equals(Setting.SettingKey, Constants.WebSiteLogo, StringComparison.OrdinalIgnoreCase);
                 await SettingService.DeleteEntityAsync(Setting);
+                if (isLogo)
+                {
+                    EvictWebsiteLogoCache();
+                }
                 SetSuccessMessage();
                 return RedirectToAction("Index");
             }

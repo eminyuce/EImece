@@ -119,6 +119,7 @@
   <ItemGroup>
     <Compile Include="Areas\Admin\Controllers\BaseAdminController.cs" />
     <Compile Include="Caching\HttpRuntimeCacheClearer.cs" />
+    <Compile Include="Caching\OutputCacheRequestProbe.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Filters\AuthorizationAttribute.cs" />
     <Compile Include="Filters\AuthorizeRolesAttribute.cs" />

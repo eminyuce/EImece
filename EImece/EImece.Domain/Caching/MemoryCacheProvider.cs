@@ -1,7 +1,8 @@
+using EImece.Domain.Abstractions;
 using Microsoft.Extensions.Logging;
-﻿using EImece.Domain.Abstractions;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.Caching;
 using System.Threading.Tasks;
@@ -13,6 +14,8 @@ namespace EImece.Domain.Caching
         private readonly ILogger<MemoryCacheProvider> _logger;
 
         private const string PhysicalKeyPrefix = "Memory:";
+        // Sole remaining use of the System.Runtime.Caching default host. Application code must
+        // go through IEimeceCacheProvider so this adapter can be replaced later.
         private readonly MemoryCache _cache = MemoryCache.Default;
         private readonly IHttpRuntimeCacheClearer _httpRuntimeCacheClearer;
 
@@ -27,9 +30,11 @@ namespace EImece.Domain.Caching
             if (AppConfig.IsCacheActive)
             {
                 var keyNew = ToPhysicalKey(key);
+                var sw = Stopwatch.StartNew();
                 var cached = _cache[keyNew];
                 if (cached == null)
                 {
+                    CacheDiagnostics.RecordMiss(keyNew);
                     value = default(T);
                     return false;
                 }
@@ -37,16 +42,24 @@ namespace EImece.Domain.Caching
                 // GetOrAdd stores Lazy<T> for single-flight; Set stores T directly.
                 if (cached is Lazy<T> lazy)
                 {
-                    value = lazy.Value;
+                    var resolved = lazy.Value;
+                    sw.Stop();
+                    CacheDiagnostics.RecordHit(keyNew);
+                    CacheDiagnostics.RecordLookupDuration(keyNew, true, sw.ElapsedTicks);
+                    value = resolved;
                     return true;
                 }
 
                 if (cached is T typed)
                 {
+                    sw.Stop();
+                    CacheDiagnostics.RecordHit(keyNew);
+                    CacheDiagnostics.RecordLookupDuration(keyNew, true, sw.ElapsedTicks);
                     value = typed;
                     return true;
                 }
 
+                CacheDiagnostics.RecordMiss(keyNew);
                 value = default(T);
                 return false;
             }
@@ -79,16 +92,37 @@ namespace EImece.Domain.Caching
             // (single-flight), preventing the cache stampede of a naive get-then-set.
             var newLazy = new Lazy<T>(valueFactory, System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
             var cachePolicy = CreateItemPolicy(policy);
-            var winner = _cache.AddOrGetExisting(keyNew, newLazy, cachePolicy) as Lazy<T> ?? newLazy;
+            var existing = _cache.AddOrGetExisting(keyNew, newLazy, cachePolicy);
+            var added = existing == null;
+            var winner = existing as Lazy<T> ?? newLazy;
 
+            var sw = Stopwatch.StartNew();
             try
             {
-                return winner.Value;
+                var value = winner.Value;
+                sw.Stop();
+                if (added)
+                {
+                    CacheDiagnostics.RecordSet(keyNew, typeof(T), policy);
+                    CacheDiagnostics.RecordMiss(keyNew);
+                    CacheDiagnostics.RecordLookupDuration(keyNew, false, sw.ElapsedTicks);
+                }
+                else
+                {
+                    CacheDiagnostics.RecordHit(keyNew);
+                    CacheDiagnostics.RecordLookupDuration(keyNew, true, sw.ElapsedTicks);
+                }
+
+                return value;
             }
             catch
             {
                 // Never cache a faulted factory result.
                 _cache.Remove(keyNew);
+                if (added)
+                {
+                    CacheDiagnostics.RecordMiss(keyNew);
+                }
                 throw;
             }
         }
@@ -111,15 +145,36 @@ namespace EImece.Domain.Caching
             var keyNew = ToPhysicalKey(key);
             var newLazy = new Lazy<Task<T>>(valueFactory, System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
             var cachePolicy = CreateItemPolicy(policy);
-            var winner = _cache.AddOrGetExisting(keyNew, newLazy, cachePolicy) as Lazy<Task<T>> ?? newLazy;
+            var existing = _cache.AddOrGetExisting(keyNew, newLazy, cachePolicy);
+            var added = existing == null;
+            var winner = existing as Lazy<Task<T>> ?? newLazy;
 
+            var sw = Stopwatch.StartNew();
             try
             {
-                return await winner.Value.ConfigureAwait(false);
+                var value = await winner.Value.ConfigureAwait(false);
+                sw.Stop();
+                if (added)
+                {
+                    CacheDiagnostics.RecordSet(keyNew, typeof(T), policy);
+                    CacheDiagnostics.RecordMiss(keyNew);
+                    CacheDiagnostics.RecordLookupDuration(keyNew, false, sw.ElapsedTicks);
+                }
+                else
+                {
+                    CacheDiagnostics.RecordHit(keyNew);
+                    CacheDiagnostics.RecordLookupDuration(keyNew, true, sw.ElapsedTicks);
+                }
+
+                return value;
             }
             catch
             {
                 _cache.Remove(keyNew);
+                if (added)
+                {
+                    CacheDiagnostics.RecordMiss(keyNew);
+                }
                 throw;
             }
         }
@@ -139,6 +194,7 @@ namespace EImece.Domain.Caching
                 if (value != null)
                 {
                     _cache.Set(keyNew, value, CreateItemPolicy(policy));
+                    CacheDiagnostics.RecordSet(keyNew, typeof(T), policy);
                 }
             }
         }
@@ -149,6 +205,7 @@ namespace EImece.Domain.Caching
             // the raw key removed nothing. Prefix it so targeted eviction works.
             var keyNew = ToPhysicalKey(key);
             _cache.Remove(keyNew, CacheEntryRemovedReason.Removed);
+            CacheDiagnostics.RecordRemove(keyNew);
         }
 
         public int ClearByPrefix(string keyPrefix)
@@ -167,6 +224,7 @@ namespace EImece.Domain.Caching
             foreach (var key in keys)
             {
                 _cache.Remove(key, CacheEntryRemovedReason.Removed);
+                CacheDiagnostics.RecordRemove(key);
             }
 
             return keys.Count;
@@ -187,18 +245,14 @@ namespace EImece.Domain.Caching
             foreach (String key in cacheKeys)
             {
                 _cache.Remove(key, CacheEntryRemovedReason.Removed);
+                CacheDiagnostics.RecordRemove(key);
             }
 
-            // HttpRuntime OutputCache + any leftover Default entries (ClearMemoryCacheDefault is
-            // largely a no-op here because we already emptied MemoryCache.Default above).
-            int httpRuntimeRemoved;
-            int memoryCacheRemoved;
-            ApplicationCacheClearer.ClearAspNetCaches(_httpRuntimeCacheClearer, out httpRuntimeRemoved, out memoryCacheRemoved);
+            var httpRuntimeRemoved = ApplicationCacheClearer.ClearHttpRuntime(_httpRuntimeCacheClearer);
             _logger.LogInformation(
-                "MemoryCacheProvider.ClearAll removed {0} data keys (+ {1} HttpRuntime, {2} MemoryCache.Default)",
+                "MemoryCacheProvider.ClearAll removed {0} data keys (+ {1} HttpRuntime)",
                 cacheKeys.Count,
-                httpRuntimeRemoved,
-                memoryCacheRemoved);
+                httpRuntimeRemoved);
             return cacheKeys.Count;
         }
 
@@ -216,7 +270,8 @@ namespace EImece.Domain.Caching
         {
             var itemPolicy = new CacheItemPolicy
             {
-                Priority = CacheItemPriority.Default
+                Priority = CacheItemPriority.Default,
+                RemovedCallback = OnCacheEntryRemoved
             };
 
             if (policy.Mode == CacheExpirationMode.Sliding)
@@ -229,6 +284,18 @@ namespace EImece.Domain.Caching
             }
 
             return itemPolicy;
+        }
+
+        private static void OnCacheEntryRemoved(CacheEntryRemovedArguments args)
+        {
+            if (args == null || args.CacheItem == null)
+            {
+                return;
+            }
+
+            var expired = args.RemovedReason == CacheEntryRemovedReason.Expired
+                || args.RemovedReason == CacheEntryRemovedReason.Evicted;
+            CacheDiagnostics.HandleProviderEviction(args.CacheItem.Key, expired);
         }
     }
 }

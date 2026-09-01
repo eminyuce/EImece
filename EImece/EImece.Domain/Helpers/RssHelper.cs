@@ -1,8 +1,9 @@
-﻿using EImece.Domain.Helpers.RazorCustomRssTemplate;
+﻿using EImece.Domain.Caching;
+using EImece.Domain.DependencyInjection;
+using EImece.Domain.Helpers.RazorCustomRssTemplate;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Caching;
 using System.ServiceModel.Syndication;
 using System.Xml;
 using System.Xml.Linq;
@@ -13,15 +14,22 @@ namespace EImece.Domain.Helpers
     {
         public static List<RssInEmail> GetListRssInEmail(string synKey)
         {
-            string key = synKey;
-            List<RssInEmail> ret = new List<RssInEmail>();
-            ObjectCache cache = MemoryCache.Default;
+            return GetListRssInEmail(synKey, null);
+        }
 
-            CacheItem ci = cache.GetCacheItem(key);
-
-            if (ci != null)
+        public static List<RssInEmail> GetListRssInEmail(string synKey, IEimeceCacheProvider cache)
+        {
+            var ret = new List<RssInEmail>();
+            cache = ResolveCache(cache);
+            if (cache == null || string.IsNullOrEmpty(synKey))
             {
-                ret = (List<RssInEmail>)ci.Value;
+                return ret;
+            }
+
+            List<RssInEmail> cached;
+            if (cache.Get(CacheKeys.RssEmail(synKey), out cached) && cached != null)
+            {
+                ret = cached;
             }
 
             return ret;
@@ -29,28 +37,31 @@ namespace EImece.Domain.Helpers
 
         public static void SetRssInEmail(string synKey, RssInEmail rssInEmail)
         {
-            List<RssInEmail> list = new List<RssInEmail>();
-            string key = synKey;
+            SetRssInEmail(synKey, rssInEmail, null);
+        }
 
-            ObjectCache cache = MemoryCache.Default;
-
-            CacheItem ci = cache.GetCacheItem(key);
-
-            if (ci != null)
+        public static void SetRssInEmail(string synKey, RssInEmail rssInEmail, IEimeceCacheProvider cache)
+        {
+            if (rssInEmail == null || string.IsNullOrEmpty(synKey))
             {
-                list = (List<RssInEmail>)ci.Value;
-                list.Add(rssInEmail);
-            }
-            else
-            {
-                list.Add(rssInEmail);
-                ci = new CacheItem(key, list);
+                return;
             }
 
-            CacheItemPolicy policy = new CacheItemPolicy();
-            policy.SlidingExpiration = new TimeSpan(0, 1, 0);
+            cache = ResolveCache(cache);
+            if (cache == null)
+            {
+                return;
+            }
 
-            cache.Set(ci, policy);
+            var key = CacheKeys.RssEmail(synKey);
+            List<RssInEmail> list;
+            if (!cache.Get(key, out list) || list == null)
+            {
+                list = new List<RssInEmail>();
+            }
+
+            list.Add(rssInEmail);
+            cache.Set(key, list, CachePolicy.Sliding(60));
         }
 
         public static List<SI> GetRssItems(string url)
@@ -78,20 +89,18 @@ namespace EImece.Domain.Helpers
 
         public static SyndicationFeed GetRssFeedCached(String url)
         {
-            string key = url;
-            var products = (SyndicationFeed)MemoryCache.Default.Get(key);
-            if (products == null)
+            return GetRssFeedCached(url, null);
+        }
+
+        public static SyndicationFeed GetRssFeedCached(String url, IEimeceCacheProvider cache)
+        {
+            cache = ResolveCache(cache);
+            if (cache == null)
             {
-                products = GetRss(url);
-                CacheItemPolicy policy = null;
-
-                policy = new CacheItemPolicy();
-                policy.Priority = CacheItemPriority.Default;
-                policy.AbsoluteExpiration = DateTimeOffset.Now.AddSeconds(600);
-
-                MemoryCache.Default.Set(key, products, policy);
+                return GetRss(url);
             }
-            return products;
+
+            return cache.GetOrAdd(CacheKeys.RssFeed(url), () => GetRss(url), CachePolicy.Absolute(600));
         }
 
         public static SyndicationFeed GetRss(String url)
@@ -110,6 +119,11 @@ namespace EImece.Domain.Helpers
                 return extentionElement.GetObject<XElement>().Value;
             }
             return String.Empty;
+        }
+
+        private static IEimeceCacheProvider ResolveCache(IEimeceCacheProvider cache)
+        {
+            return cache ?? DomainServiceProvider.GetService<IEimeceCacheProvider>();
         }
     }
 }

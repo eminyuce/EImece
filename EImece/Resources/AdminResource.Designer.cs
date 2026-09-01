@@ -11767,5 +11767,467 @@ namespace Resources {
                 return ResourceManager.GetString("SuitableForSaleProductStatesHelp", resourceCulture);
             }
         }
+
+        public static string CacheAdministration {
+            get {
+                return ResourceManager.GetString("CacheAdministration", resourceCulture);
+            }
+        }
+
+        public static string CacheAdminPageLead {
+            get {
+                return ResourceManager.GetString("CacheAdminPageLead", resourceCulture);
+            }
+        }
+
+        public static string CacheAdminToolsLead {
+            get {
+                return ResourceManager.GetString("CacheAdminToolsLead", resourceCulture);
+            }
+        }
+
+        public static string OpenCacheAdministration {
+            get {
+                return ResourceManager.GetString("OpenCacheAdministration", resourceCulture);
+            }
+        }
+
+        public static string CacheOperations {
+            get {
+                return ResourceManager.GetString("CacheOperations", resourceCulture);
+            }
+        }
+
+        public static string CacheStatistics {
+            get {
+                return ResourceManager.GetString("CacheStatistics", resourceCulture);
+            }
+        }
+
+        public static string CacheStatisticsLead {
+            get {
+                return ResourceManager.GetString("CacheStatisticsLead", resourceCulture);
+            }
+        }
+
+        public static string CacheEntries {
+            get {
+                return ResourceManager.GetString("CacheEntries", resourceCulture);
+            }
+        }
+
+        public static string CacheEntriesLead {
+            get {
+                return ResourceManager.GetString("CacheEntriesLead", resourceCulture);
+            }
+        }
+
+        public static string TotalCacheReads {
+            get {
+                return ResourceManager.GetString("TotalCacheReads", resourceCulture);
+            }
+        }
+
+        public static string CacheHits {
+            get {
+                return ResourceManager.GetString("CacheHits", resourceCulture);
+            }
+        }
+
+        public static string CacheMisses {
+            get {
+                return ResourceManager.GetString("CacheMisses", resourceCulture);
+            }
+        }
+
+        public static string CacheHitRatio {
+            get {
+                return ResourceManager.GetString("CacheHitRatio", resourceCulture);
+            }
+        }
+
+        public static string CacheSets {
+            get {
+                return ResourceManager.GetString("CacheSets", resourceCulture);
+            }
+        }
+
+        public static string CacheRemovals {
+            get {
+                return ResourceManager.GetString("CacheRemovals", resourceCulture);
+            }
+        }
+
+        public static string CacheExpirations {
+            get {
+                return ResourceManager.GetString("CacheExpirations", resourceCulture);
+            }
+        }
+
+        public static string LastRefreshed {
+            get {
+                return ResourceManager.GetString("LastRefreshed", resourceCulture);
+            }
+        }
+
+        public static string SearchCacheKeys {
+            get {
+                return ResourceManager.GetString("SearchCacheKeys", resourceCulture);
+            }
+        }
+
+        public static string CacheKey {
+            get {
+                return ResourceManager.GetString("CacheKey", resourceCulture);
+            }
+        }
+
+        public static string CacheCategory {
+            get {
+                return ResourceManager.GetString("CacheCategory", resourceCulture);
+            }
+        }
+
+        public static string CacheStatus {
+            get {
+                return ResourceManager.GetString("CacheStatus", resourceCulture);
+            }
+        }
+
+        public static string CacheTtl {
+            get {
+                return ResourceManager.GetString("CacheTtl", resourceCulture);
+            }
+        }
+
+        public static string CacheType {
+            get {
+                return ResourceManager.GetString("CacheType", resourceCulture);
+            }
+        }
+
+        public static string CacheSize {
+            get {
+                return ResourceManager.GetString("CacheSize", resourceCulture);
+            }
+        }
+
+        public static string CacheHitCount {
+            get {
+                return ResourceManager.GetString("CacheHitCount", resourceCulture);
+            }
+        }
+
+        public static string CacheMissCount {
+            get {
+                return ResourceManager.GetString("CacheMissCount", resourceCulture);
+            }
+        }
+
+        public static string CacheCreated {
+            get {
+                return ResourceManager.GetString("CacheCreated", resourceCulture);
+            }
+        }
+
+        public static string CacheExpires {
+            get {
+                return ResourceManager.GetString("CacheExpires", resourceCulture);
+            }
+        }
+
+        public static string CacheLastAccess {
+            get {
+                return ResourceManager.GetString("CacheLastAccess", resourceCulture);
+            }
+        }
+
+        public static string CacheStatusActive {
+            get {
+                return ResourceManager.GetString("CacheStatusActive", resourceCulture);
+            }
+        }
+
+        public static string CacheStatusExpired {
+            get {
+                return ResourceManager.GetString("CacheStatusExpired", resourceCulture);
+            }
+        }
+
+        public static string CacheFilterAllCategories {
+            get {
+                return ResourceManager.GetString("CacheFilterAllCategories", resourceCulture);
+            }
+        }
+
+        public static string CacheFilterAllStatuses {
+            get {
+                return ResourceManager.GetString("CacheFilterAllStatuses", resourceCulture);
+            }
+        }
+
+        public static string CacheNoEntries {
+            get {
+                return ResourceManager.GetString("CacheNoEntries", resourceCulture);
+            }
+        }
+
+        public static string CacheValuesNotExposed {
+            get {
+                return ResourceManager.GetString("CacheValuesNotExposed", resourceCulture);
+            }
+        }
+
+        public static string CacheIsDisabled {
+            get {
+                return ResourceManager.GetString("CacheIsDisabled", resourceCulture);
+            }
+        }
+
+        public static string CacheEntryDetails {
+            get {
+                return ResourceManager.GetString("CacheEntryDetails", resourceCulture);
+            }
+        }
+
+        public static string CacheInvalidatedFormat {
+            get {
+                return ResourceManager.GetString("CacheInvalidatedFormat", resourceCulture);
+            }
+        }
+
+        public static string CacheExportHint {
+            get {
+                return ResourceManager.GetString("CacheExportHint", resourceCulture);
+            }
+        }
+
+        public static string CacheOverview {
+            get {
+                return ResourceManager.GetString("CacheOverview", resourceCulture);
+            }
+        }
+
+        public static string CacheOverviewLead {
+            get {
+                return ResourceManager.GetString("CacheOverviewLead", resourceCulture);
+            }
+        }
+
+        public static string CacheStatusEffective {
+            get {
+                return ResourceManager.GetString("CacheStatusEffective", resourceCulture);
+            }
+        }
+
+        public static string CacheStatusLabel {
+            get {
+                return ResourceManager.GetString("CacheStatusLabel", resourceCulture);
+            }
+        }
+
+        public static string CacheStatusLimited {
+            get {
+                return ResourceManager.GetString("CacheStatusLimited", resourceCulture);
+            }
+        }
+
+        public static string CacheStatusNotEffective {
+            get {
+                return ResourceManager.GetString("CacheStatusNotEffective", resourceCulture);
+            }
+        }
+
+        public static string CacheHitRate {
+            get {
+                return ResourceManager.GetString("CacheHitRate", resourceCulture);
+            }
+        }
+
+        public static string CacheHitRateHelp {
+            get {
+                return ResourceManager.GetString("CacheHitRateHelp", resourceCulture);
+            }
+        }
+
+        public static string CacheMissHelp {
+            get {
+                return ResourceManager.GetString("CacheMissHelp", resourceCulture);
+            }
+        }
+
+        public static string CacheImprovementHelp {
+            get {
+                return ResourceManager.GetString("CacheImprovementHelp", resourceCulture);
+            }
+        }
+
+        public static string CacheTtlHelp {
+            get {
+                return ResourceManager.GetString("CacheTtlHelp", resourceCulture);
+            }
+        }
+
+        public static string CacheActiveEntries {
+            get {
+                return ResourceManager.GetString("CacheActiveEntries", resourceCulture);
+            }
+        }
+
+        public static string CacheRequestsServed {
+            get {
+                return ResourceManager.GetString("CacheRequestsServed", resourceCulture);
+            }
+        }
+
+        public static string CacheTimeSaved {
+            get {
+                return ResourceManager.GetString("CacheTimeSaved", resourceCulture);
+            }
+        }
+
+        public static string CachePerformanceImprovement {
+            get {
+                return ResourceManager.GetString("CachePerformanceImprovement", resourceCulture);
+            }
+        }
+
+        public static string CachePerformanceNotMeasured {
+            get {
+                return ResourceManager.GetString("CachePerformanceNotMeasured", resourceCulture);
+            }
+        }
+
+        public static string CachePageResponseTitle {
+            get {
+                return ResourceManager.GetString("CachePageResponseTitle", resourceCulture);
+            }
+        }
+
+        public static string CachePageResponseLead {
+            get {
+                return ResourceManager.GetString("CachePageResponseLead", resourceCulture);
+            }
+        }
+
+        public static string CacheApplicationDataTitle {
+            get {
+                return ResourceManager.GetString("CacheApplicationDataTitle", resourceCulture);
+            }
+        }
+
+        public static string CacheApplicationDataLead {
+            get {
+                return ResourceManager.GetString("CacheApplicationDataLead", resourceCulture);
+            }
+        }
+
+        public static string CacheTechnicalName {
+            get {
+                return ResourceManager.GetString("CacheTechnicalName", resourceCulture);
+            }
+        }
+
+        public static string CacheProfileLabel {
+            get {
+                return ResourceManager.GetString("CacheProfileLabel", resourceCulture);
+            }
+        }
+
+        public static string CacheAvgWithoutCache {
+            get {
+                return ResourceManager.GetString("CacheAvgWithoutCache", resourceCulture);
+            }
+        }
+
+        public static string CacheAvgWithCache {
+            get {
+                return ResourceManager.GetString("CacheAvgWithCache", resourceCulture);
+            }
+        }
+
+        public static string CacheAvgResponseTime {
+            get {
+                return ResourceManager.GetString("CacheAvgResponseTime", resourceCulture);
+            }
+        }
+
+        public static string CacheDbOpsAvoided {
+            get {
+                return ResourceManager.GetString("CacheDbOpsAvoided", resourceCulture);
+            }
+        }
+
+        public static string CacheHealthEffectiveBody {
+            get {
+                return ResourceManager.GetString("CacheHealthEffectiveBody", resourceCulture);
+            }
+        }
+
+        public static string CacheHealthLimitedBody {
+            get {
+                return ResourceManager.GetString("CacheHealthLimitedBody", resourceCulture);
+            }
+        }
+
+        public static string CacheHealthNotEffectiveBody {
+            get {
+                return ResourceManager.GetString("CacheHealthNotEffectiveBody", resourceCulture);
+            }
+        }
+
+        public static string CacheHealthWaitingBody {
+            get {
+                return ResourceManager.GetString("CacheHealthWaitingBody", resourceCulture);
+            }
+        }
+
+        public static string CacheName {
+            get {
+                return ResourceManager.GetString("CacheName", resourceCulture);
+            }
+        }
+
+        public static string CacheKindPageResponse {
+            get {
+                return ResourceManager.GetString("CacheKindPageResponse", resourceCulture);
+            }
+        }
+
+        public static string CacheKindApplicationData {
+            get {
+                return ResourceManager.GetString("CacheKindApplicationData", resourceCulture);
+            }
+        }
+
+        public static string CacheRemainingTtl {
+            get {
+                return ResourceManager.GetString("CacheRemainingTtl", resourceCulture);
+            }
+        }
+
+        public static string CacheAvgCachedTime {
+            get {
+                return ResourceManager.GetString("CacheAvgCachedTime", resourceCulture);
+            }
+        }
+
+        public static string CacheAvgUncachedTime {
+            get {
+                return ResourceManager.GetString("CacheAvgUncachedTime", resourceCulture);
+            }
+        }
+
+        public static string CacheImprovement {
+            get {
+                return ResourceManager.GetString("CacheImprovement", resourceCulture);
+            }
+        }
+
+        public static string CacheEntryTechnicalKey {
+            get {
+                return ResourceManager.GetString("CacheEntryTechnicalKey", resourceCulture);
+            }
+        }
     }
 }

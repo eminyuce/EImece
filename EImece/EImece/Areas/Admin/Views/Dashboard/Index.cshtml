@@ -194,69 +194,17 @@
     <section class="admin-home__section" aria-labelledby="admin-home-cache">
         <h2 id="admin-home-cache" class="admin-home__section-title">@AdminResource.CacheManagement</h2>
         <p class="admin-home__lead" style="margin-bottom:0.75rem;">
-            @AdminResource.CacheManagementLead
+            @AdminResource.CacheAdminToolsLead
         </p>
         <div class="admin-home__grid">
-            @using (Html.BeginForm("InvalidateCache", "Dashboard", new { area = "admin" }, FormMethod.Post))
-            {
-                @Html.AntiForgeryToken()
-                <input type="hidden" name="target" value="products" />
-                <button type="submit" class="admin-home__tile" style="border:none;cursor:pointer;text-align:inherit;width:100%;">
-                    <span class="admin-home__tile-icon admin-home__tile-icon--accent" aria-hidden="true"><i class="fa-solid fa-arrows-rotate"></i></span>
-                    <span class="admin-home__tile-body">
-                        <span class="admin-home__tile-title">@AdminResource.ProductPriceCache</span>
-                        <span class="admin-home__tile-desc">@AdminResource.ProductPriceCacheDesc</span>
-                    </span>
-                </button>
-            }
-            @using (Html.BeginForm("InvalidateCache", "Dashboard", new { area = "admin" }, FormMethod.Post))
-            {
-                @Html.AntiForgeryToken()
-                <input type="hidden" name="target" value="categories" />
-                <button type="submit" class="admin-home__tile" style="border:none;cursor:pointer;text-align:inherit;width:100%;">
-                    <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa-solid fa-sitemap"></i></span>
-                    <span class="admin-home__tile-body">
-                        <span class="admin-home__tile-title">@AdminResource.CategoryCache</span>
-                        <span class="admin-home__tile-desc">@AdminResource.CategoryCacheDesc</span>
-                    </span>
-                </button>
-            }
-            @using (Html.BeginForm("InvalidateCache", "Dashboard", new { area = "admin" }, FormMethod.Post))
-            {
-                @Html.AntiForgeryToken()
-                <input type="hidden" name="target" value="settings" />
-                <button type="submit" class="admin-home__tile" style="border:none;cursor:pointer;text-align:inherit;width:100%;">
-                    <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa-solid fa-sliders"></i></span>
-                    <span class="admin-home__tile-body">
-                        <span class="admin-home__tile-title">@AdminResource.SettingCache</span>
-                        <span class="admin-home__tile-desc">@AdminResource.SettingCacheDesc</span>
-                    </span>
-                </button>
-            }
-            @using (Html.BeginForm("InvalidateCache", "Dashboard", new { area = "admin" }, FormMethod.Post))
-            {
-                @Html.AntiForgeryToken()
-                <input type="hidden" name="target" value="content" />
-                <button type="submit" class="admin-home__tile" style="border:none;cursor:pointer;text-align:inherit;width:100%;">
-                    <span class="admin-home__tile-icon" aria-hidden="true"><i class="fa-regular fa-file-lines"></i></span>
-                    <span class="admin-home__tile-body">
-                        <span class="admin-home__tile-title">@AdminResource.ContentCache</span>
-                        <span class="admin-home__tile-desc">@AdminResource.ContentCacheDesc</span>
-                    </span>
-                </button>
-            }
+            <a class="admin-home__tile" href="@Url.Action("Index", "Cache", new { area = "admin" })">
+                <span class="admin-home__tile-icon admin-home__tile-icon--accent" aria-hidden="true"><i class="fa-solid fa-database"></i></span>
+                <span class="admin-home__tile-body">
+                    <span class="admin-home__tile-title">@AdminResource.CacheAdministration</span>
+                    <span class="admin-home__tile-desc">@AdminResource.CacheAdminPageLead</span>
+                </span>
+                <span class="admin-home__tile-chevron" aria-hidden="true"><i class="fa-solid fa-angle-right"></i></span>
+            </a>
         </div>
-        @using (Html.BeginForm("InvalidateCache", "Dashboard", new { area = "admin" }, FormMethod.Post, new { style = "margin-top:1rem;" }))
-        {
-            @Html.AntiForgeryToken()
-            <input type="hidden" name="target" value="all" />
-            <button type="submit" class="btn btn-danger">
-                <i class="fa-solid fa-bomb" aria-hidden="true"></i>
-                @AdminResource.ClearAllStorefrontCache
-            </button>
-            <span style="color:#829ab1;font-size:0.85rem;margin-left:0.5rem;">
-                @AdminResource.ClearAllStorefrontCacheHint
-            </span>
-        }
     </section>
 </div>

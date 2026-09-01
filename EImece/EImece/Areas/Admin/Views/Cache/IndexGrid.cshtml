@@ -1,0 +1,86 @@
+@using EImece.Domain.Caching
+@using EImece.Domain.Helpers
+@using Griddly.Mvc
+@using Resources
+
+@{
+    Layout = null;
+    var gridName = "CacheGrid";
+    int pageSizeNumber = ViewBag.GridPageSizeNumber != null ? (int)ViewBag.GridPageSizeNumber : AdminSettings.GridPageSizeNumber;
+    int rowNum = 0;
+    int startIndex = 0;
+    var na = CacheDiagnostics.NotAvailable;
+    var cannot = AdminResource.CachePerformanceNotMeasured;
+
+    var settings = new GriddlySettings<CacheEntrySnapshot>()
+    {
+        ClassName = "eg-grid eg-grid-shell",
+        TableClassName = "table table-hover table-striped eg-grid-table",
+        PageSize = pageSizeNumber,
+        AllowedFilterModes = FilterMode.None,
+        DefaultSort = new[] { new SortField() { Field = "HitCount", Direction = SortDirection.Descending } }
+    };
+
+    settings.HtmlAttributes["data-gridname"] = gridName;
+
+    settings.BeforeTemplate = @<text>
+        <output class="card-header grid-record-count" style="display:block" aria-live="polite">
+            <div class="grid-record-count-inner">
+                <span class="grid-record-count-badge griddly-recordtotal"></span>
+                <span class="grid-record-count-label">@AdminResource.CacheEntries</span>
+            </div>
+            <div class="eg-grid-scroll-controls" title="@AdminResource.ScrollTableLeftRight">
+                <button type="button" class="btn btn-sm eg-scroll-nav-btn eg-scroll-nav-left" title="@AdminResource.ScrollLeft" aria-label="@AdminResource.ScrollLeft">
+                    <i class="fa-solid fa-chevron-left"></i>
+                </button>
+                <button type="button" class="btn btn-sm eg-scroll-nav-btn eg-scroll-nav-right" title="@AdminResource.ScrollRight" aria-label="@AdminResource.ScrollRight">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </button>
+            </div>
+        </output>
+    </text>;
+
+    settings
+        .Column(caption: "", template: @<text><span class="eg-row-index">@(startIndex + (++rowNum))</span></text>, className: "eg-sticky-left eg-sticky-left-1 eg-col-index", width: "44px")
+        .Column(x => x.DisplayName, caption: AdminResource.CacheName, template: @<text>
+            <button type="button" class="btn btn-link p-0 text-start text-break cache-entry-detail" data-key="@item.Key" title="@AdminResource.CacheEntryDetails">
+                <span class="fw-semibold d-block">@(string.IsNullOrEmpty(item.DisplayName) ? item.Key : item.DisplayName)</span>
+                <code class="small text-muted">@item.Key</code>
+            </button>
+        </text>, className: "eg-col-name", width: "260px")
+        .Column(x => x.CacheKind, caption: AdminResource.CacheType, template: @<text>
+            @(string.Equals(item.CacheKind, CacheDiagnostics.KindPageResponse, StringComparison.OrdinalIgnoreCase)
+                ? AdminResource.CacheKindPageResponse
+                : AdminResource.CacheKindApplicationData)
+        </text>, width: "150px")
+        .Column(x => x.Status, caption: AdminResource.CacheStatus, template: @<text>
+            @if (string.Equals(item.Status, CacheDiagnostics.StatusActive, StringComparison.OrdinalIgnoreCase))
+            {
+                <span class="badge bg-success">@AdminResource.CacheStatusActive</span>
+            }
+            else
+            {
+                <span class="badge bg-secondary">@AdminResource.CacheStatusExpired</span>
+            }
+        </text>, width: "90px")
+        .Column(x => x.CreatedUtc, caption: AdminResource.CacheCreated, template: @<text><span class="text-muted small">@(item.CreatedUtc.HasValue ? item.CreatedUtc.Value.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss") : na)</span></text>, className: "gridDateClass", width: "150px")
+        .Column(x => x.ExpiresUtc, caption: AdminResource.CacheExpires, template: @<text><span class="text-muted small">@(item.ExpiresUtc.HasValue ? item.ExpiresUtc.Value.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss") : na)</span></text>, className: "gridDateClass", width: "150px")
+        .Column(x => x.Ttl, caption: AdminResource.CacheRemainingTtl, template: @<text><span title="@AdminResource.CacheTtlHelp">@(string.IsNullOrEmpty(item.Ttl) ? na : item.Ttl)</span></text>, width: "110px")
+        .Column(x => x.HitCount, caption: AdminResource.CacheHits, template: @<text><span class="badge bg-light text-dark border">@item.HitCount.ToString("N0")</span></text>, width: "80px")
+        .Column(x => x.Misses, caption: AdminResource.CacheMisses, template: @<text>@item.Misses.ToString("N0")</text>, width: "80px")
+        .Column(x => x.HitRatioPercent, caption: AdminResource.CacheHitRate, template: @<text><span title="@AdminResource.CacheHitRateHelp">@item.HitRatioPercent.ToString("N1")%</span></text>, width: "90px")
+        .Column(x => x.AvgCachedMs, caption: AdminResource.CacheAvgCachedTime, template: @<text>@(item.AvgCachedMs.HasValue ? item.AvgCachedMs.Value.ToString("N1") + " ms" : cannot)</text>, width: "120px")
+        .Column(x => x.AvgUncachedMs, caption: AdminResource.CacheAvgUncachedTime, template: @<text>@(item.AvgUncachedMs.HasValue ? item.AvgUncachedMs.Value.ToString("N1") + " ms" : cannot)</text>, width: "130px")
+        .Column(x => x.ImprovementPercent, caption: AdminResource.CacheImprovement, template: @<text>
+            @if (item.ImprovementPercent.HasValue)
+            {
+                <span class="fw-semibold text-success" title="@AdminResource.CacheImprovementHelp">@item.ImprovementPercent.Value.ToString("N1")%</span>
+            }
+            else
+            {
+                <span class="text-muted small" title="@AdminResource.CacheImprovementHelp">@cannot</span>
+            }
+        </text>, width: "120px");
+}
+
+@Html.Griddly(settings)

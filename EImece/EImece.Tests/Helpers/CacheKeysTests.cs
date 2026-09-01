@@ -23,6 +23,14 @@ namespace EImece.Tests.Helpers
         }
 
         [TestMethod]
+        public void WebSiteLogoImage_LivesUnderSettingArea()
+        {
+            Assert.AreEqual("setting:logoimage", CacheKeys.WebSiteLogoImage);
+            StringAssert.StartsWith(CacheKeys.WebSiteLogoImage, CacheKeys.SettingPrefix);
+            Assert.AreEqual("WebSiteLogo", CacheKeys.WebSiteLogoImageLegacy);
+        }
+
+        [TestMethod]
         public void ActiveProductsAsync_UsesDistinctSuffix()
         {
             var sync = CacheKeys.ActiveProducts(1);
@@ -51,6 +59,16 @@ namespace EImece.Tests.Helpers
             var normalized = CacheKeys.NormalizeSearchTerm(longTerm);
             Assert.AreEqual(64, normalized.Length);
             Assert.IsFalse(normalized.Contains("!"));
+        }
+
+        [TestMethod]
+        public void RssKeys_LiveUnderRssArea()
+        {
+            var email = CacheKeys.RssEmail("Campaign A");
+            var feed = CacheKeys.RssFeed("https://example.test/feed.xml");
+            StringAssert.StartsWith(email, CacheKeys.RssEmailPrefix);
+            StringAssert.StartsWith(feed, CacheKeys.RssFeedPrefix);
+            StringAssert.StartsWith(email, CacheKeys.RssPrefix);
         }
     }
 }

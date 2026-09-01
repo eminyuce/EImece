@@ -2,6 +2,7 @@ using EImece.Domain;
 using EImece.Domain.Helpers;
 using EImece.Domain.DependencyInjection;
 using EImece.Domain.Services.IServices;
+using EImece.Web.Caching;
 using Microsoft.Extensions.DependencyInjection;
 using System.Web.Mvc;
 
@@ -16,6 +17,7 @@ namespace EImece.Web.Filters
 
             if (isUnderConstruction || httpContext.User.Identity.IsAuthenticated)
             {
+                try { OutputCacheRequestProbe.MarkBypassed(httpContext); } catch { }
                 // Skip output-cache when under construction or for authenticated users
                 httpContext.Response.Cache.SetNoServerCaching();
                 httpContext.Response.Cache.SetCacheability(System.Web.HttpCacheability.NoCache);
@@ -23,6 +25,10 @@ namespace EImece.Web.Filters
             }
             else
             {
+                if (IsHtmlStorefrontProfile())
+                {
+                    try { OutputCacheRequestProbe.MarkPageGeneration(httpContext); } catch { }
+                }
                 base.OnActionExecuting(filterContext);
             }
         }
@@ -55,6 +61,14 @@ namespace EImece.Web.Filters
             {
                 return false;
             }
+        }
+
+        private bool IsHtmlStorefrontProfile()
+        {
+            var profile = CacheProfile;
+            return string.Equals(profile, Constants.Cache1Hour, System.StringComparison.OrdinalIgnoreCase)
+                || string.Equals(profile, Constants.Cache20Minutes, System.StringComparison.OrdinalIgnoreCase)
+                || string.Equals(profile, Constants.Cache1Day, System.StringComparison.OrdinalIgnoreCase);
         }
 
         public override void OnResultExecuted(ResultExecutedContext filterContext)

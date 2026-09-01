@@ -75,13 +75,12 @@ namespace EImece.Domain.Caching
 
         /// <summary>
         /// Full process-wide cache wipe used by the Admin top-bar Refresh button
-        /// (<c>Dashboard/ClearCache</c>). Must clear:
+        /// (<c>Cache/ClearCache</c> and the Dashboard alias). Must clear:
         /// <list type="bullet">
         /// <item>this provider's data entries (product lists, settings, menus, …)</item>
         /// <item>ASP.NET OutputCache / <c>HttpRuntime.Cache</c> (rendered product HTML)</item>
-        /// <item><c>MemoryCache.Default</c> (RssHelper and other direct writers)</item>
         /// </list>
-        /// Returns the number of provider data keys removed (AspNet layers are cleared as a side effect).
+        /// Returns the number of provider data keys removed (AspNet OutputCache is cleared as a side effect).
         /// </summary>
         int ClearAll();
     }

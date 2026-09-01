@@ -12,7 +12,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
-using System.Runtime.Caching;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
@@ -707,8 +706,7 @@ namespace EImece.Domain.Helpers
         public static byte[] GetImageFromUrlFromCache(string url, Dictionary<String, String> dictionary, int minute = 100)
         {
             // GetOrAdd coalesces concurrent callers for the same url onto a single fetch, avoiding
-            // the cache stampede of the previous get-then-set pattern. ICacheEntry is fully qualified
-            // to avoid a MemoryCache name clash with the System.Runtime.Caching using in this file.
+            // the cache stampede of the previous get-then-set pattern.
             return ImageCache.GetOrAdd(url, (Microsoft.Extensions.Caching.Memory.ICacheEntry entry) =>
             {
                 entry.AbsoluteExpiration = DateTimeOffset.Now.AddMinutes(minute);

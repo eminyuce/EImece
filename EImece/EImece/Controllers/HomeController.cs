@@ -1,12 +1,9 @@
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
-using EImece.Domain.Observability.Logging;
 using EImece.Web.Controllers;
 using EImece.Domain;
 using EImece.Web.Services;
 using EImece.Domain.Caching;
 using EImece.Domain.Entities;
-using EImece.Domain.DependencyInjection;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.EmailHelper;
 using EImece.Domain.Models.Enums;
@@ -24,8 +21,6 @@ using System.ComponentModel.DataAnnotations;
 using System.Data.Entity.Validation;
 using System.Linq;
 using System.Net;
-using System.Reflection;
-using System.Runtime.Caching;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -377,41 +372,20 @@ namespace EImece.Controllers
 
         public ActionResult DisplayAllCache()
         {
-            var cache = MemoryCache.Default;
-            List<string> cacheKeys = cache.Select(kvp => kvp.Key).Where(r => r.Contains("Memory:")).ToList();
-            List<string> keys = new List<string>();
+            var cacheKeys = CacheDiagnostics.GetMatchingEntries("", "all", "all")
+                .Select(e => e.Key)
+                .ToList();
+            var keys = new List<string>();
             IDictionaryEnumerator enumerator = System.Web.HttpRuntime.Cache.GetEnumerator();
             while (enumerator.MoveNext())
             {
                 string key = (string)enumerator.Key;
                 keys.Add(key);
             }
-            var approximateSize = GetApproximateSize(cache);
-            Logger.LogDebug("DisplayAllCache MemoryKeys={0} HttpRuntimeKeys={1} ApproximateSize={2}",
-                cacheKeys.Count, keys.Count, approximateSize);
-            return View(new AllCacheList() { HttpRuntimeKey = keys, MemoryCacheKey = cacheKeys, ApproximateSize = approximateSize });
-        }
 
-        public static long GetApproximateSize(MemoryCache cache)
-        {
-            var staticLogger = LoggingBootstrap.LoggerFactory?.CreateLogger(typeof(HomeController))
-                ?? NullLogger.Instance;
-            try
-            {
-                var statsField = typeof(MemoryCache).GetField("_stats", BindingFlags.NonPublic | BindingFlags.Instance);
-                var statsValue = statsField.GetValue(cache);
-                var monitorField = statsValue.GetType().GetField("_cacheMemoryMonitor", BindingFlags.NonPublic | BindingFlags.Instance);
-                var monitorValue = monitorField.GetValue(statsValue);
-                var sizeField = monitorValue.GetType().GetField("_sizedRefMultiple", BindingFlags.NonPublic | BindingFlags.Instance);
-                var sizeValue = sizeField.GetValue(monitorValue);
-                var approxProp = sizeValue.GetType().GetProperty("ApproximateSize", BindingFlags.NonPublic | BindingFlags.Instance);
-                return (long)approxProp.GetValue(sizeValue, null);
-            }
-            catch (Exception ex)
-            {
-                staticLogger.LogError(ex, "Exception in GetApproximateSize: {Message}", ex.Message);
-                return -1;
-            }
+            Logger.LogDebug("DisplayAllCache MemoryKeys={0} HttpRuntimeKeys={1}",
+                cacheKeys.Count, keys.Count);
+            return View(new AllCacheList() { HttpRuntimeKey = keys, MemoryCacheKey = cacheKeys, ApproximateSize = -1 });
         }
 
         public class AllCacheList

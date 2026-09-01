@@ -4,6 +4,7 @@ using EImece.Domain;
 using EImece.Domain.Helpers;
 using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
+using EImece.Web.Caching;
 using EImece.Web.Filters;
 using EImece.Web.Infrastructure.Designs;
 using Microsoft.Extensions.DependencyInjection;
@@ -163,8 +164,28 @@ namespace EImece
         protected void Application_BeginRequest(object sender, EventArgs e)
         {
             DependencyInjectionConfig.BeginRequestScope();
+            try
+            {
+                OutputCacheRequestProbe.OnBeginRequest(Context);
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogDebug(ex, "OutputCacheRequestProbe.OnBeginRequest failed");
+            }
             Redirect301();
             EnforceUnderConstructionRedirect();
+        }
+
+        protected void Application_PostMapRequestHandler(object sender, EventArgs e)
+        {
+            try
+            {
+                OutputCacheRequestProbe.MarkMvcHandler(Context);
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogDebug(ex, "OutputCacheRequestProbe.MarkMvcHandler failed");
+            }
         }
 
         private void EnforceUnderConstructionRedirect()
@@ -272,6 +293,14 @@ namespace EImece
 
         protected void Application_EndRequest(object sender, EventArgs e)
         {
+            try
+            {
+                OutputCacheRequestProbe.OnEndRequest(Context);
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogDebug(ex, "OutputCacheRequestProbe.OnEndRequest failed");
+            }
             DependencyInjectionConfig.EndRequestScope();
         }
 

@@ -73,6 +73,8 @@ namespace EImece.Domain.Services
                 DataCachingProvider.ClearByPrefix("SettingValueDto:");
                 DataCachingProvider.ClearByPrefix(SettingKeyValuesCachePrefix);
                 DataCachingProvider.Clear(CacheKeys.WebAppManifest);
+                DataCachingProvider.Clear(CacheKeys.WebSiteLogoImage);
+                DataCachingProvider.Clear(CacheKeys.WebSiteLogoImageLegacy);
             }
         }
 

@@ -5248,3 +5248,83 @@ body.admin-app .form-check-input[type="checkbox"]:disabled {
     color: #94a3b8;
 }
 
+/* Cache Admin: softer light-blue actions (avoid high-contrast Bootstrap primary) */
+.cache-admin-page .btn-primary {
+    --bs-btn-color: #1864ab;
+    --bs-btn-bg: #d0ebff;
+    --bs-btn-border-color: #74c0fc;
+    --bs-btn-hover-color: #0c4a6e;
+    --bs-btn-hover-bg: #a5d8ff;
+    --bs-btn-hover-border-color: #4dabf7;
+    --bs-btn-active-color: #0c4a6e;
+    --bs-btn-active-bg: #74c0fc;
+    --bs-btn-active-border-color: #4dabf7;
+    --bs-btn-disabled-color: #1864ab;
+    --bs-btn-disabled-bg: #e7f5ff;
+    --bs-btn-disabled-border-color: #a5d8ff;
+}
+
+.cache-admin-page .btn-outline-primary {
+    --bs-btn-color: #1c7ed6;
+    --bs-btn-border-color: #74c0fc;
+    --bs-btn-hover-color: #0c4a6e;
+    --bs-btn-hover-bg: #d0ebff;
+    --bs-btn-hover-border-color: #4dabf7;
+    --bs-btn-active-color: #0c4a6e;
+    --bs-btn-active-bg: #a5d8ff;
+    --bs-btn-active-border-color: #4dabf7;
+    --bs-btn-disabled-color: #74c0fc;
+    --bs-btn-disabled-border-color: #a5d8ff;
+}
+
+.cache-admin-page .btn-link,
+.cache-admin-page .cache-entry-detail {
+    color: #1c7ed6;
+}
+
+.cache-admin-page .btn-link:hover,
+.cache-admin-page .cache-entry-detail:hover {
+    color: #1864ab;
+}
+
+.cache-admin-page .pagination .page-link {
+    color: #1c7ed6;
+}
+
+.cache-admin-page .pagination .page-item.active .page-link {
+    color: #0c4a6e;
+    background-color: #d0ebff;
+    border-color: #74c0fc;
+}
+
+.cache-admin-page .cache-help {
+    font-size: 0.75rem;
+    margin-left: 0.25rem;
+    cursor: help;
+}
+
+.cache-admin-page .cache-overview-card,
+.cache-admin-page .cache-layer-card {
+    border-left: 4px solid #74c0fc;
+}
+
+.cache-admin-page .cache-health-effective {
+    border-left-color: #40c057;
+}
+
+.cache-admin-page .cache-health-limited {
+    border-left-color: #fab005;
+}
+
+.cache-admin-page .cache-health-noteffective {
+    border-left-color: #fa5252;
+}
+
+.cache-admin-page .cache-status-banner {
+    padding: 0.5rem 0;
+}
+
+.cache-admin-page .cache-time-compare .progress {
+    background-color: #e7f5ff;
+}
+

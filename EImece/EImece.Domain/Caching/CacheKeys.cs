@@ -27,6 +27,7 @@ namespace EImece.Domain.Caching
         public const string FaqArea = "faq";
         public const string OrderArea = "order";
         public const string SettingArea = "setting";
+        public const string RssArea = "rss";
 
         public static string ProductListPrefix => ProductArea + ":list:";
         public static string ProductSearchPrefix => ProductArea + ":search:";
@@ -47,12 +48,19 @@ namespace EImece.Domain.Caching
         public static string FaqPrefix => FaqArea + ":";
         public static string OrderPrefix => OrderArea + ":";
         public static string SettingPrefix => SettingArea + ":";
+        public static string RssPrefix => RssArea + ":";
+        public static string RssEmailPrefix => RssPrefix + "email:";
+        public static string RssFeedPrefix => RssPrefix + "feed:";
 
         #endregion
 
         #region Settings
 
         public static string WebAppManifest => SettingArea + ":webappmanifest";
+        /// <summary>JPEG bytes served at <c>/images/logo.jpg</c> by <c>ImagesController.Logo</c>.</summary>
+        public static string WebSiteLogoImage => SettingArea + ":logoimage";
+        /// <summary>Pre-prefix key used by <c>ImagesController.Logo</c>; still evicted on upload.</summary>
+        public const string WebSiteLogoImageLegacy = "WebSiteLogo";
         public static string AllSettings(int language) => string.Format(CultureInfo.InvariantCulture, "{0}all:lang{1}", SettingPrefix, language);
         public static string AllSettingsAsync(int language) => AllSettings(language) + ":async";
 
@@ -301,6 +309,20 @@ namespace EImece.Domain.Caching
         }
 
         public static string FaqListAsync(int language) => FaqList(language) + ":async";
+
+        #endregion
+
+        #region RSS Keys
+
+        public static string RssEmail(string synKey)
+        {
+            return RssEmailPrefix + NormalizeSearchTerm(synKey ?? "");
+        }
+
+        public static string RssFeed(string url)
+        {
+            return RssFeedPrefix + NormalizeSearchTerm(url ?? "");
+        }
 
         #endregion
 

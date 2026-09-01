@@ -5048,4 +5048,235 @@
   <data name="SuitableForSaleProductStatesHelp" xml:space="preserve">
     <value>Select product states eligible for customer purchasing and cart additions (e.g. In Stock, Pre-Order, Limited Stock, etc.).</value>
   </data>
+  <data name="CacheAdministration" xml:space="preserve">
+    <value>Cache Administration</value>
+  </data>
+  <data name="CacheAdminPageLead" xml:space="preserve">
+    <value>See whether caching is on, how often it is used, and whether it is making the store faster.</value>
+  </data>
+  <data name="CacheAdminToolsLead" xml:space="preserve">
+    <value>Manage application cache, inspect cache keys, and monitor cache performance.</value>
+  </data>
+  <data name="OpenCacheAdministration" xml:space="preserve">
+    <value>Open Cache Administration</value>
+  </data>
+  <data name="CacheOperations" xml:space="preserve">
+    <value>Cache Operations</value>
+  </data>
+  <data name="CacheStatistics" xml:space="preserve">
+    <value>Cache Statistics</value>
+  </data>
+  <data name="CacheStatisticsLead" xml:space="preserve">
+    <value>Real application cache reads, writes, and expirations for this process.</value>
+  </data>
+  <data name="CacheEntries" xml:space="preserve">
+    <value>Cache Entries</value>
+  </data>
+  <data name="CacheEntriesLead" xml:space="preserve">
+    <value>Currently tracked cache keys. Cached values are never displayed.</value>
+  </data>
+  <data name="TotalCacheReads" xml:space="preserve">
+    <value>Total Reads</value>
+  </data>
+  <data name="CacheHits" xml:space="preserve">
+    <value>Hits</value>
+  </data>
+  <data name="CacheMisses" xml:space="preserve">
+    <value>Misses</value>
+  </data>
+  <data name="CacheHitRatio" xml:space="preserve">
+    <value>Hit Ratio</value>
+  </data>
+  <data name="CacheSets" xml:space="preserve">
+    <value>Sets</value>
+  </data>
+  <data name="CacheRemovals" xml:space="preserve">
+    <value>Removals</value>
+  </data>
+  <data name="CacheExpirations" xml:space="preserve">
+    <value>Expirations</value>
+  </data>
+  <data name="LastRefreshed" xml:space="preserve">
+    <value>Last refreshed</value>
+  </data>
+  <data name="SearchCacheKeys" xml:space="preserve">
+    <value>Search names or keys...</value>
+  </data>
+  <data name="CacheKey" xml:space="preserve">
+    <value>Key</value>
+  </data>
+  <data name="CacheCategory" xml:space="preserve">
+    <value>Category</value>
+  </data>
+  <data name="CacheStatus" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="CacheTtl" xml:space="preserve">
+    <value>TTL</value>
+  </data>
+  <data name="CacheType" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="CacheSize" xml:space="preserve">
+    <value>Size</value>
+  </data>
+  <data name="CacheHitCount" xml:space="preserve">
+    <value>Hit count</value>
+  </data>
+  <data name="CacheMissCount" xml:space="preserve">
+    <value>Miss count</value>
+  </data>
+  <data name="CacheCreated" xml:space="preserve">
+    <value>Created</value>
+  </data>
+  <data name="CacheExpires" xml:space="preserve">
+    <value>Expires</value>
+  </data>
+  <data name="CacheLastAccess" xml:space="preserve">
+    <value>Last access</value>
+  </data>
+  <data name="CacheStatusActive" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="CacheStatusExpired" xml:space="preserve">
+    <value>Expired</value>
+  </data>
+  <data name="CacheFilterAllCategories" xml:space="preserve">
+    <value>All categories</value>
+  </data>
+  <data name="CacheFilterAllStatuses" xml:space="preserve">
+    <value>All statuses</value>
+  </data>
+  <data name="CacheNoEntries" xml:space="preserve">
+    <value>No cache entries to display.</value>
+  </data>
+  <data name="CacheValuesNotExposed" xml:space="preserve">
+    <value>Cached values are not exposed for security.</value>
+  </data>
+  <data name="CacheIsDisabled" xml:space="preserve">
+    <value>Application cache is disabled (IsCacheActive=false). Reads and writes bypass the cache.</value>
+  </data>
+  <data name="CacheEntryDetails" xml:space="preserve">
+    <value>Cache entry details</value>
+  </data>
+  <data name="CacheInvalidatedFormat" xml:space="preserve">
+    <value>Cache cleared ({0}). The storefront will load fresh data on the next request.</value>
+  </data>
+  <data name="CacheExportHint" xml:space="preserve">
+    <value>Download all matching cache keys with health and performance metrics. Cached values are not included.</value>
+  </data>
+  <data name="CacheOverview" xml:space="preserve">
+    <value>Cache Overview</value>
+  </data>
+  <data name="CacheOverviewLead" xml:space="preserve">
+    <value>Live runtime data. Numbers are measured, not invented; if a metric cannot be measured, that is stated.</value>
+  </data>
+  <data name="CacheStatusEffective" xml:space="preserve">
+    <value>Effective</value>
+  </data>
+  <data name="CacheStatusLabel" xml:space="preserve">
+    <value>Cache Status</value>
+  </data>
+  <data name="CacheStatusLimited" xml:space="preserve">
+    <value>Limited</value>
+  </data>
+  <data name="CacheStatusNotEffective" xml:space="preserve">
+    <value>Not Effective</value>
+  </data>
+  <data name="CacheHitRate" xml:space="preserve">
+    <value>Cache Hit Rate</value>
+  </data>
+  <data name="CacheHitRateHelp" xml:space="preserve">
+    <value>Percentage of requests that were successfully served from cache instead of executing the underlying operation.</value>
+  </data>
+  <data name="CacheMissHelp" xml:space="preserve">
+    <value>A request where the required data was not available in cache and had to be loaded normally.</value>
+  </data>
+  <data name="CacheImprovementHelp" xml:space="preserve">
+    <value>Difference between the average uncached execution time and cached execution time.</value>
+  </data>
+  <data name="CacheTtlHelp" xml:space="preserve">
+    <value>How long an item remains available in the cache before it expires.</value>
+  </data>
+  <data name="CacheActiveEntries" xml:space="preserve">
+    <value>Active Cache Entries</value>
+  </data>
+  <data name="CacheRequestsServed" xml:space="preserve">
+    <value>Estimated Requests Served From Cache</value>
+  </data>
+  <data name="CacheTimeSaved" xml:space="preserve">
+    <value>Estimated Time Saved</value>
+  </data>
+  <data name="CachePerformanceImprovement" xml:space="preserve">
+    <value>Performance Improvement</value>
+  </data>
+  <data name="CachePerformanceNotMeasured" xml:space="preserve">
+    <value>Performance impact cannot currently be measured.</value>
+  </data>
+  <data name="CachePageResponseTitle" xml:space="preserve">
+    <value>Page / Response Cache</value>
+  </data>
+  <data name="CachePageResponseLead" xml:space="preserve">
+    <value>Stores complete HTTP responses so pages can be returned without executing the underlying controller and database logic.</value>
+  </data>
+  <data name="CacheApplicationDataTitle" xml:space="preserve">
+    <value>Application Data Cache</value>
+  </data>
+  <data name="CacheApplicationDataLead" xml:space="preserve">
+    <value>Stores frequently used application data in server memory so the application does not repeatedly query the database.</value>
+  </data>
+  <data name="CacheTechnicalName" xml:space="preserve">
+    <value>Technical implementation</value>
+  </data>
+  <data name="CacheProfileLabel" xml:space="preserve">
+    <value>Cache profile</value>
+  </data>
+  <data name="CacheAvgWithoutCache" xml:space="preserve">
+    <value>Without cache</value>
+  </data>
+  <data name="CacheAvgWithCache" xml:space="preserve">
+    <value>With cache</value>
+  </data>
+  <data name="CacheAvgResponseTime" xml:space="preserve">
+    <value>Average response time</value>
+  </data>
+  <data name="CacheDbOpsAvoided" xml:space="preserve">
+    <value>Estimated database operations avoided</value>
+  </data>
+  <data name="CacheHealthEffectiveBody" xml:space="preserve">
+    <value>Caching is working effectively. Most requests are being served from cache and cached operations are significantly faster than uncached operations.</value>
+  </data>
+  <data name="CacheHealthLimitedBody" xml:space="preserve">
+    <value>Caching is being used, but the benefit is limited. The cache hit rate is relatively low or the performance difference is small.</value>
+  </data>
+  <data name="CacheHealthNotEffectiveBody" xml:space="preserve">
+    <value>Caching does not appear to be providing a significant performance benefit. Investigate cache expiration, invalidation, or how cache is used.</value>
+  </data>
+  <data name="CacheHealthWaitingBody" xml:space="preserve">
+    <value>There is not enough storefront traffic yet to tell whether caching is helping.</value>
+  </data>
+  <data name="CacheName" xml:space="preserve">
+    <value>Cache Name</value>
+  </data>
+  <data name="CacheKindPageResponse" xml:space="preserve">
+    <value>Page / Response</value>
+  </data>
+  <data name="CacheKindApplicationData" xml:space="preserve">
+    <value>Application Data</value>
+  </data>
+  <data name="CacheRemainingTtl" xml:space="preserve">
+    <value>Remaining TTL</value>
+  </data>
+  <data name="CacheAvgCachedTime" xml:space="preserve">
+    <value>Avg. Cached Time</value>
+  </data>
+  <data name="CacheAvgUncachedTime" xml:space="preserve">
+    <value>Avg. Uncached Time</value>
+  </data>
+  <data name="CacheImprovement" xml:space="preserve">
+    <value>Improvement</value>
+  </data>
+  <data name="CacheEntryTechnicalKey" xml:space="preserve">
+    <value>Technical key</value>
+  </data>
 </root>

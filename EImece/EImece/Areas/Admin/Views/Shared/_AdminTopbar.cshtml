@@ -49,7 +49,7 @@
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end admin-topbar-overflow-menu">
                     <li>
-                        <a class="dropdown-item" href="@Url.Action("ClearCache", "Dashboard", new { area = "admin" })">
+                        <a class="dropdown-item" href="@Url.Action("ClearCache", "Cache", new { area = "admin" })">
                             <i class="fa-solid fa-arrows-rotate" aria-hidden="true"></i>
                             @AdminResource.Refresh
                         </a>
@@ -57,7 +57,7 @@
                 </ul>
             </li>
             <li class="admin-topbar-action--secondary">
-                <a href="@Url.Action("ClearCache", "Dashboard", new { area = "admin" })" title="@AdminResource.Refresh">
+                <a href="@Url.Action("ClearCache", "Cache", new { area = "admin" })" title="@AdminResource.Refresh">
                     <i class="fa-solid fa-arrows-rotate" aria-hidden="true"></i>
                     <span class="admin-topbar-label">@AdminResource.Refresh</span>
                 </a>

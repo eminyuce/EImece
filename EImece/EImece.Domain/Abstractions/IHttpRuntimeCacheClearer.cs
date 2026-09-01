@@ -7,5 +7,11 @@ namespace EImece.Domain.Abstractions
     public interface IHttpRuntimeCacheClearer
     {
         int ClearHttpRuntimeCache();
+
+        /// <summary>
+        /// Drops a single ASP.NET OutputCache entry (for example <c>/images/logo.jpg</c>).
+        /// No-op when output cache is unused or the path was never cached.
+        /// </summary>
+        void RemoveOutputCacheItem(string virtualPath);
     }
 }

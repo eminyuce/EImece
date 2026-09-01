@@ -121,40 +121,26 @@ namespace EImece.Areas.Admin.Controllers
         }
 
         /// <summary>
-        /// Admin top-bar Refresh button. Wipes every in-process cache layer (data + OutputCache)
-        /// then shows a short refresh animation while background warm-up starts, then returns
-        /// the admin to a safe page (never a POST-only URL such as UploadWebSiteLogo).
+        /// Legacy alias for existing bookmarks. Eviction uses the same
+        /// <see cref="AdminCacheMaintenance"/> path as Cache Admin.
         /// </summary>
         [HttpGet]
         public ActionResult ClearCache()
         {
-            // Evict caches synchronously — this is fast and must complete before we redirect so the
-            // admin immediately sees fresh data. The expensive rebuild is deferred to a background job.
             var evictionSw = System.Diagnostics.Stopwatch.StartNew();
-
-            // Targeted setting keys first (explicit), then the full provider wipe which also clears
-            // ASP.NET OutputCache / HttpRuntime.Cache and MemoryCache.Default. Without OutputCache
-            // eviction, [CustomOutputCache] product/home pages would keep serving stale HTML.
-            SettingService.ClearCache();
-            ProductService.InvalidateProductListCaches();
-            var dataKeysRemoved = MemoryCacheProvider.ClearAll();
+            var dataKeysRemoved = AdminCacheMaintenance.ClearAllData(SettingService, ProductService, MemoryCacheProvider);
             Logger.LogInformation(
                 "ClearCache: eviction completed in {0} ms (provider data keys removed: {1})",
                 evictionSw.ElapsedMilliseconds,
                 dataKeysRemoved);
 
-            // Capture request-bound values now; HttpContext is unavailable on the background thread.
             var baseUrl = string.Format("{0}://{1}", Request.Url.Scheme, Request.Url.Authority);
-            var language = CurrentLanguage;
-
-            // Rebuild the cache off the request thread so the user gets an immediate response while
-            // the (expensive) DB priming and sitemap crawl continue in the background.
-            App_Start.CacheWarmUpJob.Queue(baseUrl, language);
+            App_Start.CacheWarmUpJob.Queue(baseUrl, CurrentLanguage);
 
             string redirectUrl;
             if (!SecurityHelper.TryGetSafeReferrerRedirect(Request.UrlReferrer, Request.Url, out redirectUrl))
             {
-                redirectUrl = Url.Action(IndexAction, "Dashboard", new { area = AdminAreaName });
+                redirectUrl = Url.Action("Index", "Cache", new { area = AdminAreaName });
             }
 
             redirectUrl = NormalizeClearCacheReturnUrl(redirectUrl);
@@ -162,105 +148,6 @@ namespace EImece.Areas.Admin.Controllers
             ViewBag.Title = AdminResource.Refresh;
             ViewBag.ReturnUrl = redirectUrl;
             return View();
-        }
-
-        /// <summary>
-        /// Targeted storefront cache invalidation. Unlike <see cref="ClearCache"/> (full wipe +
-        /// background warm-up), this evicts only the cache family the admin chooses, plus the
-        /// rendered OutputCache HTML that embeds it, so anonymous visitors see fresh pages on
-        /// their next request without a full warm-up crawl. Data caches stay warm for untouched
-        /// families.
-        /// Authorized via BaseAdminController ([AuthorizeRoles(Administrator, Editor)]) and
-        /// POST + antiforgery so the operation cannot be triggered by link/GET requests.
-        /// </summary>
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult InvalidateCache(string target)
-        {
-            if (string.IsNullOrWhiteSpace(target))
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            var sw = System.Diagnostics.Stopwatch.StartNew();
-            var removed = 0;
-            bool fullWipe = false;
-
-            switch (target.Trim().ToLowerInvariant())
-            {
-                case "products":
-                    // Includes pricing: price/discount values live inside the product DTO caches,
-                    // and UpdatePrices already funnels through InvalidateProductListCaches.
-                    ProductService.InvalidateProductListCaches();
-                    break;
-
-                case "categories":
-                    ProductCategoryService.InvalidateCategoryCaches();
-                    break;
-
-                case "settings":
-                    SettingService.ClearCache();
-                    break;
-
-                case "content":
-                    // Stories, menus/pages, banners, FAQ, tags and brands: everything rendered
-                    // around the catalog but not part of product/category data.
-                    removed += MemoryCacheProvider.ClearByPrefix(CacheKeys.StoryPrefix);
-                    removed += MemoryCacheProvider.ClearByPrefix(CacheKeys.MenuPrefix);
-                    removed += MemoryCacheProvider.ClearByPrefix(CacheKeys.BannerPrefix);
-                    removed += MemoryCacheProvider.ClearByPrefix(CacheKeys.FaqPrefix);
-                    removed += MemoryCacheProvider.ClearByPrefix(CacheKeys.TagPrefix);
-                    removed += MemoryCacheProvider.ClearByPrefix(CacheKeys.BrandPrefix);
-                    break;
-
-                case "all":
-                    // Full storefront invalidation: same flow as the top-bar Refresh button —
-                    // every provider entry + OutputCache/MemoryCache.Default + background warm-up.
-                    SettingService.ClearCache();
-                    ProductService.InvalidateProductListCaches();
-                    removed = MemoryCacheProvider.ClearAll();
-                    fullWipe = true;
-                    break;
-
-                default:
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            // Targeted purges must also drop rendered HTML: product/category/story/menu pages are
-            // OutputCached for 20 minutes for anonymous users, so without HttpRuntime eviction a
-            // data-only purge would leave stale storefront pages visible until profile expiry.
-            if (!fullWipe)
-            {
-                int htmlRemoved;
-                int memoryDefaultRemoved;
-                ApplicationCacheClearer.ClearAspNetCaches(_httpRuntimeCacheClearer, out htmlRemoved, out memoryDefaultRemoved);
-            }
-
-            Logger.LogInformation(
-                "InvalidateCache target={0} removed={1} in {2} ms (fullWipe={3}) by {4}",
-                target,
-                removed,
-                sw.ElapsedMilliseconds,
-                fullWipe,
-                User?.Identity?.Name ?? "unknown");
-
-            if (fullWipe)
-            {
-                var baseUrl = string.Format("{0}://{1}", Request.Url.Scheme, Request.Url.Authority);
-                App_Start.CacheWarmUpJob.Queue(baseUrl, CurrentLanguage);
-            }
-
-            string redirectUrl;
-            if (!SecurityHelper.TryGetSafeReferrerRedirect(Request.UrlReferrer, Request.Url, out redirectUrl))
-            {
-                redirectUrl = Url.Action(IndexAction, "Dashboard", new { area = AdminAreaName });
-            }
-
-            SetSuccessMessage(string.Format(
-                "Önbellek temizlendi ({0}). Storefront bir sonraki istekte güncel veriyi yükleyecek.",
-                System.Web.HttpUtility.HtmlEncode(target)));
-
-            return Redirect(redirectUrl);
         }
 
         /// <summary>

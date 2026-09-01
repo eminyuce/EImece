@@ -5,6 +5,7 @@ using LazyCache.Providers;
 using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Concurrent;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -43,6 +44,7 @@ namespace EImece.Domain.Caching
             var keyNew = ToPhysicalKey(key);
             _lazyCache.Remove(keyNew);
             allCacheKeys.TryRemove(keyNew, out _);
+            CacheDiagnostics.RecordRemove(keyNew);
         }
 
         public int ClearByPrefix(string keyPrefix)
@@ -61,6 +63,7 @@ namespace EImece.Domain.Caching
             {
                 _lazyCache.Remove(key);
                 allCacheKeys.TryRemove(key, out _);
+                CacheDiagnostics.RecordRemove(key);
             }
 
             return keys.Count;
@@ -73,18 +76,16 @@ namespace EImece.Domain.Caching
             {
                 _lazyCache.Remove(key);
                 allCacheKeys.TryRemove(key, out _);
+                CacheDiagnostics.RecordRemove(key);
             }
 
-            // Admin Refresh must also drop OutputCache HTML and MemoryCache.Default — otherwise
+            // Admin Refresh must also drop OutputCache HTML — otherwise
             // ProductsController/[CustomOutputCache] keeps serving stale pages after data eviction.
-            int httpRuntimeRemoved;
-            int memoryCacheRemoved;
-            ApplicationCacheClearer.ClearAspNetCaches(_httpRuntimeCacheClearer, out httpRuntimeRemoved, out memoryCacheRemoved);
+            var httpRuntimeRemoved = ApplicationCacheClearer.ClearHttpRuntime(_httpRuntimeCacheClearer);
             _logger.LogInformation(
-                "LazyCacheProvider.ClearAll removed {0} data keys (+ {1} HttpRuntime, {2} MemoryCache.Default)",
+                "LazyCacheProvider.ClearAll removed {0} data keys (+ {1} HttpRuntime)",
                 keys.Count,
-                httpRuntimeRemoved,
-                memoryCacheRemoved);
+                httpRuntimeRemoved);
             return keys.Count;
         }
 
@@ -107,12 +108,46 @@ namespace EImece.Domain.Caching
             var keyNew = ToPhysicalKey(key);
             // LazyCache wraps the factory in a Lazy<T> internally, guaranteeing single execution
             // under concurrent misses (single-flight) — this is the stampede fix.
-            return _lazyCache.GetOrAdd(keyNew, entry =>
+            var factoryRan = false;
+            T result;
+            var sw = Stopwatch.StartNew();
+            try
             {
-                ApplyPolicy(entry, policy);
-                allCacheKeys.TryAdd(keyNew, 0);
-                return valueFactory();
-            });
+                result = _lazyCache.GetOrAdd(keyNew, entry =>
+                {
+                    factoryRan = true;
+                    ApplyPolicy(entry, policy);
+                    allCacheKeys.TryAdd(keyNew, 0);
+                    return valueFactory();
+                });
+            }
+            catch
+            {
+                allCacheKeys.TryRemove(keyNew, out _);
+                if (factoryRan)
+                {
+                    CacheDiagnostics.RecordMiss(keyNew);
+                }
+                throw;
+            }
+            finally
+            {
+                sw.Stop();
+            }
+
+            if (factoryRan)
+            {
+                CacheDiagnostics.RecordSet(keyNew, typeof(T), policy);
+                CacheDiagnostics.RecordMiss(keyNew);
+                CacheDiagnostics.RecordLookupDuration(keyNew, false, sw.ElapsedTicks);
+            }
+            else
+            {
+                CacheDiagnostics.RecordHit(keyNew);
+                CacheDiagnostics.RecordLookupDuration(keyNew, true, sw.ElapsedTicks);
+            }
+
+            return result;
         }
 
         public Task<T> GetOrAddAsync<T>(string key, Func<Task<T>> valueFactory, int duration)
@@ -131,12 +166,46 @@ namespace EImece.Domain.Caching
             }
 
             var keyNew = ToPhysicalKey(key);
-            return await _lazyCache.GetOrAddAsync(keyNew, async entry =>
+            var factoryRan = false;
+            T result;
+            var sw = Stopwatch.StartNew();
+            try
             {
-                ApplyPolicy(entry, policy);
-                allCacheKeys.TryAdd(keyNew, 0);
-                return await valueFactory().ConfigureAwait(false);
-            }).ConfigureAwait(false);
+                result = await _lazyCache.GetOrAddAsync(keyNew, async entry =>
+                {
+                    factoryRan = true;
+                    ApplyPolicy(entry, policy);
+                    allCacheKeys.TryAdd(keyNew, 0);
+                    return await valueFactory().ConfigureAwait(false);
+                }).ConfigureAwait(false);
+            }
+            catch
+            {
+                allCacheKeys.TryRemove(keyNew, out _);
+                if (factoryRan)
+                {
+                    CacheDiagnostics.RecordMiss(keyNew);
+                }
+                throw;
+            }
+            finally
+            {
+                sw.Stop();
+            }
+
+            if (factoryRan)
+            {
+                CacheDiagnostics.RecordSet(keyNew, typeof(T), policy);
+                CacheDiagnostics.RecordMiss(keyNew);
+                CacheDiagnostics.RecordLookupDuration(keyNew, false, sw.ElapsedTicks);
+            }
+            else
+            {
+                CacheDiagnostics.RecordHit(keyNew);
+                CacheDiagnostics.RecordLookupDuration(keyNew, true, sw.ElapsedTicks);
+            }
+
+            return result;
         }
 
         public bool Get<T>(string key, out T value)
@@ -144,14 +213,20 @@ namespace EImece.Domain.Caching
             if (AppConfig.IsCacheActive)
             {
                 var keyNew = ToPhysicalKey(key);
+                var sw = Stopwatch.StartNew();
                 if (_lazyCache.CacheProvider.TryGetValue<object>(keyNew, out var raw) && raw != null)
                 {
                     if (raw is T typedValue)
                     {
+                        sw.Stop();
+                        CacheDiagnostics.RecordHit(keyNew);
+                        CacheDiagnostics.RecordLookupDuration(keyNew, true, sw.ElapsedTicks);
                         value = typedValue;
                         return true;
                     }
                 }
+
+                CacheDiagnostics.RecordMiss(keyNew);
             }
             value = default(T);
             return false;
@@ -173,6 +248,7 @@ namespace EImece.Domain.Caching
                 ApplyPolicy(options, policy);
                 _lazyCache.Add(keyNew, value, options);
                 allCacheKeys.TryAdd(keyNew, 0);
+                CacheDiagnostics.RecordSet(keyNew, typeof(T), policy);
             }
         }
 
@@ -215,3 +291,4 @@ namespace EImece.Domain.Caching
         }
     }
 }
+

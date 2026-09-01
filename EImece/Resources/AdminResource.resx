@@ -5048,4 +5048,235 @@
   <data name="SuitableForSaleProductStatesHelp" xml:space="preserve">
     <value>Müşterilerin sepete ekleyebileceği ve satın alabileceği ürün durumlarını belirleyiniz (Örn: Ürün Stokta, Ön Sipariş, Sınırlı Stok vb.).</value>
   </data>
+  <data name="CacheAdministration" xml:space="preserve">
+    <value>Önbellek Yönetimi</value>
+  </data>
+  <data name="CacheAdminPageLead" xml:space="preserve">
+    <value>Önbelleğin açık olup olmadığını, ne kadar kullanıldığını ve uygulamayı hızlandırıp hızlandırmadığını görün.</value>
+  </data>
+  <data name="CacheAdminToolsLead" xml:space="preserve">
+    <value>Uygulama önbelleğini yönetin, önbellek anahtarlarını inceleyin ve önbellek performansını izleyin.</value>
+  </data>
+  <data name="OpenCacheAdministration" xml:space="preserve">
+    <value>Önbellek Yönetimini Aç</value>
+  </data>
+  <data name="CacheOperations" xml:space="preserve">
+    <value>Önbellek İşlemleri</value>
+  </data>
+  <data name="CacheStatistics" xml:space="preserve">
+    <value>Önbellek İstatistikleri</value>
+  </data>
+  <data name="CacheStatisticsLead" xml:space="preserve">
+    <value>Gerçek uygulama önbelleği okuma, yazma ve süre sonu sayaçları (işlem ömrü).</value>
+  </data>
+  <data name="CacheEntries" xml:space="preserve">
+    <value>Önbellek Kayıtları</value>
+  </data>
+  <data name="CacheEntriesLead" xml:space="preserve">
+    <value>Şu anda izlenen önbellek anahtarları. Değerler güvenlik nedeniyle gösterilmez.</value>
+  </data>
+  <data name="TotalCacheReads" xml:space="preserve">
+    <value>Toplam Okuma</value>
+  </data>
+  <data name="CacheHits" xml:space="preserve">
+    <value>İsabet</value>
+  </data>
+  <data name="CacheMisses" xml:space="preserve">
+    <value>Kaçırma</value>
+  </data>
+  <data name="CacheHitRatio" xml:space="preserve">
+    <value>İsabet Oranı</value>
+  </data>
+  <data name="CacheSets" xml:space="preserve">
+    <value>Yazma</value>
+  </data>
+  <data name="CacheRemovals" xml:space="preserve">
+    <value>Silme</value>
+  </data>
+  <data name="CacheExpirations" xml:space="preserve">
+    <value>Sona Erme</value>
+  </data>
+  <data name="LastRefreshed" xml:space="preserve">
+    <value>Son yenileme</value>
+  </data>
+  <data name="SearchCacheKeys" xml:space="preserve">
+    <value>İsim veya anahtarda ara...</value>
+  </data>
+  <data name="CacheKey" xml:space="preserve">
+    <value>Anahtar</value>
+  </data>
+  <data name="CacheCategory" xml:space="preserve">
+    <value>Kategori</value>
+  </data>
+  <data name="CacheStatus" xml:space="preserve">
+    <value>Durum</value>
+  </data>
+  <data name="CacheTtl" xml:space="preserve">
+    <value>TTL</value>
+  </data>
+  <data name="CacheType" xml:space="preserve">
+    <value>Tip</value>
+  </data>
+  <data name="CacheSize" xml:space="preserve">
+    <value>Boyut</value>
+  </data>
+  <data name="CacheHitCount" xml:space="preserve">
+    <value>İsabet sayısı</value>
+  </data>
+  <data name="CacheMissCount" xml:space="preserve">
+    <value>Kaçırma sayısı</value>
+  </data>
+  <data name="CacheCreated" xml:space="preserve">
+    <value>Oluşturulma</value>
+  </data>
+  <data name="CacheExpires" xml:space="preserve">
+    <value>Sona erme</value>
+  </data>
+  <data name="CacheLastAccess" xml:space="preserve">
+    <value>Son erişim</value>
+  </data>
+  <data name="CacheStatusActive" xml:space="preserve">
+    <value>Aktif</value>
+  </data>
+  <data name="CacheStatusExpired" xml:space="preserve">
+    <value>Süresi doldu</value>
+  </data>
+  <data name="CacheFilterAllCategories" xml:space="preserve">
+    <value>Tüm kategoriler</value>
+  </data>
+  <data name="CacheFilterAllStatuses" xml:space="preserve">
+    <value>Tüm durumlar</value>
+  </data>
+  <data name="CacheNoEntries" xml:space="preserve">
+    <value>Gösterilecek önbellek kaydı yok.</value>
+  </data>
+  <data name="CacheValuesNotExposed" xml:space="preserve">
+    <value>Önbellekteki asıl değerler güvenlik nedeniyle gösterilmez.</value>
+  </data>
+  <data name="CacheIsDisabled" xml:space="preserve">
+    <value>Uygulama önbelleği kapalı (IsCacheActive=false). Okuma ve yazmalar önbelleği kullanmaz.</value>
+  </data>
+  <data name="CacheEntryDetails" xml:space="preserve">
+    <value>Önbellek kaydı detayı</value>
+  </data>
+  <data name="CacheInvalidatedFormat" xml:space="preserve">
+    <value>Önbellek temizlendi ({0}). Storefront bir sonraki istekte güncel veriyi yükleyecek.</value>
+  </data>
+  <data name="CacheExportHint" xml:space="preserve">
+    <value>Eşleşen tüm önbellek anahtarlarını, sağlık ve performans metriklerini indirin. Önbellekteki asıl değerler dahil edilmez.</value>
+  </data>
+  <data name="CacheOverview" xml:space="preserve">
+    <value>Önbellek Özeti</value>
+  </data>
+  <data name="CacheOverviewLead" xml:space="preserve">
+    <value>Canlı çalışma zamanı verileri. Sayılar uydurulmaz; ölçülemiyorsa bu belirtilir.</value>
+  </data>
+  <data name="CacheStatusEffective" xml:space="preserve">
+    <value>Etkili</value>
+  </data>
+  <data name="CacheStatusLabel" xml:space="preserve">
+    <value>Önbellek durumu</value>
+  </data>
+  <data name="CacheStatusLimited" xml:space="preserve">
+    <value>Sınırlı</value>
+  </data>
+  <data name="CacheStatusNotEffective" xml:space="preserve">
+    <value>Etkili değil</value>
+  </data>
+  <data name="CacheHitRate" xml:space="preserve">
+    <value>Önbellek isabet oranı</value>
+  </data>
+  <data name="CacheHitRateHelp" xml:space="preserve">
+    <value>İsteğin, asıl işlemi çalıştırmadan önbellekten karşılanma yüzdesi.</value>
+  </data>
+  <data name="CacheMissHelp" xml:space="preserve">
+    <value>Gereken veri önbellekte yoktu ve normal yoldan yüklendi.</value>
+  </data>
+  <data name="CacheImprovementHelp" xml:space="preserve">
+    <value>Önbelleksiz ortalama süre ile önbellekli ortalama süre arasındaki fark.</value>
+  </data>
+  <data name="CacheTtlHelp" xml:space="preserve">
+    <value>Bir kaydın süresi dolmadan önce önbellekte kalma süresi.</value>
+  </data>
+  <data name="CacheActiveEntries" xml:space="preserve">
+    <value>Aktif kayıtlar</value>
+  </data>
+  <data name="CacheRequestsServed" xml:space="preserve">
+    <value>Önbellekten karşılanan istekler</value>
+  </data>
+  <data name="CacheTimeSaved" xml:space="preserve">
+    <value>Tahmini kazandırılan süre</value>
+  </data>
+  <data name="CachePerformanceImprovement" xml:space="preserve">
+    <value>Performans artışı</value>
+  </data>
+  <data name="CachePerformanceNotMeasured" xml:space="preserve">
+    <value>Performans etkisi şu anda ölçülemiyor.</value>
+  </data>
+  <data name="CachePageResponseTitle" xml:space="preserve">
+    <value>Sayfa / Yanıt Önbelleği</value>
+  </data>
+  <data name="CachePageResponseLead" xml:space="preserve">
+    <value>Tam HTTP yanıtlarını saklar; sayfalar denetleyici ve veritabanı mantığı çalıştırılmadan döndürülebilir.</value>
+  </data>
+  <data name="CacheApplicationDataTitle" xml:space="preserve">
+    <value>Uygulama Veri Önbelleği</value>
+  </data>
+  <data name="CacheApplicationDataLead" xml:space="preserve">
+    <value>Sık kullanılan uygulama verisini sunucu belleğinde tutar; veritabanı tekrar tekrar sorgulanmaz.</value>
+  </data>
+  <data name="CacheTechnicalName" xml:space="preserve">
+    <value>Teknik uygulama</value>
+  </data>
+  <data name="CacheProfileLabel" xml:space="preserve">
+    <value>Önbellek profili</value>
+  </data>
+  <data name="CacheAvgWithoutCache" xml:space="preserve">
+    <value>Önbelleksiz</value>
+  </data>
+  <data name="CacheAvgWithCache" xml:space="preserve">
+    <value>Önbellekli</value>
+  </data>
+  <data name="CacheAvgResponseTime" xml:space="preserve">
+    <value>Ortalama yanıt süresi</value>
+  </data>
+  <data name="CacheDbOpsAvoided" xml:space="preserve">
+    <value>Önlenen veritabanı işlemleri (tahmini)</value>
+  </data>
+  <data name="CacheHealthEffectiveBody" xml:space="preserve">
+    <value>Önbellek etkili çalışıyor. İsteklerin çoğu önbellekten karşılanıyor ve önbellekli işlemler belirgin şekilde daha hızlı.</value>
+  </data>
+  <data name="CacheHealthLimitedBody" xml:space="preserve">
+    <value>Önbellek kullanılıyor ancak fayda sınırlı. İsabet oranı düşük veya hız farkı küçük.</value>
+  </data>
+  <data name="CacheHealthNotEffectiveBody" xml:space="preserve">
+    <value>Önbellek belirgin bir performans faydası sağlamıyor gibi görünüyor. Süre sonu, yenileme veya kullanım şeklini kontrol edin.</value>
+  </data>
+  <data name="CacheHealthWaitingBody" xml:space="preserve">
+    <value>Henüz yeterli mağaza trafiği yok; önbelleğin yardımcı olup olmadığı net değil.</value>
+  </data>
+  <data name="CacheName" xml:space="preserve">
+    <value>Önbellek adı</value>
+  </data>
+  <data name="CacheKindPageResponse" xml:space="preserve">
+    <value>Sayfa / Yanıt</value>
+  </data>
+  <data name="CacheKindApplicationData" xml:space="preserve">
+    <value>Uygulama verisi</value>
+  </data>
+  <data name="CacheRemainingTtl" xml:space="preserve">
+    <value>Kalan süre</value>
+  </data>
+  <data name="CacheAvgCachedTime" xml:space="preserve">
+    <value>Ort. önbellekli süre</value>
+  </data>
+  <data name="CacheAvgUncachedTime" xml:space="preserve">
+    <value>Ort. önbelleksiz süre</value>
+  </data>
+  <data name="CacheImprovement" xml:space="preserve">
+    <value>İyileşme</value>
+  </data>
+  <data name="CacheEntryTechnicalKey" xml:space="preserve">
+    <value>Teknik anahtar</value>
+  </data>
 </root>

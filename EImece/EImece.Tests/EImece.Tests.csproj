@@ -345,6 +345,7 @@
     <Compile Include="Helpers\AppConfigCacheTests.cs" />
     <Compile Include="Helpers\AuthenticatedAesCipherTests.cs" />
     <Compile Include="Helpers\ApplicationCacheClearerTests.cs" />
+    <Compile Include="Helpers\RssHelperTests.cs" />
     <Compile Include="Helpers\ApplicationMetricsTests.cs" />
     <Compile Include="Helpers\CacheKeysTests.cs" />
     <Compile Include="Helpers\WebAppManifestHelperTests.cs" />
@@ -355,6 +356,9 @@
     <Compile Include="Helpers\ImageStorageDeleteTests.cs" />
     <Compile Include="Helpers\MemoryCacheProviderTests.cs" />
     <Compile Include="Caching\StorefrontCacheInvalidationTests.cs" />
+    <Compile Include="Caching\CacheDiagnosticsTests.cs" />
+    <Compile Include="Caching\CacheHealthTests.cs" />
+    <Compile Include="Caching\MemoryCacheDefaultUsageTests.cs" />
     <Compile Include="Helpers\ProductCategoryTreeAssemblerTests.cs" />
     <Compile Include="Helpers\ProductSortHelperTests.cs" />
     <Compile Include="Helpers\ProductDiscountTests.cs" />
@@ -385,6 +389,7 @@
     <Compile Include="Helpers\PerfStatsTests.cs" />
     <Compile Include="Controllers\HomeControllerTest.cs" />
     <Compile Include="Controllers\RssFeedsControllerTests.cs" />
+    <Compile Include="Controllers\CacheControllerTests.cs" />
     <Compile Include="Controllers\AdminHtmlInputValidationTests.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -197,7 +197,7 @@ namespace EImece.Controllers
         [CustomOutputCache(CacheProfile = Constants.ImageProxyCaching)]
         public async Task<ActionResult> Logo()
         {
-            var cacheKey = String.Format("WebSiteLogo");
+            var cacheKey = CacheKeys.WebSiteLogoImage;
             FileContentResult result = null;
             if (!MemoryCacheProvider.Get(cacheKey, out result))
             {
