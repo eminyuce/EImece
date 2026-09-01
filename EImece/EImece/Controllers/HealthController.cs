@@ -46,6 +46,29 @@ namespace EImece.Controllers
             base.OnActionExecuting(filterContext);
         }
 
+        /*
+         * One writable root for uploads + NLog files (media/images and media/logs).
+         * Run elevated after publish:
+         *
+         *   mkdir "C:\inetpub\wwwroot\Eimece\media\images" 2>nul
+         *   mkdir "C:\inetpub\wwwroot\Eimece\media\logs" 2>nul
+         *   icacls "C:\inetpub\wwwroot\Eimece\media" /grant "IIS AppPool\Eimece":(OI)(CI)M /T
+         *
+         * See docs/IIS_APP_POOL_PERMISSIONS.md
+         * 
+         * if exist "C:\Users\eminy\source\repos\EImece\EImece\EImece\obj" rmdir /s /q "C:\Users\eminy\source\repos\EImece\EImece\EImece\obj" && "C:\Windows\Microsoft.NET\Framework64\v4.0.30319\aspnet_compiler.exe" -p "C:\Users\eminy\source\repos\EImece\EImece\EImece" -v / -f "C:\Publish\EImece"
+        "C:\Windows\Microsoft.NET\Framework64\v4.0.30319\aspnet_compiler.exe" ^
+  -p "C:\Users\eminy\source\repos\EImece\EImece\EImece" ^
+  -v / ^
+  -f ^
+  -fixednames ^
+  "C:\Publish\EImece"
+
+        "C:\Windows\Microsoft.NET\Framework64\v4.0.30319\aspnet_compiler.exe" -p "C:\Users\eminy\source\repos\EImece\EImece\EImece" -v / -f -fixednames "C:\Publish\EImece"
+         * "C:\Windows\Microsoft.NET\Framework64\v4.0.30319\aspnet_compiler.exe" -p "C:\Users\eminy\source\repos\EImece\EImece\EImece" -v / -f "C:\Publish\EImece"
+         * PS C:\Users\eminy\source\repos\EImece\EImece> & "C:\Windows\Microsoft.NET\Framework64\v4.0.30319\aspnet_compiler.exe" -p "C:\Users\eminy\source\repos\EImece\EImece\EImece" -v / -f "C:\Publish\EImece"
+         */
+
         [HttpGet]
         [Route("health")]
         [Route("healthz")]
