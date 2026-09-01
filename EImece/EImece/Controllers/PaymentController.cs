@@ -33,6 +33,7 @@ using ProductSpecItem = EImece.Domain.Models.FrontModels.ProductSpecItem;
 
 namespace EImece.Controllers
 {
+    [NoCache]
     public class PaymentController : BaseController
     {
         private static Microsoft.Extensions.Logging.ILogger StaticPaymentLogger =>

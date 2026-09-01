@@ -10,10 +10,12 @@ using Resources;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using EImece.Web.Filters;
 
 namespace EImece.Controllers
 {
     [Authorize]
+    [NoCache]
     public class ManageController : BaseController
     {
         private const string IndexAction = "Index"; // Initialize NLog Logger

@@ -33,6 +33,7 @@ namespace EImece.Web.Areas.Admin.Controllers
     /// Pure constructor injection is enforced; no optional parameters or ServiceLocator fallbacks.
     /// </summary>
     [AuthorizeRoles(DomainConstants.AdministratorRole, DomainConstants.EditorRole)]
+    [NoCache]
     public abstract class BaseAdminController : Controller
     {
         protected readonly ILogger Logger;

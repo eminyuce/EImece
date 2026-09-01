@@ -9,6 +9,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Mime;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -79,14 +80,40 @@ namespace EImece.Controllers
                 {
                     bool wantsWebP = Request.AcceptTypes != null
                         && Request.AcceptTypes.Any(t => t != null && t.IndexOf("image/webp", StringComparison.OrdinalIgnoreCase) >= 0);
-                    var imageByte = wantsWebP
-                        ? await FilesHelper.GetResizedImageAsWebPAsync(fileStorageId, width, height)
-                        : await FilesHelper.GetResizedImageAsync(fileStorageId, width, height);
-                    if (imageByte != null && imageByte.ImageBytes != null)
+
+                    // Fetch metadata to check conditional request headers (If-None-Match / If-Modified-Since) before processing
+                    var fileStorage = await _fileStorageService.GetFileStorageAsync(fileStorageId).ConfigureAwait(false);
+                    if (fileStorage != null)
                     {
-                        Response.StatusCode = 200;
-                        ApplyLongLivedImageCache(imageByte.UpdatedDated);
-                        return File(imageByte.ImageBytes, imageByte.ContentType);
+                        var updatedDate = fileStorage.UpdatedDate > DateTime.MinValue ? fileStorage.UpdatedDate : fileStorage.CreatedDate;
+                        var formatTag = wantsWebP ? "webp" : "orig";
+                        var etag = string.Format("\"{0}-{1}-{2}-{3}\"", fileStorageId, imageSize, formatTag, updatedDate.Ticks);
+
+                        // Check conditional If-None-Match header
+                        var incomingEtag = Request.Headers["If-None-Match"];
+                        if (!string.IsNullOrEmpty(incomingEtag) && string.Equals(incomingEtag.Trim('\"'), etag.Trim('\"'), StringComparison.OrdinalIgnoreCase))
+                        {
+                            ApplyLongLivedImageCache(updatedDate, etag);
+                            return new HttpStatusCodeResult(HttpStatusCode.NotModified);
+                        }
+
+                        // Check conditional If-Modified-Since header
+                        var incomingIfMod = Request.Headers["If-Modified-Since"];
+                        if (!string.IsNullOrEmpty(incomingIfMod) && DateTime.TryParse(incomingIfMod, out var ifModDate) && updatedDate.ToUniversalTime() <= ifModDate.ToUniversalTime().AddSeconds(1))
+                        {
+                            ApplyLongLivedImageCache(updatedDate, etag);
+                            return new HttpStatusCodeResult(HttpStatusCode.NotModified);
+                        }
+
+                        var imageByte = wantsWebP
+                            ? await FilesHelper.GetResizedImageAsWebPAsync(fileStorageId, width, height)
+                            : await FilesHelper.GetResizedImageAsync(fileStorageId, width, height);
+                        if (imageByte != null && imageByte.ImageBytes != null)
+                        {
+                            Response.StatusCode = 200;
+                            ApplyLongLivedImageCache(updatedDate, etag);
+                            return File(imageByte.ImageBytes, imageByte.ContentType);
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -102,20 +129,23 @@ namespace EImece.Controllers
             }
         }
 
-        private void ApplyLongLivedImageCache(DateTime updatedDated)
+        private void ApplyLongLivedImageCache(DateTime updatedDated, string etag = null)
         {
-            Response.Cache.SetExpires(DateTime.Now.AddDays(365));
+            Response.Cache.SetExpires(DateTime.UtcNow.AddDays(365));
             Response.Cache.SetCacheability(HttpCacheability.Public);
             Response.Cache.SetMaxAge(TimeSpan.FromDays(365));
             Response.Cache.SetSlidingExpiration(true);
             Response.Cache.SetOmitVaryStar(true);
             Response.Cache.SetValidUntilExpires(true);
-            Response.Headers.Set("Vary",
-                string.Join(",", "Accept", "Accept-Encoding"));
+            Response.Headers.Set("Vary", "Accept, Accept-Encoding");
             Response.Headers["Cache-Control"] = "public, max-age=31536000, immutable";
-            if (updatedDated != null && updatedDated > DateTime.MinValue)
+            if (updatedDated > DateTime.MinValue)
             {
-                Response.Cache.SetLastModified(updatedDated.ToLocalTime());
+                Response.Cache.SetLastModified(updatedDated.ToUniversalTime());
+            }
+            if (!string.IsNullOrEmpty(etag))
+            {
+                Response.Cache.SetETag(etag);
             }
         }
 
@@ -164,7 +194,6 @@ namespace EImece.Controllers
             timer.Start();
             byte[] fileContents = FilesHelper.GenerateDefaultImg(Constants.DefaultImageText, width, height);
             timer.Stop();
-            //Logger.LogInformation("FilesHelper.GenerateDefaultImg width:" + width + " height:" + height + " timer:" + timer.ElapsedMilliseconds);
 
             return this.File(fileContents, MediaTypeNames.Image.Jpeg);
         }
@@ -172,6 +201,10 @@ namespace EImece.Controllers
         // Legacy arithmetic CAPTCHA image (used when CaptchaProvider=Legacy)
         public ActionResult GetCaptcha(string prefix, bool noisy = true)
         {
+            Response.Cache.SetCacheability(HttpCacheability.NoCache);
+            Response.Cache.SetNoStore();
+            Response.Cache.SetExpires(DateTime.UtcNow.AddDays(-1));
+
             var rand = new Random((int)DateTime.Now.Ticks);
             int a = rand.Next(1, 5);
             int b = rand.Next(1, 5);
@@ -211,9 +244,8 @@ namespace EImece.Controllers
                 var isFullFileExits = System.IO.File.Exists(p.Item1);
                 if (isFullFileExits)
                 {
-                    var ms = new MemoryStream(System.IO.File.ReadAllBytes(p.Item1));
-                    result = File(ms.ToArray(), MediaTypeNames.Image.Jpeg);
-                    ms.Dispose();
+                    var fileBytes = System.IO.File.ReadAllBytes(p.Item1);
+                    result = File(fileBytes, MediaTypeNames.Image.Jpeg);
                     MemoryCacheProvider.Set(cacheKey, result, AppConfig.CacheVeryLongSeconds);
                 }
             }
@@ -225,6 +257,7 @@ namespace EImece.Controllers
                 return GetDefaultImage("w200h60");
             }
 
+            ApplyLongLivedImageCache(DateTime.UtcNow.Date, "\"logo-v1\"");
             return result;
         }
     }

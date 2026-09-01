@@ -23,6 +23,7 @@ using System.Web.Mvc;
 namespace EImece.Controllers
 {
     [Authorize]
+    [NoCache]
     public class AccountController : BaseController
     {
         private const string IndexAction = "Index";

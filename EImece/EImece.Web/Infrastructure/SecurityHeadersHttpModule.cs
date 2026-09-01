@@ -16,7 +16,8 @@ namespace EImece.Web.Infrastructure
 
         private static void OnPreSendRequestHeaders(object sender, EventArgs e)
         {
-            var response = HttpContext.Current?.Response;
+            var context = HttpContext.Current;
+            var response = context?.Response;
             if (response == null)
             {
                 return;
@@ -29,6 +30,13 @@ namespace EImece.Web.Infrastructure
             response.AddHeader("X-Frame-Options", "SAMEORIGIN");
             response.Headers["Referrer-Policy"] = "strict-origin-when-cross-origin";
             response.Headers["X-XSS-Protection"] = "1; mode=block";
+
+            // Optimize bundled, content-hashed assets with immutable Cache-Control
+            var path = context.Request?.Path;
+            if (!string.IsNullOrEmpty(path) && path.StartsWith("/bundles/", StringComparison.OrdinalIgnoreCase) && response.StatusCode == 200)
+            {
+                response.Headers["Cache-Control"] = "public, max-age=31536000, immutable";
+            }
         }
     }
 }
