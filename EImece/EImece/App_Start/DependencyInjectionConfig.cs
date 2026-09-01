@@ -147,9 +147,16 @@ namespace EImece.App_Start
 
         private static void ConfigureServices(IServiceCollection services)
         {
+            services.AddEimeceConfiguration();
             services.AddEimeceOptions();
             services.AddEimeceMemoryCache();
             services.AddEimeceHttpClients();
+            services.AddEimeceHealthChecks();
+            services.AddLocalization(options => { options.ResourcesPath = "Resources"; });
+            services.AddSingleton<Microsoft.Extensions.ObjectPool.ObjectPoolProvider, Microsoft.Extensions.ObjectPool.DefaultObjectPoolProvider>();
+            services.AddSingleton<Microsoft.Extensions.ObjectPool.ObjectPool<System.Text.StringBuilder>>(sp =>
+                sp.GetRequiredService<Microsoft.Extensions.ObjectPool.ObjectPoolProvider>().Create(new Microsoft.Extensions.ObjectPool.StringBuilderPooledObjectPolicy()));
+
             RegisterCaching(services);
             RegisterObservability(services);
             RegisterLogging(services);
@@ -185,13 +192,6 @@ namespace EImece.App_Start
 
             services.AddSingleton<RequestLoggingActionFilter>();
             services.AddSingleton<StructuredExceptionFilter>();
-
-            // Multiple IHealthCheck implementations — GetServices / IEnumerable<IHealthCheck> returns all.
-            services.AddSingleton<IHealthCheck>(sp => PropertyInjector.Create<SqlServerHealthCheck>(sp));
-            services.AddSingleton<IHealthCheck>(sp => PropertyInjector.Create<FileStorageHealthCheck>(sp));
-            services.AddSingleton<IHealthCheck>(sp => PropertyInjector.Create<BackgroundServiceHealthCheck>(sp));
-            services.AddSingleton<IHealthCheck>(sp => PropertyInjector.Create<ExternalApiHealthCheck>(sp));
-            services.AddSingletonWithProps<IHealthCheckService, HealthCheckService>();
 
             // OpenTelemetry providers are initialized once from ObservabilityBootstrap.Configure().
             services.AddSingleton(sp =>

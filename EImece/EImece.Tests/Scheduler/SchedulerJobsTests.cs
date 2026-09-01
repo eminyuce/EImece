@@ -2,6 +2,7 @@ using EImece.Tests.Infrastructure;
 using EImece.Domain.Observability.HealthChecks;
 using EImece.Domain.Scheduler;
 using EImece.Domain.Scheduler.Jobs;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Quartz;
 using Quartz.Impl;
@@ -96,18 +97,18 @@ namespace EImece.Tests.Scheduler
         }
 
         [TestMethod]
-        public async Task BackgroundServiceHealthCheck_WhenSchedulerNull_ReturnsDown()
+        public async Task BackgroundServiceHealthCheck_WhenSchedulerNull_ReturnsResult()
         {
             var healthCheck = new BackgroundServiceHealthCheck(null);
 
             // If scheduler is enabled or disabled
-            var result = await healthCheck.CheckAsync(CancellationToken.None);
+            var result = await healthCheck.CheckHealthAsync(new HealthCheckContext(), CancellationToken.None);
             Assert.IsNotNull(result);
-            Assert.AreEqual("backgroundServices", result.Name);
+            Assert.IsTrue(result.Status == HealthStatus.Healthy || result.Status == HealthStatus.Unhealthy);
         }
 
         [TestMethod]
-        public async Task BackgroundServiceHealthCheck_WhenSchedulerRunning_ReturnsUpWithDetails()
+        public async Task BackgroundServiceHealthCheck_WhenSchedulerRunning_ReturnsHealthyWithDetails()
         {
             ISchedulerFactory factory = new StdSchedulerFactory();
             IScheduler sched = await factory.GetScheduler();
@@ -117,11 +118,10 @@ namespace EImece.Tests.Scheduler
             {
                 var healthCheck = new BackgroundServiceHealthCheck(sched);
 
-                var result = await healthCheck.CheckAsync(CancellationToken.None);
+                var result = await healthCheck.CheckHealthAsync(new HealthCheckContext(), CancellationToken.None);
                 Assert.IsNotNull(result);
-                Assert.AreEqual("backgroundServices", result.Name);
-                Assert.AreEqual(HealthStatus.Up, result.Status);
-                Assert.IsTrue(result.Message.Contains("Quartz running") || result.Message.Contains("disabled by config"));
+                Assert.AreEqual(HealthStatus.Healthy, result.Status);
+                Assert.IsTrue(result.Description.Contains("Quartz running") || result.Description.Contains("disabled by config"));
             }
             finally
             {

@@ -1,4 +1,5 @@
 using EImece.Domain.Configuration;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Options;
 using System;
 using System.Net;
@@ -10,6 +11,8 @@ namespace EImece.Domain.Observability.HealthChecks
 {
     public sealed class ExternalApiHealthCheck : IHealthCheck
     {
+        public const string DefaultName = "externalApi";
+
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IOptions<IyzicoOptions> _iyzicoOptions;
 
@@ -19,17 +22,14 @@ namespace EImece.Domain.Observability.HealthChecks
             _iyzicoOptions = iyzicoOptions ?? throw new ArgumentNullException(nameof(iyzicoOptions));
         }
 
-        public string Name
-        {
-            get { return "externalApi"; }
-        }
-
-        public async Task<HealthCheckResult> CheckAsync(CancellationToken cancellationToken)
+        public async Task<HealthCheckResult> CheckHealthAsync(
+            HealthCheckContext context,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             var baseUrl = _iyzicoOptions.Value?.BaseUrl;
             if (string.IsNullOrWhiteSpace(baseUrl))
             {
-                return HealthCheckResult.Down(Name, "External API base URL is not configured.");
+                return HealthCheckResult.Unhealthy("External API base URL is not configured.");
             }
 
             try
@@ -41,15 +41,15 @@ namespace EImece.Domain.Observability.HealthChecks
                     var statusCode = (int)response.StatusCode;
                     if (response.IsSuccessStatusCode || response.StatusCode == HttpStatusCode.NotFound || response.StatusCode == HttpStatusCode.MethodNotAllowed)
                     {
-                        return HealthCheckResult.Up(Name, statusCode + " reachable");
+                        return HealthCheckResult.Healthy(statusCode + " reachable");
                     }
 
-                    return HealthCheckResult.Down(Name, statusCode + " " + response.ReasonPhrase);
+                    return HealthCheckResult.Unhealthy(statusCode + " " + response.ReasonPhrase);
                 }
             }
             catch (Exception ex)
             {
-                return HealthCheckResult.Down(Name, ex.Message);
+                return HealthCheckResult.Unhealthy(ex.Message, ex);
             }
         }
     }

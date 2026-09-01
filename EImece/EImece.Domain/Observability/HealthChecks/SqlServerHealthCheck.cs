@@ -1,4 +1,5 @@
 using EImece.Domain.Helpers;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Threading;
@@ -8,12 +9,11 @@ namespace EImece.Domain.Observability.HealthChecks
 {
     public sealed class SqlServerHealthCheck : IHealthCheck
     {
-        public string Name
-        {
-            get { return "sqlServer"; }
-        }
+        public const string DefaultName = "sqlServer";
 
-        public async Task<HealthCheckResult> CheckAsync(CancellationToken cancellationToken)
+        public async Task<HealthCheckResult> CheckHealthAsync(
+            HealthCheckContext context,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             string connectionString;
             try
@@ -22,7 +22,7 @@ namespace EImece.Domain.Observability.HealthChecks
             }
             catch (ConfigurationErrorsException ex)
             {
-                return HealthCheckResult.Down(Name, ex.Message);
+                return HealthCheckResult.Unhealthy(ex.Message, ex);
             }
 
             try
@@ -36,11 +36,11 @@ namespace EImece.Domain.Observability.HealthChecks
                     }
                 }
 
-                return HealthCheckResult.Up(Name, "connection alive");
+                return HealthCheckResult.Healthy("connection alive");
             }
             catch (SqlException ex)
             {
-                return HealthCheckResult.Down(Name, ex.Message);
+                return HealthCheckResult.Unhealthy(ex.Message, ex);
             }
         }
     }

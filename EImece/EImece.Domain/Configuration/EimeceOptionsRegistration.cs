@@ -1,36 +1,49 @@
 using EImece.Domain.Observability.Configuration;
 using EImece.Domain.Observability.Logging;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
 namespace EImece.Domain.Configuration
 {
     /// <summary>
-    /// Registers high-value infrastructure options from Web.config / environment (not appsettings.json).
+    /// Registers high-value infrastructure options from IConfiguration (appsettings.json / environment)
+    /// with seamless fallback to legacy Web.config / AppConfig.
     /// </summary>
     public static class EimeceOptionsRegistration
     {
         public static IServiceCollection AddEimeceOptions(this IServiceCollection services)
         {
-            RegisterOptions(services, LoggingOptions.FromAppConfig);
-            RegisterOptions(services, ObservabilityOptions.FromAppConfig);
-            RegisterOptions(services, IyzicoOptions.FromAppConfig);
-            RegisterOptions(services, CacheOptions.FromAppConfig);
-            RegisterOptions(services, OutboundHttpOptions.FromAppConfig);
+            RegisterOptions(services, "Logging", LoggingOptions.FromAppConfig);
+            RegisterOptions(services, "Observability", ObservabilityOptions.FromAppConfig);
+            RegisterOptions(services, "Iyzico", IyzicoOptions.FromAppConfig);
+            RegisterOptions(services, "Cache", CacheOptions.FromAppConfig);
+            RegisterOptions(services, "OutboundHttp", OutboundHttpOptions.FromAppConfig);
             return services;
         }
 
-        private static void RegisterOptions<TOptions>(IServiceCollection services, System.Func<TOptions> factory)
-            where TOptions : class
+        private static void RegisterOptions<TOptions>(IServiceCollection services, string sectionName, System.Func<TOptions> fallbackFactory)
+            where TOptions : class, new()
         {
-            services.AddSingleton<TOptions>(_ => factory());
+            services.AddSingleton<TOptions>(sp =>
+            {
+                var config = sp.GetService<IConfiguration>();
+                if (config != null && !string.IsNullOrWhiteSpace(sectionName))
+                {
+                    var section = config.GetSection(sectionName);
+                    if (section.Exists())
+                    {
+                        var options = new TOptions();
+                        section.Bind(options);
+                        return options;
+                    }
+                }
+                return fallbackFactory();
+            });
             services.AddSingleton<IOptions<TOptions>>(sp => Options.Create(sp.GetRequiredService<TOptions>()));
             services.AddSingleton<IOptionsMonitor<TOptions>>(sp => new OptionsMonitorWrapper<TOptions>(sp.GetRequiredService<TOptions>()));
         }
 
-        /// <summary>
-        /// Web.config values are fixed for the AppDomain lifetime; monitor is a thin IOptions adapter.
-        /// </summary>
         private sealed class OptionsMonitorWrapper<TOptions> : IOptionsMonitor<TOptions>
             where TOptions : class
         {

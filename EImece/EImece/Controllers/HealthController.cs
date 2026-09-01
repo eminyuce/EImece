@@ -1,14 +1,15 @@
 using EImece.Domain;
-using EImece.Domain.Observability.HealthChecks;
+using EImece.Domain.Helpers;
+using EImece.Domain.Observability.Metrics;
+using EImece.Web.Filters;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-
-using EImece.Domain.Helpers;
-using EImece.Web.Filters;
 
 namespace EImece.Controllers
 {
@@ -16,9 +17,9 @@ namespace EImece.Controllers
     [AllowAnonymous]
     public class HealthController : Controller
     {
-        private readonly IHealthCheckService _healthCheckService;
+        private readonly HealthCheckService _healthCheckService;
 
-        public HealthController(IHealthCheckService healthCheckService)
+        public HealthController(HealthCheckService healthCheckService)
         {
             _healthCheckService = healthCheckService;
         }
@@ -44,36 +45,19 @@ namespace EImece.Controllers
 
             base.OnActionExecuting(filterContext);
         }
-        /*
-         * One writable root for uploads + NLog files (media/images and media/logs).
-         * Run elevated after publish:
-         *
-         *   mkdir "C:\inetpub\wwwroot\Eimece\media\images" 2>nul
-         *   mkdir "C:\inetpub\wwwroot\Eimece\media\logs" 2>nul
-         *   icacls "C:\inetpub\wwwroot\Eimece\media" /grant "IIS AppPool\Eimece":(OI)(CI)M /T
-         *
-         * See docs/IIS_APP_POOL_PERMISSIONS.md
-         * 
-         * if exist "C:\Users\eminy\source\repos\EImece\EImece\EImece\obj" rmdir /s /q "C:\Users\eminy\source\repos\EImece\EImece\EImece\obj" && "C:\Windows\Microsoft.NET\Framework64\v4.0.30319\aspnet_compiler.exe" -p "C:\Users\eminy\source\repos\EImece\EImece\EImece" -v / -f "C:\Publish\EImece"
-        "C:\Windows\Microsoft.NET\Framework64\v4.0.30319\aspnet_compiler.exe" ^
-  -p "C:\Users\eminy\source\repos\EImece\EImece\EImece" ^
-  -v / ^
-  -f ^
-  -fixednames ^
-  "C:\Publish\EImece"
-
-        "C:\Windows\Microsoft.NET\Framework64\v4.0.30319\aspnet_compiler.exe" -p "C:\Users\eminy\source\repos\EImece\EImece\EImece" -v / -f -fixednames "C:\Publish\EImece"
-         * "C:\Windows\Microsoft.NET\Framework64\v4.0.30319\aspnet_compiler.exe" -p "C:\Users\eminy\source\repos\EImece\EImece\EImece" -v / -f "C:\Publish\EImece"
-         * PS C:\Users\eminy\source\repos\EImece\EImece> & "C:\Windows\Microsoft.NET\Framework64\v4.0.30319\aspnet_compiler.exe" -p "C:\Users\eminy\source\repos\EImece\EImece\EImece" -v / -f "C:\Publish\EImece"
-         */
 
         [HttpGet]
         [Route("health")]
         [Route("healthz")]
         public async Task<ActionResult> Index(CancellationToken cancellationToken)
         {
-            var response = await _healthCheckService.GetHealthAsync(cancellationToken).ConfigureAwait(false);
-            var statusCode = response.Status == "UP" ? HttpStatusCode.OK : HttpStatusCode.ServiceUnavailable;
+            var report = await _healthCheckService.CheckHealthAsync(cancellationToken).ConfigureAwait(false);
+            var isHealthy = report.Status == Microsoft.Extensions.Diagnostics.HealthChecks.HealthStatus.Healthy;
+            var overallStatus = isHealthy ? "UP" : "DOWN";
+
+            OpenTelemetryMetrics.SetHealthStatus(isHealthy);
+
+            var statusCode = isHealthy ? HttpStatusCode.OK : HttpStatusCode.ServiceUnavailable;
             Response.StatusCode = (int)statusCode;
             Response.ContentType = "application/json";
 
@@ -84,10 +68,36 @@ namespace EImece.Controllers
 
             if (isAdmin)
             {
-                return Content(JsonConvert.SerializeObject(response, Formatting.Indented), "application/json");
+                var components = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
+                foreach (var entry in report.Entries)
+                {
+                    var compStatus = entry.Value.Status == Microsoft.Extensions.Diagnostics.HealthChecks.HealthStatus.Healthy ? "UP" : "DOWN";
+                    var compData = new Dictionary<string, object>
+                    {
+                        { "status", compStatus },
+                        { "details", new Dictionary<string, string> { { "message", entry.Value.Description ?? string.Empty } } }
+                    };
+
+                    if (entry.Value.Status != Microsoft.Extensions.Diagnostics.HealthChecks.HealthStatus.Healthy)
+                    {
+                        compData["error"] = entry.Value.Exception?.Message ?? entry.Value.Description;
+                    }
+
+                    components[entry.Key] = compData;
+                }
+
+                var fullResponse = new
+                {
+                    status = overallStatus,
+                    version = typeof(HealthController).Assembly.GetName().Version?.ToString() ?? "unknown",
+                    timestamp = DateTime.UtcNow.ToString("o"),
+                    components = components
+                };
+
+                return Content(JsonConvert.SerializeObject(fullResponse, Formatting.Indented), "application/json");
             }
 
-            var publicPayload = new { status = response.Status };
+            var publicPayload = new { status = overallStatus };
             return Content(JsonConvert.SerializeObject(publicPayload), "application/json");
         }
 

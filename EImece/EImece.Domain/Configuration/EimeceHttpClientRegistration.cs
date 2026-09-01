@@ -1,7 +1,7 @@
-using EImece.Domain.Configuration;
 using EImece.Domain.Observability.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Polly;
 using System;
 using System.Net.Http;
 
@@ -11,10 +11,22 @@ namespace EImece.Domain.Configuration
     {
         public static IServiceCollection AddEimeceHttpClients(this IServiceCollection services)
         {
-            services.AddHttpClient(HttpClientNames.Resilient, ConfigureResilientClient);
-            services.AddHttpClient(HttpClientNames.Iyzico, ConfigureIyzicoClient);
-            services.AddHttpClient(HttpClientNames.Recaptcha, ConfigureRecaptchaClient);
-            services.AddHttpClient(HttpClientNames.ExternalApi, ConfigureExternalApiClient);
+            services.AddHttpClient(HttpClientNames.Resilient, ConfigureResilientClient)
+                .AddTransientHttpErrorPolicy(policy =>
+                    policy.WaitAndRetryAsync(3, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt))));
+
+            services.AddHttpClient(HttpClientNames.Iyzico, ConfigureIyzicoClient)
+                .AddTransientHttpErrorPolicy(policy =>
+                    policy.WaitAndRetryAsync(2, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt))));
+
+            services.AddHttpClient(HttpClientNames.Recaptcha, ConfigureRecaptchaClient)
+                .AddTransientHttpErrorPolicy(policy =>
+                    policy.WaitAndRetryAsync(2, _ => TimeSpan.FromSeconds(1)));
+
+            services.AddHttpClient(HttpClientNames.ExternalApi, ConfigureExternalApiClient)
+                .AddTransientHttpErrorPolicy(policy =>
+                    policy.WaitAndRetryAsync(2, _ => TimeSpan.FromSeconds(1)));
+
             return services;
         }
 
