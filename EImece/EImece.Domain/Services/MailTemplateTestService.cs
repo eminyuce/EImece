@@ -1,11 +1,10 @@
-using Microsoft.Extensions.Logging;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.EmailHelper;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Services.IServices;
-using EImece.Domain.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -27,7 +26,7 @@ namespace EImece.Domain.Services
             ISettingService settingService,
             IEmailSender emailSender,
             IRazorTemplateEngine razorTemplateEngine, ILogger<MailTemplateTestService> logger)
-         {
+        {
             _logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
             MailTemplateService = mailTemplateService ?? throw new ArgumentNullException(nameof(mailTemplateService));
             SettingService = settingService ?? throw new ArgumentNullException(nameof(settingService));

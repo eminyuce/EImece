@@ -109,7 +109,7 @@ namespace EImece.Domain.Entities
             }
         }
 
-        public string ImageFullPath(int width, int height, bool isThump=false)
+        public string ImageFullPath(int width, int height, bool isThump = false)
         {
             // Must tolerate null HttpContext.Current after ConfigureAwait(false) in async services.
             var baseurl = EntityExtension.GetAbsoluteApplicationBaseUrl();

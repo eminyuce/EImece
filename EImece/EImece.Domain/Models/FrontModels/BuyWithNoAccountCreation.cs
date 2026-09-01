@@ -16,7 +16,7 @@ namespace EImece.Domain.Models.FrontModels
         public string OrderGuid { get; set; }
         private List<ShoppingCartItem> _shoppingCartItems = new List<ShoppingCartItem>();
         public CouponDto Coupon { get; set; }
-        public string CouponStr    { get { return Coupon == null ? "" : Coupon.Code; } }
+        public string CouponStr { get { return Coupon == null ? "" : Coupon.Code; } }
         public decimal CouponValidatedDiscount { get; set; }
         public decimal CouponShippingDiscount { get; set; }
         public decimal CouponEligibleAmount { get; set; }

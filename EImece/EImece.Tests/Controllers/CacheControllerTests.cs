@@ -1,15 +1,14 @@
-using EImece.Tests.Infrastructure;
 using EImece.Areas.Admin.Controllers;
 using EImece.Areas.Admin.Models;
 using EImece.Domain.Abstractions;
 using EImece.Domain.Caching;
 using EImece.Domain.Services.IServices;
+using EImece.Tests.Infrastructure;
 using EImece.Web.Areas.Admin.Controllers;
 using EImece.Web.Filters;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Remoting.Messaging;

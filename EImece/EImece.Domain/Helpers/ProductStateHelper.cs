@@ -1,7 +1,6 @@
 using EImece.Domain.Models.Enums;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace EImece.Domain.Helpers
 {

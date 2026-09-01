@@ -1,8 +1,7 @@
-using Microsoft.Extensions.Logging;
-﻿using EImece.Domain.Entities;
+using EImece.Domain.Entities;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
-using System;
+using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -14,7 +13,8 @@ namespace EImece.Domain.Services
     {
         public ITemplateRepository TemplateRepository { get; set; }
 
-        public TemplateService(ITemplateRepository repository, ILogger<TemplateService> logger) : base(repository, logger) {
+        public TemplateService(ITemplateRepository repository, ILogger<TemplateService> logger) : base(repository, logger)
+        {
             TemplateRepository = repository;
         }
 

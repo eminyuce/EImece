@@ -2,9 +2,7 @@ using EImece.Domain;
 using EImece.Domain.DependencyInjection;
 using EImece.Domain.Helpers;
 using EImece.Domain.Services.IServices;
-using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Web;
 using System.Web.Mvc;
 
 namespace EImece.Web.Filters

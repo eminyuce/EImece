@@ -1,12 +1,14 @@
-using Microsoft.Extensions.Logging;
-using EImece.Web.Areas.Admin.Controllers;
 using EImece.Domain;
 using EImece.Domain.Abstractions;
 using EImece.Domain.Caching;
-using EImece.Web.Helpers;
 using EImece.Domain.Entities;
+using EImece.Domain.Factories.IFactories;
 using EImece.Domain.Helpers;
+using EImece.Domain.Services.IServices;
+using EImece.Web.Areas.Admin.Controllers;
 using EImece.Web.Filters;
+using EImece.Web.Helpers;
+using Microsoft.Extensions.Logging;
 using Resources;
 using System;
 using System.Data;
@@ -17,9 +19,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-
-using EImece.Domain.Factories.IFactories;
-using EImece.Domain.Services.IServices;
 
 namespace EImece.Areas.Admin.Controllers
 {
@@ -36,7 +35,8 @@ namespace EImece.Areas.Admin.Controllers
             IEimeceCacheProvider cache,
             IHttpRuntimeCacheClearer httpRuntimeCacheClearer,
             ILogger<SettingsController> logger)
-            : base(settingService, logger) {
+            : base(settingService, logger)
+        {
             EntityFactory = entityFactory ?? throw new ArgumentNullException(nameof(entityFactory));
             FilesHelper = filesHelper ?? throw new ArgumentNullException(nameof(filesHelper));
             _cache = cache ?? throw new ArgumentNullException(nameof(cache));

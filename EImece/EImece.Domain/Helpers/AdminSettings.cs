@@ -1,6 +1,5 @@
 using EImece.Domain.DependencyInjection;
 using EImece.Domain.Services.IServices;
-using System;
 
 namespace EImece.Domain.Helpers
 {

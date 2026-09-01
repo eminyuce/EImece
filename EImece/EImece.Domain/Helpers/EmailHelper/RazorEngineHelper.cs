@@ -2,17 +2,13 @@ using EImece.Domain.Abstractions;
 using EImece.Domain.ApiRepositories;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers.Extensions;
-using EImece.Domain.Helpers.RazorCustomRssTemplate;
 using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Models.FrontModels;
-using EImece.Domain.Services.IServices;
-using EImece.Domain.DependencyInjection;
 using EImece.Domain.Observability.Telemetry;
+using EImece.Domain.Services.IServices;
 using RazorEngine;
-using RazorEngine.Configuration;
 using RazorEngine.Templating;
 using System;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 

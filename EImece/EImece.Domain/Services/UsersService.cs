@@ -1,10 +1,9 @@
-using Microsoft.Extensions.Logging;
-using EImece.Domain.DependencyInjection;
 using EImece.Domain.Helpers;
 using EImece.Domain.Observability.Telemetry;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
 using EImece.Models;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +25,7 @@ namespace EImece.Domain.Services
             ApplicationUserManager userManager,
             ICustomerService customerService,
             IOrderService orderService, ILogger<UsersService> logger)
-         {
+        {
             _logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
             _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
             UserManager = userManager ?? throw new ArgumentNullException(nameof(userManager));

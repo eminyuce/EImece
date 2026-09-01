@@ -1,4 +1,3 @@
-using Microsoft.Extensions.Logging;
 using EImece.Domain.Configuration;
 using EImece.Domain.DependencyInjection;
 using EImece.Domain.Helpers;
@@ -7,16 +6,16 @@ using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Observability;
 using EImece.Domain.Observability.Logging;
 using EImece.Domain.Observability.Telemetry;
-using Iyzipay;
 using Iyzipay.Model;
 using Iyzipay.Request;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
 using System.Threading.Tasks;
 using IyzipayOptions = Iyzipay.Options;
-using Microsoft.Extensions.Options;
 
 namespace EImece.Domain.Services
 {

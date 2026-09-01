@@ -1,4 +1,3 @@
-using Microsoft.Extensions.Logging;
 using EImece.Domain.Caching;
 using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository.EntityFramework.Enums;
@@ -7,7 +6,7 @@ using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.HelperModels;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
-using EImece.Domain.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -33,7 +32,8 @@ namespace EImece.Domain.Services
             IStoryFileRepository storyFileRepository,
             IMenuFileRepository menuFileRepository,
             IFileStorageTagRepository fileStorageTagRepository, ILogger<FileStorageService> logger)
-            : base(repository, dataCachingProvider, logger) {
+            : base(repository, dataCachingProvider, logger)
+        {
             FileStorageRepository = repository ?? throw new ArgumentNullException(nameof(repository));
             ProductFileRepository = productFileRepository ?? throw new ArgumentNullException(nameof(productFileRepository));
             StoryFileRepository = storyFileRepository ?? throw new ArgumentNullException(nameof(storyFileRepository));

@@ -1,4 +1,3 @@
-using EImece.Tests.Infrastructure;
 using EImece.Domain.Entities;
 using EImece.Domain.Models;
 using EImece.Domain.Models.Enums;
@@ -6,6 +5,7 @@ using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Models.FrontModels.ShoppingCart;
 using EImece.Domain.Repositories;
 using EImece.Domain.Services;
+using EImece.Tests.Infrastructure;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -115,7 +115,7 @@ namespace EImece.Tests.Services
         public int SaveChanges() => 0;
         public Task<int> SaveChangesAsync() => Task.FromResult(0);
         public Task<int> SaveChangesAsync(CancellationToken cancellationToken) => Task.FromResult(0);
-        public void Dispose() {}
+        public void Dispose() { }
         public IDbSet<TEntity> Set<TEntity>() where TEntity : class
         {
             if (typeof(TEntity) == typeof(Coupon)) return (IDbSet<TEntity>)(object)Coupons;
@@ -128,9 +128,9 @@ namespace EImece.Tests.Services
             if (typeof(TEntity) == typeof(Customer)) return (IDbSet<TEntity>)(object)Customers;
             throw new NotImplementedException();
         }
-        public void SetAsAdded<TEntity>(TEntity entity) where TEntity : class {}
-        public void SetAsModified<TEntity>(TEntity entity) where TEntity : class {}
-        public void SetAsDeleted<TEntity>(TEntity entity) where TEntity : class {}
+        public void SetAsAdded<TEntity>(TEntity entity) where TEntity : class { }
+        public void SetAsModified<TEntity>(TEntity entity) where TEntity : class { }
+        public void SetAsDeleted<TEntity>(TEntity entity) where TEntity : class { }
         public IDbSet<EImece.Domain.Entities.MailTemplate> MailTemplates { get; set; }
         public IDbSet<EImece.Domain.Entities.ListItem> ListItems { get; set; }
         public IDbSet<EImece.Domain.Entities.List> Lists { get; set; }

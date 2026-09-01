@@ -1,17 +1,14 @@
-using Microsoft.Extensions.Logging;
-using EImece.Domain.DependencyInjection;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
-using EImece.Domain.Observability.Logging;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
@@ -26,7 +23,7 @@ namespace EImece.Domain.Services.ExportImport
         private readonly IUsersService UsersService;
 
         public DataExportService(IDataExportRepository repository, IUsersService usersService, ILogger<DataExportService> logger)
-         {
+        {
             _logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
             Repository = repository ?? throw new ArgumentNullException(nameof(repository));
             UsersService = usersService ?? throw new ArgumentNullException(nameof(usersService));

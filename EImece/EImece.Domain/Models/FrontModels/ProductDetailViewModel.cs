@@ -402,7 +402,7 @@ namespace EImece.Domain.Models.FrontModels
         public string Keywords { get; set; }
 
         [JsonProperty("image")]
-        public string [] Image { get; set; }
+        public string[] Image { get; set; }
 
         [JsonProperty("description")]
         public string Description { get; set; }

@@ -1,5 +1,4 @@
 using EImece.Domain.Configuration;
-using EImece.Domain.Observability.Configuration;
 using EImece.Domain.Observability.Http;
 using EImece.Domain.Observability.Metrics;
 using Microsoft.Extensions.DependencyInjection;

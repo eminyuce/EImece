@@ -59,7 +59,7 @@ namespace EImece.Domain.Services.IServices
         Task<List<ProductCategoryTreeModel>> GetBreadCrumbAsync(int productCategoryId, int language);
 
         List<ProductCategoryTreeModel> BuildNavigation(bool isActive, int currentLanguage);
-        
+
         ProductCategoryDto GetProductCategoryDto(int productCategoryId);
 
         Task<ProductCategoryDto> GetProductCategoryDtoAsync(int productCategoryId);

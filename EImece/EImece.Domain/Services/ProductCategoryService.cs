@@ -1,16 +1,14 @@
-using Microsoft.Extensions.Logging;
-using EImece.Domain.Entities;
+using EImece.Domain.Abstractions;
 using EImece.Domain.Caching;
+using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
-using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.DTOs;
 using EImece.Domain.Models.DTOs.Storefront;
 using EImece.Domain.Models.FrontModels;
+using EImece.Domain.Observability.Telemetry;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
-using EImece.Domain.Abstractions;
-using EImece.Domain.DependencyInjection;
-using EImece.Domain.Observability.Telemetry;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Validation;
@@ -36,7 +34,8 @@ namespace EImece.Domain.Services
             IBrandService brandService,
             IProductRepository productRepository,
             IMenuService menuService, ILogger<ProductCategoryService> logger)
-            : base(repository, dataCachingProvider, settingService, fileStorageService, currentUserContext, filesHelper, logger) {
+            : base(repository, dataCachingProvider, settingService, fileStorageService, currentUserContext, filesHelper, logger)
+        {
             ProductCategoryRepository = repository ?? throw new ArgumentNullException(nameof(repository));
             BrandService = brandService ?? throw new ArgumentNullException(nameof(brandService));
             ProductRepository = productRepository ?? throw new ArgumentNullException(nameof(productRepository));

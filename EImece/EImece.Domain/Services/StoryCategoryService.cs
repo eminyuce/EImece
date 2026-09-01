@@ -1,12 +1,11 @@
-using Microsoft.Extensions.Logging;
+using EImece.Domain.Abstractions;
 using EImece.Domain.Caching;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Models.DTOs.Storefront;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
-using EImece.Domain.Abstractions;
-using EImece.Domain.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Validation;
@@ -30,7 +29,8 @@ namespace EImece.Domain.Services
             FilesHelper filesHelper,
             IStoryRepository storyRepository,
             IStoryTagRepository storyTagRepository, ILogger<StoryCategoryService> logger)
-            : base(repository, dataCachingProvider, settingService, fileStorageService, currentUserContext, filesHelper, logger) {
+            : base(repository, dataCachingProvider, settingService, fileStorageService, currentUserContext, filesHelper, logger)
+        {
             StoryCategoryRepository = repository ?? throw new ArgumentNullException(nameof(repository));
             StoryRepository = storyRepository ?? throw new ArgumentNullException(nameof(storyRepository));
             StoryTagRepository = storyTagRepository ?? throw new ArgumentNullException(nameof(storyTagRepository));

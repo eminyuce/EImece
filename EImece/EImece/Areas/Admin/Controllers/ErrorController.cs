@@ -1,5 +1,5 @@
-﻿using EImece.Web.Filters;
-using EImece.Domain.Models.HelperModels;
+﻿using EImece.Domain.Models.HelperModels;
+using EImece.Web.Filters;
 using System.Net;
 using System.Web.Mvc;
 

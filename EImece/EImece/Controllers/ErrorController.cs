@@ -1,13 +1,12 @@
-using EImece.Web.Controllers;
-using EImece.Domain;
-using EImece.Web.Filters;
 using EImece.Domain.Models.HelperModels;
+using EImece.Domain.Services.IServices;
+using EImece.Web.Controllers;
+using EImece.Web.Filters;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using System;
 using System.Net;
 using System.Web.Mvc;
-using EImece.Domain.Services.IServices;
 
 namespace EImece.Controllers
 {

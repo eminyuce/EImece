@@ -1,4 +1,3 @@
-using Microsoft.Extensions.Logging;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
@@ -6,7 +5,7 @@ using EImece.Domain.Helpers.SiteMap;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Observability.Telemetry;
 using EImece.Domain.Services.IServices;
-using EImece.Domain.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -50,7 +49,7 @@ namespace EImece.Domain.Services
             IImageDownloadService imageDownloadService,
             ITemplateService templateService,
             IMailTemplateService mailTemplateService, ILogger<SiteMapService> logger)
-         {
+        {
             _logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
             MainPageImageService = mainPageImageService ?? throw new ArgumentNullException(nameof(mainPageImageService));
             SettingService = settingService ?? throw new ArgumentNullException(nameof(settingService));

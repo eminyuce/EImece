@@ -1,8 +1,8 @@
+using EImece.Domain.Helpers;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Configuration;
 using System.IO;
-using EImece.Domain.Helpers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace EImece.Tests.Helpers
 {

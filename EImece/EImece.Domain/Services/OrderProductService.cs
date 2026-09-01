@@ -1,8 +1,8 @@
+using EImece.Domain.Entities;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
-using EImece.Domain.Entities;
 
 namespace EImece.Domain.Services
 {

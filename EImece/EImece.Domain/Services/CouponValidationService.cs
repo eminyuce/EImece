@@ -1,4 +1,3 @@
-using Microsoft.Extensions.Logging;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Models;
@@ -7,6 +6,7 @@ using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Observability.Telemetry;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -33,7 +33,7 @@ namespace EImece.Domain.Services
             IProductRepository productRepository,
             IProductCategoryRepository productCategoryRepository,
             IOrderRepository orderRepository, ILogger<CouponValidationService> logger)
-         {
+        {
             _couponRepository = couponRepository;
             _redemptionRepository = redemptionRepository;
             _couponProductRepository = couponProductRepository;

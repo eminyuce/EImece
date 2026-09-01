@@ -1,16 +1,15 @@
-using EImece.Web.Controllers;
 using EImece.Domain.Helpers;
 using EImece.Domain.Services;
+using EImece.Domain.Services.IServices;
 using EImece.Models;
+using EImece.Web.Controllers;
 using Microsoft.AspNet.Identity;
 using Microsoft.Extensions.Logging;
 using Microsoft.Owin.Security;
+using Resources;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using Resources;
-
-using EImece.Domain.Services.IServices;
 
 namespace EImece.Controllers
 {
@@ -27,7 +26,8 @@ namespace EImece.Controllers
             AutoMapper.IMapper mapper,
             ApplicationUserManager userManager,
             ApplicationSignInManager signInManager, ILogger<ManageController> logger)
-            : base(settingService, mapper, logger) {
+            : base(settingService, mapper, logger)
+        {
             UserManager = userManager;
             SignInManager = signInManager;
         }

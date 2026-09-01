@@ -1,10 +1,9 @@
 using EImece.Domain;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
-using EImece.Web.Filters;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Services.IServices;
-using EImece.Domain.DependencyInjection;
+using EImece.Web.Filters;
 using Microsoft.Extensions.Logging;
 using Resources;
 using System;

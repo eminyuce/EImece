@@ -1,10 +1,9 @@
-using EImece.Domain.Observability.Logging;
-using Microsoft.Extensions.Logging;
 using EImece.Domain.DependencyInjection;
 using EImece.Domain.Entities;
-using EImece.Domain.Helpers;
 using EImece.Domain.Models.FrontModels;
+using EImece.Domain.Observability.Logging;
 using EImece.Domain.Services.IServices;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -119,7 +118,7 @@ namespace EImece.Domain.Helpers.Extensions
             {
                 si.ElementExtensions.Add("category", String.Empty, product.ProductCategory.Name);
             }
-            if (product.Brand !=null && !string.IsNullOrEmpty(product.Brand.Name))
+            if (product.Brand != null && !string.IsNullOrEmpty(product.Brand.Name))
             {
                 si.ElementExtensions.Add("brand", String.Empty, product.Brand.Name);
             }
@@ -503,7 +502,7 @@ namespace EImece.Domain.Helpers.Extensions
             return result;
         }
 
-        public static string GetCroppedImageUrl(this BaseEntity entity, int fileStorageId, int width = 0, int height = 0, bool isFullPathImageUrl = false, bool isThump=false)
+        public static string GetCroppedImageUrl(this BaseEntity entity, int fileStorageId, int width = 0, int height = 0, bool isFullPathImageUrl = false, bool isThump = false)
         {
             NormalizeImageDimensions(ref width, ref height);
 

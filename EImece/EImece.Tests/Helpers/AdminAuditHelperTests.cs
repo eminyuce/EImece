@@ -1,11 +1,9 @@
 using EImece.Domain;
-using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Web.Filters;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Globalization;
-using System.IO;
 using System.Security.Principal;
 using System.Web;
 using System.Web.Mvc;

@@ -1,5 +1,4 @@
 using CronExpressionDescriptor;
-using EImece.Domain.Helpers;
 using Microsoft.Extensions.Logging;
 using Quartz;
 using System;

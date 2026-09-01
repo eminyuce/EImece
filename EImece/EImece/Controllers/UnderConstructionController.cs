@@ -1,9 +1,8 @@
-using Microsoft.Extensions.Logging;
-using System;
 using EImece.Domain;
-using EImece.Domain.DependencyInjection;
 using EImece.Domain.Helpers;
 using EImece.Domain.Services.IServices;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -17,7 +16,7 @@ namespace EImece.Controllers
         private readonly ISettingService SettingService;
 
         public UnderConstructionController(ISettingService settingService, ILogger<UnderConstructionController> logger)
-         {
+        {
             _logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
             SettingService = settingService ?? throw new ArgumentNullException(nameof(settingService));
         }

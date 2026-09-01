@@ -1,7 +1,7 @@
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
-using System.ComponentModel.DataAnnotations;
 using Resources;
+using System.ComponentModel.DataAnnotations;
 
 namespace EImece.Domain.Models.DTOs.Storefront
 {

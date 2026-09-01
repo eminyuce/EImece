@@ -1,17 +1,15 @@
-using EImece.Web.Controllers;
-using System;
-using EImece.Web.Infrastructure.ActionResults;
 using EImece.Domain;
 using EImece.Domain.Helpers;
-using EImece.Web.Filters;
-using EImece.Domain.Helpers.SiteMap;
 using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
-using EImece.Domain.DependencyInjection;
-using System.Net.Mime;
-using System.Threading.Tasks;
-using System.Text;
+using EImece.Web.Controllers;
+using EImece.Web.Filters;
+using EImece.Web.Infrastructure.ActionResults;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Net.Mime;
+using System.Text;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace EImece.Controllers

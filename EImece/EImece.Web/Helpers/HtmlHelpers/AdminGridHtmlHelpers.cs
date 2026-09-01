@@ -1,8 +1,8 @@
+using EImece.Domain;
 using System;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
-using EImece.Domain;
 
 namespace EImece.Web.Helpers.HtmlHelpers
 {

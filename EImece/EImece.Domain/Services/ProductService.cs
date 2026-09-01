@@ -1,4 +1,3 @@
-using Microsoft.Extensions.Logging;
 using EImece.Domain.Abstractions;
 using EImece.Domain.Caching;
 using EImece.Domain.Entities;
@@ -13,12 +12,12 @@ using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Observability.Telemetry;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Data.Entity;
 using System.Data.Entity.Validation;
-using System.Globalization;
 using System.Linq;
 using System.ServiceModel.Syndication;
 using System.Threading;
@@ -58,7 +57,8 @@ namespace EImece.Domain.Services
             IEntityFactory entityFactory,
             IMenuService menuService,
             ITagCategoryService tagCategoryService, ILogger<ProductService> logger)
-            : base(repository, dataCachingProvider, settingService, fileStorageService, currentUserContext, filesHelper, logger) {
+            : base(repository, dataCachingProvider, settingService, fileStorageService, currentUserContext, filesHelper, logger)
+        {
             ProductRepository = repository ?? throw new ArgumentNullException(nameof(repository));
             ProductCategoryService = productCategoryService;
             ProductCommentRepository = productCommentRepository;

@@ -1,11 +1,12 @@
-using Microsoft.Extensions.Logging;
-using EImece.Web.Areas.Admin.Controllers;
 using EImece.Domain;
+using EImece.Domain.Caching;
 using EImece.Domain.Helpers;
-using EImece.Web.Filters;
+using EImece.Domain.Helpers.EmailHelper;
 using EImece.Domain.Models.AdminModels;
-using EImece.Domain.Observability.Logging;
 using EImece.Domain.Services.ExportImport;
+using EImece.Domain.Services.IServices;
+using EImece.Web.Areas.Admin.Controllers;
+using Microsoft.Extensions.Logging;
 using Resources;
 using System;
 using System.IO;
@@ -14,10 +15,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using DomainConstants = EImece.Domain.Constants;
-
-using EImece.Domain.Caching;
-using EImece.Domain.Helpers.EmailHelper;
-using EImece.Domain.Services.IServices;
 
 namespace EImece.Areas.Admin.Controllers
 {
@@ -31,7 +28,8 @@ namespace EImece.Areas.Admin.Controllers
             IEmailSender emailSender,
             IEimeceCacheProvider memoryCacheProvider,
             IDataExportService dataExportService, ILogger<AdminSettingsController> logger)
-            : base(settingService, logger) {
+            : base(settingService, logger)
+        {
             _emailSender = emailSender ?? throw new ArgumentNullException(nameof(emailSender));
             _memoryCacheProvider = memoryCacheProvider ?? throw new ArgumentNullException(nameof(memoryCacheProvider));
             _dataExportService = dataExportService ?? throw new ArgumentNullException(nameof(dataExportService));

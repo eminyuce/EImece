@@ -1,6 +1,5 @@
 using Microsoft.Extensions.Logging;
 using System;
-using System.Configuration;
 
 namespace EImece.Domain.Observability.Logging
 {

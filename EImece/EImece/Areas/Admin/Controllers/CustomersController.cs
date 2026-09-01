@@ -1,18 +1,13 @@
-using EImece.Web.Areas.Admin.Controllers;
-using EImece.Domain.Entities;
-using EImece.Web.Filters;
-using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
-using EImece.Domain.DependencyInjection;
-using Griddly.Mvc;
-using Griddly.Mvc.Results;
+using EImece.Web.Areas.Admin.Controllers;
+using EImece.Web.Filters;
 using Microsoft.AspNet.Identity;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
 using System.Web.Mvc;
 
 namespace EImece.Areas.Admin.Controllers

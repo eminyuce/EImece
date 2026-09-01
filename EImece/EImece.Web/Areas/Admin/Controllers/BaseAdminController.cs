@@ -1,12 +1,14 @@
 using EImece.Domain;
-using EImece.Domain.Caching;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
-using EImece.Web.Filters;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Observability.Logging;
 using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
+using EImece.Web.Filters;
+using EImece.Web.Helpers;
+using Griddly.Mvc;
+using Griddly.Mvc.Results;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Extensions.Logging;
@@ -20,9 +22,6 @@ using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using Griddly.Mvc;
-using Griddly.Mvc.Results;
-using EImece.Web.Helpers;
 using DomainConstants = EImece.Domain.Constants;
 
 namespace EImece.Web.Areas.Admin.Controllers

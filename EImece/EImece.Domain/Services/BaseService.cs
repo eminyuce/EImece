@@ -1,10 +1,5 @@
-using AutoMapper;
-using EImece.Domain.Caching;
-using EImece.Domain.Factories.IFactories;
 using EImece.Domain.GenericRepository;
-using EImece.Domain.Helpers;
 using EImece.Domain.Repositories.IRepositories;
-using EImece.Domain.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;

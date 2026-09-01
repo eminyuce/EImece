@@ -1,29 +1,24 @@
-using Microsoft.Extensions.Logging;
-using EImece.Web.Controllers;
 using EImece.Domain;
-using EImece.Web.Helpers;
 using EImece.Domain.Entities;
-using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Helpers;
-using EImece.Web.Filters;
 using EImece.Domain.Helpers.EmailHelper;
 using EImece.Domain.Helpers.Extensions;
-using EImece.Domain.Models.Enums;
+using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Models.DTOs;
-using EImece.Domain.Models.DTOs.Storefront;
+using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
-using ProductSpecItem = EImece.Domain.Models.FrontModels.ProductSpecItem;
-using EImece.Domain.Models.Payment;
-using PaymentResultDto = EImece.Domain.Models.Payment.PaymentResult;
 using EImece.Domain.Models.FrontModels.ShoppingCart;
+using EImece.Domain.Models.Payment;
 using EImece.Domain.Services;
-using EImece.Domain.Services.Payment;
 using EImece.Domain.Services.IServices;
+using EImece.Domain.Services.Payment;
+using EImece.Web.Controllers;
+using EImece.Web.Filters;
+using EImece.Web.Helpers;
 using Microsoft.AspNet.Identity;
+using Microsoft.Extensions.Logging;
 using Microsoft.Owin.Security;
 using Newtonsoft.Json;
-using EImece.Domain.DependencyInjection;
-using EImece.Web.Filters;
 using Resources;
 using System;
 using System.Collections.Generic;
@@ -33,6 +28,8 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using PaymentResultDto = EImece.Domain.Models.Payment.PaymentResult;
+using ProductSpecItem = EImece.Domain.Models.FrontModels.ProductSpecItem;
 
 namespace EImece.Controllers
 {
@@ -77,7 +74,8 @@ namespace EImece.Controllers
             IShoppingCartService shoppingCartService,
             IAuthenticationManager authenticationManager,
             IProductService productService, ILogger<PaymentController> logger)
-            : base(settingService, mapper, logger) {
+            : base(settingService, mapper, logger)
+        {
             UserManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
             SignInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
             MailTemplateService = mailTemplateService ?? throw new ArgumentNullException(nameof(mailTemplateService));
@@ -164,7 +162,7 @@ namespace EImece.Controllers
                 {
                     throw new Exception($"OrderGuid does not match. Setting new OrderGuid: {orderGuid}");
                 }
-               
+
                 Logger.LogDebug($"Set shopping cart OrderGuid to: {orderGuid}");
 
                 var item = new ShoppingCartItem();
@@ -671,7 +669,7 @@ namespace EImece.Controllers
                 return RedirectToAction("CheckoutBillingDetails", Domain.Constants.PaymentAction);
             }
         }
-        
+
         public async Task<ActionResult> PaymentResult(PaymentCallbackRequest model, string o, string u, String orderNumber)
         {
             // iyzico Checkout Form callback POSTs "token" â€” same binding as the former RetrieveCheckoutFormRequest.
@@ -771,10 +769,11 @@ namespace EImece.Controllers
             {
                 Logger.LogDebug("Removing OrderGuid cookie.");
                 Response.Cookies.Remove(Domain.Constants.OrderGuidCookieKey);
-                var aCookie = new HttpCookie(Domain.Constants.OrderGuidCookieKey) { 
+                var aCookie = new HttpCookie(Domain.Constants.OrderGuidCookieKey)
+                {
                     Expires = DateTime.Now.AddDays(-1),
                     HttpOnly = true,
-                    Secure  = Request.IsSecureConnection
+                    Secure = Request.IsSecureConnection
                 };
                 Response.Cookies.Add(aCookie);
                 Logger.LogDebug("Added expired cookie to response.");
@@ -1133,28 +1132,28 @@ namespace EImece.Controllers
                     ModelState.AddModelError("customer.Email", Resource.EmailNotValidMessage);
                 }
             }
-            
+
             if (string.IsNullOrEmpty(customer.City.ToStr().Trim()))
             {
                 ModelState.AddModelError("customer.City", Resource.PleaseEnterYourCity);
             }
-            
+
             if (string.IsNullOrEmpty(customer.Town.ToStr().Trim()))
             {
                 ModelState.AddModelError("customer.Town", Resource.PleaseEnterYourTown);
             }
-             
+
 
             if (string.IsNullOrEmpty(customer.Country.ToStr().Trim()))
             {
                 ModelState.AddModelError("customer.Country", Resource.PleaseEnterYourCountry);
             }
-            
+
             if (string.IsNullOrEmpty(customer.District.ToStr().Trim()))
             {
                 ModelState.AddModelError("customer.District", Resource.PleaseEnterYourDistrict);
             }
-            
+
 
             if (string.IsNullOrEmpty(customer.Street.ToStr().Trim()))
             {
@@ -1165,7 +1164,7 @@ namespace EImece.Controllers
             {
                 ModelState.AddModelError("customer.IdentityNumber", Resource.MandatoryField);
             }
-             
+
             ModelState.AddModelError("", Resource.PleaseFillOutMandatoryBelowFields);
             Logger.LogDebug("Completed InformCustomerToFillOutForm validation.");
         }
@@ -1324,7 +1323,7 @@ namespace EImece.Controllers
                 customer.GsmNumber = GeneralHelper.CheckGsmNumber(customer.GsmNumber);
                 customer.UserId = Guid.NewGuid().ToString();
                 var customerEntity = await CustomerService.SaveOrEditEntityAsync(customer.ToEntity());
-                Logger.LogDebug("Saving customer information,customer.Id:"+ customerEntity.Id);
+                Logger.LogDebug("Saving customer information,customer.Id:" + customerEntity.Id);
 
                 shoppingCart.Customer = Mapper.Map<CustomerDto>(customerEntity);
                 shoppingCart.ShippingAddress = SetAddress(customer, shoppingCart.ShippingAddress);
@@ -1334,7 +1333,7 @@ namespace EImece.Controllers
                 Logger.LogDebug("Set shipping and billing addresses.");
 
                 ShoppingCart item = await SaveShoppingCartAsync(shoppingCart);
-          
+
 
                 await RevalidateCouponAsync(shoppingCart);
                 await SaveShoppingCartAsync(shoppingCart);

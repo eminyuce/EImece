@@ -1,5 +1,5 @@
-using System;
 using EImece.Domain.Models.Enums;
+using System;
 
 namespace EImece.Domain.Models.DTOs
 {

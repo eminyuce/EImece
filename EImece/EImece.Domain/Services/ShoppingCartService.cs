@@ -1,24 +1,19 @@
-using Microsoft.Extensions.Logging;
-using EImece.Domain.DependencyInjection;
 using EImece.Domain.Entities;
-using EImece.Domain.GenericRepository.EntityFramework;
 using EImece.Domain.Helpers;
 using EImece.Domain.Models;
 using EImece.Domain.Models.DTOs;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Models.Payment;
-using EImece.Domain.Repositories;
+using EImece.Domain.Observability.Telemetry;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using EImece.Domain.Observability.Telemetry;
 using Resources;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Entity;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -50,7 +45,8 @@ namespace EImece.Domain.Services
             IProductService productService,
             ILogger<ShoppingCartService> logger,
             ICouponValidationService couponValidationService = null,
-            ICouponRedemptionRepository couponRedemptionRepository = null) : base(repository, logger) {
+            ICouponRedemptionRepository couponRedemptionRepository = null) : base(repository, logger)
+        {
             Logger.LogDebug("ShoppingCartService initialized");
             this.ShoppingCartRepository = repository ?? throw new ArgumentNullException(nameof(repository));
             this.UserManager = userManager;

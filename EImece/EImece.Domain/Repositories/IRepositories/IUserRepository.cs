@@ -1,7 +1,5 @@
-using EImece.Domain.Entities;
 using EImece.Domain.Services;
 using Microsoft.AspNet.Identity.EntityFramework;
-using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;

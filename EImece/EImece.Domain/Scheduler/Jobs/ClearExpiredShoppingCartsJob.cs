@@ -1,5 +1,4 @@
 using EImece.Domain.DependencyInjection;
-using EImece.Domain.Helpers;
 using EImece.Domain.Services.IServices;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;

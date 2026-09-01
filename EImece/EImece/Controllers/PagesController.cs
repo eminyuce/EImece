@@ -1,11 +1,9 @@
-using Microsoft.Extensions.Logging;
-using EImece.Web.Controllers;
 using EImece.Domain;
 using EImece.Domain.Helpers;
-using EImece.Web.Filters;
-using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Services.IServices;
-using EImece.Domain.DependencyInjection;
+using EImece.Web.Controllers;
+using EImece.Web.Filters;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +21,8 @@ namespace EImece.Controllers
         public PagesController(ISettingService settingService,
             AutoMapper.IMapper mapper,
             IMenuService menuService, ILogger<PagesController> logger)
-            : base(settingService, mapper, logger) {
+            : base(settingService, mapper, logger)
+        {
             MenuService = menuService ?? throw new ArgumentNullException(nameof(menuService));
         }
 

@@ -1,8 +1,8 @@
-using Microsoft.Extensions.Logging;
-﻿using EImece.Domain;
+using EImece.Domain;
 using EImece.Domain.Helpers;
-using EImece.Web.Filters;
 using EImece.Domain.Services.IServices;
+using EImece.Web.Filters;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Net;
 using System.Net.Http;
@@ -18,7 +18,7 @@ namespace EImece.Controllers
         private readonly IShortUrlService _shortUrlService;
 
         public UrlController(IShortUrlService shortUrlService, ILogger<UrlController> logger)
-         {
+        {
             _logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
             _shortUrlService = shortUrlService ?? throw new ArgumentNullException(nameof(shortUrlService));
         }

@@ -1,4 +1,3 @@
-using Microsoft.Extensions.Logging;
 using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository.EntityFramework.Enums;
@@ -6,7 +5,7 @@ using EImece.Domain.Helpers;
 using EImece.Domain.Models.DTOs;
 using EImece.Domain.Observability.Telemetry;
 using EImece.Domain.Repositories.IRepositories;
-using EImece.Domain.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -19,7 +18,8 @@ namespace EImece.Domain.Repositories
 {
     public class OrderRepository : BaseEntityRepository<Order>, IOrderRepository
     {
-        public OrderRepository(IEImeceContext dbContext, ILogger<OrderRepository> logger) : base(dbContext, logger) {
+        public OrderRepository(IEImeceContext dbContext, ILogger<OrderRepository> logger) : base(dbContext, logger)
+        {
         }
 
         #region Storefront Read Methods (LINQ Projection, AsNoTracking)

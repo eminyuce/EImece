@@ -1,5 +1,4 @@
 using EImece.Domain.DbContext;
-using EImece.Domain.Entities;
 using EImece.Domain.Observability.Telemetry;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services;

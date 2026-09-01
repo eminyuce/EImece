@@ -1,5 +1,4 @@
 using EImece.Domain.Entities;
-using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
 
 namespace EImece.Domain.Models.DTOs.Storefront

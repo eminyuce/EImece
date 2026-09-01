@@ -1,26 +1,21 @@
-using Microsoft.Extensions.Logging;
-using EImece.Web.Areas.Admin.Controllers;
 using EImece.Domain.Entities;
+using EImece.Domain.Factories.IFactories;
 using EImece.Domain.Helpers;
-using EImece.Domain.DependencyInjection;
+using EImece.Domain.Services.IServices;
+using EImece.Web.Areas.Admin.Controllers;
 using EImece.Web.Filters;
-using Griddly.Mvc;
-using Griddly.Mvc.Results;
+using Microsoft.Extensions.Logging;
 using Resources;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Xml.Linq;
 using ListEntity = EImece.Domain.Entities.List;
-
-using EImece.Domain.Factories.IFactories;
-using EImece.Domain.Services.IServices;
 
 namespace EImece.Areas.Admin.Controllers
 {
@@ -38,7 +33,8 @@ namespace EImece.Areas.Admin.Controllers
             IListService listService,
             IEntityFactory entityFactory,
             XmlEditorHelper xmlEditorHelper, ILogger<TemplatesController> logger)
-            : base(settingService, logger) {
+            : base(settingService, logger)
+        {
             TemplateService = templateService ?? throw new ArgumentNullException(nameof(templateService));
             ListService = listService ?? throw new ArgumentNullException(nameof(listService));
             EntityFactory = entityFactory ?? throw new ArgumentNullException(nameof(entityFactory));

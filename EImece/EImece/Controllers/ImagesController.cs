@@ -1,17 +1,14 @@
-using Microsoft.Extensions.Logging;
-using EImece.Web.Controllers;
 using EImece.Domain;
 using EImece.Domain.Caching;
 using EImece.Domain.Helpers;
-using EImece.Web.Filters;
 using EImece.Domain.Services.IServices;
-using EImece.Domain.DependencyInjection;
+using EImece.Web.Controllers;
+using EImece.Web.Filters;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Mime;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -41,7 +38,8 @@ namespace EImece.Controllers
             IFileStorageService fileStorageService,
             IEimeceCacheProvider memoryCacheProvider,
             FilesHelper filesHelper, ILogger<ImagesController> logger)
-            : base(settingService, mapper, logger) {
+            : base(settingService, mapper, logger)
+        {
             _fileStorageService = fileStorageService ?? throw new ArgumentNullException(nameof(fileStorageService));
             _memoryCacheProvider = memoryCacheProvider ?? throw new ArgumentNullException(nameof(memoryCacheProvider));
             _filesHelper = filesHelper ?? throw new ArgumentNullException(nameof(filesHelper));

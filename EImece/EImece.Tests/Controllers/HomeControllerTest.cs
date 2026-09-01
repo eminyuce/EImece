@@ -1,23 +1,18 @@
-using EImece.Tests.Infrastructure;
-using Microsoft.Extensions.Logging;
 using EImece.App_Start;
 using EImece.Domain;
-using EImece.Domain.Caching;
 using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
-
 using EImece.Domain.Factories;
-using EImece.Domain.Factories.IFactories;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.EmailHelper;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Models.FrontModels.Il_Ilce_Mahalle;
 using EImece.Domain.Repositories;
 using EImece.Domain.Services;
+using EImece.Tests.Infrastructure;
 using HtmlAgilityPack;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
-using EImece.Domain.DependencyInjection;
 using RazorEngine;
 using RazorEngine.Templating;
 using System;
@@ -33,7 +28,6 @@ using System.Net;
 using System.Net.Mail;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.Xml.Serialization;
@@ -233,7 +227,7 @@ namespace EImece.Tests.Controllers
             var product = ProductService.GetProductDetailViewModelById(175363);
             Assert.IsTrue(product.RelatedProducts.Count > 0);
         }
-       
+
         [TestMethod]
         public void GetShoppingSession()
         {

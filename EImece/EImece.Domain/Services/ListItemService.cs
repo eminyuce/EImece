@@ -1,7 +1,7 @@
-using Microsoft.Extensions.Logging;
-﻿using EImece.Domain.Entities;
+using EImece.Domain.Entities;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -12,7 +12,8 @@ namespace EImece.Domain.Services
     {
         private IListItemRepository ListItemRepository { get; set; }
 
-        public ListItemService(IListItemRepository repository, ILogger<ListItemService> logger) : base(repository, logger) {
+        public ListItemService(IListItemRepository repository, ILogger<ListItemService> logger) : base(repository, logger)
+        {
             ListItemRepository = repository;
         }
 

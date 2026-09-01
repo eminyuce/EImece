@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace EImece.Domain.Models.Enums
 {
     public enum CouponValidationReason

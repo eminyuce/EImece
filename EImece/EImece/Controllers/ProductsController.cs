@@ -1,20 +1,15 @@
-using Microsoft.Extensions.Logging;
-using EImece.Web.Controllers;
 using EImece.Domain;
-using EImece.Web.Services;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
-using EImece.Web.Filters;
-using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.DTOs;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
-using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
-using EImece.Domain.DependencyInjection;
+using EImece.Web.Controllers;
 using EImece.Web.Filters;
+using EImece.Web.Services;
+using Microsoft.Extensions.Logging;
 using System;
-using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Threading;
@@ -40,7 +35,8 @@ namespace EImece.Controllers
             IAddressService addressService,
             ICustomerService customerService,
             IUsersService usersService, ILogger<ProductsController> logger)
-            : base(settingService, mapper, logger) {
+            : base(settingService, mapper, logger)
+        {
             Logger.LogDebug("ProductsController constructor called. Initializing dependencies.");
             this.productCommentService = productCommentService ?? throw new ArgumentNullException(nameof(productCommentService));
             ProductService = productService ?? throw new ArgumentNullException(nameof(productService));

@@ -1,11 +1,9 @@
-using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
 using Resources;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
 
 namespace EImece.Domain.Entities
 {

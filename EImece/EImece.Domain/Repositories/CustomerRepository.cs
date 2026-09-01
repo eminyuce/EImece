@@ -1,11 +1,10 @@
-using Microsoft.Extensions.Logging;
 using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Models.DTOs;
 using EImece.Domain.Observability.Telemetry;
 using EImece.Domain.Repositories.IRepositories;
-using System;
+using Microsoft.Extensions.Logging;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading;
@@ -15,7 +14,8 @@ namespace EImece.Domain.Repositories
 {
     public class CustomerRepository : BaseEntityRepository<Customer>, ICustomerRepository
     {
-        public CustomerRepository(IEImeceContext dbContext, ILogger<CustomerRepository> logger) : base(dbContext, logger) {
+        public CustomerRepository(IEImeceContext dbContext, ILogger<CustomerRepository> logger) : base(dbContext, logger)
+        {
         }
 
         [Timed("repo.customers.get_by_user_sync")]

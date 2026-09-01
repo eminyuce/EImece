@@ -2,7 +2,6 @@ using EImece.Areas.Admin.Controllers;
 using EImece.Areas.Admin.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.IO;
@@ -106,7 +105,7 @@ namespace EImece.Tests.Services
         public void UserAudit_StoredProcedureScript_ShouldContainAllRequiredTablesAndProcedures()
         {
             var scriptPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..\\..\\..\\EImece\\SqlScripts\\AddUserAuditReportsStoredProcedures.sql");
-            
+
             // If running in test runner where BaseDirectory differs, fall back to relative search
             if (!File.Exists(scriptPath))
             {

@@ -1,6 +1,5 @@
-using EImece.Domain.Entities;
-using EImece.Domain.Services;
 using EImece.Domain.Models.DTOs;
+using EImece.Domain.Services;
 using Resources;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

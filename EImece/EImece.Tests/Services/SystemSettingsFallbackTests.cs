@@ -1,5 +1,4 @@
 using EImece.Domain;
-using EImece.Domain.Caching;
 using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;

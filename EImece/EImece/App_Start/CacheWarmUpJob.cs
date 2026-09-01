@@ -1,13 +1,11 @@
-using EImece.Domain.Entities;
 using EImece.Domain.Helpers.Extensions;
+using EImece.Domain.Observability.Logging;
 using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
 using Microsoft.Extensions.DependencyInjection;
-using EImece.Domain.Observability.Logging;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;

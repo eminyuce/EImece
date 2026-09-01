@@ -1,11 +1,10 @@
-using Microsoft.Extensions.Logging;
-using EImece.Web.Controllers;
 using EImece.Domain;
-using EImece.Web.Infrastructure.ActionResults;
-using EImece.Web.Filters;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Services.IServices;
-using EImece.Domain.DependencyInjection;
+using EImece.Web.Controllers;
+using EImece.Web.Filters;
+using EImece.Web.Infrastructure.ActionResults;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,7 +23,8 @@ namespace EImece.Controllers
             IProductService productService,
             IStoryService storyService,
             IStoryCategoryService storyCategoryService, ILogger<RssController> logger)
-            : base(settingService, mapper, logger) {
+            : base(settingService, mapper, logger)
+        {
             ProductService = productService ?? throw new ArgumentNullException(nameof(productService));
             StoryService = storyService ?? throw new ArgumentNullException(nameof(storyService));
             StoryCategoryService = storyCategoryService ?? throw new ArgumentNullException(nameof(storyCategoryService));

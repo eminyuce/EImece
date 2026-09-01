@@ -2,7 +2,6 @@ using EImece.Domain.DependencyInjection;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Services.IServices;
 using Newtonsoft.Json;
-using System;
 using System.Text.RegularExpressions;
 
 namespace EImece.Domain.Helpers

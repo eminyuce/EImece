@@ -1,19 +1,17 @@
-using EImece.Web.Areas.Admin.Controllers;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
+using EImece.Domain.Services.IServices;
+using EImece.Web.Areas.Admin.Controllers;
+using Microsoft.Extensions.Logging;
+using Resources;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
-using Microsoft.Extensions.Logging;
 using System.Web.Mvc;
-using Resources;
-
-using EImece.Domain.Services.IServices;
 
 namespace EImece.Areas.Admin.Controllers
 {

@@ -1,5 +1,3 @@
-using System;
-
 namespace EImece.Domain.Models.AdminModels
 {
     public class UserAuditItemDto

@@ -1,10 +1,9 @@
-using Microsoft.Extensions.Logging;
 using EImece.Domain.Helpers;
 using EImece.Domain.Models.UrlShortenModels;
 using EImece.Domain.Repositories.IRepositories;
 using HtmlAgilityPack;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using EImece.Domain.DependencyInjection;
 using RestSharp;
 using System;
 using System.Collections.Generic;
@@ -21,7 +20,7 @@ namespace EImece.Domain.ApiRepositories
         private readonly IShortUrlRepository ShortUrlRepository;
 
         public BitlyRepository(IShortUrlRepository shortUrlRepository, ILogger<BitlyRepository> logger)
-         {
+        {
             _logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
             ShortUrlRepository = shortUrlRepository ?? throw new ArgumentNullException(nameof(shortUrlRepository));
         }

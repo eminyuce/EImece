@@ -1,9 +1,8 @@
-using Microsoft.Extensions.Logging;
 using EImece.Domain;
-using EImece.Domain.DependencyInjection;
 using EImece.Domain.Helpers;
-using EImece.Web.Filters;
 using EImece.Domain.Services.IServices;
+using EImece.Web.Filters;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Net.Mime;
 using System.Text;
@@ -19,7 +18,7 @@ namespace EImece.Controllers
         private readonly ISettingService SettingService;
 
         public RobotController(ISettingService settingService, ILogger<RobotController> logger)
-         {
+        {
             _logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
             SettingService = settingService ?? throw new ArgumentNullException(nameof(settingService));
         }

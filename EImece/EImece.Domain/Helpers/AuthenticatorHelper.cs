@@ -1,6 +1,5 @@
 using OtpNet;
 using QRCoder;
-using System;
 using System.Text;
 
 namespace EImece.Domain.Helpers

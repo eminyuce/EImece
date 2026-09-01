@@ -1,18 +1,16 @@
-using Microsoft.Extensions.Logging;
-using EImece.Web.Controllers;
 using EImece.Domain;
-using EImece.Web.Services;
 using EImece.Domain.Caching;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.EmailHelper;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
-using EImece.Domain.Repositories;
-using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
+using EImece.Web.Controllers;
 using EImece.Web.Filters;
 using EImece.Web.Helpers;
+using EImece.Web.Services;
+using Microsoft.Extensions.Logging;
 using Resources;
 using System;
 using System.Collections;
@@ -21,7 +19,6 @@ using System.ComponentModel.DataAnnotations;
 using System.Data.Entity.Validation;
 using System.Linq;
 using System.Net;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -50,7 +47,8 @@ namespace EImece.Controllers
             IMailTemplateService mailTemplateService,
             IRazorEngineHelper razorEngineHelper,
             IProductService productService, ILogger<HomeController> logger)
-            : base(settingService, mapper, logger) {
+            : base(settingService, mapper, logger)
+        {
             MemoryCacheProvider = memoryCacheProvider ?? throw new ArgumentNullException(nameof(memoryCacheProvider));
             EmailSender = emailSender ?? throw new ArgumentNullException(nameof(emailSender));
             SubsciberService = subsciberService ?? throw new ArgumentNullException(nameof(subsciberService));

@@ -5,14 +5,12 @@ using EImece.Domain.Observability.Configuration;
 using EImece.Domain.Observability.Http;
 using EImece.Domain.Observability.Logging;
 using EImece.Domain.Observability.Metrics;
-using EImece.Tests.Infrastructure;
 using EImece.Web.Services;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using System.Configuration;
 using System.Net.Http;
 

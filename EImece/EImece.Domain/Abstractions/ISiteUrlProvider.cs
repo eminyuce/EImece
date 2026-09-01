@@ -1,5 +1,3 @@
-using System;
-
 namespace EImece.Domain.Abstractions
 {
     /// <summary>

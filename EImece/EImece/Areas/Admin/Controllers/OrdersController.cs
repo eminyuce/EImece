@@ -1,17 +1,13 @@
-using Microsoft.Extensions.Logging;
-using EImece.Web.Areas.Admin.Controllers;
 using EImece.Domain.Entities;
+using EImece.Domain.Services.IServices;
+using EImece.Web.Areas.Admin.Controllers;
 using EImece.Web.Filters;
-using Griddly.Mvc;
-using Griddly.Mvc.Results;
+using Microsoft.Extensions.Logging;
 using System;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-
-using EImece.Domain.Services.IServices;
 
 namespace EImece.Areas.Admin.Controllers
 {
@@ -21,7 +17,8 @@ namespace EImece.Areas.Admin.Controllers
 
         public OrdersController(ISettingService settingService,
             IOrderService orderService, ILogger<OrdersController> logger)
-            : base(settingService, logger) {
+            : base(settingService, logger)
+        {
             OrderService = orderService ?? throw new ArgumentNullException(nameof(orderService));
         }
 

@@ -1,11 +1,11 @@
-using Microsoft.Extensions.Logging;
 using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository;
 using EImece.Domain.GenericRepository.EntityFramework.Enums;
 using EImece.Domain.Models.DTOs.Storefront;
-using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Observability.Telemetry;
+using EImece.Domain.Repositories.IRepositories;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -22,7 +22,8 @@ namespace EImece.Domain.Repositories
 
         private readonly IEImeceContext dbContext;
 
-        public StoryRepository(IEImeceContext dbContext, ILogger<StoryRepository> logger) : base(dbContext, logger) {
+        public StoryRepository(IEImeceContext dbContext, ILogger<StoryRepository> logger) : base(dbContext, logger)
+        {
             _logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
             this.dbContext = dbContext;
         }

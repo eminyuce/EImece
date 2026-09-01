@@ -1,7 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Quartz;
-using Quartz.Simpl;
 using Quartz.Spi;
 using System;
 

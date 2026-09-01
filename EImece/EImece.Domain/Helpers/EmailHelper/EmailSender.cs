@@ -1,10 +1,9 @@
-using Microsoft.Extensions.Logging;
 using EImece.Domain.Abstractions;
 using EImece.Domain.Entities;
 using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Observability.Telemetry;
 using EImece.Domain.Services.IServices;
-using EImece.Domain.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -26,7 +25,7 @@ namespace EImece.Domain.Helpers.EmailHelper
         private readonly IBackgroundWorkQueue BackgroundWorkQueue;
 
         public EmailSender(ISettingService settingService, ILogger<EmailSender> logger, IBackgroundWorkQueue backgroundWorkQueue = null)
-         {
+        {
             SettingService = settingService ?? throw new ArgumentNullException(nameof(settingService));
             BackgroundWorkQueue = backgroundWorkQueue;
         }

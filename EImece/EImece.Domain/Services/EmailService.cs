@@ -1,6 +1,6 @@
-using Microsoft.Extensions.Logging;
 using EImece.Domain.Helpers.EmailHelper;
 using Microsoft.AspNet.Identity;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 
@@ -11,7 +11,7 @@ namespace EImece.Domain.Services
         private readonly IEmailSender EmailSender;
 
         public EmailService(IEmailSender emailSender, ILogger<EmailService> logger)
-         {
+        {
             EmailSender = emailSender ?? throw new ArgumentNullException(nameof(emailSender));
         }
         public Task SendAsync(IdentityMessage message)

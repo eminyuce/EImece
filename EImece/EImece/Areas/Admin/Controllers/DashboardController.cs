@@ -1,30 +1,22 @@
-using Microsoft.Extensions.Logging;
-using EImece.Web.Areas.Admin.Controllers;
 using EImece.Domain;
 using EImece.Domain.Abstractions;
 using EImece.Domain.Caching;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
-using EImece.Web.Helpers;
-using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.Enums;
-using EImece.Domain.Services;
+using EImece.Domain.Services.IServices;
+using EImece.Web.Areas.Admin.Controllers;
+using EImece.Web.Helpers;
 using Microsoft.AspNet.Identity;
-using Microsoft.Owin.Security;
-using EImece.Domain.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Resources;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Net;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-
-using EImece.Domain.Services.IServices;
 
 namespace EImece.Areas.Admin.Controllers
 {
@@ -49,7 +41,8 @@ namespace EImece.Areas.Admin.Controllers
             IMenuService menuService,
             IEimeceCacheProvider memoryCacheProvider,
             IHttpRuntimeCacheClearer httpRuntimeCacheClearer, ILogger<DashboardController> logger)
-            : base(settingService, logger) {
+            : base(settingService, logger)
+        {
             ProductService = productService ?? throw new ArgumentNullException(nameof(productService));
             ProductCategoryService = productCategoryService ?? throw new ArgumentNullException(nameof(productCategoryService));
             StoryService = storyService ?? throw new ArgumentNullException(nameof(storyService));

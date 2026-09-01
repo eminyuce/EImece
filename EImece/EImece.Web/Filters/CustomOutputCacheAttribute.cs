@@ -1,9 +1,8 @@
 using EImece.Domain;
-using EImece.Domain.Helpers;
 using EImece.Domain.DependencyInjection;
+using EImece.Domain.Helpers;
 using EImece.Domain.Services.IServices;
 using EImece.Web.Caching;
-using Microsoft.Extensions.DependencyInjection;
 using System.Web.Mvc;
 
 namespace EImece.Web.Filters

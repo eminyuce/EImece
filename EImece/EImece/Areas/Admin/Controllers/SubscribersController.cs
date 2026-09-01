@@ -1,17 +1,14 @@
-using EImece.Web.Areas.Admin.Controllers;
 using EImece.Domain.Entities;
-using Griddly.Mvc;
-using Griddly.Mvc.Results;
+using EImece.Domain.Services.IServices;
+using EImece.Web.Areas.Admin.Controllers;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
 using System.Web.Mvc;
-
-using EImece.Domain.Services.IServices;
 
 namespace EImece.Areas.Admin.Controllers
 {

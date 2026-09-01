@@ -1,10 +1,9 @@
+using EImece.Domain;
+using EImece.Domain.Helpers;
 using EImece.Domain.Observability.Logging;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
-using EImece.Domain;
-using EImece.Domain.Helpers;
 using System;
-using System.Net;
 using System.Net.Mime;
 using System.Web;
 using System.Web.Mvc;
@@ -39,7 +38,7 @@ namespace EImece.Web.Filters
         public int DefaultWindowMinutes { get; set; }
 
         public RateLimitAttribute(string featureKey, int defaultLimit = 10, int defaultWindowMinutes = 1)
-         {
+        {
             FeatureKey = featureKey ?? throw new ArgumentNullException(nameof(featureKey));
             DefaultLimit = defaultLimit;
             DefaultWindowMinutes = defaultWindowMinutes;

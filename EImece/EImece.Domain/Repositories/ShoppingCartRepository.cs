@@ -1,16 +1,15 @@
-using Microsoft.Extensions.Logging;
 using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
-using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Observability.Telemetry;
+using EImece.Domain.Repositories.IRepositories;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -18,7 +17,8 @@ namespace EImece.Domain.Repositories
 {
     public class ShoppingCartRepository : BaseEntityRepository<ShoppingCart>, IShoppingCartRepository
     {
-        public ShoppingCartRepository(IEImeceContext dbContext, ILogger<ShoppingCartRepository> logger) : base(dbContext, logger) {
+        public ShoppingCartRepository(IEImeceContext dbContext, ILogger<ShoppingCartRepository> logger) : base(dbContext, logger)
+        {
         }
 
         [Timed("repo.shopping_cart.get_admin_page_list_sync")]

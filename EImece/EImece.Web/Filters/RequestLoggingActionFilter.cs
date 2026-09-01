@@ -1,6 +1,5 @@
 using EImece.Domain.Observability.Configuration;
 using EImece.Domain.Observability.Logging;
-using EImece.Domain.Observability.Metrics;
 using EImece.Web.Infrastructure;
 using Microsoft.Extensions.Logging;
 using System;

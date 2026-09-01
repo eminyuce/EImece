@@ -1,4 +1,3 @@
-using Microsoft.Extensions.Logging;
 using EImece.Domain.Abstractions;
 using EImece.Domain.Caching;
 using EImece.Domain.Entities;
@@ -6,6 +5,7 @@ using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Observability.Telemetry;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -26,7 +26,8 @@ namespace EImece.Domain.Services
             IOrderService orderService,
             ISettingService settingService,
             ISiteUrlProvider siteUrlProvider, ILogger<MailTemplateService> logger)
-            : base(repository, dataCachingProvider, logger) {
+            : base(repository, dataCachingProvider, logger)
+        {
             MailTemplateRepository = repository ?? throw new ArgumentNullException(nameof(repository));
             OrderService = orderService ?? throw new ArgumentNullException(nameof(orderService));
             SettingService = settingService ?? throw new ArgumentNullException(nameof(settingService));

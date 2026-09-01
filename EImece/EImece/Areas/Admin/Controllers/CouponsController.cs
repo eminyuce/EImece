@@ -1,10 +1,10 @@
-using Microsoft.Extensions.Logging;
-using EImece.Web.Areas.Admin.Controllers;
 using EImece.Domain.Entities;
+using EImece.Domain.Factories.IFactories;
 using EImece.Domain.Helpers;
+using EImece.Domain.Services.IServices;
+using EImece.Web.Areas.Admin.Controllers;
 using EImece.Web.Filters;
-using Griddly.Mvc;
-using Griddly.Mvc.Results;
+using Microsoft.Extensions.Logging;
 using Resources;
 using System;
 using System.Globalization;
@@ -14,8 +14,6 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using EImece.Domain.Factories.IFactories;
-using EImece.Domain.Services.IServices;
 
 namespace EImece.Areas.Admin.Controllers
 {
@@ -33,7 +31,8 @@ namespace EImece.Areas.Admin.Controllers
             ICustomerService customerService,
             IProductService productService,
             IProductCategoryService productCategoryService, ILogger<CouponsController> logger)
-            : base(settingService, logger) {
+            : base(settingService, logger)
+        {
             CouponService = couponService ?? throw new ArgumentNullException(nameof(couponService));
             EntityFactory = entityFactory ?? throw new ArgumentNullException(nameof(entityFactory));
             CustomerService = customerService ?? throw new ArgumentNullException(nameof(customerService));
@@ -98,7 +97,7 @@ namespace EImece.Areas.Admin.Controllers
             try
             {
                 // Use ProductService and ProductCategoryService via service layer (no DbContext in controller)
-                var products = await ProductService.SearchEntitiesAsync(r => r.Name.Contains("") , "", CurrentLanguage).ConfigureAwait(false);
+                var products = await ProductService.SearchEntitiesAsync(r => r.Name.Contains(""), "", CurrentLanguage).ConfigureAwait(false);
                 ViewBag.AllProducts = products.OrderBy(p => p.Name).Select(p => new { p.Id, p.Name }).Take(500).ToList();
                 var categories = await ProductCategoryService.SearchEntitiesAsync(r => r.Name.Contains(""), "", CurrentLanguage).ConfigureAwait(false);
                 ViewBag.AllCategories = categories.OrderBy(c => c.Name).Select(c => new { c.Id, c.Name }).Take(500).ToList();

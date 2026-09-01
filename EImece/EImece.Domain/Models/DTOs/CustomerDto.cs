@@ -1,8 +1,6 @@
 using EImece.Domain.Helpers;
-using EImece.Domain.Helpers.Extensions;
 using Resources;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace EImece.Domain.Models.DTOs

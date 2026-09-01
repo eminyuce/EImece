@@ -1,4 +1,3 @@
-using EImece.Tests.Infrastructure;
 using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.Models.DTOs;
@@ -7,6 +6,7 @@ using EImece.Domain.Models.FrontModels.ShoppingCart;
 using EImece.Domain.Models.Payment;
 using EImece.Domain.Repositories;
 using EImece.Domain.Services;
+using EImece.Tests.Infrastructure;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;

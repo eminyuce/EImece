@@ -1,13 +1,11 @@
-using Microsoft.Extensions.Logging;
-using System;
-using EImece.Domain.DependencyInjection;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
-using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.DTOs;
 using EImece.Domain.Observability.Telemetry;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -31,7 +29,8 @@ namespace EImece.Domain.Services
             ICouponRedemptionRepository couponRedemptionRepository,
             IOrderRepository orderRepository,
             ICustomerRepository customerRepository, ILogger<CouponService> logger)
-            : base(repository, logger) {
+            : base(repository, logger)
+        {
             CouponRepository = repository ?? throw new ArgumentNullException(nameof(repository));
             CouponProductRepository = couponProductRepository ?? throw new ArgumentNullException(nameof(couponProductRepository));
             CouponCategoryRepository = couponCategoryRepository ?? throw new ArgumentNullException(nameof(couponCategoryRepository));

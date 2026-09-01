@@ -1,19 +1,16 @@
-using EImece.Web.Controllers;
-using System;
-using EImece.Web.Helpers;
 using EImece.Domain;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
-using EImece.Web.Filters;
 using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
-using EImece.Domain.DependencyInjection;
-using Resources;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+using EImece.Web.Controllers;
+using EImece.Web.Filters;
+using EImece.Web.Helpers;
 using Microsoft.Extensions.Logging;
+using Resources;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace EImece.Controllers

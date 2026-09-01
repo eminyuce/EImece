@@ -1,12 +1,11 @@
-using EImece.Tests.Infrastructure;
 using EImece.Domain.Observability.HealthChecks;
 using EImece.Domain.Scheduler;
 using EImece.Domain.Scheduler.Jobs;
+using EImece.Tests.Infrastructure;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Quartz;
 using Quartz.Impl;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 

@@ -1,11 +1,9 @@
-using Microsoft.Extensions.Logging;
-using EImece.Web.Controllers;
 using EImece.Domain;
 using EImece.Domain.Helpers;
-using EImece.Web.Filters;
-using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Services.IServices;
-using EImece.Domain.DependencyInjection;
+using EImece.Web.Controllers;
+using EImece.Web.Filters;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Net;
 using System.Threading;
@@ -23,7 +21,8 @@ namespace EImece.Controllers
         public StoriesController(ISettingService settingService,
             AutoMapper.IMapper mapper,
             IStoryService storyService, ILogger<StoriesController> logger)
-            : base(settingService, mapper, logger) {
+            : base(settingService, mapper, logger)
+        {
             StoryService = storyService ?? throw new ArgumentNullException(nameof(storyService));
         }
 

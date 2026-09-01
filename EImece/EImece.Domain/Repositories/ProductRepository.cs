@@ -1,4 +1,3 @@
-using Microsoft.Extensions.Logging;
 using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository;
@@ -9,11 +8,11 @@ using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Observability.Telemetry;
 using EImece.Domain.Repositories.IRepositories;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
-using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Infrastructure;
 using System.Data.SqlClient;
 using System.Linq;
@@ -27,7 +26,8 @@ namespace EImece.Domain.Repositories
     {
         private readonly ILogger<ProductRepository> _logger;
 
-        public ProductRepository(IEImeceContext dbContext, ILogger<ProductRepository> logger) : base(dbContext, logger) {
+        public ProductRepository(IEImeceContext dbContext, ILogger<ProductRepository> logger) : base(dbContext, logger)
+        {
             _logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
         }
 

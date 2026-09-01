@@ -1,7 +1,4 @@
 using EImece.Areas.Admin.Controllers;
-using EImece.Domain.DbContext;
-using EImece.Domain.Entities;
-using EImece.Web.Filters;
 using EImece.Domain.Services.ExportImport;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -9,12 +6,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Reflection;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Web.Mvc;
-using DomainConstants = EImece.Domain.Constants;
 
 namespace EImece.Tests.Services
 {

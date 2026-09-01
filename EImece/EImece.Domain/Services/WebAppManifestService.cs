@@ -1,7 +1,7 @@
-using Microsoft.Extensions.Logging;
 using EImece.Domain.Caching;
 using EImece.Domain.Helpers;
 using EImece.Domain.Services.IServices;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 
@@ -15,7 +15,7 @@ namespace EImece.Domain.Services
         private readonly IEimeceCacheProvider _cache;
 
         public WebAppManifestService(ISettingService settingService, IEimeceCacheProvider cache, ILogger<WebAppManifestService> logger)
-         {
+        {
             _logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
             _settingService = settingService ?? throw new ArgumentNullException(nameof(settingService));
             _cache = cache ?? throw new ArgumentNullException(nameof(cache));

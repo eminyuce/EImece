@@ -1,13 +1,11 @@
+using EImece.Domain.Abstractions;
 using EImece.Domain.Caching;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
-using EImece.Domain.Abstractions;
-using EImece.Domain.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Validation;

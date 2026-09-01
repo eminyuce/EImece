@@ -4,7 +4,6 @@ using EImece.Domain.Observability.Logging;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
-using System.Net;
 using System.Web;
 using System.Web.Mvc;
 

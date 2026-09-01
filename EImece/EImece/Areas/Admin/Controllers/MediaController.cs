@@ -1,15 +1,14 @@
-using Microsoft.Extensions.Logging;
-using EImece.Web.Areas.Admin.Controllers;
 using EImece.Domain;
-using EImece.Web.Helpers;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
-using EImece.Web.Filters;
 using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.HelperModels;
-using Griddly.Mvc;
-using Griddly.Mvc.Results;
+using EImece.Domain.Services.IServices;
+using EImece.Web.Areas.Admin.Controllers;
+using EImece.Web.Filters;
+using EImece.Web.Helpers;
+using Microsoft.Extensions.Logging;
 using Resources;
 using System;
 using System.Collections.Generic;
@@ -18,8 +17,6 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-
-using EImece.Domain.Services.IServices;
 
 namespace EImece.Areas.Admin.Controllers
 {
@@ -53,7 +50,8 @@ namespace EImece.Areas.Admin.Controllers
             IStoryService storyService,
             IProductService productService,
             IMenuService menuService, ILogger<MediaController> logger)
-            : base(settingService, logger) {
+            : base(settingService, logger)
+        {
             this.filesHelper = filesHelper ?? throw new ArgumentNullException(nameof(filesHelper));
             this.filesHelper.InitFilesMediaFolder();
             FileStorageService = fileStorageService ?? throw new ArgumentNullException(nameof(fileStorageService));

@@ -1,8 +1,8 @@
-using EImece.Tests.Infrastructure;
 using EImece.Domain.Entities;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
+using EImece.Tests.Infrastructure;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;

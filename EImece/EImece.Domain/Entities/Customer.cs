@@ -1,5 +1,4 @@
 ﻿using EImece.Domain.Helpers;
-using Newtonsoft.Json;
 using Resources;
 using System;
 using System.Collections.Generic;

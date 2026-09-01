@@ -1,9 +1,9 @@
-using Microsoft.Extensions.Logging;
-﻿using EImece.Domain.DbContext;
+using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository.EntityFramework.Enums;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Repositories.IRepositories;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -18,7 +18,8 @@ namespace EImece.Domain.Repositories
     {
         private readonly ILogger<TagCategoryRepository> _logger;
 
-        public TagCategoryRepository(IEImeceContext dbContext, ILogger<TagCategoryRepository> logger) : base(dbContext, logger) {
+        public TagCategoryRepository(IEImeceContext dbContext, ILogger<TagCategoryRepository> logger) : base(dbContext, logger)
+        {
             _logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
         }
 

@@ -1,4 +1,4 @@
-using Microsoft.Extensions.Logging;
+using EImece.Domain.Abstractions;
 using EImece.Domain.Caching;
 using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository;
@@ -7,11 +7,10 @@ using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.DTOs.Storefront;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
+using EImece.Domain.Observability.Telemetry;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
-using EImece.Domain.Abstractions;
-using EImece.Domain.DependencyInjection;
-using EImece.Domain.Observability.Telemetry;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Validation;
@@ -21,8 +20,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
-
-using EImece.Domain.Factories.IFactories;
 
 namespace EImece.Domain.Services
 {
@@ -46,7 +43,8 @@ namespace EImece.Domain.Services
             IStoryCategoryService storyCategoryService,
             IStoryTagRepository storyTagRepository,
             IMenuService menuService, ILogger<StoryService> logger)
-            : base(repository, dataCachingProvider, settingService, fileStorageService, currentUserContext, filesHelper, logger) {
+            : base(repository, dataCachingProvider, settingService, fileStorageService, currentUserContext, filesHelper, logger)
+        {
             StoryRepository = repository ?? throw new ArgumentNullException(nameof(repository));
             TagService = tagService ?? throw new ArgumentNullException(nameof(tagService));
             ProductRepository = productRepository ?? throw new ArgumentNullException(nameof(productRepository));
@@ -563,7 +561,7 @@ namespace EImece.Domain.Services
         {
             return StoryRepository.GetLatestStories(language, take);
         }
-        
+
 
         public SimiliarStoryTagsViewModel GetStoriesByTagId(int tagId, int pageIndex, int pageSize, int currentLanguage)
         {

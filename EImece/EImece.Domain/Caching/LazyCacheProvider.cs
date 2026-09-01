@@ -1,8 +1,7 @@
-using Microsoft.Extensions.Logging;
 using EImece.Domain.Abstractions;
 using LazyCache;
-using LazyCache.Providers;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Concurrent;
 using System.Diagnostics;

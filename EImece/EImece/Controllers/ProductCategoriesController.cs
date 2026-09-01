@@ -1,17 +1,12 @@
-using Microsoft.Extensions.Logging;
-using EImece.Web.Controllers;
 using EImece.Domain;
-using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
-using EImece.Web.Filters;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Services.IServices;
-using EImece.Domain.DependencyInjection;
+using EImece.Web.Controllers;
+using EImece.Web.Filters;
+using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -27,7 +22,8 @@ namespace EImece.Controllers
             AutoMapper.IMapper mapper,
             IProductCategoryService productCategoryService,
             IProductService productService, ILogger<ProductCategoriesController> logger)
-            : base(settingService, mapper, logger) {
+            : base(settingService, mapper, logger)
+        {
             ProductCategoryService = productCategoryService ?? throw new ArgumentNullException(nameof(productCategoryService));
             ProductService = productService ?? throw new ArgumentNullException(nameof(productService));
         }

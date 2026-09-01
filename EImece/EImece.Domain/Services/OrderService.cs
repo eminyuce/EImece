@@ -1,13 +1,11 @@
-using Microsoft.Extensions.Logging;
-using EImece.Domain.DependencyInjection;
 using EImece.Domain.Entities;
-using EImece.Domain.GenericRepository;
 using EImece.Domain.GenericRepository.EntityFramework.Enums;
 using EImece.Domain.Helpers;
 using EImece.Domain.Models.DTOs;
 using EImece.Domain.Observability.Telemetry;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -29,7 +27,8 @@ namespace EImece.Domain.Services
             ILogger<OrderService> logger,
             ICustomerService customerService = null,
             IOrderProductService orderProductService = null,
-            IAddressService addressService = null) : base(repository, logger) {
+            IAddressService addressService = null) : base(repository, logger)
+        {
             OrderRepository = repository ?? throw new ArgumentNullException(nameof(repository));
             CustomerService = customerService;
             OrderProductService = orderProductService;

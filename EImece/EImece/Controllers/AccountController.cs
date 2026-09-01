@@ -1,24 +1,21 @@
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
-using EImece.Domain.Observability.Logging;
-using EImece.Web.Controllers;
 using EImece.Domain.Helpers;
-using EImece.Web.Services;
-using EImece.Web.Filters;
 using EImece.Domain.Helpers.EmailHelper;
+using EImece.Domain.Observability.Logging;
 using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
 using EImece.Models;
+using EImece.Web.Controllers;
+using EImece.Web.Filters;
+using EImece.Web.Services;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Owin.Security;
-using EImece.Domain.DependencyInjection;
 using Resources;
 using System;
-using System.Globalization;
 using System.Linq;
 using System.Net;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -53,7 +50,8 @@ namespace EImece.Controllers
             IRazorEngineHelper razorEngineHelper,
             IAuthenticationManager authenticationManager,
             TwoFactorTokenService twoFactorTokenService, ILogger<AccountController> logger)
-            : base(settingService, mapper, logger) {
+            : base(settingService, mapper, logger)
+        {
             UserManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
             SignInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
             CustomerService = customerService ?? throw new ArgumentNullException(nameof(customerService));

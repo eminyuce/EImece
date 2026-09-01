@@ -1,11 +1,11 @@
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
-using Microsoft.Extensions.Options;
 using EImece.Domain;
 using EImece.Domain.Configuration;
 using EImece.Domain.Helpers;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Observability.Logging;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

@@ -1,4 +1,3 @@
-using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository;
 using EImece.Domain.Models.DTOs.Storefront;
 using EImece.Domain.Models.Enums;

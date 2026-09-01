@@ -1,6 +1,5 @@
 using EImece.Domain.Entities;
 using EImece.Domain.Models.Enums;
-using EImece.Domain.Observability.Http;
 using LazyCache;
 using System;
 using System.Collections.Generic;
@@ -17,7 +16,6 @@ using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading;
 
 namespace EImece.Domain.Helpers
 {
@@ -123,7 +121,7 @@ namespace EImece.Domain.Helpers
             }
         }
 
-            public static List<T> GetUnique<T>(List<T> clazzes) where T : BaseEntity
+        public static List<T> GetUnique<T>(List<T> clazzes) where T : BaseEntity
         {
             var list = new List<T>();
             foreach (var item in clazzes)

@@ -1,5 +1,4 @@
 using EImece.Domain.Models.Enums;
-using System;
 using System.Globalization;
 using System.Text;
 

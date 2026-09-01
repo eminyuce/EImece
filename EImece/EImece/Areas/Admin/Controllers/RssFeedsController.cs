@@ -1,17 +1,16 @@
-using Microsoft.Extensions.Logging;
-using EImece.Web.Areas.Admin.Controllers;
 using EImece.Areas.Admin.Models;
 using EImece.Domain;
 using EImece.Domain.Helpers;
 using EImece.Domain.Models.Enums;
+using EImece.Domain.Services.IServices;
+using EImece.Web.Areas.Admin.Controllers;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-
-using EImece.Domain.Services.IServices;
 
 namespace EImece.Areas.Admin.Controllers
 {
@@ -23,7 +22,8 @@ namespace EImece.Areas.Admin.Controllers
         public RssFeedsController(ISettingService settingService,
             IStoryCategoryService storyCategoryService,
             IProductCategoryService productCategoryService, ILogger<RssFeedsController> logger)
-            : base(settingService, logger) {
+            : base(settingService, logger)
+        {
             StoryCategoryService = storyCategoryService ?? throw new ArgumentNullException(nameof(storyCategoryService));
             ProductCategoryService = productCategoryService ?? throw new ArgumentNullException(nameof(productCategoryService));
         }

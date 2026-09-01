@@ -1,11 +1,8 @@
-using Microsoft.Extensions.Logging;
-using EImece.Web.Areas.Admin.Controllers;
-using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
+using EImece.Domain.Services.IServices;
+using EImece.Web.Areas.Admin.Controllers;
 using EImece.Web.Filters;
-using Griddly.Mvc;
-using Griddly.Mvc.Results;
-using Resources;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -13,8 +10,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-
-using EImece.Domain.Services.IServices;
 
 namespace EImece.Areas.Admin.Controllers
 {
@@ -27,7 +22,8 @@ namespace EImece.Areas.Admin.Controllers
         public ProductCommentsController(ISettingService settingService,
             IProductCommentService productCommentService,
             IProductService productService, ILogger<ProductCommentsController> logger)
-            : base(settingService, logger) {
+            : base(settingService, logger)
+        {
             ProductCommentService = productCommentService ?? throw new ArgumentNullException(nameof(productCommentService));
             ProductService = productService ?? throw new ArgumentNullException(nameof(productService));
         }

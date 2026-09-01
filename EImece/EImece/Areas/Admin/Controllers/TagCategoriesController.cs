@@ -1,22 +1,18 @@
-using Microsoft.Extensions.Logging;
-using EImece.Web.Areas.Admin.Controllers;
 using EImece.Domain.Entities;
+using EImece.Domain.Factories.IFactories;
 using EImece.Domain.Helpers;
+using EImece.Domain.Services.IServices;
+using EImece.Web.Areas.Admin.Controllers;
 using EImece.Web.Filters;
-using Griddly.Mvc;
-using Griddly.Mvc.Results;
+using Microsoft.Extensions.Logging;
 using Resources;
 using System;
 using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-
-using EImece.Domain.Factories.IFactories;
-using EImece.Domain.Services.IServices;
 
 namespace EImece.Areas.Admin.Controllers
 {
@@ -28,7 +24,8 @@ namespace EImece.Areas.Admin.Controllers
         public TagCategoriesController(ISettingService settingService,
             ITagCategoryService tagCategoryService,
             IEntityFactory entityFactory, ILogger<TagCategoriesController> logger)
-            : base(settingService, logger) {
+            : base(settingService, logger)
+        {
             TagCategoryService = tagCategoryService ?? throw new ArgumentNullException(nameof(tagCategoryService));
             EntityFactory = entityFactory ?? throw new ArgumentNullException(nameof(entityFactory));
         }

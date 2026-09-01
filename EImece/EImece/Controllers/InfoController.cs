@@ -1,17 +1,15 @@
-using EImece.Web.Controllers;
 using EImece.Domain;
 using EImece.Domain.Helpers;
-using EImece.Domain.Models.DTOs;
-using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.DTOs.Storefront;
+using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Services.IServices;
-using EImece.Domain.DependencyInjection;
+using EImece.Web.Controllers;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
 using System.Web.Mvc;
 
 namespace EImece.Controllers

@@ -1,11 +1,11 @@
-using Microsoft.Extensions.Logging;
-using EImece.Web.Areas.Admin.Controllers;
 using EImece.Areas.Admin.Models;
 using EImece.Domain.Helpers;
 using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
-using EImece.Domain.DependencyInjection;
+using EImece.Web.Areas.Admin.Controllers;
+using Microsoft.Extensions.Logging;
+using Resources;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -15,7 +15,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using Resources;
 
 namespace EImece.Areas.Admin.Controllers
 {
@@ -42,7 +41,8 @@ namespace EImece.Areas.Admin.Controllers
 
         public ReportController(ISettingService settingService,
             ReportService reportService, ILogger<ReportController> logger)
-            : base(settingService, logger) {
+            : base(settingService, logger)
+        {
             _reportService = reportService ?? throw new ArgumentNullException(nameof(reportService));
         }
 

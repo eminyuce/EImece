@@ -1,18 +1,13 @@
-using EImece.Tests.Infrastructure;
 using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
-using EImece.Domain.GenericRepository.EntityFramework;
 using EImece.Domain.Repositories;
+using EImece.Tests.Infrastructure;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.Remoting.Messaging;
 using System.Runtime.Remoting.Proxies;
-using System.Threading.Tasks;
 
 namespace EImece.Tests.Helpers
 {

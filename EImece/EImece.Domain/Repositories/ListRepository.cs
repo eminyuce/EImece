@@ -1,9 +1,8 @@
-using Microsoft.Extensions.Logging;
-﻿using EImece.Domain.DbContext;
+using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository.EntityFramework.Enums;
 using EImece.Domain.Repositories.IRepositories;
-using System;
+using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -13,7 +12,8 @@ namespace EImece.Domain.Repositories
 {
     public class ListRepository : BaseEntityRepository<List>, IListRepository
     {
-        public ListRepository(IEImeceContext dbContext, ILogger<ListRepository> logger) : base(dbContext, logger) {
+        public ListRepository(IEImeceContext dbContext, ILogger<ListRepository> logger) : base(dbContext, logger)
+        {
         }
 
         public List<List> GetAllListItems()

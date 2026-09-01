@@ -325,8 +325,8 @@ namespace EImece
             var domain = AppConfig.Domain;
 
             // Ensure the configured domain expects 'www.', and that the incoming request is exactly the naked version of it.
-            if (!string.IsNullOrEmpty(domain) && 
-                domain.StartsWith("www.", StringComparison.OrdinalIgnoreCase) && 
+            if (!string.IsNullOrEmpty(domain) &&
+                domain.StartsWith("www.", StringComparison.OrdinalIgnoreCase) &&
                 Request.Url.Host.Equals(domain.Substring(4), StringComparison.OrdinalIgnoreCase))
             {
                 UriBuilder builder = new UriBuilder(Request.Url);

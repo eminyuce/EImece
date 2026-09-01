@@ -1,10 +1,9 @@
-using Microsoft.Extensions.Logging;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
-using EImece.Domain.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Validation;
@@ -20,7 +19,8 @@ namespace EImece.Domain.Services
         private readonly ITagCategoryRepository TagCategoryRepository;
 
         public TagCategoryService(ITagCategoryRepository repository,
-            ITagService tagService, ILogger<TagCategoryService> logger) : base(repository, logger) {
+            ITagService tagService, ILogger<TagCategoryService> logger) : base(repository, logger)
+        {
             TagCategoryRepository = repository ?? throw new ArgumentNullException(nameof(repository));
             TagService = tagService ?? throw new ArgumentNullException(nameof(tagService));
         }

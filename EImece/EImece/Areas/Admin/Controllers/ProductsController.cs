@@ -1,14 +1,14 @@
-using Microsoft.Extensions.Logging;
-using EImece.Web.Areas.Admin.Controllers;
 using EImece.Domain;
-using EImece.Web.Helpers;
 using EImece.Domain.Entities;
+using EImece.Domain.Factories.IFactories;
 using EImece.Domain.Helpers;
-using EImece.Web.Filters;
 using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Models.Enums;
-using Griddly.Mvc;
-using Griddly.Mvc.Results;
+using EImece.Domain.Services.IServices;
+using EImece.Web.Areas.Admin.Controllers;
+using EImece.Web.Filters;
+using EImece.Web.Helpers;
+using Microsoft.Extensions.Logging;
 using Resources;
 using System;
 using System.Collections.Generic;
@@ -18,9 +18,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-
-using EImece.Domain.Factories.IFactories;
-using EImece.Domain.Services.IServices;
 
 namespace EImece.Areas.Admin.Controllers
 {
@@ -48,7 +45,8 @@ namespace EImece.Areas.Admin.Controllers
             IFileStorageService fileStorageService,
             IEntityFactory entityFactory,
             FilesHelper filesHelper, ILogger<ProductsController> logger)
-            : base(settingService, logger) {
+            : base(settingService, logger)
+        {
             ProductService = productService ?? throw new ArgumentNullException(nameof(productService));
             ProductCategoryService = productCategoryService ?? throw new ArgumentNullException(nameof(productCategoryService));
             BrandService = brandService ?? throw new ArgumentNullException(nameof(brandService));

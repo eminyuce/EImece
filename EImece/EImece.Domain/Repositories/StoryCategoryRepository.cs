@@ -1,22 +1,23 @@
-using Microsoft.Extensions.Logging;
 using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.GenericRepository.EntityFramework.Enums;
 using EImece.Domain.Models.DTOs.Storefront;
 using EImece.Domain.Repositories.IRepositories;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Data.Entity;
 
 namespace EImece.Domain.Repositories
 {
     public class StoryCategoryRepository : BaseContentRepository<StoryCategory>, IStoryCategoryRepository
     {
-        public StoryCategoryRepository(IEImeceContext dbContext, ILogger<StoryCategoryRepository> logger) : base(dbContext, logger) {
+        public StoryCategoryRepository(IEImeceContext dbContext, ILogger<StoryCategoryRepository> logger) : base(dbContext, logger)
+        {
         }
 
         #region Storefront Read Methods (LINQ Projection, AsNoTracking, Main Entity Activation)

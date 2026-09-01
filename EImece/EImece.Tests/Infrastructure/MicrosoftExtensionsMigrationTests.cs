@@ -9,7 +9,6 @@ using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.ObjectPool;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading;

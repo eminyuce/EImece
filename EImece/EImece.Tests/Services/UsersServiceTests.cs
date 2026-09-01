@@ -1,7 +1,7 @@
-using EImece.Tests.Infrastructure;
 using EImece.Domain;
 using EImece.Domain.Services;
 using EImece.Models;
+using EImece.Tests.Infrastructure;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;

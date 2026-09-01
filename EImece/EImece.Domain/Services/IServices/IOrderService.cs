@@ -1,5 +1,4 @@
 using EImece.Domain.Entities;
-using EImece.Domain.GenericRepository;
 using EImece.Domain.Models.DTOs;
 using System.Collections.Generic;
 using System.Threading;

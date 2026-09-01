@@ -1,8 +1,5 @@
-using Microsoft.Extensions.Logging;
-using EImece.Domain;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
-using EImece.Web.Filters;
 using EImece.Domain.Helpers.EmailHelper;
 using EImece.Domain.Models.DTOs;
 using EImece.Domain.Models.Enums;
@@ -10,19 +7,19 @@ using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
 using EImece.Models;
-using Microsoft.AspNet.Identity;
-using Microsoft.Owin.Security;
-using EImece.Domain.DependencyInjection;
 using EImece.Web.Filters;
+using Microsoft.AspNet.Identity;
+using Microsoft.Extensions.Logging;
+using Microsoft.Owin.Security;
 using Resources;
 using System;
+using System.Globalization;
+using System.Linq;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using System.Linq;
 using static EImece.Controllers.ManageController;
-using System.Threading;
-using System.Globalization;
 
 namespace EImece.Areas.Customers.Controllers
 {
@@ -67,7 +64,7 @@ namespace EImece.Areas.Customers.Controllers
             ApplicationSignInManager signInManager,
             IIdentityManager identityManager,
             IRazorEngineHelper razorEngineHelper, ILogger<HomeController> logger)
-         {
+        {
             _logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
             UserManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
             AuthenticationManager = authenticationManager ?? throw new ArgumentNullException(nameof(authenticationManager));
@@ -300,7 +297,7 @@ namespace EImece.Areas.Customers.Controllers
             {
                 ModelState.AddModelError("Street", Resource.MandatoryField);
             }
-           
+
             ModelState.AddModelError("", Resource.PleaseFillOutMandatoryBelowFields);
         }
 
@@ -388,7 +385,7 @@ namespace EImece.Areas.Customers.Controllers
             ViewBag.Title = Resource.CustomerDetail;
             var customer = await BuildCustomerSummaryAsync();
             var userId = User.Identity.GetUserId();
-            var orders = (await OrderService.GetStorefrontOrderListByUserIdAsync(userId, search)).OrderByDescending(r=>r.CreatedDate).ToList();
+            var orders = (await OrderService.GetStorefrontOrderListByUserIdAsync(userId, search)).OrderByDescending(r => r.CreatedDate).ToList();
             return View(new CustomerOrdersViewModel() { Customer = customer, Orders = orders });
         }
 

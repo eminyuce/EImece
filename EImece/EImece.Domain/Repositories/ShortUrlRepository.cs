@@ -1,8 +1,8 @@
-using Microsoft.Extensions.Logging;
-﻿using EImece.Domain.DbContext;
+using EImece.Domain.DbContext;
 using EImece.Domain.Entities;
 using EImece.Domain.Helpers;
 using EImece.Domain.Repositories.IRepositories;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
 
@@ -10,7 +10,8 @@ namespace EImece.Domain.Repositories
 {
     public class ShortUrlRepository : BaseEntityRepository<ShortUrl>, IShortUrlRepository
     {
-        public ShortUrlRepository(IEImeceContext dbContext, ILogger<ShortUrlRepository> logger) : base(dbContext, logger) {
+        public ShortUrlRepository(IEImeceContext dbContext, ILogger<ShortUrlRepository> logger) : base(dbContext, logger)
+        {
         }
 
         public static int ShortUrlKeyLength

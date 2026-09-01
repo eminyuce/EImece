@@ -1,5 +1,4 @@
 using EImece.Domain.Entities;
-using EImece.Domain.Helpers.RazorCustomRssTemplate;
 using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Models.FrontModels;
 using System;

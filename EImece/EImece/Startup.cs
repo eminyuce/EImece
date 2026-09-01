@@ -2,8 +2,6 @@
 using Microsoft.Owin.Security.DataProtection;
 using Owin;
 using System.Globalization;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
 
 [assembly: OwinStartupAttribute(typeof(EImece.Startup))]
 
@@ -25,7 +23,7 @@ namespace EImece
             var cultureInfo = new CultureInfo(Domain.Constants.TR);
             CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
             CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
-           
+
         }
     }
 }

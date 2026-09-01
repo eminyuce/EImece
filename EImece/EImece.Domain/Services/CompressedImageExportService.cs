@@ -1,9 +1,8 @@
-using Microsoft.Extensions.Logging;
 using EImece.Domain.Entities;
-using EImece.Domain.Helpers;
 using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -30,7 +29,7 @@ namespace EImece.Domain.Services
         };
 
         public CompressedImageExportService(IImageExportRepository imageExportRepository, ILogger<CompressedImageExportService> logger)
-         {
+        {
             _logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
             _imageExportRepository = imageExportRepository ?? throw new ArgumentNullException(nameof(imageExportRepository));
         }

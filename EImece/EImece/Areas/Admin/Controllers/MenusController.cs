@@ -1,30 +1,26 @@
-using Microsoft.Extensions.Logging;
-using EImece.Web.Areas.Admin.Controllers;
 using EImece.Domain.Entities;
-using Newtonsoft.Json;
-using EImece.Web.Helpers;
+using EImece.Domain.Factories.IFactories;
 using EImece.Domain.Helpers;
-using EImece.Web.Filters;
 using EImece.Domain.Helpers.Extensions;
 using EImece.Domain.Models.AdminHelperModels;
 using EImece.Domain.Models.Enums;
 using EImece.Domain.Models.FrontModels;
-using Griddly.Mvc;
-using Griddly.Mvc.Results;
+using EImece.Domain.Services.IServices;
+using EImece.Web.Areas.Admin.Controllers;
+using EImece.Web.Filters;
+using EImece.Web.Helpers;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using Resources;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-
-using EImece.Domain.Factories.IFactories;
-using EImece.Domain.Services.IServices;
 
 namespace EImece.Areas.Admin.Controllers
 {
@@ -40,7 +36,8 @@ namespace EImece.Areas.Admin.Controllers
             IMenuService menuService,
             IEntityFactory entityFactory,
             FilesHelper filesHelper, ILogger<MenusController> logger)
-            : base(settingService, logger) {
+            : base(settingService, logger)
+        {
             MenuService = menuService ?? throw new ArgumentNullException(nameof(menuService));
             EntityFactory = entityFactory ?? throw new ArgumentNullException(nameof(entityFactory));
             FilesHelper = filesHelper ?? throw new ArgumentNullException(nameof(filesHelper));

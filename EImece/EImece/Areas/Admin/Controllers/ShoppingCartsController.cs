@@ -1,13 +1,8 @@
-using Microsoft.Extensions.Logging;
-using EImece.Web.Areas.Admin.Controllers;
-using EImece.Domain.Entities;
-using EImece.Domain.Helpers;
-using EImece.Web.Filters;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Services.IServices;
-using EImece.Domain.DependencyInjection;
-using Griddly.Mvc;
-using Griddly.Mvc.Results;
+using EImece.Web.Areas.Admin.Controllers;
+using EImece.Web.Filters;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Linq;
@@ -23,7 +18,8 @@ namespace EImece.Areas.Admin.Controllers
 
         public ShoppingCartsController(ISettingService settingService,
             IShoppingCartService shoppingCartService, ILogger<ShoppingCartsController> logger)
-            : base(settingService, logger) {
+            : base(settingService, logger)
+        {
             ShoppingCartService = shoppingCartService ?? throw new ArgumentNullException(nameof(shoppingCartService));
         }
 

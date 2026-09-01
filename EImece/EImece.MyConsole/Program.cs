@@ -1,17 +1,12 @@
-﻿using EImece.Domain;
-using EImece.Domain.Helpers;
+﻿using EImece.Domain.Helpers;
 using System;
 using System.Data;
-using System.Globalization;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Web;
-using System.Drawing;
-using System.Drawing.Imaging;
-using Newtonsoft.Json;
-using System.Data.Entity.Migrations;
 
 namespace EImece.MyConsole
 {
@@ -21,7 +16,7 @@ namespace EImece.MyConsole
         private const string ALGOKEY = "EMINYUCEOM";
         private const string ALPHABETS = "abcdefghijklmnopqrstuvwxyz";
         private static String connectionString = @"";
-       
+
         private static void Main(string[] args)
         {
 
@@ -116,9 +111,9 @@ namespace EImece.MyConsole
             {
                 Console.WriteLine($"Error generating images: {ex.Message}");
             }
-    }
+        }
 
-    private static void ReplaceFileContent()
+        private static void ReplaceFileContent()
         {
             var parent = new DirectoryInfo(@"C:\Users\YUCE\Documents\GitHub\EImece\EImece\EImece\Views");
 
@@ -145,7 +140,7 @@ namespace EImece.MyConsole
                 {
                     ChangeFileContent(child);
                 }
-          
+
             }
         }
 

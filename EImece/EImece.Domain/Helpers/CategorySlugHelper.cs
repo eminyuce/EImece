@@ -1,11 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Globalization;
-using EImece.Domain.Helpers;
 using EImece.Domain.Models.DTOs.Storefront;
 using EImece.Domain.Models.FrontModels;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Text;
 
 namespace EImece.Domain.Helpers
 {

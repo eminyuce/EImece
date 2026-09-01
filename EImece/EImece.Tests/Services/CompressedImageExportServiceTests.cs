@@ -1,10 +1,10 @@
-using EImece.Tests.Infrastructure;
 using EImece.Areas.Admin.Controllers;
 using EImece.Domain.Helpers;
 using EImece.Domain.Models.AdminModels;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services;
 using EImece.Domain.Services.IServices;
+using EImece.Tests.Infrastructure;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using System;

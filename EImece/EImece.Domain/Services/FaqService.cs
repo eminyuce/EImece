@@ -1,11 +1,10 @@
-using Microsoft.Extensions.Logging;
 using EImece.Domain.Caching;
 using EImece.Domain.Entities;
-using EImece.Domain.Helpers;
 using EImece.Domain.Models.DTOs;
 using EImece.Domain.Observability.Telemetry;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -18,7 +17,8 @@ namespace EImece.Domain.Services
         private IFaqRepository FaqRepository { get; set; }
 
         public FaqService(IFaqRepository repository, IEimeceCacheProvider dataCachingProvider, ILogger<FaqService> logger)
-            : base(repository, dataCachingProvider, logger) {
+            : base(repository, dataCachingProvider, logger)
+        {
             FaqRepository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 

@@ -1,12 +1,12 @@
-using EImece.Tests.Infrastructure;
 using EImece.Areas.Admin.Controllers;
 using EImece.Areas.Admin.Models;
 using EImece.Controllers;
 using EImece.Domain;
-using EImece.Web.Areas.Admin.Controllers;
-using EImece.Web.Filters;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Services.IServices;
+using EImece.Tests.Infrastructure;
+using EImece.Web.Areas.Admin.Controllers;
+using EImece.Web.Filters;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;

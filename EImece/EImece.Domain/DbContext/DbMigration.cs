@@ -7,7 +7,6 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Net.Http;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace EImece.Domain.DbContext
@@ -197,32 +196,32 @@ Constraints:
                     }
 
                     dynamic parsedResponse = JsonConvert.DeserializeObject(responseText);
-                string assistantContent = parsedResponse?.choices?[0]?.message?.content?.ToString();
+                    string assistantContent = parsedResponse?.choices?[0]?.message?.content?.ToString();
 
-                if (string.IsNullOrWhiteSpace(assistantContent))
-                {
-                    throw new Exception("GROQ API did not return any content.");
-                }
+                    if (string.IsNullOrWhiteSpace(assistantContent))
+                    {
+                        throw new Exception("GROQ API did not return any content.");
+                    }
 
-                // Strip markdown if present
-                if (assistantContent.StartsWith("```json") && assistantContent.EndsWith("```"))
-                {
-                    assistantContent = assistantContent.Substring(7, assistantContent.Length - 10).Trim();
-                }
-                else if (assistantContent.StartsWith("```") && assistantContent.EndsWith("```"))
-                {
-                    assistantContent = assistantContent.Substring(3, assistantContent.Length - 6).Trim();
-                }
+                    // Strip markdown if present
+                    if (assistantContent.StartsWith("```json") && assistantContent.EndsWith("```"))
+                    {
+                        assistantContent = assistantContent.Substring(7, assistantContent.Length - 10).Trim();
+                    }
+                    else if (assistantContent.StartsWith("```") && assistantContent.EndsWith("```"))
+                    {
+                        assistantContent = assistantContent.Substring(3, assistantContent.Length - 6).Trim();
+                    }
 
-                // Validate the JSON
-                try
-                {
-                    JsonConvert.DeserializeObject(assistantContent);
-                }
-                catch (JsonException ex)
-                {
-                    throw new Exception($"GROQ API returned invalid JSON: {assistantContent}", ex);
-                }
+                    // Validate the JSON
+                    try
+                    {
+                        JsonConvert.DeserializeObject(assistantContent);
+                    }
+                    catch (JsonException ex)
+                    {
+                        throw new Exception($"GROQ API returned invalid JSON: {assistantContent}", ex);
+                    }
 
                     return assistantContent;
                 }
@@ -303,7 +302,7 @@ Constraints:
                 //Delivers the actual prompt, data, or question.
                 //Specifies what the model should do.
                 //Includes all the requirements, input data, and expectations.
-                new { role = "user", 
+                new { role = "user",
                     content = prompt }
             },
                 temperature = 0.7,
@@ -330,33 +329,33 @@ Constraints:
                     // Deserialize the entire response
                     dynamic parsedResponse = JsonConvert.DeserializeObject(responseText);
 
-                // Access the content of the assistant's message
-                string assistantContent = parsedResponse?.choices?[0]?.message?.content?.ToString();
+                    // Access the content of the assistant's message
+                    string assistantContent = parsedResponse?.choices?[0]?.message?.content?.ToString();
 
-                if (string.IsNullOrWhiteSpace(assistantContent))
-                {
-                    throw new Exception("GROQ API did not return any content.");
-                }
+                    if (string.IsNullOrWhiteSpace(assistantContent))
+                    {
+                        throw new Exception("GROQ API did not return any content.");
+                    }
 
-                // Remove markdown if present (e.g., ```json)
-                if (assistantContent.StartsWith("```json") && assistantContent.EndsWith("```"))
-                {
-                    assistantContent = assistantContent.Substring(7, assistantContent.Length - 10).Trim();
-                }
-                else if (assistantContent.StartsWith("```") && assistantContent.EndsWith("```"))
-                {
-                    assistantContent = assistantContent.Substring(3, assistantContent.Length - 6).Trim();
-                }
+                    // Remove markdown if present (e.g., ```json)
+                    if (assistantContent.StartsWith("```json") && assistantContent.EndsWith("```"))
+                    {
+                        assistantContent = assistantContent.Substring(7, assistantContent.Length - 10).Trim();
+                    }
+                    else if (assistantContent.StartsWith("```") && assistantContent.EndsWith("```"))
+                    {
+                        assistantContent = assistantContent.Substring(3, assistantContent.Length - 6).Trim();
+                    }
 
-                // Validate that the returned content is indeed a valid JSON object
-                try
-                {
-                    JsonConvert.DeserializeObject(assistantContent);
-                }
-                catch (JsonException ex)
-                {
-                    throw new Exception($"GROQ API returned invalid JSON: {assistantContent}", ex);
-                }
+                    // Validate that the returned content is indeed a valid JSON object
+                    try
+                    {
+                        JsonConvert.DeserializeObject(assistantContent);
+                    }
+                    catch (JsonException ex)
+                    {
+                        throw new Exception($"GROQ API returned invalid JSON: {assistantContent}", ex);
+                    }
 
                     return assistantContent;
                 }
@@ -375,14 +374,14 @@ Constraints:
             DatabaseUtility.ExecuteScalar(new SqlConnection(connectionString), commandText, CommandType.StoredProcedure, parameterList.ToArray());
         }
 
-        public static Dictionary<int,Tuple<string, string>> GetProducts(string connectionString)
+        public static Dictionary<int, Tuple<string, string>> GetProducts(string connectionString)
         {
             var result = new Dictionary<int, Tuple<string, string>>();
             string commandText = "SELECT Id, Name, Description FROM [dbo].[Products] ";
             var parameterList = new List<SqlParameter>
-    {
-      //  new SqlParameter("@descPattern", SqlDbType.NVarChar) { Value = "%https://www.tlosolive.com%" }
-    };
+            {
+                //  new SqlParameter("@descPattern", SqlDbType.NVarChar) { Value = "%https://www.tlosolive.com%" }
+            };
             DataSet dataSet = DatabaseUtility.ExecuteDataSet(new SqlConnection(connectionString), commandText, CommandType.Text, parameterList.ToArray());
 
             if (dataSet.Tables.Count > 0)
@@ -393,7 +392,7 @@ Constraints:
                     int productId = dr["Id"].ToInt();
                     string name = dr["Name"].ToString();
                     string description = dr["Description"].ToString();
-                    result.Add(productId, new Tuple<string,string>(name,description));
+                    result.Add(productId, new Tuple<string, string>(name, description));
                 }
             }
 

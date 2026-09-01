@@ -1,10 +1,8 @@
 using EImece.Domain.Observability.Configuration;
 using EImece.Domain.Observability.Logging;
-using EImece.Tests.Infrastructure;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;

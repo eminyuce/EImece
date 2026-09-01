@@ -1,6 +1,5 @@
 using EImece.Domain.GenericRepository;
 using EImece.Domain.Helpers;
-using EImece.Domain.Models.DTOs;
 using EImece.Domain.Models.DTOs.Storefront;
 using System;
 using System.Collections.Generic;
