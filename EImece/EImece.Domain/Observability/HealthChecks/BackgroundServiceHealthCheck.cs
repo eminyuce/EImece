@@ -55,12 +55,21 @@ namespace EImece.Domain.Observability.HealthChecks
                 var jobKeys = await _scheduler.GetJobKeys(Quartz.Impl.Matchers.GroupMatcher<JobKey>.AnyGroup(), cancellationToken).ConfigureAwait(false);
                 var executing = await _scheduler.GetCurrentlyExecutingJobs(cancellationToken).ConfigureAwait(false);
 
-                var detail = string.Format(
-                    "Quartz running. Jobs registered: {0}, currently executing: {1}",
-                    jobKeys != null ? jobKeys.Count : 0,
-                    executing != null ? executing.Count : 0);
+                var registeredCount = jobKeys != null ? jobKeys.Count : 0;
+                var executingCount = executing != null ? executing.Count : 0;
+                var detail = string.Format("Quartz scheduler running ({0} jobs registered, {1} currently executing)", registeredCount, executingCount);
 
-                return HealthCheckResult.Healthy(detail);
+                var data = new System.Collections.Generic.Dictionary<string, object>
+                {
+                    { "SchedulerName", _scheduler.SchedulerName },
+                    { "IsStarted", _scheduler.IsStarted },
+                    { "InStandbyMode", _scheduler.InStandbyMode },
+                    { "IsShutdown", _scheduler.IsShutdown },
+                    { "RegisteredJobsCount", registeredCount },
+                    { "CurrentlyExecutingCount", executingCount }
+                };
+
+                return HealthCheckResult.Healthy(detail, data);
             }
             catch (Exception ex)
             {

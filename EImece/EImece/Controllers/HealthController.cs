@@ -61,44 +61,36 @@ namespace EImece.Controllers
             Response.StatusCode = (int)statusCode;
             Response.ContentType = "application/json";
 
-            // Anonymous callers only get aggregate status (no dependency error details).
-            var isAdmin = User?.Identity != null
-                && User.Identity.IsAuthenticated
-                && User.IsInRole(Constants.AdministratorRole);
-
-            if (isAdmin)
+            var components = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
+            foreach (var entry in report.Entries)
             {
-                var components = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
-                foreach (var entry in report.Entries)
+                var compStatus = entry.Value.Status == Microsoft.Extensions.Diagnostics.HealthChecks.HealthStatus.Healthy ? "UP" : "DOWN";
+                var compData = new Dictionary<string, object>
                 {
-                    var compStatus = entry.Value.Status == Microsoft.Extensions.Diagnostics.HealthChecks.HealthStatus.Healthy ? "UP" : "DOWN";
-                    var compData = new Dictionary<string, object>
-                    {
-                        { "status", compStatus },
-                        { "details", new Dictionary<string, string> { { "message", entry.Value.Description ?? string.Empty } } }
-                    };
-
-                    if (entry.Value.Status != Microsoft.Extensions.Diagnostics.HealthChecks.HealthStatus.Healthy)
-                    {
-                        compData["error"] = entry.Value.Exception?.Message ?? entry.Value.Description;
-                    }
-
-                    components[entry.Key] = compData;
-                }
-
-                var fullResponse = new
-                {
-                    status = overallStatus,
-                    version = typeof(HealthController).Assembly.GetName().Version?.ToString() ?? "unknown",
-                    timestamp = DateTime.UtcNow.ToString("o"),
-                    components = components
+                    { "status", compStatus },
+                    { "description", entry.Value.Description ?? (compStatus == "UP" ? "Healthy" : "Unhealthy") },
+                    { "durationMs", entry.Value.Duration.TotalMilliseconds },
+                    { "data", entry.Value.Data },
+                    { "details", new Dictionary<string, string> { { "message", entry.Value.Description ?? string.Empty } } }
                 };
 
-                return Content(JsonConvert.SerializeObject(fullResponse, Formatting.Indented), "application/json");
+                if (entry.Value.Status != Microsoft.Extensions.Diagnostics.HealthChecks.HealthStatus.Healthy)
+                {
+                    compData["error"] = entry.Value.Exception?.Message ?? entry.Value.Description;
+                }
+
+                components[entry.Key] = compData;
             }
 
-            var publicPayload = new { status = overallStatus };
-            return Content(JsonConvert.SerializeObject(publicPayload), "application/json");
+            var fullResponse = new
+            {
+                status = overallStatus,
+                version = typeof(HealthController).Assembly.GetName().Version?.ToString() ?? "unknown",
+                timestamp = DateTime.UtcNow.ToString("o"),
+                components = components
+            };
+
+            return Content(JsonConvert.SerializeObject(fullResponse, Formatting.Indented), "application/json");
         }
 
         /*
