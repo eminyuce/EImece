@@ -1,4 +1,4 @@
-using EImece.Domain.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Quartz;
 using System;
 using System.Threading;
@@ -8,64 +8,72 @@ namespace EImece.Domain.Observability.HealthChecks
 {
     public sealed class BackgroundServiceHealthCheck : IHealthCheck
     {
-        private readonly IScheduler Scheduler;
+        public const string DefaultName = "backgroundServices";
+
+        private readonly IScheduler _scheduler;
 
         public BackgroundServiceHealthCheck(IScheduler scheduler = null)
         {
-            Scheduler = scheduler;
+            _scheduler = scheduler;
         }
 
-        public string Name
-        {
-            get { return "backgroundServices"; }
-        }
-
-        public async Task<HealthCheckResult> CheckAsync(CancellationToken cancellationToken)
+        public async Task<HealthCheckResult> CheckHealthAsync(
+            HealthCheckContext context,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             var isEnabled = AppConfig.GetConfigBool("Quartz_Scheduler_IsEnabled", false);
 
-            // Config says scheduler should be off → report as Up (by design)
+            // Config says scheduler should be off → report as Healthy (by design)
             if (!isEnabled)
             {
-                return HealthCheckResult.Up(Name, "Quartz scheduler disabled by config");
+                return HealthCheckResult.Healthy("Quartz scheduler disabled by config");
             }
 
             try
             {
-                if (Scheduler == null)
+                if (_scheduler == null)
                 {
-                    return HealthCheckResult.Down(Name, "IScheduler is not registered / null");
+                    return HealthCheckResult.Unhealthy("IScheduler is not registered / null");
                 }
 
                 // Real runtime state
-                if (Scheduler.IsShutdown)
+                if (_scheduler.IsShutdown)
                 {
-                    return HealthCheckResult.Down(Name, "Quartz scheduler is shut down");
+                    return HealthCheckResult.Unhealthy("Quartz scheduler is shut down");
                 }
 
-                if (!Scheduler.IsStarted)
+                if (!_scheduler.IsStarted)
                 {
-                    return HealthCheckResult.Down(Name, "Quartz scheduler is not started");
+                    return HealthCheckResult.Unhealthy("Quartz scheduler is not started");
                 }
 
-                if (Scheduler.InStandbyMode)
+                if (_scheduler.InStandbyMode)
                 {
-                    return HealthCheckResult.Down(Name, "Quartz scheduler is in standby mode");
+                    return HealthCheckResult.Unhealthy("Quartz scheduler is in standby mode");
                 }
 
-                var jobKeys = await Scheduler.GetJobKeys(Quartz.Impl.Matchers.GroupMatcher<JobKey>.AnyGroup(), cancellationToken).ConfigureAwait(false);
-                var executing = await Scheduler.GetCurrentlyExecutingJobs(cancellationToken).ConfigureAwait(false);
+                var jobKeys = await _scheduler.GetJobKeys(Quartz.Impl.Matchers.GroupMatcher<JobKey>.AnyGroup(), cancellationToken).ConfigureAwait(false);
+                var executing = await _scheduler.GetCurrentlyExecutingJobs(cancellationToken).ConfigureAwait(false);
 
-                var detail = string.Format(
-                    "Quartz running. Jobs registered: {0}, currently executing: {1}",
-                    jobKeys != null ? jobKeys.Count : 0,
-                    executing != null ? executing.Count : 0);
+                var registeredCount = jobKeys != null ? jobKeys.Count : 0;
+                var executingCount = executing != null ? executing.Count : 0;
+                var detail = string.Format("Quartz scheduler running ({0} jobs registered, {1} currently executing)", registeredCount, executingCount);
 
-                return HealthCheckResult.Up(Name, detail);
+                var data = new System.Collections.Generic.Dictionary<string, object>
+                {
+                    { "SchedulerName", _scheduler.SchedulerName },
+                    { "IsStarted", _scheduler.IsStarted },
+                    { "InStandbyMode", _scheduler.InStandbyMode },
+                    { "IsShutdown", _scheduler.IsShutdown },
+                    { "RegisteredJobsCount", registeredCount },
+                    { "CurrentlyExecutingCount", executingCount }
+                };
+
+                return HealthCheckResult.Healthy(detail, data);
             }
             catch (Exception ex)
             {
-                return HealthCheckResult.Down(Name, "Quartz health check failed: " + ex.Message);
+                return HealthCheckResult.Unhealthy("Quartz health check failed: " + ex.Message, ex);
             }
         }
     }
