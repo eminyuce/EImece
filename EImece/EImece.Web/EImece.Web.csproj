@@ -154,6 +154,7 @@
     <Compile Include="Helpers\WebGeneralHelper.cs" />
     <Compile Include="Infrastructure\ActionResults\FeedResult.cs" />
     <Compile Include="Infrastructure\ActionResults\SitemapResult.cs" />
+    <Compile Include="Infrastructure\CacheWarmupService.cs" />
     <Compile Include="Infrastructure\CorrelationIdHttpModule.cs" />
     <Compile Include="Infrastructure\Designs\ConfigDesignProvider.cs" />
     <Compile Include="Infrastructure\Designs\DesignAwareRazorViewEngine.cs" />

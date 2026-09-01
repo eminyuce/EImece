@@ -121,6 +121,15 @@ namespace EImece
             {
                 _logger.LogError(ex, "Failed to initialize Quartz scheduler services.");
             }
+
+            try
+            {
+                EImece.Web.Infrastructure.CacheWarmupService.StartWarmup();
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogWarning(ex, "Failed to start CacheWarmupService.");
+            }
         }
 
         public override string GetVaryByCustomString(HttpContext context, string custom)
