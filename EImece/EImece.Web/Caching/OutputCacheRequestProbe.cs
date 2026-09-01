@@ -93,11 +93,6 @@ namespace EImece.Web.Caching
                 return;
             }
 
-            if (context.Items[MvcKey] != null)
-            {
-                return;
-            }
-
             if (!LooksLikeCachedHtmlHit(context))
             {
                 return;
