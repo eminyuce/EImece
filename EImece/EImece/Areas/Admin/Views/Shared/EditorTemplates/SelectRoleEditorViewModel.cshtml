@@ -11,12 +11,12 @@
 
     if (isAdmin)
     {
-        roleTitle = $"{AdminResource.Administrator} (Admin)";
+        roleTitle = string.Format("{0} (Admin)", AdminResource.Administrator);
         roleDescription = AdminResource.AdminUserRoleDescription;
     }
     else if (isEditor)
     {
-        roleTitle = $"{AdminResource.Editor} (NormalUser)";
+        roleTitle = string.Format("{0} (NormalUser)", AdminResource.Editor);
         roleDescription = AdminResource.EditorUserRoleDescription;
     }
     else

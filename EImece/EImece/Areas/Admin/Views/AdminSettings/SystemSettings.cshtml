@@ -1161,7 +1161,7 @@
                                                 <i class="fa-solid @(isCaptchaActive ? "fa-circle-check text-success" : "fa-circle-exclamation text-warning") fs-5"></i>
                                                 <strong class="small">Spam / Captcha</strong>
                                             </div>
-                                            <div class="small text-muted">@(isCaptchaActive ? $"Aktif sağlayıcı: {Model.CaptchaProvider}" : "Form spam koruması kapalı.")</div>
+                                            <div class="small text-muted">@(isCaptchaActive ? string.Format("Aktif sağlayıcı: {0}", Model.CaptchaProvider) : "Form spam koruması kapalı.")</div>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
