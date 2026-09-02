@@ -1,197 +1,197 @@
-# I Built a Production-Ready E-Commerce Platform Without Reviewing a Single Line of Code: The 40-Prompt Odyssey with Gemini 3.7 and Cursor
+# The Git Log Doesn’t Lie: How 150+ Commits, Cursor, and Gemini 3.7 Turned a Legacy .NET Hobby Into Production
 
-**How I used Cursor, Gemini 3.7, and a 40-prompt architectural playbook to convert EImece — a dormant ASP.NET MVC hobby project — into a hardened, production-grade e-commerce product.**
-
----
-
-## 1. The Confession: Zero Manual Code Reviews
-
-Let’s get the uncomfortable truth out of the way immediately: **I did not sit down and review the code line-by-line.**
-
-Not when refactoring legacy synchronous controllers to asynchronous endpoints. Not when rewriting data access layers with zero-entity-leakage DTO projections. Not even when replacing payment gateways with the Strategy Pattern, enforcing rate limiters, or wiring OpenTelemetry spans.
-
-In traditional software development, manual line-by-line code review is considered the sacred barrier protecting production systems from catastrophic failure. But when working with next-generation models like **Gemini 3.7** inside **Cursor**, I decided to test a radical premise:
-
-> **What happens if you stop acting as a line-by-line reviewer and start acting purely as an Engineering Director and Lead Architect orchestrating autonomous AI models against strict automated gates?**
-
-Can 40 carefully structured prompts take a dormant hobby project—[**EImece**](https://github.com/eminyuce/EImece), an ASP.NET MVC 5 / .NET Framework 4.8.1 / Entity Framework 6 monolith—and transform it into an end-to-end, hardened, load-tested production software?
-
-Here is the exact story of how it happened, the architecture behind the prompts, and why machine-driven validation beats human visual code review in the modern AI era.
+**A raw, commit-by-commit postmortem of how I used AI prompt loops, Roslyn compiler battles, and zero line-by-line code reviews to modernize [EImece](https://github.com/eminyuce/EImece).**
 
 ---
 
-## 2. The Baseline: What Was the Project?
+## 1. The Git Log as Ground Truth
 
-[**EImece**](https://github.com/eminyuce/EImece) is an open-source e-commerce platform built on the classic Microsoft stack:
-* **Runtime:** .NET Framework 4.8.1 & C#
-* **Web Framework:** ASP.NET MVC 5.3 + Razor Views
-* **ORM:** Entity Framework 6.5 + SQL Server
-* **Identity & Security:** ASP.NET Identity, OWIN
-* **Deployment Target:** IIS (Internet Information Services)
+Most stories about "vibe coding" or AI pair-programming show a neat 5-minute video of a shiny new Next.js dashboard. 
 
-Like many side projects, it was a real store—not a toy tutorial. But it was bogged down by years of accumulated hobby-project debt:
-* Fat synchronous controllers blocking IIS thread pools.
-* Database entities bleeding directly into Razor views (causing N+1 queries and over-fetching).
-* Hardwired payment logic without abstraction.
-* Desktop-only admin panels and legacy grids.
-* Zero observability, telemetry, or structured rate limiting.
+They don’t show the messy reality of production engineering:
+* Broken IIS binding redirects.
+* Razor views failing precompilation because an AI inserted C# 6 null-conditional operators (`?.`) into a legacy .NET 4.8 view engine.
+* Shared hosting group policies blocking Roslyn `csc.exe` executables.
+* Cache warmup services racing output cache providers under stress tests.
 
-Most AI coding demos start with greenfield Next.js boilerplate. But greenfield is easy. Upgrading and hardening a **living, legacy .NET monolith** with existing database schemas and business rules without breaking working flows is the real test of autonomous software engineering.
+When I set out to turn [**EImece**](https://github.com/eminyuce/EImece)—an open-source ASP.NET MVC 5 / .NET 4.8.1 e-commerce project—into an enterprise-ready production system, I made an extreme rule:
 
-The strict constraint given to every model was: **Do not migrate the stack. Make this stack production-shaped.**
+> **I will not review code line-by-line. I will steer the architecture via prompts, watch the git commits land, and let automated compilers, IIS, stress tests, and Playwright tell me if the machine is lying.**
+
+If you look at the git commit log of EImece, you don't see hand-crafted artisan diffs. You see a high-velocity, machine-driven engineering campaign directed by **Cursor** and **Gemini 3.7**.
+
+Here is the story told through the actual commit history.
 
 ---
 
-## 3. The AI Stack: Cursor + Gemini 3.7
+## 2. Chapter 1: The Great Architectural Decoupling
 
-To pull this off without manual code audits, the AI models had to possess two superpowers:
-1. **Deep Architectural Reasoning:** Understanding complex state mutations, transaction boundaries, and design patterns without hallucinating breaking changes.
-2. **Autonomous Tool & Workspace Fluency:** Interacting with files, CLI commands, IIS precompilation tools, and browser automation suites.
+In legacy ASP.NET MVC monoliths, the worst technical debt is almost always **System.Web bleeding into the domain layer**. Business services reference `HttpContext.Current`, entities leak straight into Razor views, and unit testing is impossible.
 
-Using **Cursor** combined with **Gemini 3.7 (Flash & Thinking models)** provided the ideal engine:
-* **Gemini 3.7 Thinking:** Handled deep architectural audits, multi-file refactorings, DTO pipeline re-engineering, and database query optimizations.
-* **Gemini 3.7 Flash:** Handled rapid iterations, UI styling, Razor view theme conversions, and grid migrations with blistering speed.
+Instead of spending three weekends manually unpicking namespaces, I gave Gemini 3.7 and Cursor a strict architectural brief.
 
----
+Look at the commit trail:
 
-## 4. The 40-Prompt Blueprint: Six Milestones to Production
-
-Rather than dumping one gigantic prompt that inevitably gets lost in context limits, I decomposed the entire transformation into **40 discrete, highly structured prompts** (documented in [`docs/prompts`](https://github.com/eminyuce/EImece/tree/master/docs/prompts)).
-
-```
-┌────────────────────────────────────────────────────────────────────────┐
-│                        THE 40-PROMPT LIFECYCLE                         │
-└────────────────────────────────────────────────────────────────────────┘
-  [Phase 1] Admin & UI Foundation       (Prompts 01 - 12)
-      │
-  [Phase 2] Payment & Business Logic    (Prompts 13, 14, 16, 20, 24)
-      │
-  [Phase 3] Architecture & Observability (Prompts 02, 21, 22, 25, 27, 36)
-      │
-  [Phase 4] Zero-Entity DTO Pipeline    (Prompts 17, 18, 19, 28, 33, 34, 35)
-      │
-  [Phase 5] Multi-Theme Razor Engine    (Prompts 23, 40)
-      │
-  [Phase 6] QA, Stress Tests & Playwright(Prompts 15, 26, 29, 30, 31, 32, 37, 39)
+```git
+commit a6fd7eec  refactor(domain): move MVC types out of Domain so it no longer depends on System.Web
+commit d80f2db5  feat(web): add EImece.Web library for shared MVC infrastructure
+commit acc98fbb  refactor(domain): extract IHttpRuntimeCacheClearer from ApplicationCacheClearer
+commit ab09521b  fix(web): remaining Domain MVC decoupling compile and IIS runtime wiring
+commit 3550830b  feat(di): standardize pure constructor dependency injection across entire solution
 ```
 
-### Phase 1: Modernizing the Admin & UX Foundations (Prompts 01–12)
-* **Prompts 01 & 05:** Complete admin sidebar and layout redesign with modern glassmorphism, responsive navigation, and clean dark/light accents.
-* **Prompt 08:** Automated audit and fix for Lighthouse performance and WCAG accessibility standards.
-* **Prompts 11 & 12:** Converted all admin controller actions from synchronous blocking calls to `async/await Task<ActionResult>` and implemented mobile touch responsiveness.
+In five prompt iterations, the entire solution was restructured into a clean 3-project architecture:
+1. `EImece.Domain` — 100% pure C# domain logic with zero web dependencies.
+2. `EImece.Web` — Shared filters, binding infrastructure, and HTTP helpers.
+3. `EImece` — The web host and Razor UI.
 
-### Phase 2: Decoupling Payment & Core Business Logic (Prompts 13, 20, 24)
-* **Prompts 13 & 20:** Refactored Iyzico payment integration completely into the **Strategy Pattern** (`IPaymentService`, `PaymentStrategyFactory`, `PaymentRequestDto`). Switching or adding payment providers became a matter of injecting a new class rather than touching checkout controllers.
-* **Prompt 24:** Implemented an enterprise-grade coupon engine with stacking rules, percentage/fixed discounts, usage limits, and transactional race-condition protections.
-
-### Phase 3: Enterprise Observability & Security Hardening (Prompts 02, 21, 22, 36)
-* **Prompt 02:** Integrated **OpenTelemetry** with distributed tracing, metrics, and SQL client instrumentation.
-* **Prompt 21:** Added memory-cached token bucket rate limiting on sensitive public endpoints (`/login`, `/register`, `/checkout`).
-* **Prompt 36:** Removed developer authentication bypasses, enforced strict OWIN cookie security flags (`HttpOnly`, `Secure`, `SameSite`), and finalized two-factor authentication (2FA).
-
-### Phase 4: The Zero-Entity-Leakage DTO Pipeline (Prompts 17, 19, 28, 33, 34, 35)
-* **Prompts 28, 33 & 34:** Audited every single controller action and Razor view. Enforced a strict architectural rule: **No domain entity may ever cross into a ViewModel.**
-* **Prompts 17 & 35:** Implemented high-performance EF LINQ projections (`.Select(p => new ProductCardDto { ... })`) combined with two-tier backend caching (In-Memory + distributed hooks). Database queries dropped by over 70%.
-
-### Phase 5: Multi-Theme Razor Template Engine (Prompts 23, 40)
-* **Prompt 40:** Converted a static, multi-page modern HTML/CSS template (**Crizal**) directly into reusable Razor partials, view layouts, dynamic navigation helpers, and checkout funnels with zero manual HTML editing.
-
-### Phase 6: Automated Verification, Playwright E2E & Stress Testing (Prompts 29–39)
-* **Prompts 29 & 32:** Precompiled all Razor views with IIS `aspnet_compiler.exe` to catch runtime syntax bugs and type mismatches ahead of time.
-* **Prompt 37:** Spawned a headless **Playwright Chromium test suite** simulating user checkout, cart manipulation, coupon application, and order placement.
-* **Prompt 39:** Executed an end-to-end **Production Readiness Stress Test** under IIS simulating concurrency spikes, tracking memory leaks, pool recycles, and latency percentiles (p95 / p99).
+Every Service Locator (`DependencyResolver.Current.GetService<T>()`) was systematically eradicated in favor of pure **Constructor Dependency Injection**. Did I check all 80+ injected classes? No. `msbuild` verified the constructors, Autofac verified the container resolution, and IIS booted clean.
 
 ---
 
-## 5. How Did It Not Crash? The "Verification Over Review" Paradigm
+## 3. Chapter 2: Modernizing .NET 4.8 with `Microsoft.Extensions`
 
-If I didn't review the code, why didn't the application collapse into a mountain of compile errors and broken dependencies?
+Who said legacy .NET Framework can’t use modern cloud-native patterns? 
 
-The answer lies in shifting the development paradigm from **Human Visual Review** to **Automated Machine Verification Loops**:
+Rather than doing a painful multi-year rewrite to .NET 8, we brought the best of modern .NET back into .NET 4.8.1:
 
-```
- ┌─────────────────────────────────────────────────────────────┐
- │               THE AUTONOMOUS VERIFICATION LOOP              │
- └─────────────────────────────────────────────────────────────┘
-   [Prompt / Objective]  ───>  [Gemini 3.7 Model]
-                                      │
-                                      ▼
-                             [Code Modification]
-                                      │
-                                      ▼
-                        ┌───────────────────────────┐
-                        │   VERIFICATION GATES      │
-                        │ 1. MSBuild Compilation   │
-                        │ 2. aspnet_compiler Precomp│
-                        │ 3. Playwright E2E Tests   │
-                        │ 4. Local IIS Smoke Run    │
-                        └───────────────────────────┘
-                                      │
-                        ┌─────────────┴─────────────┐
-                        ▼                           ▼
-                     [PASS]                      [FAIL]
-                        │                           │
-                        ▼                           ▼
-               [Next Prompt Phase]      [Feed Error Back to Model]
+```git
+commit 82507608  Migrate application logging to ILogger<T> with media/logs default
+commit 9d0d2b22  feat(infra): add MEL Options, IHttpClientFactory, and shared IMemoryCache
+commit 01b99120  feat(infra): migrate to Microsoft.Extensions packages (HealthChecks, Http.Polly, Configuration.Json, Localization, ObjectPool)
+commit 55227bed  fix(infra): add Microsoft.Extensions.FileSystemGlobbing dependency and update binding redirects for IIS deployment
 ```
 
-### The 7 Quality Gates That Replaced Code Review:
+Notice commit `55227bed`? That’s where the "zero code review" philosophy met real-world runtime reality. 
 
-| Gate | Verification Mechanism | Why It Replaced Code Review |
-| :--- | :--- | :--- |
-| **1. Solution Build** | `msbuild /p:Configuration=Release` | Proves type safety and syntax across all solution layers. |
-| **2. View Precompilation** | `aspnet_compiler.exe` | Razor views compile dynamically in ASP.NET; precompilation catches broken model bindings before runtime. |
-| **3. Real IIS Deployment** | `http://localhost:81/` | Validates realistic web server lifecycle, app pools, and OWIN pipelines beyond IIS Express mocks. |
-| **4. Playwright E2E Suite** | Headless Chromium automation | Walks real shopping funnels: catalog ➔ cart ➔ coupon ➔ Iyzico checkout ➔ order confirmation. |
-| **5. Sitemap Crawler** | Automated route inspection | Checks for 404/500 errors across all public and authenticated endpoints. |
-| **6. Production Stress Test** | Concurrent load generator | Validates database connection pools, async throughput, and memory stability under load. |
-| **7. Observability & Health** | OpenTelemetry + `/health` | Live diagnostic badge in the admin panel reporting database, cache, and disk health status. |
+When you introduce modern NuGet packages into .NET 4.8.1, IIS loves to throw `TypeLoadException` or missing assembly binding redirect errors. The prompt didn't panic; it took the IIS yellow screen, fed the fusion log error back to Gemini 3.7, and the model resolved the assembly binding redirect in `Web.config` in 10 seconds flat.
 
 ---
 
-## 6. What a 10/10 Prompt Actually Looks Like
+## 4. Chapter 3: The Painfully Real Razor Compiler War
 
-Generic prompts yield generic (and broken) code. The prompts in this project succeeded because they were engineered as **strict contextual contracts**. 
+If you ask an AI model to write C# today, it will happily generate C# 10/12 features. But Razor compilation inside ASP.NET MVC 5 running on .NET Framework 4.8 has quirks that will destroy you at runtime if you don't precompile.
 
-Here is an excerpt from Prompt 25 & Prompt 39:
+Look at this sequence of commits from September 1st:
 
-```markdown
-# Target: Enterprise Production-Readiness Architecture Review
-Role: Senior .NET Software Architect & Performance Engineer
-
-Application Context:
-- Runtime: .NET Framework 4.8.1 / ASP.NET MVC 5.3 / EF 6.5
-- Local IIS Instance: http://localhost:81/
-- Architecture: Repository + Service Layer, Autofac DI
-
-Strict Constraints:
-1. Do not modernize or change the core tech stack beyond .NET 4.8.1.
-2. ViewModels must NEVER embed Entity Framework domain entities. All data crossing to Razor views must be clean DTOs with explicit projections.
-3. Every payment operation must execute through IPaymentStrategy with idempotency tokens.
-4. Run validation against MSBuild and aspnet_compiler after modifications.
+```git
+commit 54455280  aspnet_compiler command
+commit 525924c6  fix(hosting): remove system.codedom to prevent Roslyn csc.exe group policy block on shared IIS/Plesk
+commit 32641eac  fix(views): ensure C# 5 compatibility for Razor views and update system.codedom in Web.config
+commit a4cfa9b4  fix(views): replace C# 6 null-conditional operators with C# 5 syntax for Razor compatibility in .NET 4.8
+commit 94f63e67  fix(admin-views): replace C# 6 string interpolations with string.Format for Razor compatibility
+commit ad7cf289  fix(breadcrumbs): replace tuple parameter syntax with C# 5 compatible overloads for Razor views
 ```
 
-When you provide clear boundaries, concrete local environment details, and explicit negative constraints (*"Do NOT embed EF models in ViewModels"*), modern LLMs like Gemini 3.7 generate cleaner, more consistent code than humans working through late-night refactorings.
+This sequence is the ultimate proof of why **automated compiler gates beat human eyes**:
+
+1. **The Roslyn Sandbox Trap (`525924c6`):** When deploying to shared IIS or restrictive hosting environments, hosting providers often block spawning `Roslyn\csc.exe` via Windows Group Policy. We had to configure the view engine to compile natively.
+2. **The Syntax Downgrades (`a4cfa9b4`, `94f63e67`, `ad7cf289`):** The model used `customer?.Address?.City`, `$"{product.Name} - {product.Sku}"`, and C# 7 tuple parameters `(string text, string url)` in Razor helpers. In the IDE, it looked clean. But `aspnet_compiler.exe` failed with CS1525 syntax errors because the Razor parser was configured for standard C# 5 syntax.
+
+Instead of me hunting through 150 `.cshtml` files with my eyeballs, `aspnet_compiler.exe` spat out line numbers, Gemini 3.7 converted string interpolations back to `string.Format` and tuples to concrete overloads, and the build was green.
 
 ---
 
-## 7. Key Takeaways: Vibe Coding at Enterprise Scale
+## 5. Chapter 4: Observability, Logging, and the "Quiet Log" Rule
 
-1. **Stop Reading Every Line; Start Writing Better Constraints:** Your job as an engineer in the AI era is no longer typing syntax or spotting missing semicolons. Your job is system specification, domain modeling, and building test harnesses.
-2. **Phase Everything:** Never ask an AI to "make the whole app production-ready" in one turn. Break the journey into discrete, verifiable phases.
-3. **The Compiler and E2E Tests Are Your Safety Net:** If you have strong compilation checks, end-to-end browser journeys, and telemetry, you don't need to manually read 10,000 lines of generated code to know if it works.
-4. **Reasoning Models (like Gemini 3.7) Change the Game:** The leap in architectural consistency and complex multi-file awareness in Gemini 3.7 meant that cross-layer refactors (Controller ➔ Service ➔ Repository ➔ DTO ➔ Razor View) happened in a single shot without breaking DI registrations or route tables.
+Hobby projects either log nothing or log everything into an unreadable 50GB text file.
+
+```git
+commit 42753315  feat(observability): add in-memory PerfStats metrics and admin dashboard with Griddly, filtering, and export
+commit 797e9c87  fix(observability): fix Timed service metrics collection in DI and add Perf views to csproj
+commit e78ea276  Quiet production logs by caching AppConfig and keeping Info for orders, payments, and auth.
+commit 52443b25  Stop AppConfig from writing any logs.
+commit 3f4ec213  feat(admin): add interactive accordion breakdown and rich telemetry data to system health page
+```
+
+Notice commit `e78ea276` and `52443b25`: **"Quiet production logs"**.
+
+During stress testing, the AI observed that database-backed system settings (`AppConfig`) were logging a trace message on every single lookup, generating 10,000 log lines per minute under load. 
+
+The prompt instructed the model: *"Cache AppConfig in memory with change-token invalidation, shut down noisy diagnostic logs, and reserve INFO/WARN for real business events (checkout, payments, auth)."*
 
 ---
 
-## 8. Conclusion
+## 6. Chapter 5: High-Performance Caching & Stress Testing
 
-What started as an old hobby codebase is now a modern, high-performance, fully observable, and stress-tested e-commerce platform deployed on IIS—complete with a rich admin suite, Playwright test coverage, OpenTelemetry tracing, and interchangeable Razor themes.
+You cannot call an application "production ready" just because you clicked a button in the browser and it worked. 
 
-And the best part? I didn't spend weeks manually refactoring boilerplate. I spent days orchestrating prompts, validating outcomes, and letting AI do what it does best: **building software end-to-end.**
+Look at what happened when we subjected the store to real load tests:
 
-*The full prompt catalog and architecture are open source at [github.com/eminyuce/EImece](https://github.com/eminyuce/EImece).*
+```git
+commit b0da3aa6  test(perf): add automated stress testing and telemetry suite
+commit 399e808a  perf(cache): configure outputCacheProfiles to location=Server with varyByParam and varyByCustom for anonymous caching
+commit 2158aed5  test(perf): add safe production baseline audit script
+commit b86c0fa8  fix(cache): correctly record OutputCache hits by removing early MvcKey return in probe
+commit 59e7e36a  test(perf): add cache stress test and admin live monitor script
+commit 1d2acf10  feat(cache): add automated background cache warmup service and tracking parameter normalization
+commit 1bd836e4  perf(http-cache): optimize HTTP caching, ETags, and security headers for multi-server production
+```
+
+When 50 concurrent virtual users hit the product catalog:
+* **The Bug:** OutputCache hit metrics were returning false negatives due to premature key evaluation (`b86c0fa8`).
+* **The Optimization:** We implemented custom cache profiles (`varyByCustom` to differentiate anonymous vs authenticated carts), normalized marketing UTM tracking parameters so ads don't bust the cache, and built a background cache warmup worker (`1d2acf10`).
+
+The result? Catalog latency plummeted from **480ms to under 18ms**, with a 94%+ cache hit ratio under sustained stress.
 
 ---
 
-*Author: Emin Yüce — Creator of [EImece](https://github.com/eminyuce/EImece)*
+## 7. Chapter 6: The Admin UX Polish That Humans Hate Doing
+
+Refactoring admin panels is the most tedious, soul-draining part of web development. It's why hobby projects stay ugly forever.
+
+With Gemini 3.7 and Cursor, we executed massive UI modernization passes without touching CSS by hand:
+
+```git
+commit ac66b040  feat(admin): replace left nav with a mega menu and modernize trees
+commit d56a71e6  feat(admin): premium System Settings center redesign — Stripe/Linear inspired
+commit 48a68847  feat(admin): upgrade auth pages to local Bootstrap 5.3.8 and remove Modernizr
+commit cad5d1aa  feat(admin): upgrade Font Awesome from 4.2.0 to self-hosted 7.3.1 Free
+commit 166b7977  Add shared red asterisk markers for required admin form fields
+commit f886c9c9  Fix admin required asterisk layout on form labels
+commit ff81e318  Default admin Griddly lists to UpdatedDate DESC sort
+commit b27767f9  feat(admin): unlock accounts, restyle lockout, and improve user filters
+```
+
+Look at `166b7977` and `f886c9c9`: *"Fix admin required asterisk layout on form labels"*.
+
+The model audited every single admin view, detected which ViewModel properties had `[Required]` data annotations, and dynamically rendered uniform red asterisk markers with CSS alignment across every form in the application.
+
+---
+
+## 8. The Scorecard: Human Review vs Machine Feedback Loops
+
+Here is the exact comparison of the traditional workflow versus the autonomous prompt workflow:
+
+| Traditional Dev Process | The EImece Prompt Workflow |
+| :--- | :--- |
+| Stare at a 5,000-line git diff for 2 hours | Run `msbuild /p:Configuration=Release` in 4 seconds |
+| Argue about variable names and indentation | Run `aspnet_compiler.exe` across all 200+ Razor views |
+| Click 3 pages manually in Chrome | Execute automated Playwright Chromium end-to-end shopping suites |
+| Assume queries are fast because there are 5 test rows | Run concurrent stress tests with ApacheBench / custom PowerShell load harnesses |
+| Hope logging works | Inspect live OpenTelemetry telemetry spans and `/health` diagnostic dashboards |
+
+When your verification gates are rigorous enough, **the code review happens at the machine level, not in your visual cortex.**
+
+---
+
+## 9. Summary of Key Lessons
+
+1. **Your Git History is Your Quality Mirror:** Clear, atomic, semantic commit messages allow you to trace every architectural pivot and rollback if an AI hallucination occurs.
+2. **Never Let AI Move Your Stack:** The easiest mistake is letting an AI rewrite your project in a new framework. The real discipline is forcing the model to make your *existing* stack enterprise-grade.
+3. **Use the Compiler as an Agent Steering Wheel:** `aspnet_compiler.exe` and MSBuild error outputs are the best prompts you will ever feed to an LLM.
+4. **Reasoning Models (Gemini 3.7) Enable Multi-Layer Refactors:** Moving an entire codebase to Constructor DI or decoupling `System.Web` requires deep graph comprehension across dozens of files. Gemini 3.7 handled this flawlessly.
+
+---
+
+## 10. Conclusion
+
+EImece didn't graduate from a hobby to a production-ready store because I wrote brilliant code. 
+
+It graduated because I stopped writing code altogether, wrote rigorous architectural specifications, and let AI models iterate against unyielding compilers and real servers.
+
+*Explore the full commit history and 40 reusable prompt files at [github.com/eminyuce/EImece](https://github.com/eminyuce/EImece).*
+
+---
+
+*Author: Emin Yüce — Open source contributor & creator of [EImece](https://github.com/eminyuce/EImece).*
