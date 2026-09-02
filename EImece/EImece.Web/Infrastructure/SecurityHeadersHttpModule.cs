@@ -35,15 +35,15 @@ namespace EImece.Web.Infrastructure
             if (response.Headers["Content-Security-Policy"] == null)
             {
                 const string csp = "default-src 'self'; " +
-                                   "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/ https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://static.iyzipay.com https://www.googletagmanager.com https://www.google-analytics.com https://static.getbutton.io; " +
-                                   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://static.getbutton.io; " +
+                                   "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/ https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://static.iyzipay.com https://sandbox-static.iyzipay.com https://www.googletagmanager.com https://www.google-analytics.com https://static.getbutton.io; " +
+                                   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://static.getbutton.io https://static.iyzipay.com https://sandbox-static.iyzipay.com; " +
                                    "font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com; " +
                                    "img-src 'self' data: blob: https: http:; " +
-                                   "connect-src 'self' https://sandbox-api.iyzipay.com https://api.iyzipay.com https://www.google.com https://www.google-analytics.com https://www.googletagmanager.com https://region1.google-analytics.com https://static.getbutton.io; " +
-                                   "frame-src 'self' https://www.google.com/recaptcha/ https://sandbox-api.iyzipay.com https://api.iyzipay.com https://www.googletagmanager.com; " +
+                                   "connect-src 'self' https://sandbox-api.iyzipay.com https://api.iyzipay.com https://sandbox-static.iyzipay.com https://static.iyzipay.com https://www.google.com https://www.google-analytics.com https://www.googletagmanager.com https://region1.google-analytics.com https://static.getbutton.io; " +
+                                   "frame-src 'self' https://www.google.com/recaptcha/ https://sandbox-api.iyzipay.com https://api.iyzipay.com https://sandbox-cpp.iyzipay.com https://cpp.iyzipay.com https://sandbox-ode.iyzico.com https://ode.iyzico.com https://sandbox-static.iyzipay.com https://static.iyzipay.com https://www.googletagmanager.com; " +
                                    "frame-ancestors 'self'; " +
                                    "base-uri 'self'; " +
-                                   "form-action 'self' https://sandbox-api.iyzipay.com https://api.iyzipay.com;";
+                                   "form-action 'self' https://sandbox-api.iyzipay.com https://api.iyzipay.com https://sandbox-cpp.iyzipay.com https://cpp.iyzipay.com;";
                 response.Headers["Content-Security-Policy"] = csp;
             }
 

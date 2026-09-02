@@ -6,11 +6,12 @@
 @using EImece.Domain;
 @using Resources;
 @using EImece.Domain.Models.FrontModels;
+@using EImece.Domain.Models.DTOs;
 @using EImece.Domain.Models.Enums;
 
 @{
     ShoppingCartSession shoppingCartSession = (ShoppingCartSession)ViewBag.ShoppingCartSession;
-    var customer = Model.Customer;
+    var customer = Model.Customer ?? new CustomerDto();
 }
 
 <!-- Page Title-->
@@ -39,7 +40,7 @@
 
     <div class="row">
         <div class="col-xl-10 col-lg-11 col-md-12 mx-auto">
-            @using (Html.BeginForm("ShoppingWithoutAccount", "Payment", FormMethod.Post, new { enctype = "multipart/form-data", @class = "needs-validation", novalidate = "novalidate" }))
+            @using (Html.BeginForm("ShoppingWithoutAccount", "Payment", FormMethod.Post, new { enctype = "multipart/form-data", @class = "needs-validation js-checkout-form", novalidate = "novalidate" }))
             {
                 @Html.AntiForgeryToken()
 
@@ -51,24 +52,24 @@
                     <div class="card-body">
                         <div class="row g-3">
                             <div class="col-md-6 mb-3">
-                                <label class="font-weight-semibold" for="customer_Name"><i class="fas fa-user text-muted mr-1" aria-hidden="true"></i> @Html.DisplayNameFor(model => customer.Name)</label>
+                                <label class="font-weight-semibold" for="customer_Name"><i class="fas fa-user text-muted mr-1" aria-hidden="true"></i> @Html.DisplayNameFor(model => customer.Name) <span class="text-danger" aria-hidden="true">*</span></label>
                                 @Html.EditorFor(model => customer.Name, new { htmlAttributes = new { @class = "form-control", autocomplete = "given-name", id = "customer_Name" } })
                                 @Html.ValidationMessageFor(model => customer.Name, "", new { @class = "text-danger small" })
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label class="font-weight-semibold" for="customer_Surname"><i class="fas fa-user text-muted mr-1" aria-hidden="true"></i> @Html.DisplayNameFor(model => customer.Surname)</label>
+                                <label class="font-weight-semibold" for="customer_Surname"><i class="fas fa-user text-muted mr-1" aria-hidden="true"></i> @Html.DisplayNameFor(model => customer.Surname) <span class="text-danger" aria-hidden="true">*</span></label>
                                 @Html.EditorFor(model => customer.Surname, new { htmlAttributes = new { @class = "form-control", autocomplete = "family-name", id = "customer_Surname" } })
                                 @Html.ValidationMessageFor(model => customer.Surname, "", new { @class = "text-danger small" })
                             </div>
                         </div>
                         <div class="row g-3">
                             <div class="col-md-6 mb-3">
-                                <label class="font-weight-semibold" for="customer_Email"><i class="fas fa-envelope text-muted mr-1" aria-hidden="true"></i> @Html.DisplayNameFor(model => customer.Email)</label>
+                                <label class="font-weight-semibold" for="customer_Email"><i class="fas fa-envelope text-muted mr-1" aria-hidden="true"></i> @Html.DisplayNameFor(model => customer.Email) <span class="text-danger" aria-hidden="true">*</span></label>
                                 @Html.EditorFor(model => customer.Email, new { htmlAttributes = new { @class = "form-control", type = "email", autocomplete = "email", id = "customer_Email" } })
                                 @Html.ValidationMessageFor(model => customer.Email, "", new { @class = "text-danger small" })
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label class="font-weight-semibold" for="customer_GsmNumber"><i class="fas fa-phone text-muted mr-1" aria-hidden="true"></i> @Html.DisplayNameFor(model => customer.GsmNumber)</label>
+                                <label class="font-weight-semibold" for="customer_GsmNumber"><i class="fas fa-phone text-muted mr-1" aria-hidden="true"></i> @Html.DisplayNameFor(model => customer.GsmNumber) <span class="text-danger" aria-hidden="true">*</span></label>
                                 @Html.EditorFor(model => customer.GsmNumber, new { htmlAttributes = new { @class = "form-control", autocomplete = "tel", placeholder = "+90 5XX XXX XX XX", id = "customer_GsmNumber" } })
                                 <small class="form-text text-muted">@Resource.WhyNeedGsmNumber</small>
                                 @Html.ValidationMessageFor(model => customer.GsmNumber, "", new { @class = "text-danger small" })
@@ -105,28 +106,28 @@
                     <div class="card-body">
                         <div class="row g-3">
                             <div class="col-md-6 mb-3">
-                                <label class="font-weight-semibold" for="customer_Country"><i class="fas fa-globe text-muted mr-1" aria-hidden="true"></i> @Html.DisplayNameFor(model => customer.Country)</label>
+                                <label class="font-weight-semibold" for="customer_Country"><i class="fas fa-globe text-muted mr-1" aria-hidden="true"></i> @Html.DisplayNameFor(model => customer.Country) <span class="text-danger" aria-hidden="true">*</span></label>
                                 @Html.DropDownListFor(model => customer.Country, EImece.Web.Helpers.WebGeneralHelper.GetStaticCountries(), new { @class = "form-control", id = "customer_Country" })
                                 @Html.ValidationMessageFor(model => customer.Country, "", new { @class = "text-danger small" })
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label class="font-weight-semibold" for="customer_City"><i class="fas fa-city text-muted mr-1" aria-hidden="true"></i> @Html.DisplayNameFor(model => customer.City)</label>
+                                <label class="font-weight-semibold" for="Cities"><i class="fas fa-city text-muted mr-1" aria-hidden="true"></i> @Html.DisplayNameFor(model => customer.City) <span class="text-danger" aria-hidden="true">*</span></label>
                                 <input type="hidden" id="SelectedCity" value="@customer.City" />
-                                @Html.DropDownListFor(model => customer.City, new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"), new { @class = "form-control", id = "customer_City" })
+                                @Html.DropDownListFor(model => customer.City, new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"), new { @class = "form-control", id = "Cities" })
                                 @Html.ValidationMessageFor(model => customer.City, "", new { @class = "text-danger small" })
                             </div>
                         </div>
                         <div class="row g-3">
                             <div class="col-md-4 mb-3">
-                                <label class="font-weight-semibold" for="customer_Town"><i class="fas fa-map text-muted mr-1" aria-hidden="true"></i> @Html.DisplayNameFor(model => customer.Town)</label>
+                                <label class="font-weight-semibold" for="Towns"><i class="fas fa-map text-muted mr-1" aria-hidden="true"></i> @Html.DisplayNameFor(model => customer.Town) <span class="text-danger" aria-hidden="true">*</span></label>
                                 <input type="hidden" id="SelectedTown" value="@customer.Town" />
-                                @Html.DropDownListFor(model => customer.Town, new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"), new { @class = "form-control", id = "customer_Town" })
+                                @Html.DropDownListFor(model => customer.Town, new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"), new { @class = "form-control", id = "Towns" })
                                 @Html.ValidationMessageFor(model => customer.Town, "", new { @class = "text-danger small" })
                             </div>
                             <div class="col-md-4 mb-3">
-                                <label class="font-weight-semibold" for="customer_District"><i class="fas fa-map-marker text-muted mr-1" aria-hidden="true"></i> @Html.DisplayNameFor(model => customer.District)</label>
+                                <label class="font-weight-semibold" for="Districts"><i class="fas fa-map-marker text-muted mr-1" aria-hidden="true"></i> @Html.DisplayNameFor(model => customer.District)</label>
                                 <input type="hidden" id="SelectedDistrict" value="@customer.District" />
-                                @Html.DropDownListFor(model => customer.District, new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"), new { @class = "form-control", id = "customer_District" })
+                                @Html.DropDownListFor(model => customer.District, new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"), new { @class = "form-control", id = "Districts" })
                                 @Html.ValidationMessageFor(model => customer.District, "", new { @class = "text-danger small" })
                             </div>
                             <div class="col-md-4 mb-3">
@@ -152,7 +153,8 @@
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn-primary btn-lg w-100 shadow-sm mb-4">
+                @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
+                <button type="submit" class="butn-style8 btn-block js-checkout-submit mb-4">
                     <i class="fas fa-credit-card mr-2" aria-hidden="true"></i>@Resource.GoToPayment
                 </button>
             }

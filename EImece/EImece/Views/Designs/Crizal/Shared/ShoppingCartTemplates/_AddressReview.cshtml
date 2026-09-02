@@ -1,4 +1,5 @@
 @using EImece.Domain.Models.FrontModels;
+@using EImece.Domain.Models.DTOs;
 @using EImece.Domain.Entities;
 @using EImece.Web.Helpers.HtmlHelpers;
 @using EImece.Domain.Helpers.Extensions;
@@ -7,52 +8,41 @@
 @using Resources;
 @model ShoppingCartSession
 @{
-    var products = Model.ShoppingCartItems;
-    var customer = Model.Customer;
-    var billingAddress = Model.BillingAddress;
+    var customer = Model.Customer ?? new CustomerDto();
 }
 
-<div class="row">
-    <div class="col-md-4">
-        <ul class="list-unstyled address-review">
-            @if (!string.IsNullOrEmpty(customer.Company))
-            {
-                <li><strong>@Resource.Company:</strong> @customer.Company</li>
-            }
-            @if (!string.IsNullOrEmpty(customer.City))
-            {
-                <li><strong>@Resource.City:</strong> @customer.City</li>
-            }
-            @if (!string.IsNullOrEmpty(customer.Town))
-            {
-                <li><strong>@Resource.Town:</strong> @customer.Town</li>
-            }
-            @if (!string.IsNullOrEmpty(customer.District))
-            {
-                <li><strong>@Resource.District:</strong> @customer.District</li>
-            }
-            @if (!string.IsNullOrEmpty(customer.Street))
-            {
-                <li><strong>@Resource.Street:</strong> @customer.Street</li>
-            }
-            @if (!string.IsNullOrEmpty(customer.ZipCode))
-            {
-                <li><strong>@Resource.ZipCode:</strong> @customer.ZipCode</li>
-            }
-            @if (!string.IsNullOrEmpty(customer.Country))
-            {
-                <li><strong>@Resource.Country:</strong> @customer.Country</li>
-            }
-            @if (!string.IsNullOrEmpty(customer.Description))
-            {
-                <li>@customer.Description</li>
-            }
-        </ul>
-    </div>
-</div>
-
-<div class="form-check mt-3">
-    <input type="checkbox" class="form-check-input" id="sameAsShipping" checked>
-    <label class="form-check-label" for="sameAsShipping">@Html.DisplayNameFor(model => customer.IsSameAsShippingAddress)</label>
-</div>
-<div class="clearfix"></div>
+<ul class="list-unstyled address-review mb-0">
+    @if (!string.IsNullOrEmpty(customer.Company))
+    {
+        <li><strong>@Resource.Company:</strong> @customer.Company</li>
+    }
+    @if (!string.IsNullOrEmpty(customer.Street))
+    {
+        <li><strong>@Resource.Street:</strong> @customer.Street</li>
+    }
+    @if (!string.IsNullOrEmpty(customer.District))
+    {
+        <li><strong>@Resource.District:</strong> @customer.District</li>
+    }
+    @if (!string.IsNullOrEmpty(customer.Town))
+    {
+        <li><strong>@Resource.Town:</strong> @customer.Town</li>
+    }
+    @if (!string.IsNullOrEmpty(customer.City))
+    {
+        <li><strong>@Resource.City:</strong> @customer.City</li>
+    }
+    @if (!string.IsNullOrEmpty(customer.ZipCode))
+    {
+        <li><strong>@Resource.ZipCode:</strong> @customer.ZipCode</li>
+    }
+    @if (!string.IsNullOrEmpty(customer.Country))
+    {
+        <li><strong>@Resource.Country:</strong> @customer.Country</li>
+    }
+    @if (!string.IsNullOrEmpty(customer.Description))
+    {
+        <li>@customer.Description</li>
+    }
+</ul>
+<p class="text-muted font-size-sm mb-0 mt-2">@Resource.IsSameAsShippingAddress</p>

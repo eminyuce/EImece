@@ -43,6 +43,33 @@ namespace EImece.Domain.Services
                     // Await the SDK call instead of blocking on .Result. ConfigureAwait(false) keeps this
                     // domain-layer code off the ASP.NET request context.
                     var result = await CheckoutForm.Retrieve(request, options).ConfigureAwait(false);
+                    if (result == null)
+                    {
+                        _logger.LogError("Iyzico CheckoutForm retrieve returned null.");
+                    }
+                    else if (!string.Equals(result.Status, "success", StringComparison.OrdinalIgnoreCase))
+                    {
+                        _logger.LogError(
+                            "Iyzico CheckoutForm retrieve rejected status={0} errorCode={1} errorMessage={2} errorGroup={3} conversationId={4} basketId={5} paymentStatus={6}",
+                            result.Status,
+                            result.ErrorCode,
+                            result.ErrorMessage,
+                            result.ErrorGroup,
+                            result.ConversationId,
+                            result.BasketId,
+                            result.PaymentStatus);
+                    }
+                    else
+                    {
+                        _logger.LogInformation(
+                            "Iyzico CheckoutForm retrieve status={0} conversationId={1} basketId={2} paymentStatus={3} paidPrice={4} currency={5}",
+                            result.Status,
+                            result.ConversationId,
+                            result.BasketId,
+                            result.PaymentStatus,
+                            result.PaidPrice,
+                            result.Currency);
+                    }
                     activity?.SetStatus(ActivityStatusCode.Ok);
                     return result;
                 }
@@ -50,6 +77,7 @@ namespace EImece.Domain.Services
                 {
                     activity?.SetStatus(ActivityStatusCode.Error, ex.Message);
                     activity?.AddException(ex);
+                    _logger.LogError(ex, "Iyzico CheckoutForm retrieve threw before a response was returned.");
                     throw;
                 }
             }
@@ -110,7 +138,7 @@ namespace EImece.Domain.Services
                 Name = customer.Name,
                 Surname = customer.Surname,
                 GsmNumber = GeneralHelper.CheckGsmNumber(customer.GsmNumber),
-                Email = customer.Email,
+                Email = GeneralHelper.CheckIyzicoEmail(customer.Email),
                 IdentityNumber = GeneralHelper.CheckIdentityNumber(customer.IdentityNumber),
                 LastLoginDate = customer.UpdatedDate.ToString(Constants.IyzicoDateTimeFormat),
                 RegistrationDate = customer.CreatedDate.ToString(Constants.IyzicoDateTimeFormat),
@@ -184,14 +212,7 @@ namespace EImece.Domain.Services
             request.PaidPrice = CurrencyHelper.CurrencySignForIyizo(shoppingCart.TotalPriceWithCargoPrice);
             request.BasketItems = basketItems;
 
-            // Log prices and request details (never log full payment payloads / secrets).
-            _logger.LogDebug("Total Price after CurrencySignForIyizo: " + request.Price);
-            _logger.LogDebug("Shipping & Paid Price after CurrencySignForIyizo: " + request.PaidPrice);
-            _logger.LogInformation(SensitiveDataMasker.Mask(
-                "Iyzico Request prepared for CheckoutFormInitialization: ConversationId="
-                + request.ConversationId
-                + " BasketId="
-                + request.BasketId));
+            LogCheckoutFormRequest(options, request, customer.Email);
 
             // Execute the request
             _logger.LogDebug("Initializing CheckoutFormInitialize.Create for user: " + userId);
@@ -203,6 +224,7 @@ namespace EImece.Domain.Services
                     // HttpContext.Current was read synchronously above (before this await), so ConfigureAwait(false)
                     // here is safe and avoids parking the request thread on the payment gateway round-trip.
                     var result = await CheckoutFormInitialize.Create(request, options).ConfigureAwait(false);
+                    LogCheckoutFormResult(result);
                     activity?.SetStatus(ActivityStatusCode.Ok);
                     return result;
                 }
@@ -210,6 +232,7 @@ namespace EImece.Domain.Services
                 {
                     activity?.SetStatus(ActivityStatusCode.Error, ex.Message);
                     activity?.AddException(ex);
+                    _logger.LogError(ex, "Iyzico CheckoutForm initialize threw before a response was returned.");
                     throw;
                 }
             }
@@ -250,7 +273,7 @@ namespace EImece.Domain.Services
                 Name = customer.Name,
                 Surname = customer.Surname,
                 GsmNumber = GeneralHelper.CheckGsmNumber(customer.GsmNumber),
-                Email = customer.Email,
+                Email = GeneralHelper.CheckIyzicoEmail(customer.Email),
                 IdentityNumber = GeneralHelper.CheckIdentityNumber(customer.IdentityNumber),
                 LastLoginDate = customer.UpdatedDate.ToString(Constants.IyzicoDateTimeFormat),
                 RegistrationDate = customer.CreatedDate.ToString(Constants.IyzicoDateTimeFormat),
@@ -297,11 +320,7 @@ namespace EImece.Domain.Services
 
             request.BasketItems = basketItems;
 
-            _logger.LogInformation(SensitiveDataMasker.Mask(
-                "Iyzico Request prepared for BuyNow CheckoutFormInitialization: ConversationId="
-                + request.ConversationId
-                + " BasketId="
-                + request.BasketId));
+            LogCheckoutFormRequest(options, request, customer.Email);
 
             using (var activity = StartPaymentActivity("authorize_buynow"))
             {
@@ -309,6 +328,7 @@ namespace EImece.Domain.Services
                 try
                 {
                     var result = await CheckoutFormInitialize.Create(request, options).ConfigureAwait(false);
+                    LogCheckoutFormResult(result);
                     activity?.SetStatus(ActivityStatusCode.Ok);
                     return result;
                 }
@@ -316,9 +336,82 @@ namespace EImece.Domain.Services
                 {
                     activity?.SetStatus(ActivityStatusCode.Error, ex.Message);
                     activity?.AddException(ex);
+                    _logger.LogError(ex, "Iyzico CheckoutForm BuyNow initialize threw before a response was returned.");
                     throw;
                 }
             }
+        }
+
+        private void LogCheckoutFormRequest(IyzipayOptions options, CreateCheckoutFormInitializeRequest request, string storeEmail)
+        {
+            var buyer = request != null ? request.Buyer : null;
+            var identity = buyer != null ? buyer.IdentityNumber : null;
+            _logger.LogInformation(
+                "Iyzico CheckoutForm request host={0} locale={1} currency={2} conversationId={3} basketId={4} price={5} paidPrice={6} storeEmail={7} buyerEmail={8} gsm={9} identity={10}",
+                options != null ? options.BaseUrl : null,
+                request != null ? request.Locale : null,
+                request != null ? request.Currency : null,
+                request != null ? request.ConversationId : null,
+                request != null ? request.BasketId : null,
+                request != null ? request.Price : null,
+                request != null ? request.PaidPrice : null,
+                storeEmail,
+                buyer != null ? buyer.Email : null,
+                buyer != null ? buyer.GsmNumber : null,
+                MaskIdentityForLog(identity));
+        }
+
+        private void LogCheckoutFormResult(CheckoutFormInitialize result)
+        {
+            if (result == null)
+            {
+                _logger.LogError("Iyzico CheckoutForm response was null.");
+                return;
+            }
+
+            var hasContent = !string.IsNullOrEmpty(result.CheckoutFormContent);
+            var failed = !string.Equals(result.Status, "success", StringComparison.OrdinalIgnoreCase);
+            var message =
+                "Iyzico CheckoutForm response status={0} errorCode={1} errorMessage={2} errorGroup={3} locale={4} conversationId={5} hasContent={6} hasToken={7}";
+            if (failed)
+            {
+                _logger.LogError(
+                    message,
+                    result.Status,
+                    result.ErrorCode,
+                    result.ErrorMessage,
+                    result.ErrorGroup,
+                    result.Locale,
+                    result.ConversationId,
+                    hasContent,
+                    !string.IsNullOrEmpty(result.Token));
+            }
+            else
+            {
+                _logger.LogInformation(
+                    message,
+                    result.Status,
+                    result.ErrorCode,
+                    result.ErrorMessage,
+                    result.ErrorGroup,
+                    result.Locale,
+                    result.ConversationId,
+                    hasContent,
+                    !string.IsNullOrEmpty(result.Token));
+            }
+        }
+
+        private static string MaskIdentityForLog(string identityNumber)
+        {
+            if (string.IsNullOrEmpty(identityNumber))
+            {
+                return "empty";
+            }
+
+            var last = identityNumber.Length <= 3
+                ? identityNumber
+                : identityNumber.Substring(identityNumber.Length - 3);
+            return "len=" + identityNumber.Length + ",last3=" + last;
         }
 
         private IyzipayOptions GetOptions()

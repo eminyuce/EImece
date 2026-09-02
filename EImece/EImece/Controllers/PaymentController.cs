@@ -573,7 +573,8 @@ namespace EImece.Controllers
                 await SaveShoppingCartAsync(shoppingCart);
                 Logger.LogDebug("Shopping cart saved with updated quantity.");
                 Logger.LogDebug("Returning success JSON response.");
-                return Json(new { status = Domain.Constants.SUCCESS, shoppingItemId }, JsonRequestBehavior.AllowGet);
+                var lineTotal = item.TotalPrice.CurrencySign();
+                return Json(new { status = Domain.Constants.SUCCESS, shoppingItemId, LineTotal = lineTotal }, JsonRequestBehavior.AllowGet);
             }
             else
             {
@@ -649,7 +650,18 @@ namespace EImece.Controllers
                         }
                         else
                         {
-                            ViewBag.CheckoutFormInitialize = await PaymentContext.InitializeCheckoutAsync(shoppingCart, user.Id);
+                            var checkoutInit = await PaymentContext.InitializeCheckoutAsync(shoppingCart, user.Id);
+                            ViewBag.CheckoutFormInitialize = checkoutInit;
+                            if (checkoutInit != null
+                                && !string.Equals(checkoutInit.Status, "success", StringComparison.OrdinalIgnoreCase))
+                            {
+                                Logger.LogError(
+                                    "PlaceOrder Iyzico initialize rejected status={0} errorCode={1} errorMessage={2} conversationId={3}",
+                                    checkoutInit.Status,
+                                    checkoutInit.ErrorCode,
+                                    checkoutInit.ErrorMessage,
+                                    checkoutInit.ConversationId);
+                            }
                         }
                     }
                     catch (Exception ex)
@@ -1345,6 +1357,7 @@ namespace EImece.Controllers
             {
                 InformCustomerToFillOutForm(customer);
                 shoppingCart.Customer = customer;
+                buyWithNoAccountCreation.Customer = customer;
                 Logger.LogDebug("Returning view with validation errors.");
                 return View(buyWithNoAccountCreation);
             }

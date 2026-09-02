@@ -1,4 +1,5 @@
 @using EImece.Domain.Models.FrontModels;
+@using EImece.Domain.Models.DTOs;
 @using EImece.Domain.Entities;
 @using EImece.Web.Helpers.HtmlHelpers;
 @using EImece.Domain.Helpers.Extensions;
@@ -8,182 +9,91 @@
 @model ShoppingCartSession
 
 @{
-    var customer = Model.Customer;
+    var customer = Model.Customer ?? new CustomerDto();
     var products = Model.ShoppingCartItems;
-    var hasCustomerInfo = !string.IsNullOrEmpty(customer.FullName) && !string.IsNullOrEmpty(customer.Email);
+    var hasCustomerInfo = !string.IsNullOrEmpty(customer.FullName) || !string.IsNullOrEmpty(customer.Email);
     var hasShippingAddress = Model.ShippingAddress != null && !string.IsNullOrEmpty(Model.ShippingAddress.City);
 }
-<!-- Shipping and Billing Addresses -->
+@if (products.IsNotEmpty())
+{
+    <div class="common-block crizal-cart-items mb-4">
+        <div class="line-title">
+            <h2 class="h6 mb-0">@Resource.ReviewYourOrder</h2>
+        </div>
+        @for (int i = 0; i < products.Count; i++)
+        {
+            @CreateCheckoutCartItem(products[i], i)
+        }
+    </div>
+}
+
 @if (hasCustomerInfo || hasShippingAddress)
 {
-    <div class="row mb-4">
+    <div class="common-block mb-4">
+        <div class="line-title d-flex flex-wrap justify-content-between align-items-center">
+            <h2 class="h6 mb-0">@Resource.OrderDetails</h2>
+            <a class="font-size-sm crizal-cart-continue" href="@Url.Action("checkoutbillingdetails")">
+                <i class="fas fa-pen mr-1" aria-hidden="true"></i>@Resource.Edit
+            </a>
+        </div>
         @if (hasCustomerInfo)
         {
-            <div class="col-md-6">
-                <div class="card border-0 shadow-sm h-100">
-                    <div class="card-body">
-                        <h3 class="h6 font-weight-semibold mb-2"><i class="fas fa-user text-muted mr-2" aria-hidden="true"></i>@Resource.CustomerDetails</h3>
-                        <p class="mb-0 font-size-sm">
-                            @customer.FullName<br />
-                            @customer.Email<br />
-                            @customer.GsmNumber
-                        </p>
-                    </div>
-                </div>
-            </div>
+            <ul class="list-unstyled mb-3 font-size-sm">
+                <li class="mb-1"><span class="text-muted">@Resource.Client:&nbsp;</span><strong>@customer.FullName</strong></li>
+                <li class="mb-1"><span class="text-muted">@Resource.Email:&nbsp;</span>@customer.Email</li>
+                <li class="mb-1"><span class="text-muted">@Resource.PhoneNumber:&nbsp;</span>@customer.GsmNumber</li>
+            </ul>
         }
         @if (hasShippingAddress)
         {
-            <div class="col-md-6 @(hasCustomerInfo ? "" : "offset-md-6")">
-                <div class="card border-0 shadow-sm h-100">
-                    <div class="card-body">
-                        <h3 class="h6 font-weight-semibold mb-2"><i class="fas fa-map-marker-alt text-muted mr-2" aria-hidden="true"></i>@Resource.ShippingAddress</h3>
-                        <p class="mb-0 font-size-sm">
-                            @Model.ShippingAddress.Name<br />
-                            @Model.ShippingAddress.Description<br />
-                            @Model.ShippingAddress.City, @Model.ShippingAddress.Country @Model.ShippingAddress.ZipCode
-                        </p>
-                    </div>
-                </div>
-            </div>
+            <h3 class="h6 mb-2">@Resource.ShippingAddress</h3>
+            <p class="mb-0 font-size-sm">
+                @Model.ShippingAddress.Name<br />
+                @Model.ShippingAddress.Description
+                @if (!string.IsNullOrEmpty(Model.ShippingAddress.City))
+                {
+                    <br /><span>@Model.ShippingAddress.City, @Model.ShippingAddress.Country @Model.ShippingAddress.ZipCode</span>
+                }
+            </p>
         }
     </div>
 }
-<div class="row">
-    <!-- Main Content-->
-    <div class="col-xl-9 col-md-8">
-        <h2 class="h6 px-4 py-3 bg-secondary mb-4">@Resource.ReviewYourOrder</h2>
-        @if (products.IsNotEmpty())
-        {
-            for (int i = 0; i < products.Count; i++)
-            {
-                @CreateShoppingCartItem(products[i], i)
-            }
-        }
-    </div>
 
-    <!-- Sidebar / Order Summary -->
-    <div class="col-xl-3 col-md-4 pt-4 mt-3 pt-md-0 mt-md-0">
-        <div class="crizal-cart-total common-block">
-            <div class="line-title">
-                <h2 class="h6 mb-0">@Resource.OrderSummary</h2>
-            </div>
-
-            @if (Model.BasketMinTotalPriceForCargoInt > 0)
-            {
-                <div class="alert alert-success text-center px-2 py-2 mb-3 free-cargo-banner" role="alert">
-                    <i class="fas fa-truck mr-1" aria-hidden="true"></i>
-                    <strong>@Model.BasketMinTotalPriceForCargoInt.CurrencySign() @Resource.CargoFreeText</strong>
-                </div>
-            }
-
-            <table class="cart-sub-total table table-borderless mb-0">
-                <tbody>
-                    <tr>
-                        <th scope="row">@Resource.MyBasket</th>
-                        <td class="text-end" id="TotalPrice"><strong>@Model.TotalPrice.CurrencySign()</strong></td>
-                    </tr>
-                    @if (Model.Coupon != null)
-                    {
-                        <tr>
-                            <th scope="row">@Resource.CouponCode</th>
-                            <td class="text-end" id="CouponName">@Model.CouponName</td>
-                        </tr>
-                    }
-                    <tr id="CargoFreeTextInfo">
-                        @if (Model.BasketMinTotalPriceForCargoInt > 0)
-                        {
-                            if (Model.TotalPrice > Model.BasketMinTotalPriceForCargoInt)
-                            {
-                                <td colspan="2" class="p-0 pt-2">
-                                    <div class="alert alert-success text-center px-2 py-2 mb-0 free-cargo-banner" role="alert">
-                                        <i class="fas fa-check-circle mr-1" aria-hidden="true"></i>
-                                        <strong>@Resource.CargoFreeTextInfo</strong>
-                                    </div>
-                                </td>
-                            }
-                            else
-                            {
-                                <th scope="row">@Resource.CargoPrice</th>
-                                <td class="text-end">@Model.CargoPriceValue.CurrencySign()</td>
-                            }
-                        }
-                        else if (Model.CargoPriceValue > 0)
-                        {
-                            <th scope="row">@Resource.CargoPrice</th>
-                            <td class="text-end">@Model.CargoPriceValue.CurrencySign()</td>
-                        }
-                        else
-                        {
-                            <td colspan="2" class="p-0 pt-2">
-                                <div class="alert alert-success text-center px-2 py-2 mb-0 free-cargo-banner" role="alert">
-                                    <i class="fas fa-check-circle mr-1" aria-hidden="true"></i>
-                                    <strong>@Resource.CargoFreeTextInfo</strong>
-                                </div>
-                            </td>
-                        }
-                    </tr>
-                    <tr class="crizal-cart-total__grand">
-                        <th scope="row"><span class="h5 font-weight-semibold">@Resource.Total</span></th>
-                        <td class="text-end"><span class="h5 font-weight-semibold text-primary" id="TotalPriceWithCargoPrice">@Model.TotalPriceWithCargoPrice.CurrencySign()</span></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-<!-- Customer Information -->
-
-@helper CreateShoppingCartItem(ShoppingCartItem item, int i)
+@helper CreateCheckoutCartItem(ShoppingCartItem item, int i)
 {
     var product = item.Product;
     var totalPricePerItem = product.Price * item.Quantity;
-
-    <div class="d-sm-flex justify-content-between my-4 pb-4 border-bottom">
-        <input type="hidden" name=@String.Format("productId[{0}]", i) value="@product.Id" />
-        <input type="hidden" data-shopping-item-price="@item.ShoppingCartItemId" value="@product.Price" />
-
-        <div class="media d-block d-sm-flex text-center text-sm-start">
-            @if (!String.IsNullOrEmpty(product.CroppedImageUrl))
-            {
-                <a class="cart-item-thumb mx-auto mr-sm-4 flex-shrink-0" href="@product.DetailPageUrl">
-                    <img src="@product.CroppedImageUrl" alt="@product.Name" width="80" height="80" loading="lazy" decoding="async" />
-                </a>
-            }
-
-            <div class="media-body pt-3 text-sm-start">
-                <h3 class="h5 font-weight-semibold border-0 pb-1 mb-1">
-                    <a href="@product.DetailPageUrl">@product.Name</a>
-                </h3>
-                <div class="font-size-sm mb-1"><span class="text-muted mr-2">@Resource.UnitPrice:</span><strong>@product.Price.CurrencySign()</strong></div>
-                <div class="font-size-sm mb-1"><span class="text-muted mr-2">@Resource.ProductCategory:</span>@product.CategoryName</div>
-                <div class="font-size-sm mb-1"><span class="text-muted mr-2">@Resource.ProductCode:</span>@product.ProductCode</div>
+    var imageUrl = !string.IsNullOrEmpty(product.CroppedImageUrl) ? product.CroppedImageUrl : AppConfig.GetDefaultImage(200, 0);
+    <div class="crizal-cart-item is-readonly">
+        <a class="crizal-cart-item__thumb" href="@product.DetailPageUrl">
+            <img src="@imageUrl" alt="@product.Name" width="88" height="88" loading="lazy" decoding="async" />
+        </a>
+        <div class="crizal-cart-item__info">
+            <h3 class="crizal-cart-item__name">
+                <a href="@product.DetailPageUrl">@product.Name</a>
+            </h3>
+            <div class="crizal-cart-item__meta">
+                <span>@Resource.UnitPrice: <strong>@product.Price.CurrencySign()</strong></span>
                 @if (!string.IsNullOrEmpty(product.BrandName))
                 {
-                    <div class="font-size-sm mb-1"><span class="text-muted mr-2">@Resource.ProductBrand:</span>@product.BrandName</div>
+                    <span>@product.BrandName</span>
                 }
-
                 @if (product.ProductSpecItems.IsNotEmpty())
                 {
                     foreach (var productSpecs in product.ProductSpecItems)
                     {
-                        <div class="font-size-sm mb-1">
-                            <span class="text-muted mr-2">@productSpecs.SpecsName:</span>@productSpecs.SpecsValue
-                        </div>
+                        <span>@productSpecs.SpecsName: @productSpecs.SpecsValue</span>
                     }
                 }
             </div>
         </div>
-
-        <div class="pt-2 pl-sm-3 mx-auto mx-sm-0 text-center text-sm-start cart-item-totals" style="max-width: 10rem;">
-            <div class="font-size-sm mb-3">
-                <span class="text-muted mr-2">@Resource.Quantity:</span>
-                <span class="font-weight-semibold">@item.Quantity</span>
-            </div>
-            <div class="font-size-sm mb-3">
-                <span class="text-muted mr-2">@Resource.Total:</span>
-                <span class="font-weight-semibold">@item.TotalPrice.CurrencySign()</span>
-            </div>
+        <div class="crizal-cart-item__qty">
+            <span class="crizal-cart-item__qty-label">@Resource.Quantity</span>
+            <span class="crizal-cart-item__qty-value">@item.Quantity</span>
+        </div>
+        <div class="crizal-cart-item__total">
+            <span class="crizal-cart-item__total-label">@Resource.Total</span>
+            <strong class="crizal-cart-item__total-price">@totalPricePerItem.CurrencySign()</strong>
         </div>
     </div>
 }

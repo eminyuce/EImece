@@ -169,88 +169,115 @@ function removeCart(shoppingItemId) {
         GetShoppingCartLinks();
     });
 }
+function showCartFeedback(message, type) {
+    var $box = $("#cart-feedback");
+    if (!$box.length || !message) {
+        return;
+    }
+    $box.removeClass("d-none alert-success alert-danger alert-warning")
+        .addClass(type === "error" ? "alert-danger" : "alert-success")
+        .text(message)
+        .show();
+}
+
+function clampCartQuantity($input) {
+    var min = parseInt($input.attr("min"), 10);
+    var max = parseInt($input.attr("max"), 10);
+    var val = parseInt($input.val(), 10);
+    if (isNaN(min)) min = 1;
+    if (isNaN(max)) max = 999;
+    if (isNaN(val) || val < min) val = min;
+    if (val > max) val = max;
+    $input.val(val);
+    return val;
+}
+
 function bindOnRemove() {
     $(document).off("click.eimeceRemoveCart", "[data-shopping-item-remove]").on("click.eimeceRemoveCart", "[data-shopping-item-remove]", function (e) {
         e.preventDefault();
-        var shoppingItemId = $(e.currentTarget).closest("[data-shopping-item-remove]").attr("data-shopping-item-remove");
+        var $btn = $(e.currentTarget).closest("[data-shopping-item-remove]");
+        var shoppingItemId = $btn.attr("data-shopping-item-remove");
         if (!shoppingItemId) {
             return;
         }
+        if ($btn.closest("[data-shopping-item-row]").length && !$btn.hasClass("is-confirming")) {
+            $btn.addClass("is-confirming");
+            var $label = $btn.find("span").last();
+            var originalLabel = $label.length ? $label.text() : $btn.text();
+            if ($label.length) {
+                $label.text($btn.attr("data-confirm-label") || originalLabel);
+            }
+            window.setTimeout(function () {
+                $btn.removeClass("is-confirming");
+                if ($label.length) {
+                    $label.text(originalLabel);
+                }
+            }, 4000);
+            return;
+        }
         var postData = JSON.stringify({ shoppingItemId: shoppingItemId });
-        console.log(postData);
         ajaxMethodCall(postData, "/Payment/RemoveCart", function (data) {
             $('[data-shopping-item-row=' + shoppingItemId + ']').remove();
             $('[data-shopping-home-page-item=' + shoppingItemId + ']').remove();
-            bindCalcuateTotalPrice();
             GetShoppingCartLinks();
+            if (data && data.TotalItemCount === 0 && $("[data-shopping-item-row]").length === 0) {
+                window.location.reload();
+                return;
+            }
+            bindCalcuateTotalPrice();
         });
     });
 }
 bindOnRemove();
-console.log("jquery is working");
-$('[data-shopping-quantity-id]').each(function () {
-    $(this).off("blur");
-    $(this).on("blur", function (e) {
-        var caller = e.target;
-        var shoppingItemId = $(caller).attr('data-shopping-quantity-id');
-        var quantity = caller.value;
-        $('[data-shopping-quantity-id=' + shoppingItemId + ']').val(quantity);
-    });
-});
+
 function triggerUpdateQuantityMultiplePrice(e, shoppingItemId) {
-    var itemPrice = $('[data-shopping-item-price=' + shoppingItemId + ']').val();
-    var quantity = $('[data-shopping-quantity-id=' + shoppingItemId + ']').val();
-    if (quantity == 0) return;
+    var $input = $('[data-shopping-quantity-id=' + shoppingItemId + ']');
+    var quantity = clampCartQuantity($input);
+    if (!quantity) return;
     var postData = JSON.stringify({ shoppingItemId: shoppingItemId, quantity: quantity });
-    console.log(postData);
     ajaxMethodCall(postData, "/Payment/UpdateQuantity", function (data) {
-        //  var totalPrice = parseFloat(itemPrice) * quantity;
-        //  console.log(totalPrice);
-        renderShoppingCartPrice(function (data) {
-            $('[data-shopping-item-total-price=' + shoppingItemId + ']').html(data.TotalPrice);
-        });
+        if (data && data.LineTotal) {
+            $('[data-shopping-item-total-price=' + shoppingItemId + ']').html(data.LineTotal);
+        }
         bindCalcuateTotalPrice();
     });
 }
-$('[data-shopping-button-price]').each(function () {
-    $(this).off("click");
-    $(this).on("click", function (e) {
-        var caller = e.target;
-        var shoppingItemId = $(caller).attr('data-shopping-button-price');
-        var quantity = parseInt($('[data-shopping-quantity-id=' + shoppingItemId + ']').val(), 10);
-        if (isNaN(quantity)) return;
-        if (quantity == 0) return;
+
+$(document).off("click.eimeceQtyBtn", "[data-cart-qty-minus], [data-cart-qty-plus]")
+    .on("click.eimeceQtyBtn", "[data-cart-qty-minus], [data-cart-qty-plus]", function (e) {
+        e.preventDefault();
+        var $btn = $(e.currentTarget);
+        var shoppingItemId = $btn.attr("data-cart-qty-minus") || $btn.attr("data-cart-qty-plus");
+        var $input = $('[data-shopping-quantity-id=' + shoppingItemId + ']');
+        if (!$input.length) return;
+        var val = clampCartQuantity($input);
+        if ($btn.is("[data-cart-qty-minus]")) {
+            val = Math.max(parseInt($input.attr("min"), 10) || 1, val - 1);
+        } else {
+            val = Math.min(parseInt($input.attr("max"), 10) || 999, val + 1);
+        }
+        $input.val(val);
         triggerUpdateQuantityMultiplePrice(e, shoppingItemId);
     });
-});
 
-$('[data-shopping-quantity-id]').each(function () {
-    let previousValue = parseInt($(this).val(), 10);
-
-    $(this).off('input').on('input', function (e) {
-        const $input = $(this);
-        const currentValue = parseInt($input.val(), 10);
-
-        if (isNaN(currentValue)) return;
-
-        if (currentValue == 0) return;
-
-        const shoppingItemId = $input.attr('data-shopping-quantity-id');
-        console.log(shoppingItemId);
-        if (currentValue > previousValue) {
-            console.log('Increased');
-            // custom increase logic
-            triggerUpdateQuantityMultiplePrice(e, shoppingItemId);
-        } else if (currentValue < previousValue) {
-            console.log('Decreased');
-            // custom decrease logic
-            triggerUpdateQuantityMultiplePrice(e, shoppingItemId);
-        }
-
-        previousValue = currentValue;
+$(document).off("click.eimeceUpdateQty", "[data-shopping-button-price]")
+    .on("click.eimeceUpdateQty", "[data-shopping-button-price]", function (e) {
+        e.preventDefault();
+        var shoppingItemId = $(e.currentTarget).closest("[data-shopping-button-price]").attr("data-shopping-button-price");
+        if (!shoppingItemId) return;
+        triggerUpdateQuantityMultiplePrice(e, shoppingItemId);
     });
-});
 
+var cartQtyTimers = {};
+$(document).off("change.eimeceQtyInput", "[data-shopping-quantity-id]")
+    .on("change.eimeceQtyInput", "[data-shopping-quantity-id]", function (e) {
+        var shoppingItemId = $(this).attr("data-shopping-quantity-id");
+        clampCartQuantity($(this));
+        window.clearTimeout(cartQtyTimers[shoppingItemId]);
+        cartQtyTimers[shoppingItemId] = window.setTimeout(function () {
+            triggerUpdateQuantityMultiplePrice(e, shoppingItemId);
+        }, 250);
+    });
 
 function renderShoppingCartPrice(success) {
     var postData = JSON.stringify({});
@@ -258,24 +285,75 @@ function renderShoppingCartPrice(success) {
 }
 
 function bindCalcuateTotalPrice() {
-    var grandTotalPrice = 0;
-    $('[data-shopping-item-row]').each(function () {
-        var shoppingItemId = $(this).attr('data-shopping-item-row');
-        var itemPrice = $('[data-shopping-item-price=' + shoppingItemId + ']').val();
-        var quantity = $('[data-shopping-quantity-id=' + shoppingItemId + ']').val();
-        var totalPrice = parseFloat(itemPrice) * quantity;
-        grandTotalPrice = grandTotalPrice + totalPrice;
-    });
-
     renderShoppingCartPrice(function (data) {
-        
+        if (!data) return;
         $('#CargoPrice').html(data.CargoPrice);
         $('#CargoFreeTextInfo').html(data.CargoPriceHtml);
         $('#TotalPrice').html(data.TotalPrice);
         $('#TotalPriceWithCargoPrice').html(data.TotalPriceWithCargoPrice);
-        $('#HomePageTotalPrice').html(data.price);
+        if (data.price) {
+            $('#HomePageTotalPrice').html(data.price);
+        }
     });
 }
+
+function saveOrderCommentsThenGo(hrefUrl) {
+    var txtArea = $("#orderComments");
+    if (!txtArea.length || !hrefUrl) {
+        if (hrefUrl) window.location.href = hrefUrl;
+        return;
+    }
+    var postData = JSON.stringify({
+        orderComments: txtArea.val(),
+        orderGuid: txtArea.attr("data-shopping-order-guid")
+    });
+    ajaxMethodCall(postData, "/Payment/sendOrderComments", function () {
+        window.location.href = hrefUrl;
+    });
+}
+
+$(document).off("click.eimeceCheckout", "#ProceedToCheckout, #ContinueShoppingWithoutAccount")
+    .on("click.eimeceCheckout", "#ProceedToCheckout, #ContinueShoppingWithoutAccount", function (e) {
+        var hrefUrl = $(this).attr("href");
+        if (!hrefUrl || $(this).data("busy")) {
+            e.preventDefault();
+            return;
+        }
+        e.preventDefault();
+        $(this).data("busy", true).addClass("disabled");
+        saveOrderCommentsThenGo(hrefUrl);
+    });
+
+$(document).off("click.eimecePdpQty", "[data-pdp-qty-minus], [data-pdp-qty-plus]")
+    .on("click.eimecePdpQty", "[data-pdp-qty-minus], [data-pdp-qty-plus]", function (e) {
+        e.preventDefault();
+        var $btn = $(e.currentTarget);
+        var inputId = $btn.attr("data-pdp-qty-minus") || $btn.attr("data-pdp-qty-plus");
+        var $input = $("#" + inputId);
+        if (!$input.length) return;
+        var val = clampCartQuantity($input);
+        if ($btn.is("[data-pdp-qty-minus]")) {
+            val = Math.max(parseInt($input.attr("min"), 10) || 1, val - 1);
+        } else {
+            val = Math.min(parseInt($input.attr("max"), 10) || 999, val + 1);
+        }
+        $input.val(val);
+    });
+
+$(document).off("submit.eimeceCheckoutOnce", "form.js-checkout-form")
+    .on("submit.eimeceCheckoutOnce", "form.js-checkout-form", function (e) {
+        var $form = $(this);
+        if ($form.data("submitted")) {
+            e.preventDefault();
+            return false;
+        }
+        $form.data("submitted", true);
+        var $btns = $form.find("[type=submit], .js-checkout-submit");
+        window.setTimeout(function () {
+            $btns.prop("disabled", true).addClass("disabled");
+        }, 0);
+        return true;
+    });
 
 jQuery(function () {
     $("#btn-search").click(function () {

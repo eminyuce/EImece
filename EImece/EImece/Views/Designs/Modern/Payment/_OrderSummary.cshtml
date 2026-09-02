@@ -64,16 +64,16 @@
             </div>
             <button class="btn btn-outline-primary w-100" type="submit">@Resource.ApplyCoupon</button>
         }
+        <a class="btn btn-primary w-100" id="ContinueShoppingWithoutAccount" href="@Url.Action("ShoppingWithoutAccount", "Payment")">
+            <i class="mr-2" data-feather="credit-card"></i>@Resource.GoToPayment
+        </a>
+        <a class="btn btn-outline-secondary w-100 mt-2" href="@Url.Action("CheckoutBillingDetails","Payment")" id="ProceedToCheckout">
+            <i class="mr-2" data-feather="user"></i>@Resource.ContinueWithMembership
+        </a>
         <hr>
-        <h3 class="h6 pt-4 font-weight-semibold"><span class="badge badge-success mr-2">@Resource.Note</span>@Resource.AdditionalComments</h3>
-        <textarea class="form-control mb-3"
+        <h3 class="h6 pt-2 font-weight-semibold"><span class="badge badge-success mr-2">@Resource.Note</span>@Resource.AdditionalComments</h3>
+        <textarea class="form-control mb-0"
                   data-shopping-order-guid="@Model.OrderGuid"
-                  id="orderComments" rows="5">@Model.OrderComments</textarea>
-        <a class="btn btn-primary w-100" href="@Url.Action("CheckoutBillingDetails","Payment")" id="ProceedToCheckout">
-            <i class="mr-2" data-feather="credit-card"></i>@Resource.ContinueWithMembership
-        </a>
-        <a class="btn btn-secondary w-100" id="ContinueShoppingWithoutAccount" href="@Url.Action("ShoppingWithoutAccount", "Payment")">
-            <i class="mr-2" data-feather="credit-card"></i>  @Resource.ContinueWithoutMembership   
-        </a>
+                  id="orderComments" rows="2">@Model.OrderComments</textarea>
     }
 </div>

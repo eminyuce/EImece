@@ -10,7 +10,7 @@
 @{
     ViewBag.Title = Resources.Resource.MyBasket;
     var products = Model.ShoppingCartItems;
-    string continueShoppingLink = String.IsNullOrEmpty(Model.UrlReferrer) ? Url.Action("category", "ProductCategories") : Model.UrlReferrer;
+    string continueShoppingLink = Url.Action("Index", "Home");
 
 }
 
@@ -48,20 +48,22 @@
             <div class="row">
 
                 <div class="col-xl-9 col-md-8">
+                    <div id="cart-feedback" class="alert d-none" role="status" aria-live="polite"></div>
                     @if (products.IsNotEmpty())
                     {
-                        <h2 class="h6 d-flex flex-wrap justify-content-between align-items-center px-4 py-3 bg-secondary">
-                            <span>@Resource.Products</span>
-                            <a class="font-size-sm" href="@continueShoppingLink">
-                                <i data-feather="chevron-left" style="width: 1rem; height: 1rem;"></i>@Resource.ContinueShopping
-                            </a>
+                        <div class="crizal-cart-items mb-4">
+                            <h2 class="h6 d-flex flex-wrap justify-content-between align-items-center px-4 py-3 bg-secondary mb-0">
+                                <span>@Resource.Products</span>
+                                <a class="font-size-sm" href="@continueShoppingLink">
+                                    <i data-feather="chevron-left" style="width: 1rem; height: 1rem;"></i>@Resource.ContinueShopping
+                                </a>
+                            </h2>
 
-                        </h2>
-
-                        for (int i = 0; i < products.Count; i++)
-                        {
-                            @CreateShoppingCartItem(products[i], i)
-                        }
+                            @for (int i = 0; i < products.Count; i++)
+                            {
+                                @CreateShoppingCartItem(products[i], i)
+                            }
+                        </div>
                     }
                     else
                     {
@@ -91,92 +93,49 @@
 {
     var product = item.Product;
     var totalPricePerItem = product.Price * item.Quantity;
-    <!-- Item-->
-<div data-shopping-item-row="@item.ShoppingCartItemId" class="d-sm-flex justify-content-between my-4 pb-4 border-bottom">
+    var imageUrl = !string.IsNullOrEmpty(product.CroppedImageUrl) ? product.CroppedImageUrl : AppConfig.GetDefaultImage(200, 0);
+<div data-shopping-item-row="@item.ShoppingCartItemId" class="crizal-cart-item">
     <input type="hidden" name=@String.Format("productId[{0}]", i) value="@product.Id">
     <input type="hidden" data-shopping-item-price="@item.ShoppingCartItemId" value="@product.Price" />
-    <div class="media d-block d-sm-flex text-center text-sm-start">
-        @if (!String.IsNullOrEmpty(product.CroppedImageUrl))
-            {
-        <a class="cart-item-thumb mx-auto mr-sm-4" href="@product.DetailPageUrl">
-            <img class="rsImg" src="@product.CroppedImageUrl" alt="@product.Name" width="80" height="80" loading="lazy" decoding="async" />
-        </a>
-            }
-            else
-            {
-        <a class="cart-item-thumb mx-auto mr-sm-4" href="@product.DetailPageUrl">
-            <img class="rsImg" src="@AppConfig.GetDefaultImage(200, 0)" alt="@product.Name" width="80" height="80" loading="lazy" decoding="async" />
-        </a>
-            }
-
-    <div class="media-body pt-3 text-sm-start">
-        <h3 class="h5 font-weight-semibold border-0 pb-1 mb-1">
+    <a class="crizal-cart-item__thumb" href="@product.DetailPageUrl">
+        <img src="@imageUrl" alt="@product.Name" width="88" height="88" loading="lazy" decoding="async" />
+    </a>
+    <div class="crizal-cart-item__info">
+        <h3 class="crizal-cart-item__name">
             <a href="@product.DetailPageUrl">@product.Name</a>
         </h3>
-        <span class="font-size-lg text-primary pt-2" data-shopping-item-total-price="@item.ShoppingCartItemId"> @totalPricePerItem.CurrencySign()</span>
-        <div class="font-size-sm"><span class="text-muted mr-2">@Resource.Price :</span>@product.Price.CurrencySign()</div>
-        <div class="font-size-sm"><span class="text-muted mr-2">@Resource.ProductCategory :</span>@product.CategoryName</div>
-        <div class="font-size-sm"><span class="text-muted mr-2">@Resource.ProductCode:</span>@product.ProductCode</div>
-        @if (!string.IsNullOrEmpty(product.BrandName))
-        {
-            <div class="font-size-sm"><span class="text-muted mr-2">@Resource.ProductBrand:</span>@product.BrandName</div>
-        }
-
-
-        @if (product.ProductSpecItems.IsNotEmpty())
-        {
-            foreach (var productSpecs in product.ProductSpecItems)
+        <div class="crizal-cart-item__meta">
+            <span>@Resource.UnitPrice: <strong>@product.Price.CurrencySign()</strong></span>
+            @if (!string.IsNullOrEmpty(product.BrandName))
             {
-                <div class="font-size-sm"><span class="text-muted mr-2">@productSpecs.SpecsName :</span>@productSpecs.SpecsValue </div>
+                <span>@product.BrandName</span>
             }
-        }
-    </div>
-    </div>
-    <div class="pt-2 pt-sm-0 pl-sm-3 mx-auto mx-sm-0 text-center text-sm-start" style="max-width: 10rem;">
-
-        <div class="form-group mb-2 text-sm-start">
-            <label for="quantity2">@Resource.Quantity</label>
-            <input min="1" class="form-control form-control-sm" name=@String.Format("quantity[{0}]", i)
-                   data-shopping-quantity-id="@item.ShoppingCartItemId"
-                   type="number" id="quantity2" value="@item.Quantity">
+            @if (product.ProductSpecItems.IsNotEmpty())
+            {
+                foreach (var productSpecs in product.ProductSpecItems)
+                {
+                    <span>@productSpecs.SpecsName: @productSpecs.SpecsValue</span>
+                }
+            }
         </div>
-        <button data-shopping-button-price="@item.ShoppingCartItemId" class="btn btn-outline-secondary btn-sm btn-block mb-2" type="button"><i class="mr-1" data-feather="refresh-cw"></i>@Resource.Update</button>
-        <button data-shopping-item-remove="@item.ShoppingCartItemId" class="btn btn-outline-danger btn-sm btn-block mb-2" type="button"><i class="mr-1" data-feather="trash-2"></i>@Resource.Remove</button>
+    </div>
+    <div class="crizal-cart-item__qty">
+        <label class="crizal-cart-item__qty-label" for="quantity-@item.ShoppingCartItemId">@Resource.Quantity</label>
+        <div class="cart-qty" role="group" aria-label="@Resource.Quantity">
+            <button type="button" class="cart-qty__btn" data-cart-qty-minus="@item.ShoppingCartItemId" aria-label="-">−</button>
+            <input min="1" max="999" class="cart-qty__input" name=@String.Format("quantity[{0}]", i)
+                   data-shopping-quantity-id="@item.ShoppingCartItemId"
+                   type="number" inputmode="numeric" id="quantity-@item.ShoppingCartItemId" value="@item.Quantity">
+            <button type="button" class="cart-qty__btn" data-cart-qty-plus="@item.ShoppingCartItemId" aria-label="+">+</button>
+        </div>
+    </div>
+    <div class="crizal-cart-item__total">
+        <span class="crizal-cart-item__total-label">@Resource.Total</span>
+        <strong class="crizal-cart-item__total-price" data-shopping-item-total-price="@item.ShoppingCartItemId">@totalPricePerItem.CurrencySign()</strong>
+        <button type="button" class="crizal-cart-item__remove" data-shopping-item-remove="@item.ShoppingCartItemId" data-confirm-label="@Resource.Remove">
+            <i class="fas fa-trash-alt" aria-hidden="true"></i>
+            <span>@Resource.Remove</span>
+        </button>
     </div>
 </div>
-}
-@section Scripts{
-
-    <script>
-
-        $(document).ready(function () {
-
-            $('input[data-shopping-quantity-id]').each(function () {
-                $(this).off("change");
-                $(this).on("change", function (e) {
-                    e.preventDefault();
-                    var caller = e.target;
-                    var min = parseInt($(caller).attr('min'));
-                    if ($(this).val() < min) {
-                        $(this).val(min);
-                    }
-                });
-            });
-
-            $('#ProceedToCheckout').click(function (event) {
-                event.preventDefault();
-                var txtArea = $("#orderComments");
-                var postData = JSON.stringify({
-                    orderComments: txtArea.val(),
-                    orderGuid: txtArea.attr("data-shopping-order-guid")
-                });
-                console.log(postData);
-                var hrefUrl = $(this).attr('href');
-                ajaxMethodCall(postData, "/Payment/sendOrderComments", function (data) {
-                    window.location.href = hrefUrl;
-                });
-            });
-
-        });
-    </script>
 }

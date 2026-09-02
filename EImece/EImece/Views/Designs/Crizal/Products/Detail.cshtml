@@ -449,7 +449,11 @@
                     <div class="d-flex align-items-end pt-2">
                         <div class="form-group mb-0 mr-3 flex-shrink-0">
                             <label class="d-block mb-1" for="quantity">@Resource.Quantity</label>
-                            <input class="px-2 form-control" min="1" id="quantity" type="number" name="quantity" style="width: 5.5rem;" value="1" required aria-label="@Resource.Quantity">
+                            <div class="cart-qty" role="group" aria-label="@Resource.Quantity">
+                                <button type="button" class="cart-qty__btn" data-pdp-qty-minus="quantity" aria-label="-">−</button>
+                                <input class="cart-qty__input" min="1" max="999" id="quantity" type="number" name="quantity" value="1" required aria-label="@Resource.Quantity">
+                                <button type="button" class="cart-qty__btn" data-pdp-qty-plus="quantity" aria-label="+">+</button>
+                            </div>
                         </div>
                         <button id="AddToCart" class="butn-style8 btn-block" type="button" data-bs-toggle="toast" data-bs-target="#cart-toast">
                             <span>@Resource.AddToCart</span>

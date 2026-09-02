@@ -5,126 +5,130 @@
 @using EImece.Domain.Helpers.Extensions;
 @using Resources;
 @using EImece.Domain.Models.FrontModels;
-@model OrderDto
+@model EImece.Domain.Models.DTOs.Storefront.StorefrontOrderConfirmationDto
 @{
     ViewBag.Title = Resources.Resource.ThanksForYourOrder;
     var item = Model;
     string urlActionLink = Url.Action("index", "home");
-
+    string ordersLink = Url.Action("CustomerOrders", "Home", new { area = "Customers" });
+    var customer = item.Customer;
+    var shipping = item.ShippingAddress;
+    var orderStatusText = EnumHelper.GetEnumDescription((EImeceOrderStatus)item.OrderStatus);
 }
 
-<!-- Page Content -->
+<section class="page-title-wrapper" aria-label="Page title">
+    <div class="container">
+        <nav class="crizal-breadcrumb" aria-label="breadcrumb">
+            <ol class="crizal-breadcrumb__list breadcrumb">
+                @Html.Partial("~/Views/Designs/Crizal/Shared/_CrizalBreadcrumbHomeItem.cshtml")
+                <li class="crizal-breadcrumb__item breadcrumb-item active" aria-current="page">
+                    <span class="crizal-breadcrumb__current">@Resource.ThankYouForYourOrder</span>
+                </li>
+            </ol>
+        </nav>
+        <h1 class="page-title">@Resource.ThankYouForYourOrder</h1>
+    </div>
+</section>
+
 <div class="container pb-5 mb-sm-4">
-    <div class="pt-5">
-        <div class="card py-3 mt-sm-3">
-            <!-- Success Message -->
-            @Html.Raw(string.Format(Resource.PaymentResultSuccessHtml, HttpUtility.HtmlEncode(item.OrderNumber), HttpUtility.HtmlAttributeEncode(urlActionLink)))
-            <hr />
-            <!-- Order Summary -->
-            <div class="card-body">
-                <h2 class="h4">@Resource.OrderSummary</h2>
-                <ul class="list-unstyled">
-                    <li>
-                        <strong>@Resource.OrderNumber:</strong>
-                        <a href="@Url.Action("CargoTracking", "Payment", new { id = item.OrderNumber })">@item.OrderNumber</a>
-                    </li>
-                    <li><strong>@Resource.OrderDate:</strong> @item.CreatedDate.ToString("dd MMMM yyyy, HH:mm")</li>
-                    <li><strong>@Resource.OrderStatus:</strong> @item.OrderStatus.ToString()</li>
-                    <li><strong>@Resource.EstimatedDelivery:</strong> @item.CreatedDate.AddDays(3).ToString("dd MMMM yyyy, HH:mm")-@item.CreatedDate.AddDays(14).ToString("dd MMMM yyyy, HH:mm")</li>
-                </ul>
+    @Html.Partial("_PaymentSteps", "ThankYouForYourOrder", new ViewDataDictionary(ViewData){
+       {"AnyProducts", false}
+    })
 
-                <!-- Customer Information -->
-                <h3 class="h5 mt-4">@Resource.CustomerDetails</h3>
-                <p>
-                    @item.Customer.FullName<br />
-                    @item.Customer.Email<br />
-                    @item.Customer.GsmNumber
-                </p>
+    <div class="common-block crizal-order-result text-center mb-4">
+        <div class="crizal-order-result__icon crizal-order-result__icon--success" aria-hidden="true">
+            <i class="fas fa-check"></i>
+        </div>
+        <h2 class="h4 mb-2">@Resource.ThankYouForYourOrder</h2>
+        <p class="mb-2">@string.Format(Resource.OrderSuccessfullyCompleted, item.OrderNumber)</p>
+        <p class="text-muted mb-0">Sipariş numaranızı not edin. Onay e-postası kısa süre içinde gönderilecektir.</p>
+        <p class="h5 mt-3 mb-0">
+            <span class="text-muted font-size-sm d-block">@Resource.OrderNumber</span>
+            <a href="@Url.Action("CargoTracking", "Payment", new { id = item.OrderNumber })">@item.OrderNumber</a>
+        </p>
+    </div>
 
-                <!-- Shipping and Billing Addresses -->
-                <div class="row">
-                    <div class="col-md-6">
-                        <h3 class="h5">@Resource.ShippingAddress</h3>
-                        <p>
-                            @item.ShippingAddress.Name<br />
-                            @item.ShippingAddress.Description<br />
-                            @item.ShippingAddress.City, @item.ShippingAddress.Country @item.ShippingAddress.ZipCode
-                        </p>
-                        @if (!string.IsNullOrEmpty(item.ShipmentCompanyName))
-                        {
-                            <p><strong>@Resource.ShipmentCompany:</strong> @item.ShipmentCompanyName</p>
-                            <p><strong>@Resource.TrackingNumber:</strong> @item.ShipmentTrackingNumber</p>
-                        }
-                    </div>
-                    @if (!item.BillingAddress.EqualsAddress(item.ShippingAddress))
-                    {
-                        <div class="col-md-6">
-                            <h3 class="h5">@Resource.BillingAddress</h3>
-                            <p>
-                                @item.BillingAddress.Name<br />
-                                @item.BillingAddress.Description<br />
-                                @item.BillingAddress.City, @item.BillingAddress.Country @item.BillingAddress.ZipCode
-                            </p>
-                        </div>
-                    }
-                    else
-                    {
-                        <div class="col-md-6">
-                            <h3 class="h5">@Resource.BillingAddress</h3>
-                            <p>
-                                @Resource.IsSameAsShippingAddress
-                            </p>
-                        </div>
-                    }
-
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="common-block mb-4">
+                <div class="line-title">
+                    <h2 class="h6 mb-0">@Resource.OrderSummary</h2>
                 </div>
+                <ul class="list-unstyled mb-0 font-size-sm">
+                    <li class="mb-1"><strong>@Resource.OrderDate:</strong> @item.CreatedDate.ToString("dd MMMM yyyy, HH:mm")</li>
+                    <li class="mb-1"><strong>@Resource.OrderStatus:</strong> @orderStatusText</li>
+                    <li class="mb-0"><strong>@Resource.EstimatedDelivery:</strong> @item.CreatedDate.AddDays(3).ToString("dd MMMM yyyy") – @item.CreatedDate.AddDays(14).ToString("dd MMMM yyyy")</li>
+                </ul>
+            </div>
 
-                <!-- Order Items -->
-                <h3 class="h5 mt-4">@Resource.OrderItems</h3>
-                <table class="table table-bordered table-sm table-striped">
-                    <thead>
-                        <tr class="text-info">
-                            <th>@Resource.ProductName</th>
-                            <th>@Resource.Quantity</th>
-                            <th>@Resource.UnitPrice</th>
-                            <th>@Resource.TotalPrice</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var product in item.OrderProducts)
-                        {
+            <div class="common-block mb-4">
+                <div class="line-title">
+                    <h2 class="h6 mb-0">@Resource.OrderItems</h2>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-sm table-borderless mb-0">
+                        <thead>
                             <tr>
-                                <td>@product.ProductName</td>
-                                <td>@product.Quantity</td>
-                                <td>@product.ProductSalePrice.CurrencySign()</td>
-                                <td>@product.TotalPrice.CurrencySign()</td>
+                                <th>@Resource.ProductName</th>
+                                <th class="text-center">@Resource.Quantity</th>
+                                <th class="text-end">@Resource.UnitPrice</th>
+                                <th class="text-end">@Resource.TotalPrice</th>
                             </tr>
-                        }
-                    <tr>
-                        <td></td>
-                        <td><strong>@Resource.TotalPaid:</strong></td>
-                        <td>
-                            <strong>
-                                @if (!string.IsNullOrEmpty(item.Installment) && !item.Installment.Equals("1"))
-                                {
-                                    @item.InstallmentDescription
-                                }
-                                else
-                                {
-                                    @Resource.NoInstallment
-                                }
-                            </strong>
-
-
-                        </td>
-                        <td><strong>@item.PaidPriceDecimal.CurrencySign()</strong></td>
-                    </tr>
-                    </tbody>
-                </table>
-
-                <!-- Payment Summary -->
-                <h3 class="h5 mt-4">@Resource.PaymentDetails</h3>
-                <ul class="list-unstyled">
+                        </thead>
+                        <tbody>
+                            @foreach (var product in item.OrderProducts)
+                            {
+                                <tr>
+                                    <td>@product.ProductName</td>
+                                    <td class="text-center">@product.Quantity</td>
+                                    <td class="text-end">@product.ProductSalePrice.CurrencySign()</td>
+                                    <td class="text-end">@product.TotalPrice.CurrencySign()</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="common-block mb-4">
+                <div class="line-title">
+                    <h2 class="h6 mb-0">@Resource.CustomerDetails</h2>
+                </div>
+                @if (customer != null)
+                {
+                    <p class="font-size-sm mb-0">
+                        @customer.FullName<br />
+                        @customer.Email<br />
+                        @customer.GsmNumber
+                    </p>
+                }
+            </div>
+            <div class="common-block mb-4">
+                <div class="line-title">
+                    <h2 class="h6 mb-0">@Resource.ShippingAddress</h2>
+                </div>
+                @if (shipping != null)
+                {
+                    <p class="font-size-sm mb-0">
+                        @shipping.Name<br />
+                        @shipping.Description<br />
+                        @shipping.City, @shipping.Country @shipping.ZipCode
+                    </p>
+                }
+                @if (!string.IsNullOrEmpty(item.ShipmentCompanyName))
+                {
+                    <p class="font-size-sm mt-2 mb-0">
+                        <strong>@Resource.ShipmentCompany:</strong> @item.ShipmentCompanyName<br />
+                        <strong>@Resource.TrackingNumber:</strong> @item.ShipmentTrackingNumber
+                    </p>
+                }
+            </div>
+            <div class="common-block mb-4">
+                <div class="line-title">
+                    <h2 class="h6 mb-0">@Resource.PaymentDetails</h2>
+                </div>
+                <ul class="list-unstyled mb-3 font-size-sm">
                     @if (item.CargoPrice > 0)
                     {
                         <li><strong>@Resource.ShippingCost:</strong> @item.CargoPrice.CurrencySign()</li>
@@ -133,22 +137,26 @@
                     {
                         <li><strong>@Resource.CouponDiscount (@item.Coupon):</strong> -@item.CouponDiscount.ToDecimal().CurrencySign()</li>
                     }
-                    @if (string.IsNullOrEmpty(item.Installment) || item.Installment.Equals("1"))
-                    {
-                        <li><strong>@Resource.YourCartTotalAmount:</strong> @item.PaidPriceDecimal.CurrencySign()</li>
-                    }
-                    else
-                    {
-                        <li><strong>@Resource.InstallmentCount:</strong> @item.Installment</li>
-                        <li><strong>@Resource.YourCartTotalAmount:</strong> @item.Price.ToDecimal().CurrencySign()</li>
-                        <li><strong>@Resource.YourPaymentAmountinInstallments:</strong> @item.PaidPriceDecimal.CurrencySign()</li>
-                    }
-                    <li><strong>@Resource.PaymentMethod:</strong>@item.CardFamily - @item.CardType (@item.CardAssociation) - @Resource.EndingIn @item.LastFourDigits</li>
+                    <li class="h5 mt-2 mb-0">
+                        <strong>@Resource.TotalPaid:</strong>
+                        <span class="text-primary">@item.PaidPriceDecimal.CurrencySign()</span>
+                    </li>
                 </ul>
-
-                <!-- Back to Home Button -->
-                <a href="@urlActionLink" class="btn btn-primary mt-3">@Resource.ContinueShopping</a>
+                @if (!string.IsNullOrEmpty(item.LastFourDigits))
+                {
+                    <p class="font-size-sm text-muted mb-0">
+                        @item.CardFamily @item.CardType — @Resource.EndingIn @item.LastFourDigits
+                    </p>
+                }
             </div>
         </div>
+    </div>
+
+    <div class="d-flex flex-wrap crizal-checkout-nav" style="gap: 0.75rem;">
+        <a href="@urlActionLink" class="butn-style8">@Resource.ContinueShopping</a>
+        @if (Request.IsAuthenticated)
+        {
+            <a href="@ordersLink" class="butn-style8 outline">@Resource.MyOrder</a>
+        }
     </div>
 </div>

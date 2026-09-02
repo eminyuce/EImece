@@ -10,7 +10,7 @@
 @{
     ViewBag.Title = Resources.Resource.CheckoutBillingDetails;
     var products = Model.ShoppingCartItems;
-    var customer = Model.Customer;
+    var customer = Model.Customer ?? new EImece.Domain.Models.DTOs.CustomerDto();
 }
 <!-- Page Title-->
 <div class="page-title-wrapper" role="region" aria-label="Page title">
@@ -40,26 +40,20 @@
 
     <div class="row pt-4 mt-2">
         <!-- Content-->
-        <div class="col-md-12">
-            <div class="alert alert-secondary">
-                <div class="text-center">
-                    <b class="text-dark">
-                        @Resource.CustomerBillingDetailsNotFilledOut
-                    </b>
-                </div>
-            </div>
-        </div>
         <div class="col-xl-9 col-md-8">
-            @using (Html.BeginForm("CheckoutBillingDetails", "Payment", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            @using (Html.BeginForm("CheckoutBillingDetails", "Payment", FormMethod.Post, new { enctype = "multipart/form-data", @class = "js-checkout-form" }))
             {
                 <div class="d-sm-flex justify-content-between bg-secondary px-4 py-3 mb-4">
                     <div class="media">
                         <div class="media-body align-self-center">
                             <h6 class="mb-1">@customer.FullName</h6>
                             <div class="font-size-sm"><span class="text-warning">@customer.Email</span></div>
-                            <div class="font-size-lg">
-                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                            </div>
+                            @if (!ViewData.ModelState.IsValid)
+                            {
+                                <div class="font-size-lg">
+                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                </div>
+                            }
                         </div>
                     </div>
                 </div>
@@ -68,20 +62,21 @@
                 @Html.HiddenFor(model => customer.CreatedDate)
                 @Html.HiddenFor(model => customer.UpdatedDate)
                 @Html.HiddenFor(model => customer.Email)
+                <input type="hidden" name="customer.IsSameAsShippingAddress" value="true" />
                 <div class="row">
                     @Html.AntiForgeryToken()
 
                     <div class="col-sm-6">
                         <div class="form-group">
-                            @Html.LabelFor(model => customer.Name)
-                            @Html.EditorFor(model => customer.Name, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.LabelFor(model => customer.Name) <span class="text-danger" aria-hidden="true">*</span>
+                            @Html.EditorFor(model => customer.Name, new { htmlAttributes = new { @class = "form-control", autocomplete = "given-name" } })
                             @Html.ValidationMessageFor(model => customer.Name, "", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            @Html.LabelFor(model => customer.Surname)
-                            @Html.EditorFor(model => customer.Surname, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.LabelFor(model => customer.Surname) <span class="text-danger" aria-hidden="true">*</span>
+                            @Html.EditorFor(model => customer.Surname, new { htmlAttributes = new { @class = "form-control", autocomplete = "family-name" } })
                             @Html.ValidationMessageFor(model => customer.Surname, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -89,16 +84,16 @@
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group">
-                            @Html.LabelFor(model => customer.IdentityNumber)
-                            @Html.EditorFor(model => customer.IdentityNumber, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.LabelFor(model => customer.IdentityNumber) <span class="text-danger" aria-hidden="true">*</span>
+                            @Html.EditorFor(model => customer.IdentityNumber, new { htmlAttributes = new { @class = "form-control", inputmode = "numeric", maxlength = "11" } })
                             <span class="badge badge-pill badge-info mr-2 mb-2">@Resource.WhyNeedIdentityNumber</span>
                             @Html.ValidationMessageFor(model => customer.IdentityNumber, "", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            @Html.LabelFor(model => customer.GsmNumber)
-                            @Html.EditorFor(model => customer.GsmNumber, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.LabelFor(model => customer.GsmNumber) <span class="text-danger" aria-hidden="true">*</span>
+                            @Html.EditorFor(model => customer.GsmNumber, new { htmlAttributes = new { @class = "form-control", type = "tel", autocomplete = "tel" } })
                             <span class="badge badge-pill badge-info mr-2 mb-2">@Resource.WhyNeedGsmNumber</span>
                             @Html.ValidationMessageFor(model => customer.GsmNumber, "", new { @class = "text-danger" })
                         </div>
@@ -109,7 +104,7 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <input type="hidden" id="SelectedCity" value="@customer.City" />
-                            @Html.LabelFor(model => customer.City)
+                            @Html.LabelFor(model => customer.City) <span class="text-danger" aria-hidden="true">*</span>
                             @Html.DropDownListFor(model => customer.City, new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"), new { @class = "form-control", id = "Cities" })
                             @Html.ValidationMessageFor(model => customer.City, "", new { @class = "text-danger" })
                         </div>
@@ -117,7 +112,7 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <input type="hidden" id="SelectedTown" value="@customer.Town" />
-                            @Html.LabelFor(model => customer.Town)
+                            @Html.LabelFor(model => customer.Town) <span class="text-danger" aria-hidden="true">*</span>
                             @Html.DropDownListFor(model => customer.Town, new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"), new { @class = "form-control", id = "Towns" })
                             @Html.ValidationMessageFor(model => customer.Town, "", new { @class = "text-danger" })
                         </div>
@@ -128,15 +123,15 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <input type="hidden" id="SelectedDistrict" value="@customer.District" />
-                            @Html.LabelFor(model => customer.District)
+                            @Html.LabelFor(model => customer.District) <span class="text-danger" aria-hidden="true">*</span>
                             @Html.DropDownListFor(model => customer.District, new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"), new { @class = "form-control", id = "Districts" })
                             @Html.ValidationMessageFor(model => customer.District, "", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            @Html.LabelFor(model => customer.Street)
-                            @Html.EditorFor(model => customer.Street, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.LabelFor(model => customer.Street) <span class="text-danger" aria-hidden="true">*</span>
+                            @Html.EditorFor(model => customer.Street, new { htmlAttributes = new { @class = "form-control", autocomplete = "street-address" } })
                             @Html.ValidationMessageFor(model => customer.Street, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -152,7 +147,7 @@
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            @Html.LabelFor(model => customer.Country)
+                            @Html.LabelFor(model => customer.Country) <span class="text-danger" aria-hidden="true">*</span>
                             @Html.DropDownListFor(model => customer.Country, EImece.Web.Helpers.WebGeneralHelper.GetStaticCountries(), new { @class = "form-control" })
                             @Html.ValidationMessageFor(model => customer.Country, "", new { @class = "text-danger" })
                         </div>
@@ -176,11 +171,7 @@
                         </div>
                     </div>
                 </div>
-                <h6 class="mb-3 pt-4 pb-3 border-bottom">@Resource.BillingAdress</h6>
-                <div class="custom-control custom-checkbox">
-                    <input class="custom-control-input" type="checkbox" checked="">
-                    @Html.LabelFor(model => customer.IsSameAsShippingAddress, new { @class = "custom-control-label" })
-                </div>
+                <p class="text-muted small mb-0">@Resource.IsSameAsShippingAddress</p>
                 <!-- Navigation-->
                 <div class="d-flex pt-4 mt-3">
                     <div class="w-50 pr-3">
@@ -190,11 +181,10 @@
                         </a>
                     </div>
                     <div class="w-50 pl-2">
-                        <input type="submit" id="ReviewYourOrder" style="display:none;" />
-                        <a class="btn btn-primary btn-block" onclick="javascript:document.getElementById('ReviewYourOrder').click()">
-                            <span class="d-none d-sm-inline">@Resource.OrderFinalReview</span>
-                            <span class="d-inline d-sm-none">@Resource.Next</span><i class="ml-1" data-feather="chevron-right"></i>
-                        </a>
+                        <button type="submit" id="ReviewYourOrder" class="btn btn-primary btn-block js-checkout-submit">
+                            @Resource.OrderFinalReview
+                            <i class="ml-1" data-feather="chevron-right"></i>
+                        </button>
                     </div>
                 </div>
             }

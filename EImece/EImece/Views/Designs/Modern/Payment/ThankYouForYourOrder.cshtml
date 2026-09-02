@@ -5,12 +5,13 @@
 @using EImece.Domain.Helpers.Extensions;
 @using Resources;
 @using EImece.Domain.Models.FrontModels;
-@model OrderDto
+@model EImece.Domain.Models.DTOs.Storefront.StorefrontOrderConfirmationDto
 @{
     ViewBag.Title = Resources.Resource.ThanksForYourOrder;
     var item = Model;
     string urlActionLink = Url.Action("index", "home");
-
+    string ordersLink = Url.Action("CustomerOrders", "Home", new { area = "Customers" });
+    var orderStatusText = EnumHelper.GetEnumDescription((EImeceOrderStatus)item.OrderStatus);
 }
 
 <!-- Page Content -->
@@ -29,7 +30,7 @@
                         <a href="@Url.Action("CargoTracking", "Payment", new { id = item.OrderNumber })">@item.OrderNumber</a>
                     </li>
                     <li><strong>@Resource.OrderDate:</strong> @item.CreatedDate.ToString("dd MMMM yyyy, HH:mm")</li>
-                    <li><strong>@Resource.OrderStatus:</strong> @item.OrderStatus.ToString()</li>
+                    <li><strong>@Resource.OrderStatus:</strong> @orderStatusText</li>
                     <li><strong>@Resource.EstimatedDelivery:</strong> @item.CreatedDate.AddDays(3).ToString("dd MMMM yyyy, HH:mm")-@item.CreatedDate.AddDays(14).ToString("dd MMMM yyyy, HH:mm")</li>
                 </ul>
 
@@ -146,8 +147,11 @@
                     <li><strong>@Resource.PaymentMethod:</strong>@item.CardFamily - @item.CardType (@item.CardAssociation) - @Resource.EndingIn @item.LastFourDigits</li>
                 </ul>
 
-                <!-- Back to Home Button -->
                 <a href="@urlActionLink" class="btn btn-primary mt-3">@Resource.ContinueShopping</a>
+                @if (Request.IsAuthenticated)
+                {
+                    <a href="@ordersLink" class="btn btn-outline-secondary mt-3 ml-2">@Resource.MyOrder</a>
+                }
             </div>
         </div>
     </div>

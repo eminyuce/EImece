@@ -9,8 +9,9 @@
 @{
     var pageName = (Model ?? string.Empty).Trim();
     bool anyProducts = ViewData["AnyProducts"].ToBool(false);
+    var isComplete = pageName.Equals("ThankYouForYourOrder", StringComparison.InvariantCultureIgnoreCase)
+                     || pageName.Equals("Complete", StringComparison.InvariantCultureIgnoreCase);
 
-    // Wizard order for completed-state styling
     var steps = new[]
     {
         "ShoppingCart",
@@ -19,17 +20,25 @@
         "PlaceOrder"
     };
     int current = 0;
-    for (int i = 0; i < steps.Length; i++)
+    if (isComplete)
     {
-        if (pageName.Equals(steps[i], StringComparison.InvariantCultureIgnoreCase))
+        current = steps.Length;
+    }
+    else
+    {
+        for (int i = 0; i < steps.Length; i++)
         {
-            current = i;
-            break;
+            if (pageName.Equals(steps[i], StringComparison.InvariantCultureIgnoreCase))
+            {
+                current = i;
+                break;
+            }
         }
     }
 
     Func<int, string> stepClass = (index) =>
     {
+        if (isComplete) return "step-done";
         if (index == current) return "step-active";
         if (index < current) return "step-done";
         return "";
@@ -47,7 +56,7 @@
             <span class="step-icon" aria-hidden="true"><i class="fas fa-shopping-cart"></i></span>
             <span class="step-label">1.@Resource.MyBasket</span>
         </a>
-        <a class="step @stepClass(1)" href="@Url.Action(anyProducts ? "checkoutbillingdetails" : "ShoppingCart")">
+        <a class="step @stepClass(1)" href="@Url.Action((anyProducts && !isComplete) ? "checkoutbillingdetails" : "ShoppingCart")">
             @if (current > 1)
             {
                 <span class="step-indicator" aria-hidden="true"><i class="fas fa-check"></i></span>
@@ -55,7 +64,7 @@
             <span class="step-icon" aria-hidden="true"><i class="fas fa-user"></i></span>
             <span class="step-label">2.@Resource.OrderDetails</span>
         </a>
-        <a class="step @stepClass(2)" href="@Url.Action(anyProducts ? "checkoutPaymentOrderReview" : "ShoppingCart")">
+        <a class="step @stepClass(2)" href="@Url.Action((anyProducts && !isComplete) ? "checkoutPaymentOrderReview" : "ShoppingCart")">
             @if (current > 2)
             {
                 <span class="step-indicator" aria-hidden="true"><i class="fas fa-check"></i></span>
@@ -63,9 +72,20 @@
             <span class="step-icon" aria-hidden="true"><i class="fas fa-check-circle"></i></span>
             <span class="step-label">3.@Resource.OrderFinalReview</span>
         </a>
-        <a class="step @stepClass(3)" href="@Url.Action(anyProducts ? "PlaceOrder" : "ShoppingCart")">
-            <span class="step-icon" aria-hidden="true"><i class="fas fa-credit-card"></i></span>
-            <span class="step-label">4.@Resource.Payment</span>
-        </a>
+        @if (isComplete)
+        {
+            <span class="step step-done">
+                <span class="step-indicator" aria-hidden="true"><i class="fas fa-check"></i></span>
+                <span class="step-icon" aria-hidden="true"><i class="fas fa-credit-card"></i></span>
+                <span class="step-label">4.@Resource.PlaceOrder</span>
+            </span>
+        }
+        else
+        {
+            <a class="step @stepClass(3)" href="@Url.Action(anyProducts ? "PlaceOrder" : "ShoppingCart")">
+                <span class="step-icon" aria-hidden="true"><i class="fas fa-credit-card"></i></span>
+                <span class="step-label">4.@Resource.Payment</span>
+            </a>
+        }
     </div>
 </div>

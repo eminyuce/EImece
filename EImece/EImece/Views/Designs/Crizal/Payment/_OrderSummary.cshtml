@@ -91,7 +91,22 @@
 
         @if (IsAdditionalComment && anyProducts)
         {
-            using (Html.BeginForm("ApplyCoupon", "Payment", FormMethod.Post, new { @class = "needs-validation mt-3", @novalidate = "" }))
+            if (Request.IsAuthenticated)
+            {
+                <a class="butn-style8 btn-block mb-3" id="ProceedToCheckout" href="@Url.Action("CheckoutBillingDetails","Payment")">
+                    <i class="fas fa-arrow-right mr-2" aria-hidden="true"></i>@Resource.ProceedToCheckout
+                </a>
+            }
+            else
+            {
+                <a class="butn-style8 btn-block mb-2" id="ProceedToCheckout" href="@Url.Action("CheckoutBillingDetails","Payment")">
+                    <i class="fas fa-user-check mr-2" aria-hidden="true"></i>@Resource.ContinueWithMembership
+                </a>
+                <a class="butn-style8 outline btn-block mb-3" id="ContinueShoppingWithoutAccount" href="@Url.Action("ShoppingWithoutAccount", "Payment")">
+                    <i class="fas fa-user mr-2" aria-hidden="true"></i>@Resource.ContinueShoppingWithoutAccount
+                </a>
+            }
+            using (Html.BeginForm("ApplyCoupon", "Payment", FormMethod.Post, new { @class = "needs-validation", @novalidate = "" }))
             {
                 @Html.AntiForgeryToken()
                 <div class="mb-2">
@@ -106,16 +121,10 @@
             <hr class="my-3">
             <h3 class="h6 font-weight-semibold mb-2"><span class="badge bg-success mr-2 align-middle">@Resource.Note</span>@Resource.AdditionalComments</h3>
             <label class="visually-hidden" for="orderComments">@Resource.AdditionalComments</label>
-            <textarea class="form-control mb-3"
+            <textarea class="form-control mb-0"
                       data-shopping-order-guid="@Model.OrderGuid"
-                      id="orderComments" rows="4"
+                      id="orderComments" rows="2"
                       placeholder="@Resource.AdditionalComments">@Model.OrderComments</textarea>
-            <a class="butn-style8 btn-block mb-2" href="@Url.Action("CheckoutBillingDetails","Payment")" id="ProceedToCheckout">
-                <i class="fas fa-user-check mr-2" aria-hidden="true"></i>@Resource.ContinueWithMembership
-            </a>
-            <a class="butn-style8 secondary btn-block" id="ContinueShoppingWithoutAccount" href="@Url.Action("ShoppingWithoutAccount", "Payment")">
-                <i class="fas fa-shopping-bag mr-2" aria-hidden="true"></i>@Resource.ContinueWithoutMembership
-            </a>
         }
     </div>
 </div>

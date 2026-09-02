@@ -40,7 +40,7 @@
 
                 <div class="col-xl-12 col-md-12">
                     <h6 class="mb-3 pt-2 pb-3 border-bottom">@Resource.ShippingAddress</h6>
-                    @using (Html.BeginForm("ShoppingWithoutAccount", "Payment", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    @using (Html.BeginForm("ShoppingWithoutAccount", "Payment", FormMethod.Post, new { enctype = "multipart/form-data", @class = "js-checkout-form" }))
                     {
                         @Html.AntiForgeryToken()
 

@@ -24,7 +24,7 @@
 
     <div class="row">
         <div class="col-xl-10 col-lg-11 col-md-12 mx-auto">
-            @using (Html.BeginForm("ShoppingWithoutAccount", "Payment", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            @using (Html.BeginForm("ShoppingWithoutAccount", "Payment", FormMethod.Post, new { enctype = "multipart/form-data", @class = "js-checkout-form" }))
             {
                 @Html.AntiForgeryToken()
 
@@ -97,7 +97,7 @@
                             <div class="form-group col-sm-6">
                                 <label class="font-weight-semibold" for="customer_City"><i class="fas fa-city text-muted mr-1" aria-hidden="true"></i> @Html.DisplayNameFor(model => customer.City)</label>
                                 <input type="hidden" id="SelectedCity" value="@customer.City" />
-                                @Html.DropDownListFor(model => customer.City, new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"), new { @class = "form-control", id = "customer_City" })
+                                @Html.DropDownListFor(model => customer.City, new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"), new { @class = "form-control", id = "Cities" })
                                 @Html.ValidationMessageFor(model => customer.City, "", new { @class = "text-danger small" })
                             </div>
                         </div>
@@ -105,13 +105,13 @@
                             <div class="form-group col-sm-4">
                                 <label class="font-weight-semibold" for="customer_Town"><i class="fas fa-map text-muted mr-1" aria-hidden="true"></i> @Html.DisplayNameFor(model => customer.Town)</label>
                                 <input type="hidden" id="SelectedTown" value="@customer.Town" />
-                                @Html.DropDownListFor(model => customer.Town, new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"), new { @class = "form-control", id = "customer_Town" })
+                                @Html.DropDownListFor(model => customer.Town, new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"), new { @class = "form-control", id = "Towns" })
                                 @Html.ValidationMessageFor(model => customer.Town, "", new { @class = "text-danger small" })
                             </div>
                             <div class="form-group col-sm-4">
                                 <label class="font-weight-semibold" for="customer_District"><i class="fas fa-map-marker text-muted mr-1" aria-hidden="true"></i> @Html.DisplayNameFor(model => customer.District)</label>
                                 <input type="hidden" id="SelectedDistrict" value="@customer.District" />
-                                @Html.DropDownListFor(model => customer.District, new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"), new { @class = "form-control", id = "customer_District" })
+                                @Html.DropDownListFor(model => customer.District, new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"), new { @class = "form-control", id = "Districts" })
                                 @Html.ValidationMessageFor(model => customer.District, "", new { @class = "text-danger small" })
                             </div>
                             <div class="form-group col-sm-4">
