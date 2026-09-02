@@ -2390,4 +2390,7 @@
   <data name="SuitableForSaleProductStates" xml:space="preserve">
     <value>Product States Suitable for Sale</value>
   </data>
+  <data name="IyzicoEmailNotValidMessage" xml:space="preserve">
+    <value>Please enter a valid email address. Suffixes such as .test are not accepted.</value>
+  </data>
 </root>

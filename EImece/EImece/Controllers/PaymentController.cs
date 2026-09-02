@@ -43,6 +43,7 @@ namespace EImece.Controllers
         private const string ShoppingCartAction = "shoppingcart";
         private const string LastCompletedOrderIdKey = "LastCompletedOrderId";
         private const string ThankYouForYourOrderAction = "ThankYouForYourOrder";
+        private const string IyzicoBuyerValidationKey = "IyzicoBuyerValidation";
 
         private readonly IMailTemplateService MailTemplateService;
         private readonly IEmailSender EmailSender;
@@ -407,6 +408,7 @@ namespace EImece.Controllers
                         Logger.LogDebug("Customer is empty. Populating from authenticated user.");
                         await GetCustomerIfAuthenticatedAsync(shoppingCart);
                     }
+                    ApplyPendingIyzicoBuyerValidation(shoppingCart.Customer);
                     Logger.LogDebug("Returning CheckoutBillingDetails view.");
                     return View(shoppingCart);
                 }
@@ -438,8 +440,9 @@ namespace EImece.Controllers
                 throw new NotSupportedException();
             }
             bool isValidCustomer = customer.isValidCustomer();
-            Logger.LogDebug($"Customer validation result: {isValidCustomer}");
-            if (isValidCustomer)
+            var iyzicoErrors = IyzicoBuyerValidator.Validate(customer);
+            Logger.LogDebug($"Customer validation result: {isValidCustomer}, Iyzico errors: {iyzicoErrors.Count}");
+            if (isValidCustomer && iyzicoErrors.Count == 0)
             {
                 ShoppingCartSession shoppingCart = await GetShoppingCartAsync();
                 customer.CustomerType = (int)EImeceCustomerType.Normal;
@@ -466,7 +469,11 @@ namespace EImece.Controllers
             else
             {
                 Logger.LogInformation("Customer validation failed. Informing customer.");
-                InformCustomerToFillOutForm(customer);
+                if (!isValidCustomer)
+                {
+                    InformCustomerToFillOutForm(customer);
+                }
+                ApplyIyzicoBuyerErrors(iyzicoErrors);
                 ShoppingCartSession shoppingCart = await GetShoppingCartAsync();
                 shoppingCart.Customer = customer;
                 return View(shoppingCart);
@@ -625,6 +632,13 @@ namespace EImece.Controllers
             }
             if (shoppingCart.Customer.isValidCustomer() && shoppingCart.ShoppingCartItems.IsNotEmpty())
             {
+                var iyzicoErrors = IyzicoBuyerValidator.Validate(shoppingCart.Customer);
+                if (iyzicoErrors.Count > 0)
+                {
+                    Logger.LogInformation("PlaceOrder Iyzico buyer validation failed. Redirecting to CheckoutBillingDetails.");
+                    TempData[IyzicoBuyerValidationKey] = true;
+                    return RedirectToAction("CheckoutBillingDetails", Domain.Constants.PaymentAction);
+                }
                 Logger.LogDebug("Customer is valid and cart has items.");
                 if (User?.Identity == null || !User.Identity.IsAuthenticated)
                 {
@@ -834,12 +848,13 @@ namespace EImece.Controllers
             }
 
             bool isValidCustomer = customer.isValidCustomer();
-            Logger.LogDebug($"Customer validation result: {isValidCustomer}");
+            var iyzicoErrors = IyzicoBuyerValidator.Validate(customer);
+            Logger.LogDebug($"Customer validation result: {isValidCustomer}, Iyzico errors: {iyzicoErrors.Count}");
             BuyNowModel buyNowModel = await CreateBuyNowModelAsync(GeneralHelper.RevertId(productId));
             buyNowModel.Customer = customer;
             Logger.LogDebug("Assigned customer to BuyNow model.");
 
-            if (isValidCustomer)
+            if (isValidCustomer && iyzicoErrors.Count == 0)
             {
                 customer.CustomerType = (int)EImeceCustomerType.BuyNow;
                 buyNowModel.ShippingAddress = SetAddress(customer, buyNowModel.ShippingAddress);
@@ -868,7 +883,11 @@ namespace EImece.Controllers
             else
             {
                 Logger.LogInformation("Customer validation failed. Informing customer.");
-                InformCustomerToFillOutForm(customer);
+                if (!isValidCustomer)
+                {
+                    InformCustomerToFillOutForm(customer);
+                }
+                ApplyIyzicoBuyerErrors(iyzicoErrors);
                 Logger.LogDebug("Returning BuyNow view with validation errors.");
                 return View(buyNowModel);
             }
@@ -1182,6 +1201,36 @@ namespace EImece.Controllers
             Logger.LogDebug("Completed InformCustomerToFillOutForm validation.");
         }
 
+        private void ApplyPendingIyzicoBuyerValidation(CustomerDto customer)
+        {
+            if (customer == null || TempData[IyzicoBuyerValidationKey] == null)
+            {
+                return;
+            }
+
+            ApplyIyzicoBuyerErrors(IyzicoBuyerValidator.Validate(customer));
+        }
+
+        private void ApplyIyzicoBuyerErrors(IList<IyzicoBuyerFieldError> errors)
+        {
+            if (errors == null || errors.Count == 0)
+            {
+                return;
+            }
+
+            foreach (var error in errors)
+            {
+                var key = string.IsNullOrEmpty(error.Field) ? string.Empty : "customer." + error.Field;
+                ModelState.AddModelError(key, error.Message);
+            }
+
+            if (!ModelState.ContainsKey(string.Empty) || ModelState[string.Empty].Errors.Count == 0)
+            {
+                var emailError = errors.FirstOrDefault(e => string.Equals(e.Field, "Email", StringComparison.Ordinal));
+                ModelState.AddModelError(string.Empty, emailError != null ? emailError.Message : Resource.PleaseFillOutMandatoryBelowFields);
+            }
+        }
+
         protected AddressDto SetAddress(CustomerDto customer, AddressDto address)
         {
             Logger.LogDebug("Entering SetAddress method.");
@@ -1323,8 +1372,9 @@ namespace EImece.Controllers
             buyWithNoAccountCreation.ShoppingCartItems = shoppingCart.ShoppingCartItems;
             buyWithNoAccountCreation.Coupon = shoppingCart.Coupon;
             bool isValidCustomer = customer.isValidCustomer();
-            Logger.LogDebug($"Customer validation result: {isValidCustomer}");
-            if (isValidCustomer)
+            var iyzicoErrors = IyzicoBuyerValidator.Validate(customer);
+            Logger.LogDebug($"Customer validation result: {isValidCustomer}, Iyzico errors: {iyzicoErrors.Count}");
+            if (isValidCustomer && iyzicoErrors.Count == 0)
             {
                 Logger.LogDebug("Saving customer information");
 
@@ -1355,7 +1405,11 @@ namespace EImece.Controllers
             }
             else
             {
-                InformCustomerToFillOutForm(customer);
+                if (!isValidCustomer)
+                {
+                    InformCustomerToFillOutForm(customer);
+                }
+                ApplyIyzicoBuyerErrors(iyzicoErrors);
                 shoppingCart.Customer = customer;
                 buyWithNoAccountCreation.Customer = customer;
                 Logger.LogDebug("Returning view with validation errors.");

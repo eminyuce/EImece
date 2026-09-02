@@ -48,6 +48,7 @@
                         <div class="media-body align-self-center">
                             <h6 class="mb-1">@customer.FullName</h6>
                             <div class="font-size-sm"><span class="text-warning">@customer.Email</span></div>
+                            @Html.ValidationMessageFor(model => customer.Email, "", new { @class = "text-danger d-block" })
                             @if (!ViewData.ModelState.IsValid)
                             {
                                 <div class="font-size-lg">

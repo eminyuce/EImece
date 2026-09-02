@@ -185,27 +185,6 @@ namespace EImece.Domain.Helpers
 
             return identityNumber;
         }
-        /// <summary>
-        /// iyzico Checkout Form rejects reserved TLDs (error 5: "email hatalı format").
-        /// Seed accounts like seeduser00010@eimece.test are rewritten for the Iyzico buyer
-        /// payload only (e.g. .test → .com). Store account email is unchanged.
-        /// </summary>
-        public static string CheckIyzicoEmail(string email)
-        {
-            if (string.IsNullOrWhiteSpace(email))
-            {
-                return email;
-            }
-
-            var trimmed = email.Trim().ToLowerInvariant();
-            if (trimmed.EndsWith(".test", StringComparison.Ordinal))
-            {
-                return trimmed.Substring(0, trimmed.Length - 5) + ".com";
-            }
-
-            return trimmed;
-        }
-
         public static bool IsValidEmail(string subscribeEmail)
         {
             return !IsNotValidEmail(subscribeEmail);

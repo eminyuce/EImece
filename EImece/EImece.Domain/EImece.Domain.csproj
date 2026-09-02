@@ -679,6 +679,7 @@
     <Compile Include="Helpers\FilesHelper.cs" />
     <Compile Include="Helpers\FilterHelper.cs" />
     <Compile Include="Helpers\GeneralHelper.cs" />
+    <Compile Include="Helpers\IyzicoBuyerValidator.cs" />
     <Compile Include="Helpers\AuthenticatorHelper.cs" />
     <Compile Include="Helpers\HashHelpers.cs" />
     <Compile Include="Helpers\ImageUtilities.cs" />

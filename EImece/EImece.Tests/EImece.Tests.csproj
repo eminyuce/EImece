@@ -375,6 +375,7 @@
     <Compile Include="Helpers\AdminAuditHelperTests.cs" />
     <Compile Include="Helpers\DatabaseUtilityTests.cs" />
     <Compile Include="Helpers\GeneralHelperQaFixTests.cs" />
+    <Compile Include="Helpers\IyzicoBuyerValidatorTests.cs" />
     <Compile Include="Helpers\EntityExtensionQaFixTests.cs" />
     <Compile Include="Helpers\ConnectionStringProviderTests.cs" />
     <Compile Include="Helpers\PaymentGatewayConfigTests.cs" />

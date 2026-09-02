@@ -6311,6 +6311,15 @@ namespace Resources {
                 return ResourceManager.GetString("IyzicoBuyerProtection", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Lütfen geçerli bir e-posta adresi girin. .test gibi uzantılar kabul edilmez..
+        /// </summary>
+        public static string IyzicoEmailNotValidMessage {
+            get {
+                return ResourceManager.GetString("IyzicoEmailNotValidMessage", resourceCulture);
+            }
+        }
         
         public static string IyzicoEasyReturns {
             get {

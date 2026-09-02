@@ -2494,4 +2494,7 @@
   <data name="SuitableForSaleProductStates" xml:space="preserve">
     <value>Satışa Uygun Ürün Durumları</value>
   </data>
+  <data name="IyzicoEmailNotValidMessage" xml:space="preserve">
+    <value>Lütfen geçerli bir e-posta adresi girin. .test gibi uzantılar kabul edilmez.</value>
+  </data>
 </root>
