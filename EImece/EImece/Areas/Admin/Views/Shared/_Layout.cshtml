@@ -17,22 +17,11 @@
 
     @Scripts.Render("~/bundles/adminJquery")
     @Scripts.Render("~/bundles/adminJqueryMigrate")
-
-    @Scripts.Render("~/bundles/adminJqueryUi")
     @Scripts.Render("~/bundles/adminBootstrap")
     @Scripts.Render("~/bundles/adminScripts")
     @Styles.Render("~/Content/adminBootstrapCss")
     @Styles.Render("~/Content/admincss")
-    @* Cache-bust report filter styles so IIS/bundle cache does not keep oversized date inputs *@
-    <link href="~/Content/adminReports.css?v=20260824card1" rel="stylesheet" type="text/css" />
-    <link href="~/Content/adminSite.css?v=20260901cacheov1" rel="stylesheet" type="text/css" />
-    <link href="~/Content/adminShell.css?v=20260830langflag1" rel="stylesheet" type="text/css" />
-    <link href="~/Content/adminGridModern.css?v=20260829usersf1" rel="stylesheet" type="text/css" />
-    <link href="~/Content/adminTree.css?v=20260829tree3" rel="stylesheet" type="text/css" />
-    <link href="~/Content/adminMobile.css?v=20260824card1" rel="stylesheet" type="text/css" />
-    <link href="~/Content/adminGriddlyCompat.css?v=20260824card1" rel="stylesheet" type="text/css" />
     @RenderSection("scripts", required: false)
-    @Styles.Render("~/Content/adminJqueryUiCss")
     @RenderSection("Styles", false)
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

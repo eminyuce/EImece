@@ -1892,7 +1892,11 @@
             if (!tabHash) return;
             var $link = $('.settings-tab-menu a[href="' + tabHash + '"]');
             if ($link.length) {
-                $link.tab('show');
+                if (window.bootstrap && bootstrap.Tab) {
+                    bootstrap.Tab.getOrCreateInstance($link[0]).show();
+                } else if ($link.tab) {
+                    $link.tab('show');
+                }
                 window.location.hash = tabHash;
                 $('html, body').animate({ scrollTop: 0 }, 150);
             }
@@ -2105,12 +2109,20 @@
                 
                 var $targetTab = $(".settings-tab-menu a[href='" + hash + "']");
                 if ($targetTab.length) {
-                    $targetTab.tab('show');
+                    if (window.bootstrap && bootstrap.Tab) {
+                        bootstrap.Tab.getOrCreateInstance($targetTab[0]).show();
+                    } else if ($targetTab.tab) {
+                        $targetTab.tab('show');
+                    }
                 }
             }
 
             $('.settings-tab-menu a').on('click', function (e) {
-                $(this).tab('show');
+                if (window.bootstrap && bootstrap.Tab) {
+                    bootstrap.Tab.getOrCreateInstance(this).show();
+                } else if ($(this).tab) {
+                    $(this).tab('show');
+                }
                 var scrollmem = $('body').scrollTop() || $('html').scrollTop();
                 window.location.hash = this.hash;
                 $('html,body').scrollTop(scrollmem);
@@ -2319,7 +2331,13 @@
   $mobileTabs.on('click','button', function(){
     var href = $(this).data('href');
     var $target = $('#settingsTabs a[href="'+href+'"]');
-    if($target.length) $target.tab('show');
+    if($target.length) {
+        if (window.bootstrap && bootstrap.Tab) {
+            bootstrap.Tab.getOrCreateInstance($target[0]).show();
+        } else if ($target.tab) {
+            $target.tab('show');
+        }
+    }
     window.scrollTo({top:0, behavior:'smooth'});
   });
   $(document).on('click', '#settingsTabs a', function(){

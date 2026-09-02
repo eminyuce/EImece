@@ -1,4 +1,4 @@
-﻿@model EImece.Domain.Entities.Coupon
+@model EImece.Domain.Entities.Coupon
 @using EImece.Domain.Models.Enums;
 @using Resources;
 
@@ -148,13 +148,13 @@
                         <div class="form-group row mb-3">
                             <label class="col-sm-3 col-form-label req" for="StartDateStr">@AdminResource.CouponStartDate</label>
                             <div class="col-sm-3">
-                                @Html.EditorFor(model => model.StartDateStr, new { htmlAttributes = new { @class = "form-control", @data_date_picker = "1", autocomplete = "off" } })
+                                <input type="date" class="form-control" id="StartDateStr" name="StartDateStr" value="@(Model.StartDate > DateTime.MinValue ? Model.StartDate.ToString("yyyy-MM-dd") : Model.StartDateStr)" required />
                                 <small class="form-text text-muted">@AdminResource.CouponStartDateHelp</small>
                                 @Html.ValidationMessageFor(model => model.StartDateStr, "", new { @class = "text-danger" })
                             </div>
                             <label class="col-sm-3 col-form-label req" for="EndDateStr">@AdminResource.CouponEndDate</label>
                             <div class="col-sm-3">
-                                @Html.EditorFor(model => model.EndDateStr, new { htmlAttributes = new { @class = "form-control", @data_date_picker = "2", autocomplete = "off" } })
+                                <input type="date" class="form-control" id="EndDateStr" name="EndDateStr" value="@(Model.EndDate > DateTime.MinValue ? Model.EndDate.ToString("yyyy-MM-dd") : Model.EndDateStr)" required />
                                 <small class="form-text text-muted">@AdminResource.CouponEndDateHelp</small>
                                 @Html.ValidationMessageFor(model => model.EndDateStr, "", new { @class = "text-danger" })
                             </div>
@@ -396,11 +396,6 @@
 
 <script>
     $(function () {
-        $('[data-date-picker]').datepicker({
-            dateFormat: 'dd/mm/yy',
-            defaultDate: ""
-        });
-
         // ---------- Discount type cards ----------
         function applyDiscountUi(clearUnusedField) {
             var val = $('input[name="DiscountType"]:checked').val();

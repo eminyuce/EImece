@@ -24,7 +24,7 @@ namespace EImece.Controllers
         }
 
         [HttpGet]
-        [Route("{key}")]
+        [Route("u/{key}")]
         public HttpResponseMessage Get(string key)
         {
             _logger.LogInformation("Get key:" + key);

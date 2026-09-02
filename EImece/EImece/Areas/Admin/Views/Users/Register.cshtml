@@ -1,5 +1,6 @@
-﻿@model EImece.Models.RegisterViewModelForAdmin
+@model EImece.Models.RegisterViewModelForAdmin
 @using Resources;
+
 @{
     ViewBag.Title = AdminResource.Register;
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
@@ -8,52 +9,92 @@
 <h2>@AdminResource.CreateNewAccount</h2>
 <hr class="adminLine" />
 
+@{ ViewData["HelpId"] = "userRegisterHelp"; }
+@Html.Partial("_AdminHelpAccordionStart")
+<ul style="margin-top: 0;">
+    <li>@AdminResource.UserEditHelp1</li>
+    <li>@AdminResource.UserEditHelp2</li>
+</ul>
+@Html.Partial("_AdminHelpAccordionEnd")
+
 @using (Html.BeginForm("Register", "Users", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
-@Html.AntiForgeryToken()
-@Html.AdminValidationSummary()
+    @Html.AntiForgeryToken()
 
-<div class="form-group row mb-3">
-    @Html.AdminLabelFor(m => m.Email, new { @class = "col-md-2 col-form-label" })
-    <div class="col-md-10">
-        @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+    <div class="row" style="margin-bottom: 20px;">
+        <div class="col-md-9">
+            @Html.AdminValidationSummary()
+        </div>
+        <div class="col-md-3">
+            <button type="submit" class="btn btn-success w-100 btn-lg">
+                <i class="fa-solid fa-user-plus me-1"></i> @AdminResource.Register
+            </button>
+        </div>
     </div>
-</div>
-<div class="form-group row mb-3">
-    @Html.AdminLabelFor(m => m.Password, new { @class = "col-md-2 col-form-label" })
-    <div class="col-md-10">
-        @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
-        <span class="label text-bg-danger text-uppercase">
-            @AdminResource.PasswordInfoMessage
-        </span>
-    </div>
-</div>
-<div class="form-group row mb-3">
-    @Html.AdminLabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 col-form-label" })
-    <div class="col-md-10">
-        @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
-    </div>
-</div>
 
-    // Add the LastName, FirstName, and Email Properties:
-<div class="form-group row mb-3">
-    @Html.AdminLabelFor(m => m.FirstName, new { @class = "col-md-2 col-form-label" })
-    <div class="col-md-10">
-        @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
-    </div>
-</div>
-<div class="form-group row mb-3">
-    @Html.AdminLabelFor(m => m.LastName, new { @class = "col-md-2 col-form-label" })
-    <div class="col-md-10">
-        @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
-    </div>
-</div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow-sm">
+                <div class="card-header">
+                    <h3 class="card-title"><i class="fa-solid fa-user-plus me-2"></i>@AdminResource.CreateNewAccount</h3>
+                </div>
+                <div class="card-body form-horizontal" style="padding: 30px;">
 
-<div class="form-group row mb-3">
-    <div class="col-md-offset-2 col-md-10">
-        <input type="submit" class="btn btn-success w-100" value="@AdminResource.Register" />
+                    <div class="form-group row mb-3">
+                        @Html.AdminLabelFor(model => model.FirstName, htmlAttributes: new { @class = "col-form-label col-md-3" })
+                        <div class="col-md-9">
+                            @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group row mb-3">
+                        @Html.AdminLabelFor(model => model.LastName, htmlAttributes: new { @class = "col-form-label col-md-3" })
+                        <div class="col-md-9">
+                            @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group row mb-3">
+                        @Html.AdminLabelFor(model => model.Email, htmlAttributes: new { @class = "col-form-label col-md-3" })
+                        <div class="col-md-9">
+                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", type = "email" } })
+                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group row mb-3">
+                        @Html.AdminLabelFor(model => model.Password, htmlAttributes: new { @class = "col-form-label col-md-3" })
+                        <div class="col-md-9">
+                            @Html.PasswordFor(model => model.Password, new { @class = "form-control" })
+                            <div class="form-text text-muted mt-1">
+                                <i class="fa-solid fa-circle-info text-info me-1"></i> @AdminResource.PasswordInfoMessage
+                            </div>
+                            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group row mb-3">
+                        @Html.AdminLabelFor(model => model.ConfirmPassword, htmlAttributes: new { @class = "col-form-label col-md-3" })
+                        <div class="col-md-9">
+                            @Html.PasswordFor(model => model.ConfirmPassword, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                </div>
+                <div class="card-footer d-flex justify-content-between align-items-center">
+                    <a href="@Url.Action("Index")" class="btn btn-secondary">
+                        <i class="fa-solid fa-arrow-left me-1"></i> @AdminResource.BackToList
+                    </a>
+                    <button type="submit" class="btn btn-success">
+                        <i class="fa-solid fa-user-plus me-1"></i> @AdminResource.Register
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
 }
 
 @section Scripts {

@@ -48,6 +48,7 @@ namespace EImece.Domain.Repositories
             item.UrlKey = newKey;
             item.IsActive = false;
             item.Lang = AppConfig.MainLanguage;
+            item.LangValue = AppConfig.MainLanguage.ToString();
             item.Name = "";
             item.Position = 0;
             item.RequestCount = 0;

@@ -925,36 +925,74 @@ function sortInputFirst(input, data) {
 }
 
 function searchAutoComplete() {
-    $("#searchTxtInput").autocomplete({
-        source: function (request, response) {
-            var items = new Array();
-            // Use GET + actionName/controllerName (not action/controller) to avoid MVC route token collisions.
-            if (request.term.length > 2) {
-                $.ajax({
-                    type: "GET",
-                    url: "/admin/Ajax/SearchAutoComplete",
-                    dataType: "json",
-                    data: {
-                        term: request.term,
-                        actionName: $("#action").val(),
-                        controllerName: $("#controller").val()
-                    },
-                    success: function (data) {
-                        for (var i = 0; i < data.length; i++) {
-                            items[i] = { text: data[i], value: data[i] };
+    var $input = $("#searchTxtInput");
+    if (!$input.length) return;
+    if ($.fn && $.fn.autocomplete) {
+        $input.autocomplete({
+            source: function (request, response) {
+                var items = new Array();
+                if (request.term.length > 2) {
+                    $.ajax({
+                        type: "GET",
+                        url: "/admin/Ajax/SearchAutoComplete",
+                        dataType: "json",
+                        data: {
+                            term: request.term,
+                            actionName: $("#action").val(),
+                            controllerName: $("#controller").val()
+                        },
+                        success: function (data) {
+                            for (var i = 0; i < data.length; i++) {
+                                items[i] = { text: data[i], value: data[i] };
+                            }
+                            response(sortInputFirst(request.term, items));
+                        },
+                        error: function (jqXHR, exception) {
+                            console.error("SearchAutoComplete failed", jqXHR.status, jqXHR.responseText, exception);
+                            response([]);
                         }
-                        response(sortInputFirst(request.term, items));
-                    },
-                    error: function (jqXHR, exception) {
-                        console.error("SearchAutoComplete failed", jqXHR.status, jqXHR.responseText, exception);
-                        response([]);
-                    }
-                });
+                    });
+                }
+            },
+            select: function (event, ui) {
+                $("#SearchButton").trigger("click");
             }
-        },
-        select: function (event, ui) {
-            $("#SearchButton").trigger("click");
-        }
+        });
+        return;
+    }
+
+    // Native HTML5 Datalist Autocomplete
+    var listId = "searchTxtInput-datalist";
+    var $datalist = $("#" + listId);
+    if (!$datalist.length) {
+        $datalist = $('<datalist id="' + listId + '"></datalist>').appendTo("body");
+        $input.attr("list", listId);
+    }
+    var autoTimer = null;
+    $input.off("input.searchAuto").on("input.searchAuto", function () {
+        var term = $(this).val();
+        clearTimeout(autoTimer);
+        if (!term || term.length <= 2) return;
+        autoTimer = setTimeout(function () {
+            $.ajax({
+                type: "GET",
+                url: "/admin/Ajax/SearchAutoComplete",
+                dataType: "json",
+                data: {
+                    term: term,
+                    actionName: $("#action").val(),
+                    controllerName: $("#controller").val()
+                },
+                success: function (data) {
+                    $datalist.empty();
+                    if (data && data.length) {
+                        for (var i = 0; i < data.length; i++) {
+                            $("<option>").val(data[i]).appendTo($datalist);
+                        }
+                    }
+                }
+            });
+        }, 250);
     });
 }
 function bindProductDetailToolTip() {

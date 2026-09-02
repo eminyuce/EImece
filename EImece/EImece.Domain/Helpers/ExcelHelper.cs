@@ -296,7 +296,7 @@ namespace EImece.Domain.Helpers
                                         if (!System.Convert.IsDBNull(cellValue))
                                         {
                                             cell = fila.CreateCell(iCol, CellType.String);
-                                            cell.SetCellValue(System.Convert.ToString(cellValue));
+                                            cell.SetCellValue(TruncateExcelCellText(System.Convert.ToString(cellValue)));
                                         }
                                         break;
 
@@ -632,8 +632,20 @@ namespace EImece.Domain.Helpers
             }
 
             var textCell = row.CreateCell(columnIndex, CellType.String);
-            textCell.SetCellValue(System.Convert.ToString(cellValue) ?? string.Empty);
+            textCell.SetCellValue(TruncateExcelCellText(System.Convert.ToString(cellValue)));
             textCell.CellStyle = styles.Text;
+        }
+
+        /// <summary>Excel / NPOI cell text max is 32,767 characters.</summary>
+        internal const int ExcelMaxCellChars = 32767;
+
+        internal static string TruncateExcelCellText(string value)
+        {
+            if (string.IsNullOrEmpty(value) || value.Length <= ExcelMaxCellChars)
+            {
+                return value ?? string.Empty;
+            }
+            return value.Substring(0, ExcelMaxCellChars);
         }
 
         public static byte[] Export(DataTable dt, bool exportColumnHeadings)

@@ -531,6 +531,10 @@ namespace EImece.Controllers
                 Logger.LogDebug("Returning Register view with captcha error.");
                 return View(model);
             }
+            if (ModelState.IsValid && GeneralHelper.IsGsmNumberNotValid(model.PhoneNumber))
+            {
+                ModelState.AddModelError("PhoneNumber", Resource.GsmNumberNotValidMessage);
+            }
             if (ModelState.IsValid)
             {
                 var user = model.GetUser();
@@ -549,7 +553,18 @@ namespace EImece.Controllers
                     Logger.LogInformation("Confirmation email sent.");
 
                     IdentityManager.AddUserToRole(user.Id, Domain.Constants.CustomerRole);
-                    await CustomerService.SaveRegisterViewModelAsync(user.Id, model);
+                    try
+                    {
+                        await CustomerService.SaveRegisterViewModelAsync(user.Id, model);
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.LogError(ex, "SaveRegisterViewModelAsync failed for user {UserId}. Rolling back Identity user.", user.Id);
+                        await UserManager.DeleteAsync(user);
+                        ModelState.AddModelError("PhoneNumber", Resource.GsmNumberNotValidMessage);
+                        ModelState.AddModelError("", Resource.RequestIsNotValid);
+                        return View(model);
+                    }
                     Logger.LogInformation($"Assigned Customer role and saved customer data for user ID: {user.Id}");
 
                     IdentitySignout();

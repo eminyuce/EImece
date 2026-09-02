@@ -109,6 +109,7 @@ namespace EImece.Tests.Services
             ProductComments = new FakeDbSet<ProductComment>();
             ProductFiles = new FakeDbSet<ProductFile>();
             MainPageImages = new FakeDbSet<MainPageImage>();
+            ShortUrls = new FakeDbSet<ShortUrl>();
         }
         public System.Data.Entity.Infrastructure.DbEntityEntry Entry(object entity) => null;
         public System.Data.Entity.Infrastructure.DbEntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class => null;
@@ -169,6 +170,7 @@ namespace EImece.Tests.Services
         public IDbSet<CouponCategory> CouponCategories { get; set; }
         public IDbSet<CouponRedemption> CouponRedemptions { get; set; }
         public IDbSet<MainPageImage> MainPageImages { get; set; }
+        public IDbSet<ShortUrl> ShortUrls { get; set; }
     }
 
     [TestClass]

@@ -50,6 +50,7 @@ namespace EImece.Domain.Services
                 {
                     UserId = userId,
                     Name = model.FirstName,
+                    Surname = model.LastName ?? "",
                     GsmNumber = GeneralHelper.CheckGsmNumber(model.PhoneNumber),
                     IdentityNumber = "",
                     Ip = GeneralHelper.GetIpAddress(),
@@ -85,6 +86,7 @@ namespace EImece.Domain.Services
                 {
                     UserId = userId,
                     Name = model.FirstName,
+                    Surname = model.LastName ?? "",
                     GsmNumber = GeneralHelper.CheckGsmNumber(model.PhoneNumber),
                     IdentityNumber = "",
                     Ip = GeneralHelper.GetIpAddress(),

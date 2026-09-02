@@ -68,16 +68,16 @@ namespace EImece.Areas.Admin.Controllers
             {
                 content.StartDate = DateTime.Now;
                 content.EndDate = DateTime.Now.AddMonths(1);
-                content.StartDateStr = content.StartDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
-                content.EndDateStr = content.EndDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
+                content.StartDateStr = content.StartDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+                content.EndDateStr = content.EndDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
             }
             else
             {
                 content = await CouponService.GetSingleAsync(id);
                 if (content != null)
                 {
-                    content.StartDateStr = content.StartDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
-                    content.EndDateStr = content.EndDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
+                    content.StartDateStr = content.StartDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+                    content.EndDateStr = content.EndDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
                     try
                     {
                         var prodIds = await CouponService.GetCouponProductIdsAsync(id, cancellationToken).ConfigureAwait(false);
@@ -147,8 +147,26 @@ namespace EImece.Areas.Admin.Controllers
 
         private bool TryParseAndValidateDates(Coupon coupon)
         {
-            coupon.StartDate = coupon.StartDateStr.ToDateTime();
-            coupon.EndDate = coupon.EndDateStr.ToDateTime();
+            DateTime sDate;
+            if (DateTime.TryParseExact(coupon.StartDateStr, new[] { "yyyy-MM-dd", "dd/MM/yyyy", "d/M/yyyy" }, CultureInfo.InvariantCulture, DateTimeStyles.None, out sDate))
+            {
+                coupon.StartDate = sDate;
+            }
+            else
+            {
+                coupon.StartDate = coupon.StartDateStr.ToDateTime();
+            }
+
+            DateTime eDate;
+            if (DateTime.TryParseExact(coupon.EndDateStr, new[] { "yyyy-MM-dd", "dd/MM/yyyy", "d/M/yyyy" }, CultureInfo.InvariantCulture, DateTimeStyles.None, out eDate))
+            {
+                coupon.EndDate = eDate;
+            }
+            else
+            {
+                coupon.EndDate = coupon.EndDateStr.ToDateTime();
+            }
+
             if (coupon.EndDate <= coupon.StartDate)
             {
                 ModelState.AddModelError("EndDateStr", AdminResource.EndDateBiggerThanStartDateText);
@@ -177,8 +195,8 @@ namespace EImece.Areas.Admin.Controllers
 
         private static void RefreshDateStrings(Coupon coupon)
         {
-            coupon.StartDateStr = coupon.StartDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
-            coupon.EndDateStr = coupon.EndDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
+            coupon.StartDateStr = coupon.StartDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+            coupon.EndDateStr = coupon.EndDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
         }
 
         private async Task PopulateCouponEditViewBagsAsync(Coupon coupon)
@@ -222,8 +240,8 @@ namespace EImece.Areas.Admin.Controllers
             coupon.DiscountPercentage = discountPercentage;
             coupon.StartDate = startDate ?? DateTime.Now;
             coupon.EndDate = endDate ?? DateTime.Now.AddMonths(1);
-            coupon.StartDateStr = coupon.StartDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
-            coupon.EndDateStr = coupon.EndDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
+            coupon.StartDateStr = coupon.StartDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+            coupon.EndDateStr = coupon.EndDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
             coupon.IsActive = true;
             coupon.Lang = CurrentLanguage;
             coupon.AssignedUserId = string.IsNullOrWhiteSpace(assignedUserId) ? null : assignedUserId.Trim();

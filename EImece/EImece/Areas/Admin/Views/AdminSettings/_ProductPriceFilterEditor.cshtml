@@ -331,7 +331,12 @@
                 var errorMsg = validateRanges(ranges);
                 if (errorMsg) {
                     e.preventDefault();
-                    $('a[href="#tab-general"]').tab('show');
+                    var $tabGen = $('a[href="#tab-general"]');
+                    if (window.bootstrap && bootstrap.Tab && $tabGen.length) {
+                        bootstrap.Tab.getOrCreateInstance($tabGen[0]).show();
+                    } else if ($tabGen.tab) {
+                        $tabGen.tab('show');
+                    }
                     $('html, body').animate({ scrollTop: $('#priceFilterBuilder').offset().top - 100 }, 200);
                     return false;
                 }

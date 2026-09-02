@@ -174,10 +174,12 @@
         state.templateId = parseInt($button.attr("data-template-id"), 10) || 0;
         state.templateName = $button.attr("data-template-name") || "";
         state.useEditor = $button.attr("data-use-editor") === "true";
-        $("#mailTemplateTestSubject").val("");
-        $("#mailTemplateTestPreview").hide();
-        $("#mailTemplateTestModal").modal("show");
-        loadInspect();
+        var modalEl = document.getElementById("mailTemplateTestModal");
+        if (window.bootstrap && bootstrap.Modal && modalEl) {
+            bootstrap.Modal.getOrCreateInstance(modalEl).show();
+        } else if ($.fn && $.fn.modal) {
+            $("#mailTemplateTestModal").modal("show");
+        }
     }
 
     function preview() {

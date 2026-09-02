@@ -226,62 +226,83 @@
 
     AdminTemplateBuilder.prototype._initGroupSortable = function () {
         var self = this;
-        if (!$.fn.sortable) {
+        if (window.Sortable && this.$canvas && this.$canvas[0]) {
+            Sortable.create(this.$canvas[0], {
+                draggable: '.tb-group',
+                handle: '.tb-group__drag',
+                animation: 150,
+                onEnd: function () {
+                    self._emitChange();
+                }
+            });
             return;
         }
-        this.$canvas.sortable({
-            items: '> .tb-group',
-            handle: '.tb-group__drag',
-            axis: 'y',
-            tolerance: 'pointer',
-            update: function () {
-                self._emitChange();
-            }
-        });
+        if ($.fn && $.fn.sortable) {
+            this.$canvas.sortable({
+                items: '> .tb-group',
+                handle: '.tb-group__drag',
+                axis: 'y',
+                tolerance: 'pointer',
+                update: function () {
+                    self._emitChange();
+                }
+            });
+        }
     };
 
     AdminTemplateBuilder.prototype._initFieldSortable = function ($fields) {
         var self = this;
-        if (!$.fn.sortable) {
+        var el = $fields && $fields[0] ? $fields[0] : null;
+        if (window.Sortable && el) {
+            Sortable.create(el, {
+                group: 'tb-fields',
+                draggable: '.tb-field',
+                handle: '.tb-field__drag',
+                animation: 150,
+                onEnd: function () {
+                    self._emitChange();
+                }
+            });
             return;
         }
-        $fields.sortable({
-            items: '> .tb-field',
-            handle: '.tb-field__drag',
-            connectWith: '[data-tb-canvas] .tb-fields',
-            placeholder: 'tb-field-placeholder',
-            tolerance: 'pointer',
-            receive: function (event, ui) {
-                // Palette drop: convert helper clone into real field card
-                var $item = ui.item;
-                if ($item.hasClass('tb-palette__item')) {
-                    var type = $item.data('tb-add');
-                    var $card = self._buildFieldEl(type, {});
-                    $item.replaceWith($card);
+        if ($.fn && $.fn.sortable) {
+            $fields.sortable({
+                items: '> .tb-field',
+                handle: '.tb-field__drag',
+                connectWith: '[data-tb-canvas] .tb-fields',
+                placeholder: 'tb-field-placeholder',
+                tolerance: 'pointer',
+                receive: function (event, ui) {
+                    var $item = ui.item;
+                    if ($item.hasClass('tb-palette__item')) {
+                        var type = $item.data('tb-add');
+                        var $card = self._buildFieldEl(type, {});
+                        $item.replaceWith($card);
+                        self._emitChange();
+                    }
+                },
+                update: function () {
                     self._emitChange();
                 }
-            },
-            update: function () {
-                self._emitChange();
+            });
+            if ($.fn.droppable) {
+                $fields.droppable({
+                    accept: '.tb-palette__item[data-tb-add!="group"]',
+                    hoverClass: 'tb-fields--drop-hover',
+                    greedy: true,
+                    drop: function (event, ui) {
+                        if (!ui.draggable.hasClass('tb-palette__item')) {
+                            return;
+                        }
+                        var type = ui.draggable.data('tb-add');
+                        if (type && type !== 'group') {
+                            self.addField($(this), type, {});
+                            self._emitChange();
+                        }
+                    }
+                });
             }
-        });
-
-        // Allow dropping palette field chips onto field lists
-        $fields.droppable({
-            accept: '.tb-palette__item[data-tb-add!="group"]',
-            hoverClass: 'tb-fields--drop-hover',
-            greedy: true,
-            drop: function (event, ui) {
-                if (!ui.draggable.hasClass('tb-palette__item')) {
-                    return;
-                }
-                var type = ui.draggable.data('tb-add');
-                if (type && type !== 'group') {
-                    self.addField($(this), type, {});
-                    self._emitChange();
-                }
-            }
-        });
+        }
     };
 
     AdminTemplateBuilder.prototype._ensureEmptyHint = function () {
