@@ -61,5 +61,13 @@ namespace EImece.Domain.DbContext
         public IDbSet<CouponProduct> CouponProducts { get; set; }
         public IDbSet<CouponCategory> CouponCategories { get; set; }
         public IDbSet<CouponRedemption> CouponRedemptions { get; set; }
+        public IDbSet<ShortUrl> ShortUrls { get; set; }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<ShortUrl>().Ignore(e => e.Lang);
+            modelBuilder.Entity<ShortUrl>().Property(e => e.LangValue).HasColumnName("Lang");
+        }
     }
 }

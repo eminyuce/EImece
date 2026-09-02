@@ -105,21 +105,6 @@ namespace EImece.Models
         [Compare("Password", ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.PasswordAndConfirmationPasswordDoNotMatch))]
         public string ConfirmPassword { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
-        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.FirstName))]
-        public string FirstName { get; set; }
-
-        [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
-        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.LastName2))]
-        public string LastName { get; set; }
-
-        [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.MandatoryField))]
-        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.PhoneNumber))]
-        public string PhoneNumber { get; set; }
-
-        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.IsPermissionGrantedDescription))]
-        public bool IsPermissionGranted { get; set; }
-
         [Display(ResourceType = typeof(Resource), Name = nameof(Resource.AnswerSecurityQuestion))]
         public string Captcha { get; set; }
 

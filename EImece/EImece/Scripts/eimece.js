@@ -33,6 +33,43 @@ function getOrderGuid() {
     return orderGuid;
 }
 
+function hideAddToCartSpecError() {
+    $("#addToCartSpecError").hide();
+}
+
+function showAddToCartSpecError() {
+    var labels = [];
+    $(".product-spec-chip-group.has-error").each(function () {
+        var name = ($(this).attr("data-spec-name") || "").trim();
+        if (name && labels.indexOf(name) === -1) {
+            labels.push(name);
+        }
+    });
+    var msg;
+    if (labels.length === 1) {
+        msg = "Lütfen " + labels[0] + " seçin.";
+    } else if (labels.length > 1) {
+        msg = "Lütfen " + labels.join(" ve ") + " seçin.";
+    } else {
+        msg = "Lütfen zorunlu ürün özelliklerini seçin.";
+    }
+
+    var $box = $("#addToCartSpecError");
+    if (!$box.length) {
+        $box = $('<div id="addToCartSpecError" class="pdp-spec-error" role="alert"></div>');
+    }
+    $box.html('<span class="pdp-spec-error__icon" aria-hidden="true">!</span><span class="pdp-spec-error__text"></span>');
+    $box.find(".pdp-spec-error__text").text(msg);
+
+    var $row = $("#AddToCart").closest(".d-flex");
+    if ($row.length) {
+        $row.before($box);
+    } else {
+        $("#AddToCart").before($box);
+    }
+    $box.show();
+}
+
 // Chip selector for on-sale PDP (replaces dropdown) – click to select
 $(document).off("click.eimeceSpecChip", ".spec-chip[data-chip-value]").on("click.eimeceSpecChip", ".spec-chip[data-chip-value]", function (e) {
     var $chip = $(e.currentTarget);
@@ -45,6 +82,9 @@ $(document).off("click.eimeceSpecChip", ".spec-chip[data-chip-value]").on("click
         $select.val(val).trigger('change');
     }
     $group.removeClass('has-error').find('.spec-chip-hint').addClass('d-none');
+    if (!$('.product-spec-chip-group.has-error').length) {
+        hideAddToCartSpecError();
+    }
 });
 
 // Primary PDP button (#AddToCart). Delegated so it still works if the control is rendered after script load.
@@ -63,8 +103,14 @@ $(document).off("click.eimeceAddToCart", "#AddToCart").on("click.eimeceAddToCart
         }
     });
     if (hasMissingSpec) {
+        var $firstError = $(".product-spec-chip-group.has-error").first();
+        if ($firstError.length && $firstError[0].scrollIntoView) {
+            $firstError[0].scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+        showAddToCartSpecError();
         return;
     }
+    hideAddToCartSpecError();
 
     var selectedTotalSpecs = new Array();
     $('[data-product-selected-specs=' + nProductId + ']').each(function () {

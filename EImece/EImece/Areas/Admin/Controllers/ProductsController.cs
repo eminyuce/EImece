@@ -373,7 +373,7 @@ namespace EImece.Areas.Admin.Controllers
                              UpdatedDate = r.UpdatedDate,
                              IsActive = r.IsActive,
                              Position = r.Position,
-                             Description = r.Description,
+                             Description = (r.Description ?? string.Empty).ToStr(32767),
                              MainPage = r.MainPage,
                              ImageState = r.ImageState,
                              MainImageId = r.MainImageId,

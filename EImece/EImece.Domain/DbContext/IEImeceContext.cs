@@ -45,5 +45,6 @@ namespace EImece.Domain.DbContext
         IDbSet<CouponCategory> CouponCategories { get; set; }
         IDbSet<CouponRedemption> CouponRedemptions { get; set; }
         IDbSet<MainPageImage> MainPageImages { get; set; }
+        IDbSet<ShortUrl> ShortUrls { get; set; }
     }
 }

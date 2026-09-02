@@ -1322,7 +1322,6 @@
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
-    <Content Include="Scripts\admin-bs5-jquery-bridge.js" />
     <Content Include="Scripts\rich-text-editor.js" />
     <Content Include="Scripts\mustache.min.js" />
     <Content Include="Scripts\popper-utils.js" />

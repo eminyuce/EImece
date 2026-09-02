@@ -218,6 +218,15 @@ namespace EImece
                 namespaces: new[] { Constants.ControllersNamespace }
             );
             defaultRoute.DataTokens["UseNamespaceFallback"] = false;
+
+            // Last: unknown paths render the branded Error/NotFound view instead of a YSOD.
+            var notFoundRoute = routes.MapRoute(
+                name: "CatchAllNotFound",
+                url: "{*url}",
+                defaults: new { controller = "Error", action = "NotFound" },
+                namespaces: new[] { Constants.ControllersNamespace }
+            );
+            notFoundRoute.DataTokens["UseNamespaceFallback"] = false;
         }
     }
 }
