@@ -31,6 +31,22 @@ namespace EImece.Web.Infrastructure
             response.Headers["Referrer-Policy"] = "strict-origin-when-cross-origin";
             response.Headers["X-XSS-Protection"] = "1; mode=block";
 
+            // Content-Security-Policy (CSP)
+            if (response.Headers["Content-Security-Policy"] == null)
+            {
+                const string csp = "default-src 'self'; " +
+                                   "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/ https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://static.iyzipay.com; " +
+                                   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; " +
+                                   "font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com; " +
+                                   "img-src 'self' data: blob: https: http:; " +
+                                   "connect-src 'self' https://sandbox-api.iyzipay.com https://api.iyzipay.com https://www.google.com; " +
+                                   "frame-src 'self' https://www.google.com/recaptcha/ https://sandbox-api.iyzipay.com https://api.iyzipay.com; " +
+                                   "frame-ancestors 'self'; " +
+                                   "base-uri 'self'; " +
+                                   "form-action 'self' https://sandbox-api.iyzipay.com https://api.iyzipay.com;";
+                response.Headers["Content-Security-Policy"] = csp;
+            }
+
             // Optimize bundled, content-hashed assets with immutable Cache-Control
             var path = context.Request?.Path;
             if (!string.IsNullOrEmpty(path) && path.StartsWith("/bundles/", StringComparison.OrdinalIgnoreCase) && response.StatusCode == 200)

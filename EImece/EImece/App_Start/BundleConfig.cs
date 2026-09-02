@@ -20,11 +20,9 @@ namespace EImece
             bundles.Add(new ScriptBundle("~/bundles/adminJqueryMigrate").Include(
                         "~/Scripts/admin-vendor/jquery-migrate-4.0.2.js"));
 
-            bundles.Add(new ScriptBundle("~/bundles/adminJqueryUi").Include(
-                        "~/Scripts/admin-vendor/jquery-ui-1.14.2.js"));
-
-            bundles.Add(new StyleBundle("~/Content/adminJqueryUiCss").Include(
-                        "~/Content/admin-vendor/jquery-ui/jquery-ui.css"));
+            // Retired jQuery UI bundles left empty for backwards compatibility
+            bundles.Add(new ScriptBundle("~/bundles/adminJqueryUi"));
+            bundles.Add(new StyleBundle("~/Content/adminJqueryUiCss"));
 
             // Admin Bootstrap 5.3.8 (already minified; ScriptBundle AjaxMin cannot parse BS5 ES6).
             bundles.Add(new Bundle("~/bundles/adminBootstrap").Include(
@@ -56,11 +54,13 @@ namespace EImece
                       "~/Content/adminSite.css",
                       "~/Content/adminShell.css",
                       "~/Content/adminReports.css",
-                      "~/Content/adminGridModern.css"
+                      "~/Content/adminGridModern.css",
+                      "~/Content/adminTree.css",
+                      "~/Content/adminMobile.css"
                       ));
 
             bundles.Add(new ScriptBundle("~/bundles/adminScripts").Include(
-                  "~/Scripts/admin-bs5-jquery-bridge.js",
+                  "~/Scripts/admin-vendor/sortable.min.js",
                   "~/Scripts/rich-text-editor.js",
                   "~/Scripts/adminEimece.js",
                   "~/Scripts/adminRequiredLabels.js",

@@ -339,7 +339,7 @@
                 {
                     <div class="d-flex align-items-center pt-2">
                         <input class="px-2 form-control mr-2" min="1" id="quantity" type="number" name="quantity" style="width: 3.2rem;" value="1" required>
-                        <button id="AddToCart" class="btn btn-primary btn-block" type="button" data-toggle="toast" data-target="#cart-toast">
+                        <button id="AddToCart" class="btn btn-primary btn-block" type="button" data-bs-toggle="toast" data-bs-target="#cart-toast">
                             <i class="mr-2" data-feather="shopping-cart"></i>@Resource.AddToCart
                         </button>
                     </div>
@@ -363,7 +363,7 @@
                 <div class="card">
                     <div class="card-header">
                         <h3 class="accordion-heading">
-                            <a href="#productInfo" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="productInfo">
+                            <a href="#productInfo" role="button" data-bs-toggle="collapse" aria-expanded="true" aria-controls="productInfo">
                                 <span class="d-inline-block pr-2 border-right mr-2 align-middle mt-n1">
                                     <i data-feather="info" style="width: 1.1rem; height: 1.1rem;"></i>
                                 </span>@Resource.ProductInformation
@@ -409,7 +409,7 @@
                     <div class="card">
                         <div class="card-header">
                             <h3 class="accordion-heading">
-                                <a class="collapsed" href="#shippingOptions" role="button" data-toggle="collapse" aria-expanded="false" aria-controls="shippingOptions">
+                                <a class="collapsed" href="#shippingOptions" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="shippingOptions">
                                     <span class="d-inline-block pr-2 border-right mr-2 align-middle mt-n1">
                                         <i data-feather="truck" style="width: 1.1rem; height: 1.1rem;"></i>
                                     </span>@Resource.ShippingOptions
@@ -431,7 +431,7 @@
                     <div class="card">
                         <div class="card-header">
                             <h3 class="accordion-heading">
-                                <a class="collapsed" href="#tagCloud" role="button" data-toggle="collapse" aria-expanded="false" aria-controls="tagCloud">
+                                <a class="collapsed" href="#tagCloud" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="tagCloud">
                                     <span class="d-inline-block pr-2 border-right mr-2 align-middle mt-n1">
                                         <i data-feather="tag" style="width: 1.1rem; height: 1.1rem;"></i>
                                     </span>@Resource.Tags
@@ -703,7 +703,7 @@
                             </div>
                         }
                     }
-                    <div class="py-2"><a class="btn btn-warning btn-block" href="#leaveReview" data-toggle="modal">@Resource.LeaveReview</a></div>
+                    <div class="py-2"><a class="btn btn-warning btn-block" href="#leaveReview" data-bs-toggle="modal">@Resource.LeaveReview</a></div>
                 </div>
             </div>
         </div>
@@ -849,7 +849,7 @@
             @if (relatedProductPriceEnabled && product.IsBuyableState)
             {
                 <h3 class="product-card-title">
-                    <button class="btn btn-primary btn-sm btn-block" data-add-product-cart="@product.ModifiedId" type="button" data-toggle="toast" data-target="#cart-toast">
+                    <button class="btn btn-primary btn-sm btn-block" data-add-product-cart="@product.ModifiedId" type="button" data-bs-toggle="toast" data-bs-target="#cart-toast">
                         @Resource.AddToCart
                     </button>
                     <a href="@product.DetailPageRelativeUrl">@shortDesc</a>

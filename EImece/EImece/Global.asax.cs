@@ -53,6 +53,9 @@ namespace EImece
             }
 
             AreaRegistration.RegisterAllAreas();
+            GlobalConfiguration.Configure(WebApiConfig.Register);
+            GlobalConfiguration.Configuration.DependencyResolver =
+                new MsDiWebApiDependencyResolver(DependencyInjectionConfig.ServiceProvider);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
@@ -77,10 +80,6 @@ namespace EImece
 
                 var adresService = DependencyResolver.Current.GetService<AdresService>();
             }
-
-            GlobalConfiguration.Configure(WebApiConfig.Register);
-            GlobalConfiguration.Configuration.DependencyResolver =
-                new MsDiWebApiDependencyResolver(DependencyInjectionConfig.ServiceProvider);
 
             // Start Quartz background scheduler services if enabled with resilient AppDomain protection
             try

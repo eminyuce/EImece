@@ -9,6 +9,7 @@ namespace EImece
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+            routes.IgnoreRoute("swagger/{*pathInfo}");
 
             // Imprive SEO by stopping duplicate URL's due to case or trailing slashes.
             routes.AppendTrailingSlash = true;

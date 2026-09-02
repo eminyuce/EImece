@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Griddly script
  * http://griddly.com
  * Copyright 2013-2025 Chris Hynes and Data Research Group, Inc.
@@ -23,6 +23,25 @@
             return null;
         else
             return str;
+    };
+
+    var bsModalShow = function ($el) {
+        if (!$el || !$el.length) return;
+        if (window.bootstrap && bootstrap.Modal) {
+            bootstrap.Modal.getOrCreateInstance($el[0]).show();
+        } else if ($.fn && $.fn.modal) {
+            $el.modal("show");
+        }
+    };
+
+    var bsModalHide = function ($el) {
+        if (!$el || !$el.length) return;
+        if (window.bootstrap && bootstrap.Modal) {
+            var inst = bootstrap.Modal.getInstance($el[0]) || bootstrap.Modal.getOrCreateInstance($el[0]);
+            if (inst) inst.hide();
+        } else if ($.fn && $.fn.modal) {
+            $el.modal("hide");
+        }
     };
 
     var getCleanedValue = function (val, dataType)
@@ -819,7 +838,7 @@
 
             $("form", this.$element).on("submit", $.proxy(function (event)
             {
-                this.$filterModal.modal("hide");
+                bsModalHide(this.$filterModal);
 
                 this.refresh(true);
 
@@ -892,9 +911,9 @@
                         if (this.options.handleRowClickModal) {
                             this.options.handleRowClickModal($.trim(url), this.options.rowClickModal);
                         } else {
-                            $(this.options.rowClickModal).removeData("bs.modal").modal({show: false});
+                            if ($.fn && $.fn.modal) { $(this.options.rowClickModal).removeData("bs.modal"); }
                             $(".modal-content", this.options.rowClickModal).load($.trim(url), $.proxy(function (event) {
-                                $(this.options.rowClickModal).modal("show");
+                                bsModalShow($(this.options.rowClickModal));
                             }, this));
                         }
                     }
@@ -1475,7 +1494,7 @@
 
         invokeFilterModal: function ()
         {
-            this.$filterModal.modal("show");
+            bsModalShow(this.$filterModal);
         },
 
         getAllFilterElements: function ()
@@ -2147,7 +2166,7 @@
 
             $("form", this.$element).on("submit", $.proxy(function (event)
             {
-                this.$filterModal.modal("hide");
+                bsModalHide(this.$filterModal);
 
                 this.updateFilterDisplay();
 
@@ -2186,7 +2205,7 @@
 
         invokeFilterModal: function ()
         {
-            this.$filterModal.modal("show");
+            bsModalShow(this.$filterModal);
         },
 
         getAllFilterElements: function ()

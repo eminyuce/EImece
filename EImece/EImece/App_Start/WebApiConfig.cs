@@ -1,4 +1,4 @@
-﻿using EImece.Web.Filters;
+using EImece.Web.Filters;
 using System.Web.Http;
 
 namespace EImece
@@ -15,6 +15,8 @@ namespace EImece
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            SwaggerConfig.Register(config);
         }
     }
 }
