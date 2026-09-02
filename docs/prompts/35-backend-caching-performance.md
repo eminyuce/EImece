@@ -1,0 +1,592 @@
+# Backend caching and high-performance data access
+
+- **Captured:** 2026-08-22 1:49:56 PM
+- **Source:** WhatsApp chat export (coding prompt only)
+- **Use:** paste this file into an AI coding session as the task brief
+
+---
+
+You are a senior .NET backend developer specializing in high-performance ASP.NET MVC, Entity Framework 6, SQL Server, and application caching.
+
+## PRIMARY OBJECTIVE
+
+*FIX the existing caching problem in the actual codebase.*
+
+The application is currently making repeated database queries on almost every request for data that should already be cached.
+
+*Important:* Caching already exists in this application. Do NOT simply introduce a new caching layer without first determining why the existing caching is ineffective, bypassed, incorrectly keyed, incorrectly scoped, expiring too quickly, or not invalidated correctly.
+
+Your job is to:
+
+1. Analyze the actual local codebase.
+2. Find the existing caching implementation.
+3. Trace the problematic database queries back to their callers.
+4. Determine exactly why the existing cache is not preventing these queries.
+5. Fix the existing implementation where possible.
+6. Only introduce new caching components when the existing architecture genuinely requires them.
+7. Keep the changes low-risk and consistent with the existing architecture.
+
+---
+
+# STEP 1 — ANALYZE THE ACTUAL LOCAL CODEBASE FIRST
+
+*DO NOT make assumptions based on this prompt.*
+
+Before modifying anything, inspect the real source code.
+
+### Source locations
+
+* Source code:
+  C:\Users\eminy\source\repos\EImece\EImece
+
+* IIS deployment:
+  C:\inetpub\wwwroot\Eimece
+
+* Application:
+  http://localhost:81/
+
+* Admin:
+  http://localhost:81/account/adminlogin/
+
+* Customer:
+  http://localhost:81/account/login/
+
+* Logs and uploaded files:
+  C:\inetpub\wwwroot\Eimece\media\
+
+* EF SQL logs are available under the media directory. Inspect the relevant logs and use the actual SQL queries to trace the database calls back to the source code.
+
+* Documentation:
+  Read *everything under docs/* that is relevant to the application architecture, database access, caching, and performance.
+
+* Also inspect the IIS web.config.
+
+* Inspect the *full source code*, not just the files that appear immediately relevant.
+
+---
+
+# STEP 2 — DETERMINE THE ACTUAL APPLICATION ARCHITECTURE
+
+Before changing code, identify and report:
+
+1. Exact .NET Framework version actually used by the project.
+2. Exact ASP.NET MVC version.
+3. Exact Entity Framework version.
+4. DbContext classes.
+5. Repository classes/interfaces, if any.
+6. Service classes/interfaces.
+7. Dependency injection container and registrations.
+8. Existing caching abstractions.
+9. Existing IMemoryCache, MemoryCache, Redis, distributed cache, custom cache, static cache, or other caching mechanisms.
+10. Cache lifetime and dependency/DI scope.
+11. How DbContexts are created and disposed.
+12. Whether the application runs as a single IIS instance or has any multi-instance considerations.
+13. Existing admin update flows for Settings, Menus, and ProductCategories.
+
+Do not report assumptions. Report what is actually implemented.
+
+---
+
+# STEP 3 — TRACE THE PROBLEMATIC DATABASE QUERIES
+
+Use the actual EF SQL logs as evidence.
+
+Investigate the repeated queries for:
+
+### Settings
+
+Examples include:
+
+* IsProductPriceEnable
+* IsProductReviewEnable
+* CargoCompany
+* BasketMinTotalPriceForCargo
+* CargoPrice
+* ProductPriceFilterSetting
+* PaymentDetailHtml
+* WhatsAppCommunicationLink
+* CompanyName
+* CargoDescription
+* and other frequently requested settings.
+
+Determine:
+
+* Which source methods retrieve them.
+* Whether they are retrieved individually or as a group.
+* Whether the same setting is queried multiple times during one request.
+* Whether cache lookup happens before the EF query.
+* Whether different callers use different cache keys.
+* Whether language-specific and global settings use separate keys correctly.
+* Whether the cache is actually populated.
+* Whether the cached value is being immediately invalidated.
+* Whether cache scope/lifetime causes it to disappear unexpectedly.
+* Whether multiple service instances are bypassing the intended cache.
+* Whether async code or different code paths bypass the cache.
+
+### Fixed Menus
+
+Investigate:
+
+* "home-index"
+* "products-index"
+* other fixed/static menu identifiers.
+
+Determine why these are repeatedly queried instead of being served from cache.
+
+### ProductCategories
+
+Investigate:
+
+* Category retrieval.
+* Active/inactive filtering.
+* Category hierarchy.
+* Product counts.
+* Language-specific category data.
+* Repeated category queries.
+
+Pay particular attention to the requirement:
+
+*The parent category's product count must equal the sum of its child categories where that is the application's intended counting behavior.*
+
+Do not break the existing category-count semantics while fixing caching.
+
+### Product Detail
+
+Find the source of the large UNION ALL query generated by Entity Framework and its related Include() calls.
+
+Determine:
+
+* Which controller/service/repository creates the query.
+* Which Includes/navigation properties cause the large query.
+* Whether all loaded data is actually required by the Razor view.
+* Whether caching the complete product detail is appropriate.
+* Whether the query should instead be optimized through projection/DTOs.
+* Whether caching would merely hide an inefficient query.
+
+*Do not use caching as a substitute for fixing an unnecessarily expensive query.*
+
+---
+
+# STEP 4 — AUDIT THE EXISTING CACHE
+
+This is the most important part.
+
+Find every existing cache implementation and answer:
+
+### Cache storage
+
+* What cache implementation is actually used?
+* Is it System.Runtime.Caching.MemoryCache, System.Web.Caching.Cache, IMemoryCache, a custom wrapper, Redis, or something else?
+
+### Cache keys
+
+Inspect the actual cache keys.
+
+Look for:
+
+* inconsistent keys
+* missing language identifiers
+* missing tenant/store identifiers if applicable
+* different keys representing the same data
+* keys that are never read
+* keys that are populated but never consumed
+* keys that collide between languages or contexts
+
+### Cache population
+
+Determine:
+
+* Where cache entries are created.
+* Whether the code uses cache-aside correctly.
+* Whether the database is queried before checking the cache.
+* Whether the cache is populated after a successful database query.
+* Whether null/empty results are cached.
+* Whether every request creates a new cache instance.
+
+### Expiration
+
+Inspect:
+
+* absolute expiration
+* sliding expiration
+* very short TTLs
+* accidental immediate expiration
+* expiration configuration
+* application-restart behavior
+
+### Invalidation
+
+Find all invalidation code.
+
+Inspect what happens when an administrator:
+
+* creates a setting
+* updates a setting
+* deletes a setting
+* changes a menu
+* changes a category
+* changes category hierarchy
+* changes active/inactive state
+* changes language-specific content.
+
+Determine whether the corresponding cache entries are actually invalidated.
+
+### DI / lifetime
+
+Check whether the cache service is registered with an incorrect lifetime.
+
+For example, determine whether a supposedly application-wide cache is accidentally registered as:
+
+* Transient
+* Scoped/per-request
+* dependent on a short-lived object.
+
+Do not change DI lifetimes blindly; verify the architecture first.
+
+---
+
+# STEP 5 — IDENTIFY THE ROOT CAUSE
+
+Before implementing the fix, explicitly state the root cause.
+
+For example, determine whether the problem is caused by one or more of:
+
+* Existing cache is never read.
+* Existing cache is populated under a different key.
+* Cache key is incomplete.
+* Language is missing from cache key.
+* Cache is invalidated too aggressively.
+* Cache expires immediately.
+* Cache service has incorrect lifetime.
+* Multiple cache implementations exist and callers use different ones.
+* Some callers bypass the cached service.
+* Settings are queried individually instead of using the existing cached collection.
+* Admin updates invalidate the wrong key.
+* Cache is only used by one code path while Razor views use another.
+* Cache is stored in a request-scoped object.
+* Cache implementation is correct but the expensive query originates from another uncached path.
+* Product detail query is too expensive independently of caching.
+
+*Do not stop at identifying that a query is repeated. Trace the complete call path and explain why the cache failed to prevent it.*
+
+---
+
+# STEP 6 — IMPLEMENT THE FIX
+
+Fix the existing caching architecture first.
+
+## Priority
+
+### 1. Settings — highest priority
+
+Settings are currently the most frequently repeated database calls.
+
+Implement/fix caching so that frequently used settings are retrieved from cache after the first database load.
+
+Support:
+
+* global settings
+* language-specific settings
+* existing application behavior
+* existing fallback behavior, if present.
+
+Prefer caching the appropriate settings collection/group when the existing architecture supports it rather than issuing one database query per setting.
+
+Example conceptual behavior:
+
+text
+First request:
+Cache miss → database → populate cache → return value
+
+Subsequent requests:
+Cache hit → return value
+NO DATABASE QUERY
+
+
+Do not blindly cache every individual property if the existing architecture can efficiently cache the complete settings collection.
+
+---
+
+### 2. Fixed Menus
+
+Cache fixed/static menus such as:
+
+* home-index
+* products-index
+
+Use the existing menu architecture where possible.
+
+Ensure menu updates invalidate the affected cache entries.
+
+---
+
+### 3. ProductCategories
+
+Cache category data where appropriate.
+
+Consider:
+
+* category hierarchy
+* active categories
+* language
+* product counts
+* parent/child relationships.
+
+Use an appropriate TTL.
+
+Ensure category changes invalidate the relevant cache.
+
+Do not cache stale product counts indefinitely.
+
+---
+
+### 4. Product Detail
+
+Only cache product-detail data if the analysis demonstrates that this provides meaningful benefit.
+
+Before adding product-detail caching:
+
+* determine why the UNION ALL query is generated;
+* inspect all Includes;
+* determine what the Razor view actually requires;
+* identify unnecessary database columns/entities;
+* determine whether projection/DTOs would be a better solution.
+
+If the query is fundamentally inefficient, fix the query rather than hiding the problem behind a cache.
+
+---
+
+# STEP 7 — CACHE DESIGN REQUIREMENTS
+
+Prefer the existing cache implementation if it is sound.
+
+If the existing implementation is broken, fix it rather than unnecessarily introducing another cache abstraction.
+
+If a new abstraction is genuinely required:
+
+* Prefer in-process memory caching for this IIS application.
+* Use the framework-compatible caching mechanism appropriate for the actual .NET Framework 4.8.1 / ASP.NET MVC 5 architecture.
+* Do not blindly introduce modern ASP.NET Core IMemoryCache APIs if they are incompatible with this application.
+* Do not introduce Redis unless the existing architecture already uses it or there is a demonstrated multi-instance requirement.
+
+The solution must be compatible with the actual project.
+
+---
+
+# STEP 8 — CACHE KEY CONVENTION
+
+Use a consistent cache-key convention based on the application's real data model.
+
+For example:
+
+text
+Settings:Global
+Settings:Language:{languageId}
+Menu:{menuIdentifier}:{languageId}
+Categories:{languageId}
+
+
+These are examples only.
+
+*Use the actual identifiers and architecture discovered in the source code.*
+
+Do not introduce keys that duplicate existing keys unnecessarily.
+
+Centralize cache-key generation where appropriate to prevent key inconsistencies.
+
+---
+
+# STEP 9 — CACHE INVALIDATION
+
+Implement reliable invalidation.
+
+When an admin modifies data:
+
+### Settings
+
+Invalidate the appropriate:
+
+* global settings cache
+* language-specific settings cache
+
+### Menus
+
+Invalidate the affected menu cache.
+
+### Categories
+
+Invalidate the affected category cache and any related cached category hierarchy/count data.
+
+If the existing code has update methods that already represent these operations, integrate invalidation there rather than scattering cache removal calls throughout controllers.
+
+---
+
+# STEP 10 — DO NOT OVER-ENGINEER
+
+Keep the change:
+
+* low-risk
+* incremental
+* maintainable
+* compatible with the existing application
+* consistent with existing naming conventions
+* compatible with .NET Framework 4.8.1
+* compatible with ASP.NET MVC 5
+* compatible with Entity Framework 6.
+
+Do not:
+
+* migrate the application to ASP.NET Core;
+* upgrade frameworks;
+* introduce Redis without justification;
+* rewrite repositories/services unnecessarily;
+* introduce a new architecture when the existing one can be fixed;
+* change unrelated functionality;
+* replace working business logic merely for stylistic reasons.
+
+---
+
+# STEP 11 — VERIFY THE FIX
+
+After implementation, verify the actual behavior.
+
+Run/build the application and exercise relevant pages where possible.
+
+Check EF SQL logs again.
+
+The objective is to demonstrate that repeated requests no longer execute the same database queries unnecessarily.
+
+Verify at minimum:
+
+1. Home page.
+2. Product listing.
+3. Product detail.
+4. Pages using Settings.
+5. Pages using fixed menus.
+6. Category navigation/tree.
+7. Admin setting update.
+8. Admin menu update.
+9. Admin category update.
+10. Language-specific pages/settings, where applicable.
+
+Compare before/after SQL behavior.
+
+Do not claim that caching works merely because code compiles.
+
+Confirm that:
+
+text
+First access  → Cache miss → DB query → Cache populated
+Next access   → Cache hit  → No DB query
+After update  → Cache invalidated → Next access reloads from DB
+
+
+Also verify that cache invalidation does not cause unrelated data to be unnecessarily reloaded.
+
+---
+
+# STEP 12 — OUTPUT FORMAT
+
+Return the final result in exactly this structure:
+
+## 1. Local Analysis Report
+
+Include:
+
+* actual .NET version
+* actual MVC version
+* actual EF version
+* actual architecture
+* DbContext/repository/service structure
+* existing cache implementation
+* relevant file paths
+* relevant classes/methods
+* problematic SQL query sources
+* findings from docs/
+* findings from EF logs
+
+## 2. Root Cause
+
+Clearly explain:
+
+*Why is the existing caching not preventing the repeated database queries?*
+
+List each root cause separately.
+
+## 3. Caching Strategy
+
+Explain the corrected strategy for:
+
+1. Settings
+2. Menus
+3. ProductCategories
+4. Product Detail
+
+Include:
+
+* cache keys
+* expiration
+* invalidation
+* cache scope/lifetime
+* language handling.
+
+## 4. Concrete Code Changes
+
+For every modification provide:
+
+* exact file path
+* class name
+* method name
+* what was changed
+* why it was changed.
+
+Show the relevant before/after code where useful.
+
+*Use the real file paths, class names, and methods discovered in the codebase. Do not invent placeholders.*
+
+## 5. Verification
+
+Report:
+
+* build result
+* tests performed
+* pages tested
+* SQL/log behavior before the fix
+* SQL/log behavior after the fix
+* cache hit/miss behavior
+* invalidation behavior.
+
+If something could not be tested, explicitly say so.
+
+## 6. Implementation Summary
+
+Finish with a concise list of:
+
+* files changed
+* caching fixes made
+* query reductions achieved or observed
+* remaining performance problems
+* recommended next optimization.
+
+---
+
+# CRITICAL RULES
+
+1. *Analyze the actual local code before changing anything.*
+2. *The existing cache already exists — find out why it is not working before creating another one.*
+3. *Use the EF SQL logs as evidence.*
+4. *Read the docs/ folder.*
+5. *Inspect the IIS web.config.*
+6. *Inspect the full source code relevant to these execution paths.*
+7. *Do not assume the supplied framework versions are correct; verify them from the project files.*
+8. *Do not invent file paths, classes, methods, cache keys, or services.*
+9. *Do not use ASP.NET Core APIs merely because they are common modern caching solutions.*
+10. *Do not introduce Redis unless the actual architecture requires it.*
+11. *Fix existing caching before adding new caching.*
+12. *Do not use caching to hide an inefficient EF query when projection/DTO/query optimization is the better fix.*
+13. *Do not break category product-count semantics.*
+14. *Do not make unrelated refactoring changes.*
+15. *After implementation, verify the SQL logs and demonstrate that repeated database hits have actually been eliminated.*
+16. *If the existing cache is correctly implemented and the problem is caused by a different code path, fix that code path instead of creating duplicate caching.*
+17. *Do not stop at an analysis report — implement the fix in the actual codebase.*
+18. *If you encounter uncertainty, inspect more code and trace the execution path rather than guessing.*
