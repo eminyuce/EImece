@@ -18,8 +18,11 @@
 @if (!hideProducts && products.IsNotEmpty())
 {
     <div class="common-block crizal-cart-items mb-4">
-        <div class="line-title">
+        <div class="line-title d-flex flex-wrap justify-content-between align-items-center">
             <h2 class="h6 mb-0">@Resource.ReviewYourOrder</h2>
+            <a class="font-size-sm crizal-cart-continue" href="@Url.Action("shoppingcart")">
+                <i class="fas fa-pen mr-1" aria-hidden="true"></i>@Resource.Edit
+            </a>
         </div>
         @for (int i = 0; i < products.Count; i++)
         {

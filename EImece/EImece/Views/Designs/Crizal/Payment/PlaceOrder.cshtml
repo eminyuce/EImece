@@ -80,9 +80,7 @@
                     </div>
                 }
             </div>
-            @Html.Partial("_OrderSummaryBeforePayment", Model, new ViewDataDictionary(ViewData){
-                {"HideProducts", true}
-            })
+            @Html.Partial("_OrderSummaryBeforePayment", Model)
             <div class="d-flex crizal-checkout-nav pt-2 pb-3">
                 <div class="w-50 pr-3">
                     <a class="butn-style8 outline btn-block" href="@Url.Action("CheckoutPaymentOrderReview")">
