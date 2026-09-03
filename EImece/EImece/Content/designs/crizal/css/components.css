@@ -5104,6 +5104,586 @@ body[data-design="crizal"] .crizal-cart-item:last-child,
     color: #c0392b;
 }
 
+/* ---------- Order confirmation (thank you) ---------- */
+body[data-design="crizal"] .crizal-order-confirm-head {
+    padding-bottom: 0.25rem;
+}
+
+body[data-design="crizal"] .crizal-order-confirm-head .page-title {
+    font-size: clamp(1.35rem, 2.4vw, 1.85rem);
+    margin-bottom: 0.35rem;
+}
+
+body[data-design="crizal"] .crizal-order-confirm__hero {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 1.25rem 1.5rem;
+    align-items: center;
+    margin: 0 0 1.25rem;
+    padding: 1.5rem 1.6rem;
+    color: #fff;
+    background:
+        radial-gradient(120% 140% at 100% 0%, rgba(255, 255, 255, 0.16), transparent 46%),
+        linear-gradient(135deg, #0aad4a 0%, var(--crizal-primary, #067a36) 55%, #045a28 100%);
+    border-radius: var(--crizal-radius-lg, 10px);
+    box-shadow: 0 16px 36px rgba(6, 122, 54, 0.22);
+}
+
+body[data-design="crizal"] .crizal-order-confirm__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 3.75rem;
+    height: 3.75rem;
+    border-radius: 999px;
+    background: #fff;
+    color: var(--crizal-primary, #067a36);
+    font-size: 1.45rem;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+body[data-design="crizal"] .crizal-order-confirm__kicker {
+    margin: 0 0 0.2rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.85;
+}
+
+body[data-design="crizal"] .crizal-order-confirm__title {
+    margin: 0 0 0.45rem;
+    font-size: clamp(1.2rem, 2vw, 1.55rem);
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.25;
+}
+
+body[data-design="crizal"] .crizal-order-confirm__lead {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    opacity: 0.95;
+}
+
+body[data-design="crizal"] .crizal-order-confirm__email {
+    margin: 0.65rem 0 0;
+    font-size: 0.875rem;
+    opacity: 0.92;
+}
+
+body[data-design="crizal"] .crizal-order-confirm__email i {
+    margin-right: 0.4rem;
+}
+
+body[data-design="crizal"] .crizal-order-confirm__order-no {
+    min-width: 12.5rem;
+    padding: 0.95rem 1.05rem;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: 0.75rem;
+}
+
+body[data-design="crizal"] .crizal-order-confirm__order-label {
+    display: block;
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    opacity: 0.8;
+}
+
+body[data-design="crizal"] .crizal-order-confirm__order-value {
+    display: block;
+    margin: 0.2rem 0 0.55rem;
+    color: #fff !important;
+    font-size: 1.05rem;
+    font-weight: 800;
+    text-decoration: none !important;
+    word-break: break-all;
+}
+
+body[data-design="crizal"] .crizal-order-confirm__track {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: #fff !important;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-decoration: none !important;
+    opacity: 0.95;
+}
+
+body[data-design="crizal"] .crizal-order-confirm__meta {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.75rem;
+    list-style: none;
+    margin: 0 0 1.5rem;
+    padding: 0;
+}
+
+body[data-design="crizal"] .crizal-order-confirm__meta li {
+    padding: 0.9rem 1rem;
+    background: #fff;
+    border: 1px solid var(--crizal-border, #e6e8ef);
+    border-radius: var(--crizal-radius-lg, 10px);
+    box-shadow: var(--crizal-shadow, 0 0 30px rgba(0, 0, 0, 0.06));
+}
+
+body[data-design="crizal"] .crizal-order-confirm__meta-label {
+    display: block;
+    margin-bottom: 0.25rem;
+    color: var(--crizal-muted, #5c5f7a);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+body[data-design="crizal"] .crizal-order-confirm__meta-value {
+    color: var(--crizal-heading, #14212b);
+    font-weight: 700;
+}
+
+body[data-design="crizal"] .crizal-order-confirm__status {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.15rem 0.55rem;
+    border-radius: 999px;
+    background: #e8f8ef;
+    color: var(--crizal-primary, #067a36);
+    font-size: 0.82rem;
+    font-weight: 800;
+}
+
+body[data-design="crizal"] .crizal-order-confirm__items {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+body[data-design="crizal"] .crizal-order-confirm__item {
+    display: grid;
+    grid-template-columns: 4.25rem 1fr auto;
+    gap: 0.9rem;
+    align-items: center;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--crizal-border, #e6e8ef);
+}
+
+body[data-design="crizal"] .crizal-order-confirm__item:last-child {
+    padding-bottom: 0;
+    border-bottom: 0;
+}
+
+body[data-design="crizal"] .crizal-order-confirm__thumb {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 4.25rem;
+    height: 4.25rem;
+    overflow: hidden;
+    background: var(--crizal-surface-alt, #f4f5f9);
+    border: 1px solid var(--crizal-border, #e6e8ef);
+    border-radius: 0.65rem;
+    color: var(--crizal-muted, #5c5f7a);
+}
+
+body[data-design="crizal"] .crizal-order-confirm__thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+body[data-design="crizal"] .crizal-order-confirm__item-name {
+    margin: 0 0 0.15rem;
+    color: var(--crizal-heading, #14212b);
+    font-weight: 700;
+    line-height: 1.35;
+}
+
+body[data-design="crizal"] .crizal-order-confirm__item-code,
+body[data-design="crizal"] .crizal-order-confirm__item-qty {
+    margin: 0;
+    color: var(--crizal-muted, #5c5f7a);
+    font-size: 0.8125rem;
+}
+
+body[data-design="crizal"] .crizal-order-confirm__item-total {
+    color: var(--crizal-heading, #14212b);
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+body[data-design="crizal"] .crizal-order-confirm__sidebar .crizal-order-confirm__panel {
+    position: sticky;
+    top: 1.25rem;
+}
+
+body[data-design="crizal"] .crizal-order-confirm__totals {
+    margin: 0;
+}
+
+body[data-design="crizal"] .crizal-order-confirm__totals > div {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin: 0 0 0.55rem;
+    font-size: 0.9rem;
+}
+
+body[data-design="crizal"] .crizal-order-confirm__totals dt {
+    margin: 0;
+    color: var(--crizal-muted, #5c5f7a);
+    font-weight: 600;
+}
+
+body[data-design="crizal"] .crizal-order-confirm__totals dd {
+    margin: 0;
+    font-weight: 700;
+    text-align: right;
+}
+
+body[data-design="crizal"] .crizal-order-confirm__discount {
+    color: var(--crizal-sale, #c9113a) !important;
+}
+
+body[data-design="crizal"] .crizal-order-confirm__grand {
+    margin-top: 0.75rem !important;
+    padding-top: 0.75rem;
+    border-top: 1px dashed var(--crizal-border, #e6e8ef);
+}
+
+body[data-design="crizal"] .crizal-order-confirm__grand dt,
+body[data-design="crizal"] .crizal-order-confirm__grand dd {
+    color: var(--crizal-heading, #14212b);
+    font-size: 1.05rem;
+    font-weight: 800;
+}
+
+body[data-design="crizal"] .crizal-order-confirm__grand dd {
+    color: var(--crizal-primary, #067a36);
+}
+
+body[data-design="crizal"] .crizal-order-confirm__card,
+body[data-design="crizal"] .crizal-order-confirm__person,
+body[data-design="crizal"] .crizal-order-confirm__ship {
+    margin: 0;
+    color: var(--crizal-text, #575a7b);
+    font-size: 0.9rem;
+    line-height: 1.55;
+}
+
+body[data-design="crizal"] .crizal-order-confirm__card {
+    margin-top: 0.85rem;
+    padding-top: 0.85rem;
+    border-top: 1px solid var(--crizal-border, #e6e8ef);
+}
+
+body[data-design="crizal"] .crizal-order-confirm__card i {
+    margin-right: 0.35rem;
+    color: var(--crizal-primary, #067a36);
+}
+
+body[data-design="crizal"] .crizal-order-confirm__ship {
+    margin-top: 0.75rem;
+}
+
+body[data-design="crizal"] .crizal-order-confirm__addresses > [class*="col-"] {
+    display: flex;
+}
+
+body[data-design="crizal"] .crizal-order-confirm__addresses .crizal-order-confirm__panel {
+    width: 100%;
+}
+
+body[data-design="crizal"] .crizal-order-confirm__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 0.25rem;
+}
+
+body[data-design="crizal"] .crizal-order-confirm__actions .butn-style8 {
+    min-width: 11rem;
+}
+
+@media (max-width: 991.98px) {
+    body[data-design="crizal"] .crizal-order-confirm__hero {
+        grid-template-columns: 1fr;
+        text-align: center;
+        justify-items: center;
+    }
+
+    body[data-design="crizal"] .crizal-order-confirm__order-no {
+        width: 100%;
+    }
+}
+
+@media (max-width: 767.98px) {
+    body[data-design="crizal"] .crizal-order-confirm__meta {
+        grid-template-columns: 1fr;
+    }
+
+    body[data-design="crizal"] .crizal-order-confirm__item {
+        grid-template-columns: 3.5rem 1fr;
+    }
+
+    body[data-design="crizal"] .crizal-order-confirm__item-total {
+        grid-column: 2;
+        justify-self: start;
+    }
+
+    body[data-design="crizal"] .crizal-order-confirm__actions {
+        flex-direction: column;
+    }
+
+    body[data-design="crizal"] .crizal-order-confirm__actions .butn-style8 {
+        width: 100%;
+        min-width: 0;
+    }
+}
+
+/* ---------- Order status badges ---------- */
+body[data-design="crizal"] .crizal-order-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.2rem 0.65rem;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 800;
+    line-height: 1.3;
+    white-space: nowrap;
+}
+
+body[data-design="crizal"] .crizal-order-status--new,
+body[data-design="crizal"] .crizal-order-status--delivered {
+    background: #e8f8ef;
+    color: var(--crizal-primary, #067a36);
+}
+
+body[data-design="crizal"] .crizal-order-status--pending {
+    background: #fff6e5;
+    color: #b36b00;
+}
+
+body[data-design="crizal"] .crizal-order-status--progress {
+    background: #e8f1fb;
+    color: #1d5aa8;
+}
+
+body[data-design="crizal"] .crizal-order-status--shipped {
+    background: #eef1f4;
+    color: var(--crizal-secondary, #14212b);
+}
+
+body[data-design="crizal"] .crizal-order-status--cancelled {
+    background: #fdecec;
+    color: #c0392b;
+}
+
+body[data-design="crizal"] .crizal-order-status--returned,
+body[data-design="crizal"] .crizal-order-status--refunded,
+body[data-design="crizal"] .crizal-order-status--unknown {
+    background: #f4f5f9;
+    color: var(--crizal-muted, #5c5f7a);
+}
+
+/* ---------- Customer orders list ---------- */
+body[data-design="crizal"] .crizal-orders__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+}
+
+body[data-design="crizal"] .crizal-orders__count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.75rem;
+    height: 1.75rem;
+    padding: 0 0.45rem;
+    border-radius: 999px;
+    background: rgba(6, 122, 54, 0.1);
+    color: var(--crizal-primary, #067a36);
+    font-size: 0.8rem;
+    font-weight: 800;
+}
+
+body[data-design="crizal"] .crizal-orders__lead {
+    margin: -0.35rem 0 1.15rem;
+    color: var(--crizal-muted, #5c5f7a);
+    font-size: 0.9rem;
+}
+
+body[data-design="crizal"] .crizal-orders__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.85rem;
+}
+
+body[data-design="crizal"] .crizal-order-ticket {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 1rem 1.25rem;
+    align-items: center;
+    padding: 1.05rem 1.15rem;
+    border: 1px solid var(--crizal-border, #e6e8ef);
+    border-radius: var(--crizal-radius-lg, 10px);
+    background: var(--crizal-surface-alt, #f4f5f9);
+}
+
+body[data-design="crizal"] .crizal-order-ticket__label {
+    display: block;
+    margin-bottom: 0.2rem;
+    color: var(--crizal-muted, #5c5f7a);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+body[data-design="crizal"] .crizal-order-ticket__number {
+    color: var(--crizal-heading, #14212b) !important;
+    font-size: 1.05rem;
+    font-weight: 800;
+    text-decoration: none !important;
+    word-break: break-all;
+}
+
+body[data-design="crizal"] .crizal-order-ticket__number:hover {
+    color: var(--crizal-primary, #067a36) !important;
+}
+
+body[data-design="crizal"] .crizal-order-ticket__meta {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.75rem 1rem;
+    margin: 0.85rem 0 0.75rem;
+}
+
+body[data-design="crizal"] .crizal-order-ticket__value,
+body[data-design="crizal"] .crizal-order-ticket__total {
+    color: var(--crizal-heading, #14212b);
+    font-weight: 700;
+}
+
+body[data-design="crizal"] .crizal-order-ticket__total {
+    color: var(--crizal-primary, #067a36);
+    font-size: 1.05rem;
+    font-weight: 800;
+}
+
+body[data-design="crizal"] .crizal-order-ticket__ship-empty,
+body[data-design="crizal"] .crizal-order-ticket__track {
+    display: inline-flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.35rem 0.5rem;
+    color: var(--crizal-muted, #5c5f7a);
+    font-size: 0.85rem;
+}
+
+body[data-design="crizal"] .crizal-order-ticket__track {
+    color: var(--crizal-primary, #067a36) !important;
+    font-weight: 700;
+    text-decoration: none !important;
+}
+
+body[data-design="crizal"] .crizal-order-ticket__actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-width: 10.5rem;
+}
+
+body[data-design="crizal"] .crizal-order-ticket__actions .butn-style8 {
+    width: 100%;
+}
+
+body[data-design="crizal"] .crizal-orders__pager {
+    margin-top: 1.25rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--crizal-border, #e6e8ef);
+}
+
+body[data-design="crizal"] .crizal-orders-empty {
+    padding: 2.5rem 1.25rem !important;
+}
+
+body[data-design="crizal"] .crizal-orders-empty__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 3.5rem;
+    height: 3.5rem;
+    margin-bottom: 0.85rem;
+    border-radius: 999px;
+    background: rgba(6, 122, 54, 0.12);
+    color: var(--crizal-primary, #067a36);
+    font-size: 1.35rem;
+}
+
+body[data-design="crizal"] .crizal-orders-empty__title {
+    margin: 0 0 0.4rem;
+    color: var(--crizal-heading, #14212b);
+    font-size: 1.25rem;
+    font-weight: 800;
+}
+
+body[data-design="crizal"] .crizal-orders-empty__text {
+    max-width: 28rem;
+    margin: 0 auto 1.25rem;
+    color: var(--crizal-muted, #5c5f7a);
+}
+
+body[data-design="crizal"] .crizal-order-detail .crizal-order-confirm__hero .crizal-order-status {
+    background: rgba(255, 255, 255, 0.18);
+    color: #fff;
+}
+
+body[data-design="crizal"] .crizal-order-detail__hero-status {
+    display: block;
+    margin: 0.35rem 0 0.55rem;
+}
+
+body[data-design="crizal"] .crizal-order-confirm__item-name a {
+    color: inherit !important;
+    text-decoration: none !important;
+}
+
+body[data-design="crizal"] .crizal-order-confirm__item-name a:hover {
+    color: var(--crizal-primary, #067a36) !important;
+}
+
+body[data-design="crizal"] .crizal-order-detail__count {
+    margin: 0.85rem 0 0;
+    padding-top: 0.85rem;
+    border-top: 1px dashed var(--crizal-border, #e6e8ef);
+    color: var(--crizal-muted, #5c5f7a);
+    font-size: 0.875rem;
+    font-weight: 700;
+}
+
+@media (max-width: 767.98px) {
+    body[data-design="crizal"] .crizal-order-ticket {
+        grid-template-columns: 1fr;
+    }
+
+    body[data-design="crizal"] .crizal-order-ticket__meta {
+        grid-template-columns: 1fr;
+    }
+
+    body[data-design="crizal"] .crizal-order-ticket__actions {
+        min-width: 0;
+    }
+}
+
 .crizal-payment-box #iyzipay-checkout-form {
     min-width: 0;
     max-width: 100%;

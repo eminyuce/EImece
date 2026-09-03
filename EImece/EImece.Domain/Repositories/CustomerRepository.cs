@@ -31,27 +31,26 @@ namespace EImece.Domain.Repositories
         }
 
         /// <summary>
-        /// Targeted promotion of a guest customer to Normal type.
-        /// Reads only Id+GsmNumber, then updates exactly those two columns — no full-entity load/save.
+        /// Promotes a customer to Normal type and normalizes GsmNumber.
+        /// Loads a tracked entity so EF can persist the two fields; a detached stub
+        /// cannot have IsModified set (that threw after successful Iyzico callbacks).
         /// </summary>
         public async Task<bool> PromoteCustomerToNormalTypeAsync(string userId, int normalCustomerType)
         {
-            var info = await EImeceDbContext.Customers.AsNoTracking()
-                .Where(c => c.UserId == userId)
-                .Select(c => new { c.Id, c.GsmNumber })
-                .FirstOrDefaultAsync()
+            var entity = await EImeceDbContext.Customers
+                .FirstOrDefaultAsync(c => c.UserId == userId)
                 .ConfigureAwait(false);
-            if (info == null)
+            if (entity == null)
             {
                 return false;
             }
 
-            var entity = new Customer { Id = info.Id };
-            var entry = EImeceDbContext.Entry(entity);
-            entity.GsmNumber = GeneralHelper.CheckGsmNumber(info.GsmNumber);
+            if (!string.IsNullOrWhiteSpace(entity.GsmNumber) && GeneralHelper.IsGsmNumberValid(entity.GsmNumber))
+            {
+                entity.GsmNumber = GeneralHelper.CheckGsmNumber(entity.GsmNumber);
+            }
+
             entity.CustomerType = normalCustomerType;
-            entry.Property(c => c.GsmNumber).IsModified = true;
-            entry.Property(c => c.CustomerType).IsModified = true;
             await EImeceDbContext.SaveChangesAsync().ConfigureAwait(false);
             return true;
         }

@@ -11,7 +11,7 @@
     var item = Model;
     string urlActionLink = Url.Action("index", "home");
     string ordersLink = Url.Action("CustomerOrders", "Home", new { area = "Customers" });
-    var orderStatusText = EnumHelper.GetEnumDescription((EImeceOrderStatus)item.OrderStatus);
+    var orderStatusText = EImece.Domain.Helpers.EnumHelper.GetEnumDescription((EImeceOrderStatus)item.OrderStatus);
 }
 
 <!-- Page Content -->

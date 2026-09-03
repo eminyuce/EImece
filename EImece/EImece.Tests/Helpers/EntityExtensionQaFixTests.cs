@@ -42,6 +42,51 @@ namespace EImece.Tests.Helpers
         }
 
         [TestMethod]
+        public void BuildPublicApplicationBaseUrl_UsesTunnelHostAndForcesHttps()
+        {
+            var url = EntityExtension.BuildPublicApplicationBaseUrl(
+                protocol: null,
+                forwardedHost: "combining-motion-windsor-temporary.trycloudflare.com",
+                requestAuthority: "localhost:81",
+                forwardedProto: "https",
+                cfVisitorScheme: "https",
+                configuredDomain: "localhost:81",
+                configuredProtocol: "http");
+
+            Assert.AreEqual("https://combining-motion-windsor-temporary.trycloudflare.com", url);
+        }
+
+        [TestMethod]
+        public void BuildPublicApplicationBaseUrl_StripsIisPortFromTryCloudflareHost()
+        {
+            var url = EntityExtension.BuildPublicApplicationBaseUrl(
+                protocol: null,
+                forwardedHost: null,
+                requestAuthority: "combining-motion-windsor-temporary.trycloudflare.com:81",
+                forwardedProto: "https",
+                cfVisitorScheme: "https",
+                configuredDomain: "localhost:81",
+                configuredProtocol: "http");
+
+            Assert.AreEqual("https://combining-motion-windsor-temporary.trycloudflare.com", url);
+        }
+
+        [TestMethod]
+        public void BuildPublicApplicationBaseUrl_FallsBackToConfiguredDomainWhenRequestIsLoopback()
+        {
+            var url = EntityExtension.BuildPublicApplicationBaseUrl(
+                protocol: null,
+                forwardedHost: null,
+                requestAuthority: "127.0.0.1:81",
+                forwardedProto: null,
+                cfVisitorScheme: null,
+                configuredDomain: "combining-motion-windsor-temporary.trycloudflare.com",
+                configuredProtocol: "https");
+
+            Assert.AreEqual("https://combining-motion-windsor-temporary.trycloudflare.com", url);
+        }
+
+        [TestMethod]
         public void NormalizeImageDimensions_FillsZeroSide()
         {
             int w = 0;

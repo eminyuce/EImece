@@ -508,6 +508,7 @@ namespace EImece.Controllers
             }
             var model = new RegisterViewModel();
             model.IsPermissionGranted = true;
+            model.Country = "Türkiye";
             ViewBag.ReturnUrl = returnUrl;
             return View(model);
         }
@@ -534,6 +535,18 @@ namespace EImece.Controllers
             if (ModelState.IsValid && GeneralHelper.IsGsmNumberNotValid(model.PhoneNumber))
             {
                 ModelState.AddModelError("PhoneNumber", Resource.GsmNumberNotValidMessage);
+            }
+            if (ModelState.IsValid && !IyzicoBuyerValidator.IsIyzicoAcceptedEmail(model.Email))
+            {
+                ModelState.AddModelError("Email", Resource.IyzicoEmailNotValidMessage);
+            }
+            if (ModelState.IsValid)
+            {
+                var identity = (model.IdentityNumber ?? string.Empty).Trim();
+                if (identity.Length != 11 || !identity.All(char.IsDigit))
+                {
+                    ModelState.AddModelError("IdentityNumber", Resource.MandatoryField);
+                }
             }
             if (ModelState.IsValid)
             {

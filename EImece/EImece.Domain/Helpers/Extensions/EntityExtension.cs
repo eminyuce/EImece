@@ -776,6 +776,174 @@ namespace EImece.Domain.Helpers.Extensions
         }
 
         /// <summary>
+        /// Origin that external providers (Iyzico callbackUrl) must be able to reach.
+        /// Uses the incoming Host / X-Forwarded-* so a Cloudflare Tunnel HTTPS hostname
+        /// is sent even when IIS is bound to localhost. trycloudflare.com always uses https.
+        /// </summary>
+        public static string GetPublicApplicationBaseUrl(string protocol = null)
+        {
+            string forwardedHost = null;
+            string requestAuthority = null;
+            string forwardedProto = null;
+            string cfVisitorScheme = null;
+
+            try
+            {
+                var request = System.Web.HttpContext.Current != null
+                    ? System.Web.HttpContext.Current.Request
+                    : null;
+                if (request != null)
+                {
+                    forwardedHost = FirstHeaderValue(request.Headers["X-Forwarded-Host"]);
+                    requestAuthority = request.Url != null ? request.Url.Authority : null;
+                    forwardedProto = FirstHeaderValue(request.Headers["X-Forwarded-Proto"]);
+                    cfVisitorScheme = ParseCfVisitorScheme(request.Headers["CF-Visitor"]);
+                }
+            }
+            catch
+            {
+                // Background jobs and unit tests have no HTTP context.
+            }
+
+            return BuildPublicApplicationBaseUrl(
+                protocol,
+                forwardedHost,
+                requestAuthority,
+                forwardedProto,
+                cfVisitorScheme,
+                AppConfig.Domain,
+                AppConfig.HttpProtocol);
+        }
+
+        internal static string BuildPublicApplicationBaseUrl(
+            string protocol,
+            string forwardedHost,
+            string requestAuthority,
+            string forwardedProto,
+            string cfVisitorScheme,
+            string configuredDomain,
+            string configuredProtocol)
+        {
+            var host = FirstHeaderValue(forwardedHost);
+            if (string.IsNullOrEmpty(host) || IsLoopbackAuthority(host))
+            {
+                host = requestAuthority;
+            }
+
+            if (string.IsNullOrEmpty(host) || IsLoopbackAuthority(host))
+            {
+                host = string.IsNullOrEmpty(configuredDomain) ? "localhost" : configuredDomain;
+            }
+
+            host = host.TrimEnd('/');
+
+            var scheme = FirstHeaderValue(protocol)
+                ?? FirstHeaderValue(forwardedProto)
+                ?? FirstHeaderValue(cfVisitorScheme)
+                ?? configuredProtocol
+                ?? "http";
+
+            if (host.IndexOf("trycloudflare.com", StringComparison.OrdinalIgnoreCase) >= 0)
+            {
+                scheme = "https";
+                host = StripHostPort(host);
+            }
+            else if (string.Equals(scheme, "https", StringComparison.OrdinalIgnoreCase))
+            {
+                host = StripWellKnownPort(host, 443);
+                host = StripWellKnownPort(host, 81);
+            }
+            else
+            {
+                host = StripWellKnownPort(host, 80);
+            }
+
+            return scheme + "://" + host;
+        }
+
+        private static string StripHostPort(string host)
+        {
+            if (string.IsNullOrEmpty(host))
+            {
+                return host;
+            }
+
+            var colon = host.LastIndexOf(':');
+            if (colon <= 0)
+            {
+                return host;
+            }
+
+            // IPv6 literals look like [::1]:81 — leave those to the loopback check.
+            if (host.IndexOf(']') >= 0)
+            {
+                return host;
+            }
+
+            return host.Substring(0, colon);
+        }
+
+        private static string StripWellKnownPort(string host, int port)
+        {
+            if (string.IsNullOrEmpty(host))
+            {
+                return host;
+            }
+
+            var suffix = ":" + port.ToString();
+            if (host.EndsWith(suffix, StringComparison.Ordinal))
+            {
+                return host.Substring(0, host.Length - suffix.Length);
+            }
+
+            return host;
+        }
+
+        private static string FirstHeaderValue(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                return null;
+            }
+
+            return value.Split(',')[0].Trim();
+        }
+
+        private static string ParseCfVisitorScheme(string cfVisitor)
+        {
+            if (string.IsNullOrWhiteSpace(cfVisitor))
+            {
+                return null;
+            }
+
+            // Cloudflare sets CF-Visitor: {"scheme":"https"}
+            if (cfVisitor.IndexOf("https", StringComparison.OrdinalIgnoreCase) >= 0)
+            {
+                return "https";
+            }
+
+            if (cfVisitor.IndexOf("http", StringComparison.OrdinalIgnoreCase) >= 0)
+            {
+                return "http";
+            }
+
+            return null;
+        }
+
+        private static bool IsLoopbackAuthority(string authority)
+        {
+            if (string.IsNullOrWhiteSpace(authority))
+            {
+                return true;
+            }
+
+            var host = authority.Split(':')[0].Trim();
+            return string.Equals(host, "localhost", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(host, "127.0.0.1", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(host, "::1", StringComparison.OrdinalIgnoreCase);
+        }
+
+        /// <summary>
         /// Canonical relative path for CMS menu links (home-index, stories-index, stories-categories_*, etc.).
         /// Used by sitemap generation so loc URLs match storefront pretty routes (/s/, /p/, /c/, /i/, …).
         /// </summary>

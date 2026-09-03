@@ -116,7 +116,7 @@ namespace EImece.Domain.Services
                 // Keep callback short. Iyzico Checkout Form auth has failed with 5081 when this
                 // URL included large encrypted o/u query values. BasketId already carries OrderGuid;
                 // PaymentResult can recover userId from the persisted cart.
-                var baseUrl = EntityExtension.GetAbsoluteApplicationBaseUrl(AppConfig.HttpProtocol);
+                var baseUrl = EntityExtension.GetPublicApplicationBaseUrl();
                 callbackUrl = $"{baseUrl}/payment/{actionName}?orderNumber={Uri.EscapeDataString(orderNumber)}";
             }
 
@@ -205,7 +205,7 @@ namespace EImece.Domain.Services
             {
                 _logger.LogDebug("Building callback URL for BuyNow Payment Result...");
                 string o = WebUtility.UrlEncode(EncryptDecryptQueryString.Encrypt(buyNowModel.OrderGuid));
-                var baseUrl = EntityExtension.GetAbsoluteApplicationBaseUrl(AppConfig.HttpProtocol);
+                var baseUrl = EntityExtension.GetPublicApplicationBaseUrl();
                 callbackUrl = $"{baseUrl}/payment/buynowpaymentresult?o={o}";
             }
 

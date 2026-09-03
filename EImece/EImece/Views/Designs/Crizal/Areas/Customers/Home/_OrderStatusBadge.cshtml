@@ -1,0 +1,60 @@
+@using EImece.Domain.Models.Enums
+@using EImece.Domain.Helpers
+@using Resources
+@using System.Resources
+@model int
+@{
+    var os = (EImeceOrderStatus)Model;
+    var rm = new ResourceManager(typeof(Resource));
+    var text = rm.GetString(os.GetType().Name + "_" + os);
+    if (string.IsNullOrEmpty(text))
+    {
+        text = EImece.Domain.Helpers.EnumHelper.GetEnumDescription(os);
+    }
+    var modifier = "new";
+    var icon = "fa-clock";
+    switch (os)
+    {
+        case EImeceOrderStatus.NewlyOrder:
+            modifier = "new";
+            icon = "fa-clock";
+            break;
+        case EImeceOrderStatus.PaymentPending:
+            modifier = "pending";
+            icon = "fa-hourglass-half";
+            break;
+        case EImeceOrderStatus.InProgress:
+            modifier = "progress";
+            icon = "fa-cog";
+            break;
+        case EImeceOrderStatus.Shipped:
+            modifier = "shipped";
+            icon = "fa-shipping-fast";
+            break;
+        case EImeceOrderStatus.Delivered:
+            modifier = "delivered";
+            icon = "fa-check-circle";
+            break;
+        case EImeceOrderStatus.Cancelled:
+            modifier = "cancelled";
+            icon = "fa-times-circle";
+            break;
+        case EImeceOrderStatus.Returned:
+            modifier = "returned";
+            icon = "fa-undo";
+            break;
+        case EImeceOrderStatus.Refunded:
+            modifier = "refunded";
+            icon = "fa-money-bill-wave";
+            break;
+        default:
+            modifier = "unknown";
+            icon = "fa-info-circle";
+            text = Resource.UnknownStatus;
+            break;
+    }
+}
+<span class="crizal-order-status crizal-order-status--@modifier">
+    <i class="fas @icon" aria-hidden="true"></i>
+    @text
+</span>

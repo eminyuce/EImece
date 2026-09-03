@@ -1,5 +1,6 @@
 @model EImece.Models.RegisterViewModel
 @using Resources;
+@using System.Linq;
 @{
     ViewBag.Title = "Register";
 }
@@ -52,8 +53,62 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             @Html.LabelFor(m => m.PhoneNumber, new { @class = "col-form-label" })
-                            @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control" })
+                            @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control", autocomplete = "tel", placeholder = "+90 5XX XXX XX XX" })
+                            <small class="form-text text-muted">@Resource.WhyNeedGsmNumber</small>
                             @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "alert alert-default text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.IdentityNumber, new { @class = "col-form-label" })
+                            @Html.TextBoxFor(m => m.IdentityNumber, new { @class = "form-control", inputmode = "numeric", maxlength = "11", autocomplete = "off" })
+                            <small class="form-text text-muted">@Resource.WhyNeedIdentityNumber</small>
+                            @Html.ValidationMessageFor(m => m.IdentityNumber, "", new { @class = "alert alert-default text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <input type="hidden" id="SelectedCity" value="@Model.City" />
+                            @Html.LabelFor(m => m.City, new { @class = "col-form-label" })
+                            @Html.DropDownListFor(m => m.City, new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"), new { @class = "form-control", id = "Cities" })
+                            @Html.ValidationMessageFor(m => m.City, "", new { @class = "alert alert-default text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <input type="hidden" id="SelectedTown" value="@Model.Town" />
+                            @Html.LabelFor(m => m.Town, new { @class = "col-form-label" })
+                            @Html.DropDownListFor(m => m.Town, new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"), new { @class = "form-control", id = "Towns" })
+                            @Html.ValidationMessageFor(m => m.Town, "", new { @class = "alert alert-default text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <input type="hidden" id="SelectedDistrict" value="@Model.District" />
+                            @Html.LabelFor(m => m.District, new { @class = "col-form-label" })
+                            @Html.DropDownListFor(m => m.District, new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"), new { @class = "form-control", id = "Districts" })
+                            @Html.ValidationMessageFor(m => m.District, "", new { @class = "alert alert-default text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Street, new { @class = "col-form-label" })
+                            @Html.TextBoxFor(m => m.Street, new { @class = "form-control", autocomplete = "street-address" })
+                            @Html.ValidationMessageFor(m => m.Street, "", new { @class = "alert alert-default text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.ZipCode, new { @class = "col-form-label" })
+                            @Html.TextBoxFor(m => m.ZipCode, new { @class = "form-control", autocomplete = "postal-code" })
+                            @Html.ValidationMessageFor(m => m.ZipCode, "", new { @class = "alert alert-default text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Country, new { @class = "col-form-label" })
+                            @Html.DropDownListFor(m => m.Country, EImece.Web.Helpers.WebGeneralHelper.GetStaticCountries(), new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Country, "", new { @class = "alert alert-default text-danger" })
                         </div>
                     </div>
 

@@ -89,11 +89,6 @@ namespace EImece.Models
 
     public class RegisterViewModel : CustomerRegistrationDto
     {
-        [EmailAddress(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.NotValidEmailAddress))]
-        [Display(ResourceType = typeof(Resource), Name = nameof(Resource.Email))]
-        [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.EmailRequired))]
-        public string Email { get; set; }
-
         [Required(ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.PasswordRequired))]
         [StringLength(100, ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = nameof(Resource.PasswordStringLength), MinimumLength = 6)]
         [DataType(DataType.Password)]

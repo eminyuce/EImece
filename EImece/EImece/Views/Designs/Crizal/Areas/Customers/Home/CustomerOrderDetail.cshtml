@@ -5,193 +5,271 @@
 @using EImece.Domain.Models.FrontModels;
 @using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain.Models.Enums;
-@using EImece.Domain.Models.DTOs;
-@using System.Resources;
 @model CustomerOrderDetailViewModel
 
 @{
     var order = Model.Order;
     if (order == null) { throw new System.Web.HttpException(404, "Order not found"); }
-    var os = (EImeceOrderStatus)order.OrderStatus;
-    var rm = new ResourceManager(typeof(Resource));
-    var orderStatusText = rm.GetString(os.GetType().Name + "_" + os);
+    ViewBag.Title = string.Format("{0} {1}", Resource.OrderSummary, order.OrderNumber);
+    var shipping = order.ShippingAddress;
+    var billing = order.BillingAddress;
+    var sameAddress = shipping != null && billing != null && billing.EqualsAddress(shipping);
+    var trackingLink = Url.Action("CargoTracking", "Payment", new { id = order.OrderNumber, area = "" });
+    var ordersLink = Url.Action("CustomerOrders", "Home", new { area = "customers" });
+    var shopLink = Url.Action("Index", "Home", new { area = "" });
+    var hasTracking = !string.IsNullOrEmpty(order.ShipmentTrackingNumber);
+    var externalTracking = hasTracking
+        ? string.Format("{0}/{1}", Constants.ShipmentTrackingCompanyLink, HttpUtility.HtmlEncode(order.ShipmentTrackingNumber.ToStr()))
+        : trackingLink;
+    var hasInstallment = !string.IsNullOrEmpty(order.Installment) && !order.Installment.Equals("1");
+    var cardTypeText = (order.CardType ?? string.Empty).Replace("_", " ");
+    var deliveryFrom = order.CreatedDate.AddDays(3);
+    var deliveryTo = order.CreatedDate.AddDays(14);
+    var itemCount = order.OrderProducts != null ? order.OrderProducts.Sum(r => r.Quantity) : 0;
 }
 
-<!-- Page Content-->
-<div class="container pt-lg-3 pb-5 mb-sm-3">
-    <!-- Toast notifications-->
-    <div class="toast-container toast-bottom-center">
-        <div class="toast mb-3" id="profile-toast" data-bs-delay="5000" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="toast-header bg-success text-white">
-                <i class="fas fa-check-circle me-2" aria-hidden="true"></i><span class="fw-semibold me-auto">Updatedblogs!</span>
-                <button class="btn-close text-white ms-2 mb-1" type="button" data-bs-dismiss="toast" aria-label="Close"><span aria-hidden="true">×</span></button>
-            </div>
-            <div class="toast-body">@Resource.YourProfileUpdatedSuccessfully</div>
-        </div>
-    </div>
-    <div class="row pt-1">
-        <!-- Main content-->
-        <div class="col-lg-12">
-            @Html.Partial("_CustomerSummaryDetails", Model.Customer)
+<div class="container customer-page pt-lg-3 pb-5 mb-sm-3 crizal-order-detail">
+    @Html.Partial("_CustomerSummaryDetails", Model.Customer)
 
-            <!-- Order Details-->
-            <div class="card mb-4">
-                <div class="card-header">
-                    <h4 class="card-title">@string.Format("{0} - {1} - {2}", Resource.OrderSummary, order.OrderNumber, orderStatusText)</h4>
+    <section class="crizal-order-confirm__hero" aria-labelledby="order-detail-heading">
+        <div class="crizal-order-confirm__icon" aria-hidden="true">
+            <i class="fas fa-receipt"></i>
+        </div>
+        <div class="crizal-order-confirm__hero-copy">
+            <p class="crizal-order-confirm__kicker">@Resource.OrderSummary</p>
+            <h2 id="order-detail-heading" class="crizal-order-confirm__title">@order.OrderNumber</h2>
+            <p class="crizal-order-confirm__lead">@order.CreatedDate.ToString("dddd, dd MMMM yyyy HH:mm")</p>
+        </div>
+        <div class="crizal-order-confirm__order-no">
+            <span class="crizal-order-confirm__order-label">@Resource.OrderStatus</span>
+            <span class="crizal-order-detail__hero-status">@Html.Partial("_OrderStatusBadge", (object)order.OrderStatus)</span>
+            <a class="crizal-order-confirm__track" href="@externalTracking" target="@(hasTracking ? "_blank" : null)" rel="@(hasTracking ? "noopener noreferrer" : null)">
+                <i class="fas fa-truck" aria-hidden="true"></i>
+                @Resource.TrackYourCargo
+            </a>
+        </div>
+    </section>
+
+    <ul class="crizal-order-confirm__meta">
+        <li>
+            <span class="crizal-order-confirm__meta-label">@Resource.DatePurchased</span>
+            <span class="crizal-order-confirm__meta-value">@order.CreatedDate.ToString("dd MMMM yyyy, HH:mm")</span>
+        </li>
+        <li>
+            <span class="crizal-order-confirm__meta-label">@Resource.EstimatedDelivery</span>
+            <span class="crizal-order-confirm__meta-value">@deliveryFrom.ToString("dd MMMM") – @deliveryTo.ToString("dd MMMM yyyy")</span>
+        </li>
+        <li>
+            <span class="crizal-order-confirm__meta-label">@Resource.Total</span>
+            <span class="crizal-order-confirm__meta-value">@order.PaidPriceDecimal.CurrencySign()</span>
+        </li>
+    </ul>
+
+    <div class="row crizal-order-confirm__grid">
+        <div class="col-lg-8">
+            <div class="common-block crizal-order-confirm__panel mb-4">
+                <div class="line-title">
+                    <h2 class="h6 mb-0">@Resource.OrderItems</h2>
                 </div>
-                <div class="card-body pb-0">
-                    <div class="text-center">
-                        <b>@Resource.DatePurchased - @order.CreatedDate.ToString("dddd, dd MMMM yyyy HH:mm:ss")</b>
-                    </div>
-                    @if (order.ShippingAddress != null)
+                <ul class="crizal-order-confirm__items">
+                    @if (order.OrderProducts != null)
                     {
-                        <div class="d-sm-flex justify-content-between mb-4 pb-4 border-bottom">
-                            <div class="pt-2 pt-sm-3 ps-sm-3 mx-auto mx-sm-0 text-center">
-                                <div class="alert alert-primary">@Resource.ShippingAddress <br /> @order.ShippingAddress.AddressInfo</div>
-                            </div>
-                        </div>
-                    }
-                    @foreach (var orderProduct in order.OrderProducts)
-                    {
-                        var ProductSpecItems = JsonConvert.DeserializeObject<List<EImece.Domain.Models.DTOs.ProductSpecItem>>(orderProduct.ProductSpecItems.ToStr());
-                        var product = orderProduct.Product;
-                        var productName = !string.IsNullOrWhiteSpace(orderProduct.ProductName) ? orderProduct.ProductName : (product != null ? product.Name : "-");
-                        var categoryName = !string.IsNullOrWhiteSpace(orderProduct.CategoryName) ? orderProduct.CategoryName : (product != null ? product.ProductCategoryName : "-");
-                        var detailUrl = (product != null && orderProduct.ProductId.HasValue && orderProduct.ProductId.Value > 0) ? product.DetailPageAbsoluteUrl : "#";
-                        var imgTag = !string.IsNullOrWhiteSpace(orderProduct.ProductImageUrl)
-                            ? orderProduct.ProductImageUrl
-                            : (product != null ? product.GetCroppedImageUrl(product.MainImageId, 160, 0) : AppConfig.GetDefaultImage(160, 0));
-                        <!-- Item-->
-                        <div class="d-sm-flex justify-content-between mb-4 pb-4 border-bottom">
-                            <div class="media d-block d-sm-flex text-center text-sm-start">
-                                <a class="cart-item-thumb mx-auto me-sm-4" target="_blank" href="@detailUrl"><img src="@imgTag" alt="@productName"></a>
-                                <div class="media-body pt-3">
-                                    <h3 class="product-card-title fw-semibold border-0 pb-0"><a target="_blank" href="@detailUrl">@productName</a></h3>
-                                    @if (!string.IsNullOrWhiteSpace(orderProduct.ProductCode))
+                        foreach (var orderProduct in order.OrderProducts)
+                        {
+                            var specItems = JsonConvert.DeserializeObject<List<EImece.Domain.Models.DTOs.ProductSpecItem>>(orderProduct.ProductSpecItems.ToStr());
+                            var product = orderProduct.Product;
+                            var productName = !string.IsNullOrWhiteSpace(orderProduct.ProductName) ? orderProduct.ProductName : (product != null ? product.Name : "-");
+                            var categoryName = !string.IsNullOrWhiteSpace(orderProduct.CategoryName) ? orderProduct.CategoryName : (product != null ? product.ProductCategoryName : null);
+                            var detailUrl = (product != null && orderProduct.ProductId.HasValue && orderProduct.ProductId.Value > 0) ? product.DetailPageAbsoluteUrl : null;
+                            var imgTag = !string.IsNullOrWhiteSpace(orderProduct.ProductImageUrl)
+                                ? orderProduct.ProductImageUrl
+                                : (product != null ? product.GetCroppedImageUrl(product.MainImageId, 200, 0) : null);
+                            <li class="crizal-order-confirm__item">
+                                <div class="crizal-order-confirm__thumb" aria-hidden="true">
+                                    @if (!string.IsNullOrEmpty(imgTag))
                                     {
-                                        <div class="small"><span class="text-muted me-2">@Resource.Code:</span>@orderProduct.ProductCode</div>
-                                    }
-                                    <div class="small"><span class="text-muted me-2">@Resource.UnitPrice:</span>@orderProduct.Price.CurrencySign()</div>
-                                    <div class="small"><span class="text-muted me-2">@Resource.ProductCategory:</span>@categoryName</div>
-                                    @if (ProductSpecItems.IsNotEmpty())
-                                    {
-                                        foreach (var psi in ProductSpecItems)
+                                        if (!string.IsNullOrEmpty(detailUrl))
                                         {
-                                            <div class="small"><span class="text-muted me-2">@psi.SpecsName:</span>@psi.SpecsValue</div>
+                                            <a href="@detailUrl" target="_blank" rel="noopener noreferrer"><img src="@imgTag" alt="" /></a>
+                                        }
+                                        else
+                                        {
+                                            <img src="@imgTag" alt="" />
                                         }
                                     }
+                                    else
+                                    {
+                                        <i class="fas fa-box"></i>
+                                    }
                                 </div>
-                            </div>
-                            <div class="pt-2 pt-sm-3 ps-sm-3 mx-auto mx-sm-0 text-center">
-                                <div class="text-muted mb-sm-2">@Resource.Quantity</div>
-                                <div class="fw-semibold">@orderProduct.Quantity</div>
-                            </div>
-                            <div class="pt-2 pt-sm-3 ps-sm-3 mx-auto mx-sm-0 text-center">
-                                <div class="text-muted mb-sm-2">@Resource.Subtotal:</div>
-                                <div class="fw-semibold">@orderProduct.TotalPrice.CurrencySign()</div>
-                            </div>
-                        </div>
-                    }
-                    <!-- Summary-->
-                    <div class="d-sm-flex justify-content-between mb-4 pb-4 border-bottom">
-                        <div class="media d-block d-sm-flex text-center text-sm-start">
-                            <div class="media-body pt-3">
-                            </div>
-                        </div>
-                        <div class="pt-2 pt-sm-3 ps-sm-3 mx-auto mx-sm-0 text-center">
-                            <div class="fw-semibold">@order.OrderProducts.Sum(r => r.Quantity) @Resource.PieceOfProductPurchased</div>
-                        </div>
-                        <div class="pt-2 pt-sm-3 ps-sm-3 mx-auto mx-sm-0 text-center">
-                            <div class="fw-semibold">@Resource.Total: @order.OrderProducts.Sum(r => r.TotalPrice).CurrencySign()</div>
-                        </div>
-                    </div>
-
-                    <!-- Additional Order Information (Eksik Veriler Buraya Eklendi)-->
-                    <div class="mb-4 pb-4 border-bottom">
-                        <ul class="list-unstyled">
-                            <li>
-                                <strong>@Resource.ShipmentTrackingNumber:</strong>
-                                @if (!string.IsNullOrEmpty(order.ShipmentTrackingNumber))
-                                {
-                                    <a href="@string.Format("{0}/{1}", Constants.ShipmentTrackingCompanyLink, HttpUtility.HtmlEncode(order.ShipmentTrackingNumber.ToStr()))" target="_blank">
-                                        @order.ShipmentTrackingNumber
-                                    </a>
-                                }
-                                else
-                                {
-                                    @Resource.NoShipmentDoneYetForYourOrder
-                                }
+                                <div class="crizal-order-confirm__item-body">
+                                    <p class="crizal-order-confirm__item-name">
+                                        @if (!string.IsNullOrEmpty(detailUrl))
+                                        {
+                                            <a href="@detailUrl" target="_blank" rel="noopener noreferrer">@productName</a>
+                                        }
+                                        else
+                                        {
+                                            @productName
+                                        }
+                                    </p>
+                                    @if (!string.IsNullOrWhiteSpace(orderProduct.ProductCode))
+                                    {
+                                        <p class="crizal-order-confirm__item-code">@orderProduct.ProductCode</p>
+                                    }
+                                    @if (!string.IsNullOrWhiteSpace(categoryName))
+                                    {
+                                        <p class="crizal-order-confirm__item-qty">@Resource.ProductCategory: @categoryName</p>
+                                    }
+                                    @if (specItems != null && specItems.Count > 0)
+                                    {
+                                        foreach (var psi in specItems)
+                                        {
+                                            <p class="crizal-order-confirm__item-qty">@psi.SpecsName: @psi.SpecsValue</p>
+                                        }
+                                    }
+                                    <p class="crizal-order-confirm__item-qty">@Resource.Quantity: @orderProduct.Quantity × @orderProduct.Price.CurrencySign()</p>
+                                </div>
+                                <div class="crizal-order-confirm__item-total">@orderProduct.TotalPrice.CurrencySign()</div>
                             </li>
-                            @if (!string.IsNullOrEmpty(order.ShipmentCompanyName))
-                            {
-                                <li><strong>@Resource.ShipmentCompany:</strong> @order.ShipmentCompanyName</li>
-                            }
-                            @if (!string.IsNullOrEmpty(order.AdminOrderNote))
-                            {
-                                <li><strong>@Resource.AdminOrderNote:</strong> @order.AdminOrderNote</li>
-                            }
-                            @if (!string.IsNullOrEmpty(order.OrderComments))
-                            {
-                                <li><strong>@Resource.OrderComments:</strong> @order.OrderComments</li>
-                            }
-                        </ul>
-                    </div>
-
-                </div>
-                <!-- Footer-->
-                <div class="card-footer flex-wrap justify-content-between bg-secondary">
-                    <div class="px-2 py-1"><span class="text-muted"> </span><span class="fw-semibold"></span></div>
-                    <div class="px-2 py-1"><span class="text-muted">@Resource.CargoPrice: </span><span class="text-lg fw-semibold">@order.CargoPrice.CurrencySign()</span></div>
-                    @if (!String.IsNullOrEmpty(order.Coupon))
-                    {
-                        <div class="px-2 py-1"><span class="text-muted"> @Resource.Coupon (@order.Coupon): </span><span class="text-lg fw-semibold">@order.CouponDiscount TL</span></div>
+                        }
                     }
-                    <div class="px-2 py-1"><span class="text-muted">@Resource.TotalPriceOfYourOrderWithCargoPrice: </span><span class="text-lg fw-semibold">@order.PaidPriceDecimal.CurrencySign()</span></div>
-                </div>
+                </ul>
+                <p class="crizal-order-detail__count">@itemCount @Resource.PieceOfProductPurchased</p>
             </div>
         </div>
-        <div class="col-lg-12">
-            @Html.ActionLink(Resource.BackToList,
-                     "customerorders", "Home", null,
-                     new { @class = "btn btn-pill btn-outline-info", area = "customers" })
+        <div class="col-lg-4 crizal-order-confirm__sidebar">
+            <div class="common-block crizal-order-confirm__panel mb-4">
+                <div class="line-title">
+                    <h2 class="h6 mb-0">@Resource.PaymentDetails</h2>
+                </div>
+                <dl class="crizal-order-confirm__totals">
+                    @if (!string.IsNullOrEmpty(order.Price))
+                    {
+                        <div>
+                            <dt>@Resource.Subtotal</dt>
+                            <dd>@order.Price.ToDecimal().CurrencySign()</dd>
+                        </div>
+                    }
+                    @if (order.CargoPrice > 0)
+                    {
+                        <div>
+                            <dt>@Resource.CargoPrice</dt>
+                            <dd>@order.CargoPrice.CurrencySign()</dd>
+                        </div>
+                    }
+                    else
+                    {
+                        <div>
+                            <dt>@Resource.CargoPrice</dt>
+                            <dd>@Resource.FreeShipping</dd>
+                        </div>
+                    }
+                    @if (!string.IsNullOrEmpty(order.Coupon))
+                    {
+                        <div>
+                            <dt>@Resource.Coupon (@order.Coupon)</dt>
+                            <dd class="crizal-order-confirm__discount">-@order.CouponDiscount.ToDecimal().CurrencySign()</dd>
+                        </div>
+                    }
+                    @if (hasInstallment)
+                    {
+                        <div>
+                            <dt>@Resource.InstallmentCount</dt>
+                            <dd>@order.InstallmentDescription</dd>
+                        </div>
+                    }
+                    <div class="crizal-order-confirm__grand">
+                        <dt>@Resource.TotalPaid</dt>
+                        <dd>@order.PaidPriceDecimal.CurrencySign()</dd>
+                    </div>
+                </dl>
+                @if (!string.IsNullOrEmpty(order.LastFourDigits))
+                {
+                    <p class="crizal-order-confirm__card">
+                        <i class="fas fa-credit-card" aria-hidden="true"></i>
+                        @order.CardFamily @cardTypeText — @Resource.EndingIn @order.LastFourDigits
+                    </p>
+                }
+            </div>
         </div>
     </div>
-</div>
 
-@helper createOrderStatus(OrderDto o)
-{
-    var os = (EImeceOrderStatus)o.OrderStatus;
-    var rm = new ResourceManager(typeof(Resource));
-    var resourceDisplayName = rm.GetString(os.GetType().Name + "_" + os);
-    var orderStatusText = EImece.Domain.Helpers.EnumHelper.GetEnumDescription(os);
-    switch (os)
+    <div class="row crizal-order-confirm__addresses">
+        <div class="col-md-6">
+            <div class="common-block crizal-order-confirm__panel mb-4">
+                <div class="line-title">
+                    <h2 class="h6 mb-0">@Resource.ShippingAddress</h2>
+                </div>
+                @if (shipping != null)
+                {
+                    <p class="crizal-order-confirm__person @(string.IsNullOrEmpty(order.ShipmentCompanyName) && !hasTracking ? "mb-0" : "")">
+                        @shipping.Name<br />
+                        @shipping.Description<br />
+                        @shipping.City, @shipping.Country @shipping.ZipCode
+                    </p>
+                }
+                @if (!string.IsNullOrEmpty(order.ShipmentCompanyName) || hasTracking)
+                {
+                    <p class="crizal-order-confirm__ship mb-0">
+                        @if (!string.IsNullOrEmpty(order.ShipmentCompanyName))
+                        {
+                            <strong>@Resource.ShipmentCompany:</strong> @order.ShipmentCompanyName<br />
+                        }
+                        <strong>@Resource.ShipmentTrackingNumber:</strong>
+                        @if (hasTracking)
+                        {
+                            <a href="@externalTracking" target="_blank" rel="noopener noreferrer">@order.ShipmentTrackingNumber</a>
+                        }
+                        else
+                        {
+                            @Resource.NoShipmentDoneYetForYourOrder
+                        }
+                    </p>
+                }
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="common-block crizal-order-confirm__panel mb-4">
+                <div class="line-title">
+                    <h2 class="h6 mb-0">@Resource.BillingAddress</h2>
+                </div>
+                @if (sameAddress)
+                {
+                    <p class="crizal-order-confirm__person mb-0">@Resource.IsSameAsShippingAddress</p>
+                }
+                else if (billing != null)
+                {
+                    <p class="crizal-order-confirm__person mb-0">
+                        @billing.Name<br />
+                        @billing.Description<br />
+                        @billing.City, @billing.Country @billing.ZipCode
+                    </p>
+                }
+            </div>
+        </div>
+    </div>
+
+    @if (!string.IsNullOrEmpty(order.AdminOrderNote) || !string.IsNullOrEmpty(order.OrderComments))
     {
-        case EImeceOrderStatus.NewlyOrder:
-            <span class="badge badge-secondary m-0">@resourceDisplayName</span>
-            break;
-        case EImeceOrderStatus.PaymentPending:
-            <span class="badge badge-primary m-0">@resourceDisplayName</span>
-            break;
-        case EImeceOrderStatus.InProgress:
-            <span class="badge badge-warning m-0">@resourceDisplayName</span>
-            break;
-        case EImeceOrderStatus.Shipped:
-            <span class="badge badge-dark m-0">@resourceDisplayName</span>
-            break;
-        case EImeceOrderStatus.Delivered:
-            <span class="badge badge-success m-0">@resourceDisplayName</span>
-            break;
-        case EImeceOrderStatus.Cancelled:
-            <span class="badge badge-danger m-0">@resourceDisplayName</span>
-            break;
-        case EImeceOrderStatus.Returned:
-            <span class="badge badge-info m-0">@resourceDisplayName</span>
-            break;
-        case EImeceOrderStatus.Refunded:
-            <span class="badge badge-light m-0">@resourceDisplayName</span>
-            break;
-        default:
-            <span class="badge badge-secondary m-0">@Resource.UnknownStatus</span>
-            break;
+        <div class="common-block crizal-order-confirm__panel mb-4">
+            <div class="line-title">
+                    <h2 class="h6 mb-0">@Resource.OrderComments</h2>
+            </div>
+            @if (!string.IsNullOrEmpty(order.AdminOrderNote))
+            {
+                <p class="crizal-order-confirm__person"><strong>@Resource.AdminOrderNote:</strong> @order.AdminOrderNote</p>
+            }
+            @if (!string.IsNullOrEmpty(order.OrderComments))
+            {
+                <p class="crizal-order-confirm__person mb-0"><strong>@Resource.OrderComments:</strong> @order.OrderComments</p>
+            }
+        </div>
     }
-}
+
+    <div class="crizal-order-confirm__actions crizal-checkout-nav">
+        <a href="@ordersLink" class="butn-style8 outline">@Resource.BackToList</a>
+        <a href="@shopLink" class="butn-style8">@Resource.ContinueShopping</a>
+        <a href="@externalTracking" class="butn-style8 outline" target="@(hasTracking ? "_blank" : null)" rel="@(hasTracking ? "noopener noreferrer" : null)">@Resource.TrackYourCargo</a>
+    </div>
+</div>

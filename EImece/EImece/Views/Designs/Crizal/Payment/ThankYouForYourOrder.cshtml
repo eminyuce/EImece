@@ -11,105 +11,193 @@
     var item = Model;
     string urlActionLink = Url.Action("index", "home");
     string ordersLink = Url.Action("CustomerOrders", "Home", new { area = "Customers" });
+    string trackingLink = Url.Action("CargoTracking", "Payment", new { id = item.OrderNumber });
     var customer = item.Customer;
     var shipping = item.ShippingAddress;
-    var orderStatusText = EnumHelper.GetEnumDescription((EImeceOrderStatus)item.OrderStatus);
+    var billing = item.BillingAddress;
+    var orderStatusText = EImece.Domain.Helpers.EnumHelper.GetEnumDescription((EImeceOrderStatus)item.OrderStatus);
+    var hasInstallment = !string.IsNullOrEmpty(item.Installment) && !item.Installment.Equals("1");
+    var sameAddress = shipping != null && billing != null && billing.EqualsAddress(shipping);
+    var deliveryFrom = item.CreatedDate.AddDays(3);
+    var deliveryTo = item.CreatedDate.AddDays(14);
+    var cardTypeText = (item.CardType ?? string.Empty).Replace("_", " ");
 }
 
-<section class="page-title-wrapper" aria-label="Page title">
+<section class="page-title-wrapper crizal-order-confirm-head" aria-label="Page title">
     <div class="container">
         <nav class="crizal-breadcrumb" aria-label="breadcrumb">
             <ol class="crizal-breadcrumb__list breadcrumb">
                 @Html.Partial("~/Views/Designs/Crizal/Shared/_CrizalBreadcrumbHomeItem.cshtml")
                 <li class="crizal-breadcrumb__item breadcrumb-item active" aria-current="page">
-                    <span class="crizal-breadcrumb__current">@Resource.ThankYouForYourOrder</span>
+                    <span class="crizal-breadcrumb__current">@Resource.Thanks</span>
                 </li>
             </ol>
         </nav>
-        <h1 class="page-title">@Resource.ThankYouForYourOrder</h1>
+        <h1 class="visually-hidden">@Resource.ThankYouForYourOrder</h1>
     </div>
 </section>
 
-<div class="container pb-5 mb-sm-4">
+<div class="container pb-5 mb-sm-4 crizal-order-confirm">
     @Html.Partial("_PaymentSteps", "ThankYouForYourOrder", new ViewDataDictionary(ViewData){
        {"AnyProducts", false}
     })
 
-    <div class="common-block crizal-order-result text-center mb-4">
-        <div class="crizal-order-result__icon crizal-order-result__icon--success" aria-hidden="true">
+    <section class="crizal-order-confirm__hero" aria-labelledby="order-confirm-heading">
+        <div class="crizal-order-confirm__icon" aria-hidden="true">
             <i class="fas fa-check"></i>
         </div>
-        <h2 class="h4 mb-2">@Resource.ThankYouForYourOrder</h2>
-        <p class="mb-0">@string.Format(Resource.OrderSuccessfullyCompleted, item.OrderNumber)</p>
-        <p class="h5 mt-3 mb-0">
-            <span class="text-muted font-size-sm d-block">@Resource.OrderNumber</span>
-            <a href="@Url.Action("CargoTracking", "Payment", new { id = item.OrderNumber })">@item.OrderNumber</a>
-        </p>
-    </div>
+        <div class="crizal-order-confirm__hero-copy">
+            <p class="crizal-order-confirm__kicker">@Resource.Thanks</p>
+            <h2 id="order-confirm-heading" class="crizal-order-confirm__title">@Resource.ThankYouForYourOrder</h2>
+            <p class="crizal-order-confirm__lead">@string.Format(Resource.OrderSuccessfullyCompleted, item.OrderNumber)</p>
+            @if (customer != null && !string.IsNullOrEmpty(customer.Email))
+            {
+                <p class="crizal-order-confirm__email">
+                    <i class="fas fa-envelope" aria-hidden="true"></i>
+                    @customer.Email
+                </p>
+            }
+        </div>
+        <div class="crizal-order-confirm__order-no">
+            <span class="crizal-order-confirm__order-label">@Resource.OrderNumber</span>
+            <a class="crizal-order-confirm__order-value" href="@trackingLink">@item.OrderNumber</a>
+            <a class="crizal-order-confirm__track" href="@trackingLink">
+                <i class="fas fa-truck" aria-hidden="true"></i>
+                @Resource.TrackYourCargo
+            </a>
+        </div>
+    </section>
 
-    <div class="row">
+    <ul class="crizal-order-confirm__meta">
+        <li>
+            <span class="crizal-order-confirm__meta-label">@Resource.OrderDate</span>
+            <span class="crizal-order-confirm__meta-value">@item.CreatedDate.ToString("dd MMMM yyyy, HH:mm")</span>
+        </li>
+        <li>
+            <span class="crizal-order-confirm__meta-label">@Resource.OrderStatus</span>
+            <span class="crizal-order-confirm__status">@orderStatusText</span>
+        </li>
+        <li>
+            <span class="crizal-order-confirm__meta-label">@Resource.EstimatedDelivery</span>
+            <span class="crizal-order-confirm__meta-value">@deliveryFrom.ToString("dd MMMM") – @deliveryTo.ToString("dd MMMM yyyy")</span>
+        </li>
+    </ul>
+
+    <div class="row crizal-order-confirm__grid">
         <div class="col-lg-8">
-            <div class="common-block mb-4">
-                <div class="line-title">
-                    <h2 class="h6 mb-0">@Resource.OrderSummary</h2>
-                </div>
-                <ul class="list-unstyled mb-0 font-size-sm">
-                    <li class="mb-1"><strong>@Resource.OrderDate:</strong> @item.CreatedDate.ToString("dd MMMM yyyy, HH:mm")</li>
-                    <li class="mb-1"><strong>@Resource.OrderStatus:</strong> @orderStatusText</li>
-                    <li class="mb-0"><strong>@Resource.EstimatedDelivery:</strong> @item.CreatedDate.AddDays(3).ToString("dd MMMM yyyy") – @item.CreatedDate.AddDays(14).ToString("dd MMMM yyyy")</li>
-                </ul>
-            </div>
-
-            <div class="common-block mb-4">
+            <div class="common-block crizal-order-confirm__panel mb-4">
                 <div class="line-title">
                     <h2 class="h6 mb-0">@Resource.OrderItems</h2>
                 </div>
-                <div class="table-responsive">
-                    <table class="table table-sm table-borderless mb-0">
-                        <thead>
-                            <tr>
-                                <th>@Resource.ProductName</th>
-                                <th class="text-center">@Resource.Quantity</th>
-                                <th class="text-end">@Resource.UnitPrice</th>
-                                <th class="text-end">@Resource.TotalPrice</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var product in item.OrderProducts)
-                            {
-                                <tr>
-                                    <td>@product.ProductName</td>
-                                    <td class="text-center">@product.Quantity</td>
-                                    <td class="text-end">@product.ProductSalePrice.CurrencySign()</td>
-                                    <td class="text-end">@product.TotalPrice.CurrencySign()</td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
+                <ul class="crizal-order-confirm__items">
+                    @foreach (var product in item.OrderProducts)
+                    {
+                        <li class="crizal-order-confirm__item">
+                            <div class="crizal-order-confirm__thumb" aria-hidden="true">
+                                @if (!string.IsNullOrEmpty(product.ProductImageUrl))
+                                {
+                                    <img src="@product.ProductImageUrl" alt="" />
+                                }
+                                else
+                                {
+                                    <i class="fas fa-box"></i>
+                                }
+                            </div>
+                            <div class="crizal-order-confirm__item-body">
+                                <p class="crizal-order-confirm__item-name">@product.ProductName</p>
+                                @if (!string.IsNullOrEmpty(product.ProductCode))
+                                {
+                                    <p class="crizal-order-confirm__item-code">@product.ProductCode</p>
+                                }
+                                <p class="crizal-order-confirm__item-qty">@Resource.Quantity: @product.Quantity × @product.ProductSalePrice.CurrencySign()</p>
+                            </div>
+                            <div class="crizal-order-confirm__item-total">@product.TotalPrice.CurrencySign()</div>
+                        </li>
+                    }
+                </ul>
             </div>
         </div>
-        <div class="col-lg-4">
-            <div class="common-block mb-4">
+        <div class="col-lg-4 crizal-order-confirm__sidebar">
+            <div class="common-block crizal-order-confirm__panel mb-4">
+                <div class="line-title">
+                    <h2 class="h6 mb-0">@Resource.PaymentDetails</h2>
+                </div>
+                <dl class="crizal-order-confirm__totals">
+                    @if (!string.IsNullOrEmpty(item.Price))
+                    {
+                        <div>
+                            <dt>@Resource.Subtotal</dt>
+                            <dd>@item.Price.ToDecimal().CurrencySign()</dd>
+                        </div>
+                    }
+                    @if (item.CargoPrice > 0)
+                    {
+                        <div>
+                            <dt>@Resource.ShippingCost</dt>
+                            <dd>@item.CargoPrice.CurrencySign()</dd>
+                        </div>
+                    }
+                    else
+                    {
+                        <div>
+                            <dt>@Resource.ShippingCost</dt>
+                            <dd>@Resource.FreeShipping</dd>
+                        </div>
+                    }
+                    @if (!string.IsNullOrEmpty(item.Coupon))
+                    {
+                        <div>
+                            <dt>@Resource.CouponDiscount (@item.Coupon)</dt>
+                            <dd class="crizal-order-confirm__discount">-@item.CouponDiscount.ToDecimal().CurrencySign()</dd>
+                        </div>
+                    }
+                    @if (hasInstallment)
+                    {
+                        <div>
+                            <dt>@Resource.InstallmentCount</dt>
+                            <dd>@item.InstallmentDescription</dd>
+                        </div>
+                    }
+                    <div class="crizal-order-confirm__grand">
+                        <dt>@Resource.TotalPaid</dt>
+                        <dd>@item.PaidPriceDecimal.CurrencySign()</dd>
+                    </div>
+                </dl>
+                @if (!string.IsNullOrEmpty(item.LastFourDigits))
+                {
+                    <p class="crizal-order-confirm__card">
+                        <i class="fas fa-credit-card" aria-hidden="true"></i>
+                        @item.CardFamily @cardTypeText — @Resource.EndingIn @item.LastFourDigits
+                    </p>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="row crizal-order-confirm__addresses">
+        <div class="col-md-4">
+            <div class="common-block crizal-order-confirm__panel mb-4">
                 <div class="line-title">
                     <h2 class="h6 mb-0">@Resource.CustomerDetails</h2>
                 </div>
                 @if (customer != null)
                 {
-                    <p class="font-size-sm mb-0">
-                        @customer.FullName<br />
+                    <p class="crizal-order-confirm__person mb-0">
+                        <strong>@customer.FullName</strong><br />
                         @customer.Email<br />
                         @customer.GsmNumber
                     </p>
                 }
             </div>
-            <div class="common-block mb-4">
+        </div>
+        <div class="col-md-4">
+            <div class="common-block crizal-order-confirm__panel mb-4">
                 <div class="line-title">
                     <h2 class="h6 mb-0">@Resource.ShippingAddress</h2>
                 </div>
                 @if (shipping != null)
                 {
-                    <p class="font-size-sm mb-0">
+                    <p class="crizal-order-confirm__person @(string.IsNullOrEmpty(item.ShipmentCompanyName) ? "mb-0" : "")">
                         @shipping.Name<br />
                         @shipping.Description<br />
                         @shipping.City, @shipping.Country @shipping.ZipCode
@@ -117,45 +205,40 @@
                 }
                 @if (!string.IsNullOrEmpty(item.ShipmentCompanyName))
                 {
-                    <p class="font-size-sm mt-2 mb-0">
+                    <p class="crizal-order-confirm__ship mb-0">
                         <strong>@Resource.ShipmentCompany:</strong> @item.ShipmentCompanyName<br />
                         <strong>@Resource.TrackingNumber:</strong> @item.ShipmentTrackingNumber
                     </p>
                 }
             </div>
-            <div class="common-block mb-4">
+        </div>
+        <div class="col-md-4">
+            <div class="common-block crizal-order-confirm__panel mb-4">
                 <div class="line-title">
-                    <h2 class="h6 mb-0">@Resource.PaymentDetails</h2>
+                    <h2 class="h6 mb-0">@Resource.BillingAddress</h2>
                 </div>
-                <ul class="list-unstyled mb-3 font-size-sm">
-                    @if (item.CargoPrice > 0)
-                    {
-                        <li><strong>@Resource.ShippingCost:</strong> @item.CargoPrice.CurrencySign()</li>
-                    }
-                    @if (!string.IsNullOrEmpty(item.Coupon))
-                    {
-                        <li><strong>@Resource.CouponDiscount (@item.Coupon):</strong> -@item.CouponDiscount.ToDecimal().CurrencySign()</li>
-                    }
-                    <li class="h5 mt-2 mb-0">
-                        <strong>@Resource.TotalPaid:</strong>
-                        <span class="text-primary">@item.PaidPriceDecimal.CurrencySign()</span>
-                    </li>
-                </ul>
-                @if (!string.IsNullOrEmpty(item.LastFourDigits))
+                @if (sameAddress)
                 {
-                    <p class="font-size-sm text-muted mb-0">
-                        @item.CardFamily @item.CardType — @Resource.EndingIn @item.LastFourDigits
+                    <p class="crizal-order-confirm__person mb-0">@Resource.IsSameAsShippingAddress</p>
+                }
+                else if (billing != null)
+                {
+                    <p class="crizal-order-confirm__person mb-0">
+                        @billing.Name<br />
+                        @billing.Description<br />
+                        @billing.City, @billing.Country @billing.ZipCode
                     </p>
                 }
             </div>
         </div>
     </div>
 
-    <div class="d-flex flex-wrap crizal-checkout-nav" style="gap: 0.75rem;">
+    <div class="crizal-order-confirm__actions crizal-checkout-nav">
         <a href="@urlActionLink" class="butn-style8">@Resource.ContinueShopping</a>
         @if (Request.IsAuthenticated)
         {
             <a href="@ordersLink" class="butn-style8 outline">@Resource.MyOrder</a>
         }
+        <a href="@trackingLink" class="butn-style8 outline">@Resource.TrackYourCargo</a>
     </div>
 </div>

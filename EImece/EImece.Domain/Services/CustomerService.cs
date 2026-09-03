@@ -41,32 +41,46 @@ namespace EImece.Domain.Services
             Logger.LogDebug("CustomerService initialized.");
         }
 
+        private static Customer MapRegisterViewModel(string userId, CustomerRegistrationDto model)
+        {
+            if (model == null)
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
+
+            var identity = (model.IdentityNumber ?? string.Empty).Trim();
+            var country = string.IsNullOrWhiteSpace(model.Country) ? "Turkey" : model.Country.Trim();
+
+            return new Customer
+            {
+                UserId = userId,
+                Name = model.FirstName,
+                Surname = model.LastName ?? "",
+                Email = string.IsNullOrWhiteSpace(model.Email) ? null : model.Email.Trim(),
+                GsmNumber = GeneralHelper.CheckGsmNumber(model.PhoneNumber),
+                IdentityNumber = identity,
+                Ip = GeneralHelper.GetIpAddress(),
+                IsActive = true,
+                CreatedDate = DateTime.Now,
+                UpdatedDate = DateTime.Now,
+                Position = 1,
+                Lang = 1,
+                IsPermissionGranted = model.IsPermissionGranted,
+                Street = (model.Street ?? string.Empty).Trim(),
+                District = (model.District ?? string.Empty).Trim(),
+                Town = (model.Town ?? string.Empty).Trim(),
+                City = (model.City ?? string.Empty).Trim(),
+                Country = country,
+                ZipCode = (model.ZipCode ?? string.Empty).Trim()
+            };
+        }
+
         public void SaveRegisterViewModel(string userId, CustomerRegistrationDto model)
         {
             Logger.LogDebug($"Saving RegisterViewModel for user: {userId}");
             try
             {
-                var item = new Customer
-                {
-                    UserId = userId,
-                    Name = model.FirstName,
-                    Surname = model.LastName ?? "",
-                    GsmNumber = GeneralHelper.CheckGsmNumber(model.PhoneNumber),
-                    IdentityNumber = "",
-                    Ip = GeneralHelper.GetIpAddress(),
-                    IsActive = true,
-                    CreatedDate = DateTime.Now,
-                    UpdatedDate = DateTime.Now,
-                    Position = 1,
-                    Lang = 1,
-                    IsPermissionGranted = model.IsPermissionGranted,
-                    Street = "",
-                    District = "",
-                    City = "",
-                    Country = "",
-                    ZipCode = ""
-                };
-
+                var item = MapRegisterViewModel(userId, model);
                 CustomerRepository.SaveOrEdit(item);
                 Logger.LogDebug("Customer successfully saved. UserId={0}", userId);
             }
@@ -82,27 +96,7 @@ namespace EImece.Domain.Services
             Logger.LogDebug($"Saving RegisterViewModel for user: {userId}");
             try
             {
-                var item = new Customer
-                {
-                    UserId = userId,
-                    Name = model.FirstName,
-                    Surname = model.LastName ?? "",
-                    GsmNumber = GeneralHelper.CheckGsmNumber(model.PhoneNumber),
-                    IdentityNumber = "",
-                    Ip = GeneralHelper.GetIpAddress(),
-                    IsActive = true,
-                    CreatedDate = DateTime.Now,
-                    UpdatedDate = DateTime.Now,
-                    Position = 1,
-                    Lang = 1,
-                    IsPermissionGranted = model.IsPermissionGranted,
-                    Street = "",
-                    District = "",
-                    City = "",
-                    Country = "",
-                    ZipCode = ""
-                };
-
+                var item = MapRegisterViewModel(userId, model);
                 await CustomerRepository.SaveOrEditAsync(item).ConfigureAwait(false);
                 Logger.LogDebug("Customer successfully saved. UserId={0}", userId);
             }
