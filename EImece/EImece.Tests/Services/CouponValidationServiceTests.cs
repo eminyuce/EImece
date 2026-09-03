@@ -490,5 +490,169 @@ namespace EImece.Tests.Services
             Assert.IsFalse(result.IsValid);
             Assert.AreEqual(CouponValidationReason.FirstOrderOnly, result.Reason);
         }
+
+        [TestMethod]
+        public async Task EmptyCouponCode_ShouldFail()
+        {
+            var cart = CreateCart((1, 100, 1));
+            var ctx = new CouponValidationContext { IsAuthenticated = true, UserId = "u1", Language = 1 };
+            var result = await _service.ValidateCouponAsync("  ", cart, ctx);
+            Assert.IsFalse(result.IsValid);
+            Assert.AreEqual(CouponValidationReason.CouponNotFound, result.Reason);
+        }
+
+        [TestMethod]
+        public async Task NullCart_ShouldFail()
+        {
+            var coupon = CreateBaseCoupon("NULLCART", 10);
+            _ctx.Coupons.Add(coupon);
+            var ctx = new CouponValidationContext { IsAuthenticated = true, UserId = "u1", Language = 1 };
+            var result = await _service.ValidateCouponAsync("NULLCART", (ShoppingCartSession)null, ctx);
+            Assert.IsFalse(result.IsValid);
+            Assert.AreEqual(CouponValidationReason.CouponNotFound, result.Reason);
+        }
+
+        [TestMethod]
+        public async Task CurrencyMismatch_ShouldFail()
+        {
+            var coupon = CreateBaseCoupon("USDONLY", 10);
+            coupon.Currency = "USD";
+            _ctx.Coupons.Add(coupon);
+            var cart = CreateCart((1, 100, 1));
+            var ctx = new CouponValidationContext { IsAuthenticated = true, UserId = "u1", Language = 1, Currency = "TRY" };
+            var result = await _service.ValidateCouponAsync("USDONLY", cart, ctx);
+            Assert.IsFalse(result.IsValid);
+            Assert.AreEqual(CouponValidationReason.InvalidCurrency, result.Reason);
+        }
+
+        [TestMethod]
+        public async Task AssignedUserId_WrongCustomer_ShouldFail()
+        {
+            var coupon = CreateBaseCoupon("ASSIGNED", 10);
+            coupon.AssignedUserId = "owner-1";
+            _ctx.Coupons.Add(coupon);
+            var cart = CreateCart((1, 100, 1));
+            var ctx = new CouponValidationContext { IsAuthenticated = true, UserId = "other-user", Language = 1 };
+            var result = await _service.ValidateCouponAsync("ASSIGNED", cart, ctx);
+            Assert.IsFalse(result.IsValid);
+            Assert.AreEqual(CouponValidationReason.AssignedToOtherCustomer, result.Reason);
+        }
+
+        [TestMethod]
+        public async Task AssignedCustomerId_WrongCustomer_ShouldFail()
+        {
+            var coupon = CreateBaseCoupon("ASSIGNEDC", 10);
+            coupon.AssignedCustomerId = 42;
+            _ctx.Coupons.Add(coupon);
+            var cart = CreateCart((1, 100, 1));
+            var ctx = new CouponValidationContext { IsAuthenticated = true, UserId = "u1", CustomerId = 7, Language = 1 };
+            var result = await _service.ValidateCouponAsync("ASSIGNEDC", cart, ctx);
+            Assert.IsFalse(result.IsValid);
+            Assert.AreEqual(CouponValidationReason.AssignedToOtherCustomer, result.Reason);
+        }
+
+        [TestMethod]
+        public async Task NewCustomerOnly_OldAccount_ShouldFail()
+        {
+            var coupon = CreateBaseCoupon("NEWONLY", 10);
+            coupon.IsNewCustomerOnly = true;
+            _ctx.Coupons.Add(coupon);
+            var cart = CreateCart((1, 100, 1));
+            var ctx = new CouponValidationContext
+            {
+                IsAuthenticated = true,
+                UserId = "u1",
+                Language = 1,
+                CustomerCreatedDate = DateTime.Now.AddDays(-45)
+            };
+            var result = await _service.ValidateCouponAsync("NEWONLY", cart, ctx);
+            Assert.IsFalse(result.IsValid);
+            Assert.AreEqual(CouponValidationReason.FirstOrderOnly, result.Reason);
+        }
+
+        [TestMethod]
+        public async Task InvalidPercentage_ShouldFail()
+        {
+            var coupon = CreateBaseCoupon("BADPCT", discountPct: 0, type: CouponDiscountType.Percentage);
+            coupon.DiscountPercentage = 0;
+            coupon.Discount = 0;
+            _ctx.Coupons.Add(coupon);
+            var cart = CreateCart((1, 100, 1));
+            var ctx = new CouponValidationContext { IsAuthenticated = true, UserId = "u1", Language = 1 };
+            var result = await _service.ValidateCouponAsync("BADPCT", cart, ctx);
+            Assert.IsFalse(result.IsValid);
+            Assert.AreEqual(CouponValidationReason.InvalidDiscount, result.Reason);
+        }
+
+        [TestMethod]
+        public async Task InvalidFixedAmount_ShouldFail()
+        {
+            var coupon = CreateBaseCoupon("BADFIX", discount: 0, type: CouponDiscountType.FixedAmount);
+            coupon.Discount = 0;
+            coupon.DiscountPercentage = 0;
+            _ctx.Coupons.Add(coupon);
+            var cart = CreateCart((1, 100, 1));
+            var ctx = new CouponValidationContext { IsAuthenticated = true, UserId = "u1", Language = 1 };
+            var result = await _service.ValidateCouponAsync("BADFIX", cart, ctx);
+            Assert.IsFalse(result.IsValid);
+            Assert.AreEqual(CouponValidationReason.InvalidDiscount, result.Reason);
+        }
+
+        [TestMethod]
+        public async Task GuestCart_EmptyItems_ShouldFail()
+        {
+            var coupon = CreateBaseCoupon("GUEST", 10);
+            _ctx.Coupons.Add(coupon);
+            var guest = new BuyWithNoAccountCreation { ShoppingCartItems = new List<ShoppingCartItem>() };
+            var ctx = new CouponValidationContext { IsAuthenticated = false, Language = 1 };
+            var result = await _service.ValidateCouponAsync("GUEST", guest, ctx);
+            Assert.IsFalse(result.IsValid);
+            Assert.AreEqual(CouponValidationReason.CouponNotFound, result.Reason);
+        }
+
+        [TestMethod]
+        public async Task RevalidateActiveCoupon_WithoutCoupon_ShouldFail()
+        {
+            var cart = CreateCart((1, 100, 1));
+            var ctx = new CouponValidationContext { IsAuthenticated = true, UserId = "u1", Language = 1 };
+            var result = await _service.RevalidateActiveCouponAsync(cart, ctx);
+            Assert.IsFalse(result.IsValid);
+            Assert.AreEqual(CouponValidationReason.CouponNotFound, result.Reason);
+        }
+
+        [TestMethod]
+        public async Task Stacking_AllowedWhenExistingCouponAllowsIt()
+        {
+            var first = CreateBaseCoupon("STACK1", 10);
+            first.AllowStacking = true;
+            var second = CreateBaseCoupon("STACK2", 15);
+            _ctx.Coupons.Add(first);
+            _ctx.Coupons.Add(second);
+            var cart = CreateCart((1, 100, 1));
+            var ctx = new CouponValidationContext
+            {
+                IsAuthenticated = true,
+                UserId = "u1",
+                Language = 1,
+                HasExistingCoupon = true,
+                ExistingCouponCode = "STACK1"
+            };
+            var result = await _service.ValidateCouponAsync("STACK2", cart, ctx);
+            Assert.IsTrue(result.IsValid, result.Message);
+        }
+
+        [TestMethod]
+        public async Task FirstOrder_CancelledHistoryOnly_ShouldSucceed()
+        {
+            var coupon = CreateBaseCoupon("FIRSTCANCEL", 10);
+            coupon.IsFirstOrderOnly = true;
+            _ctx.Coupons.Add(coupon);
+            _ctx.Orders.Add(new Order { UserId = "u1", OrderStatus = (int)EImeceOrderStatus.Cancelled });
+            _ctx.Orders.Add(new Order { UserId = "u1", OrderStatus = (int)EImeceOrderStatus.Refunded });
+            var cart = CreateCart((1, 100, 1));
+            var ctx = new CouponValidationContext { IsAuthenticated = true, UserId = "u1", Language = 1 };
+            var result = await _service.ValidateCouponAsync("FIRSTCANCEL", cart, ctx);
+            Assert.IsTrue(result.IsValid, result.Message);
+        }
     }
 }

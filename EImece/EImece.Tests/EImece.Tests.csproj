@@ -366,10 +366,17 @@
     <Compile Include="Infrastructure\DesignSystemTests.cs" />
     <Compile Include="Infrastructure\ResilientHttpClientLifetimeTests.cs" />
     <Compile Include="Infrastructure\TestDomainAbstractions.cs" />
+    <Compile Include="Infrastructure\FakeServiceProxy.cs" />
     <Compile Include="Services\CompressedImageExportServiceTests.cs" />
     <Compile Include="Services\DataExportServiceTests.cs" />
     <Compile Include="Services\ProductDeletionAndHistoricalOrderTests.cs" />
+    <Compile Include="Services\ProductServiceStockTests.cs" />
     <Compile Include="Services\ShoppingCartTransactionTests.cs" />
+    <Compile Include="Services\ShoppingCartServiceBusinessLogicTests.cs" />
+    <Compile Include="Services\OrderServiceBusinessLogicTests.cs" />
+    <Compile Include="Services\CustomerServiceBusinessLogicTests.cs" />
+    <Compile Include="Services\CouponServiceBusinessLogicTests.cs" />
+    <Compile Include="Services\TwoFactorTokenServiceTests.cs" />
     <Compile Include="Services\CouponValidationServiceTests.cs" />
     <Compile Include="Services\SystemSettingsFallbackTests.cs" />
     <Compile Include="Services\UsersServiceTests.cs" />
