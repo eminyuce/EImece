@@ -155,7 +155,55 @@ namespace EImece.Domain.Helpers
 
         public static String GetIpAddress()
         {
-            return "127.0.0.1";
+            try
+            {
+                var request = System.Web.HttpContext.Current != null
+                    ? System.Web.HttpContext.Current.Request
+                    : null;
+                if (request != null)
+                {
+                    var candidates = new[]
+                    {
+                        request.Headers["CF-Connecting-IP"],
+                        request.Headers["X-Forwarded-For"],
+                        request.ServerVariables["HTTP_X_FORWARDED_FOR"],
+                        request.ServerVariables["REMOTE_ADDR"],
+                        request.UserHostAddress
+                    };
+                    foreach (var candidate in candidates)
+                    {
+                        var ip = FirstForwardedIp(candidate);
+                        if (!string.IsNullOrEmpty(ip) && !IsLoopbackIp(ip))
+                        {
+                            return ip;
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                // Unit tests and background jobs have no HTTP context.
+            }
+
+            // Iyzico Checkout Form auth rejects loopback buyer IPs. Their samples use a public IPv4.
+            return "85.34.78.112";
+        }
+
+        private static string FirstForwardedIp(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                return null;
+            }
+
+            return value.Split(',')[0].Trim();
+        }
+
+        private static bool IsLoopbackIp(string ip)
+        {
+            return string.Equals(ip, "127.0.0.1", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(ip, "::1", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(ip, "0.0.0.0", StringComparison.OrdinalIgnoreCase);
         }
 
         public static string CheckIdentityNumber(string identityNumber)

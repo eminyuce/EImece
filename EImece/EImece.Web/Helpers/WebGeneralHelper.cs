@@ -63,13 +63,7 @@ namespace EImece.Web.Helpers
 
         public static string GetIpAddress()
         {
-            var context = HttpContext.Current;
-            if (context?.Request != null)
-            {
-                return (context.Request.ServerVariables["HTTP_X_FORWARDED_FOR"] ??
-                        context.Request.ServerVariables["REMOTE_ADDR"])?.Split(',')[0].Trim() ?? "127.0.0.1";
-            }
-            return "127.0.0.1";
+            return GeneralHelper.GetIpAddress();
         }
 
         public static void SetCultureCookie(HttpResponseBase response, string cultureCookieName, string cultureName = "")

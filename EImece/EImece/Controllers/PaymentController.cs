@@ -710,15 +710,31 @@ namespace EImece.Controllers
 
             string orderGuid;
             string userId;
-            try
+            if (string.IsNullOrWhiteSpace(o) || string.IsNullOrWhiteSpace(u))
             {
-                orderGuid = EncryptDecryptQueryString.Decrypt(HttpUtility.UrlDecode(o));
-                userId = EncryptDecryptQueryString.Decrypt(HttpUtility.UrlDecode(u));
+                orderGuid = paymentResult.BasketId;
+                var persistedCart = string.IsNullOrWhiteSpace(orderGuid)
+                    ? null
+                    : await ShoppingCartService.GetShoppingCartByOrderGuidAsync(orderGuid);
+                userId = persistedCart != null ? persistedCart.UserId : null;
+                if (string.IsNullOrWhiteSpace(orderGuid) || string.IsNullOrWhiteSpace(userId))
+                {
+                    Logger.LogError("Payment callback missing order or user reference.");
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
             }
-            catch (Exception ex)
+            else
             {
-                Logger.LogError(ex, "Failed to decrypt payment callback references.");
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                try
+                {
+                    orderGuid = EncryptDecryptQueryString.Decrypt(HttpUtility.UrlDecode(o));
+                    userId = EncryptDecryptQueryString.Decrypt(HttpUtility.UrlDecode(u));
+                }
+                catch (Exception ex)
+                {
+                    Logger.LogError(ex, "Failed to decrypt payment callback references.");
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
             }
 
             var bindingError = ValidatePaymentBinding(paymentResult, orderGuid, orderNumber);

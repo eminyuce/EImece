@@ -2,6 +2,7 @@ using EImece.Domain.Configuration;
 using EImece.Domain.DependencyInjection;
 using EImece.Domain.Helpers;
 using EImece.Domain.Helpers.Extensions;
+using EImece.Domain.Models.DTOs;
 using EImece.Domain.Models.FrontModels;
 using EImece.Domain.Observability;
 using EImece.Domain.Observability.Logging;
@@ -112,10 +113,11 @@ namespace EImece.Domain.Services
             if (string.IsNullOrEmpty(callbackUrl))
             {
                 _logger.LogDebug("Building callback URL for Payment Result...");
-                string o = WebUtility.UrlEncode(EncryptDecryptQueryString.Encrypt(shoppingCart.OrderGuid));
-                string u = WebUtility.UrlEncode(EncryptDecryptQueryString.Encrypt(userId));
+                // Keep callback short. Iyzico Checkout Form auth has failed with 5081 when this
+                // URL included large encrypted o/u query values. BasketId already carries OrderGuid;
+                // PaymentResult can recover userId from the persisted cart.
                 var baseUrl = EntityExtension.GetAbsoluteApplicationBaseUrl(AppConfig.HttpProtocol);
-                callbackUrl = $"{baseUrl}/payment/{actionName}?o={o}&u={u}&orderNumber={orderNumber}";
+                callbackUrl = $"{baseUrl}/payment/{actionName}?orderNumber={Uri.EscapeDataString(orderNumber)}";
             }
 
             // Initialize request
@@ -142,46 +144,24 @@ namespace EImece.Domain.Services
                 IdentityNumber = GeneralHelper.CheckIdentityNumber(customer.IdentityNumber),
                 LastLoginDate = customer.UpdatedDate.ToString(Constants.IyzicoDateTimeFormat),
                 RegistrationDate = customer.CreatedDate.ToString(Constants.IyzicoDateTimeFormat),
-                RegistrationAddress = customer.RegistrationAddress,
-                Ip = customer.Ip,
-                City = customer.City,
-                Country = customer.Country,
+                RegistrationAddress = NormalizeIyzicoText(customer.RegistrationAddress, shoppingCart.ShippingAddress != null ? shoppingCart.ShippingAddress.Description : null),
+                Ip = ResolveBuyerIp(customer.Ip),
+                City = NormalizeIyzicoCity(customer.City),
+                Country = NormalizeIyzicoCountry(customer.Country),
                 ZipCode = customer.ZipCode
             };
 
             // Populate shipping and billing addresses
             if (shoppingCart.Customer.IsSameAsShippingAddress)
             {
-                Address sharedAddress = new Address
-                {
-                    ContactName = shoppingCart.Customer.FullName,
-                    City = shoppingCart.ShippingAddress.City,
-                    Country = shoppingCart.ShippingAddress.Country,
-                    Description = shoppingCart.ShippingAddress.Description,
-                    ZipCode = shoppingCart.ShippingAddress.ZipCode
-                };
+                Address sharedAddress = MapIyzicoAddress(shoppingCart.Customer.FullName, shoppingCart.ShippingAddress);
                 request.ShippingAddress = sharedAddress;
                 request.BillingAddress = sharedAddress;
             }
             else
             {
-                request.ShippingAddress = new Address
-                {
-                    ContactName = shoppingCart.Customer.FullName,
-                    City = shoppingCart.ShippingAddress.City,
-                    Country = shoppingCart.ShippingAddress.Country,
-                    Description = shoppingCart.ShippingAddress.Description,
-                    ZipCode = shoppingCart.ShippingAddress.ZipCode
-                };
-
-                request.BillingAddress = new Address
-                {
-                    ContactName = shoppingCart.Customer.FullName,
-                    City = shoppingCart.BillingAddress.City,
-                    Country = shoppingCart.BillingAddress.Country,
-                    Description = shoppingCart.BillingAddress.Description,
-                    ZipCode = shoppingCart.BillingAddress.ZipCode
-                };
+                request.ShippingAddress = MapIyzicoAddress(shoppingCart.Customer.FullName, shoppingCart.ShippingAddress);
+                request.BillingAddress = MapIyzicoAddress(shoppingCart.Customer.FullName, shoppingCart.BillingAddress);
             }
 
             IyzicoCheckoutBasketMapper.ApplyCart(request, shoppingCart);
@@ -254,7 +234,7 @@ namespace EImece.Domain.Services
                 LastLoginDate = customer.UpdatedDate.ToString(Constants.IyzicoDateTimeFormat),
                 RegistrationDate = customer.CreatedDate.ToString(Constants.IyzicoDateTimeFormat),
                 RegistrationAddress = customer.RegistrationAddress,
-                Ip = customer.Ip,
+                Ip = ResolveBuyerIp(customer.Ip),
                 City = customer.City,
                 Country = customer.Country,
                 ZipCode = customer.ZipCode
@@ -324,7 +304,7 @@ namespace EImece.Domain.Services
             var identity = buyer != null ? buyer.IdentityNumber : null;
             var basketSummary = FormatBasketSummary(request);
             _logger.LogInformation(
-                "Iyzico CheckoutForm request host={0} locale={1} currency={2} conversationId={3} basketId={4} price={5} paidPrice={6} items={7} storeEmail={8} buyerEmail={9} gsm={10} identity={11}",
+                "Iyzico CheckoutForm request host={0} locale={1} currency={2} conversationId={3} basketId={4} price={5} paidPrice={6} items={7} storeEmail={8} buyerEmail={9} gsm={10} identity={11} buyerIp={12} callbackUrl={13}",
                 options != null ? options.BaseUrl : null,
                 request != null ? request.Locale : null,
                 request != null ? request.Currency : null,
@@ -336,7 +316,9 @@ namespace EImece.Domain.Services
                 storeEmail,
                 buyer != null ? buyer.Email : null,
                 buyer != null ? buyer.GsmNumber : null,
-                MaskIdentityForLog(identity));
+                MaskIdentityForLog(identity),
+                buyer != null ? buyer.Ip : null,
+                request != null ? request.CallbackUrl : null);
         }
 
         private void LogCheckoutFormResult(CheckoutFormInitialize result)
@@ -406,6 +388,81 @@ namespace EImece.Domain.Services
                 ? identityNumber
                 : identityNumber.Substring(identityNumber.Length - 3);
             return "len=" + identityNumber.Length + ",last3=" + last;
+        }
+
+        private static string ResolveBuyerIp(string storedIp)
+        {
+            if (!string.IsNullOrWhiteSpace(storedIp)
+                && !string.Equals(storedIp, "127.0.0.1", StringComparison.OrdinalIgnoreCase)
+                && !string.Equals(storedIp, "::1", StringComparison.OrdinalIgnoreCase))
+            {
+                return storedIp.Trim();
+            }
+
+            return GeneralHelper.GetIpAddress();
+        }
+
+        private static Address MapIyzicoAddress(string contactName, AddressDto address)
+        {
+            return new Address
+            {
+                ContactName = contactName,
+                City = NormalizeIyzicoCity(address != null ? address.City : null),
+                Country = NormalizeIyzicoCountry(address != null ? address.Country : null),
+                Description = NormalizeIyzicoText(address != null ? address.Description : null, address != null ? address.Street : null),
+                ZipCode = address != null ? address.ZipCode : null
+            };
+        }
+
+        private static string NormalizeIyzicoCountry(string country)
+        {
+            if (string.IsNullOrWhiteSpace(country))
+            {
+                return "Turkey";
+            }
+
+            var value = country.Trim();
+            if (value.Equals("Turkiye", StringComparison.OrdinalIgnoreCase)
+                || value.Equals("Türkiye", StringComparison.OrdinalIgnoreCase)
+                || value.Equals("Turkey", StringComparison.OrdinalIgnoreCase))
+            {
+                return "Turkey";
+            }
+
+            return value;
+        }
+
+        private static string NormalizeIyzicoCity(string city)
+        {
+            if (string.IsNullOrWhiteSpace(city))
+            {
+                return "Istanbul";
+            }
+
+            var value = city.Trim();
+            if (value.Equals("İstanbul", StringComparison.OrdinalIgnoreCase)
+                || value.Equals("Istanbul", StringComparison.OrdinalIgnoreCase)
+                || value.Equals("istanbul", StringComparison.OrdinalIgnoreCase))
+            {
+                return "Istanbul";
+            }
+
+            return value;
+        }
+
+        private static string NormalizeIyzicoText(string primary, string fallback)
+        {
+            if (!string.IsNullOrWhiteSpace(primary))
+            {
+                return primary.Trim();
+            }
+
+            if (!string.IsNullOrWhiteSpace(fallback))
+            {
+                return fallback.Trim();
+            }
+
+            return "Address";
         }
 
         private IyzipayOptions GetOptions()
