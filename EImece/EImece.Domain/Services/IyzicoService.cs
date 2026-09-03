@@ -31,7 +31,7 @@ namespace EImece.Domain.Services
             _iyzicoOptions = iyzicoOptions ?? throw new ArgumentNullException(nameof(iyzicoOptions));
         }
 
-        public async Task<CheckoutForm> GetCheckoutFormAsync(RetrieveCheckoutFormRequest model)
+        public virtual async Task<CheckoutForm> GetCheckoutFormAsync(RetrieveCheckoutFormRequest model)
         {
             using (var activity = StartPaymentActivity("callback"))
             {
@@ -84,7 +84,7 @@ namespace EImece.Domain.Services
             }
         }
 
-        public async Task<CheckoutFormInitialize> CreateCheckoutFormInitializeAsync(ShoppingCartSession shoppingCart, string userId, string actionName = "PaymentResult", string callbackUrl = null)
+        public virtual async Task<CheckoutFormInitialize> CreateCheckoutFormInitializeAsync(ShoppingCartSession shoppingCart, string userId, string actionName = "PaymentResult", string callbackUrl = null)
         {
             _logger.LogInformation("Initializing CheckoutForm for user: " + userId);
 
@@ -194,7 +194,7 @@ namespace EImece.Domain.Services
             }
         }
 
-        public async Task<CheckoutFormInitialize> CreateCheckoutFormInitializeBuyNowAsync(BuyNowModel buyNowModel, string callbackUrl = null)
+        public virtual async Task<CheckoutFormInitialize> CreateCheckoutFormInitializeBuyNowAsync(BuyNowModel buyNowModel, string callbackUrl = null)
         {
             _logger.LogInformation("Initializing CheckoutForm for BuyNow with OrderGuid: " + buyNowModel.OrderGuid);
 

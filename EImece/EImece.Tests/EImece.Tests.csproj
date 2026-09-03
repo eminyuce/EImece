@@ -380,6 +380,10 @@
     <Compile Include="Helpers\GeneralHelperQaFixTests.cs" />
     <Compile Include="Helpers\IyzicoBuyerValidatorTests.cs" />
     <Compile Include="Helpers\IyzicoCheckoutBasketMapperTests.cs" />
+    <Compile Include="Services\IyzicoPaymentStrategyTests.cs" />
+    <Compile Include="Services\IyzicoServiceValidationTests.cs" />
+    <Compile Include="Services\PaymentContextTests.cs" />
+    <Compile Include="Configuration\IyzicoOptionsAndEnumsTests.cs" />
     <Compile Include="Helpers\EntityExtensionQaFixTests.cs" />
     <Compile Include="Helpers\ConnectionStringProviderTests.cs" />
     <Compile Include="Helpers\PaymentGatewayConfigTests.cs" />
