@@ -46,7 +46,7 @@ namespace EImece.Domain.Observability.Logging
 
                 if (options.ConsoleEnabled)
                 {
-                    logging.AddConsole(consoleOptions =>
+                    logging.AddSimpleConsole(consoleOptions =>
                     {
                         consoleOptions.IncludeScopes = true;
                         consoleOptions.TimestampFormat = "yyyy-MM-dd HH:mm:ss.fff ";
@@ -119,8 +119,7 @@ namespace EImece.Domain.Observability.Logging
 
         private static void ApplyAsyncQueueLimit(LoggingConfiguration config, string wrapperName, int queueLimit)
         {
-            var target = config.FindTargetByName(wrapperName) as NLog.Targets.Wrappers.AsyncTargetWrapper;
-            if (target != null && queueLimit > 0)
+            if (config.FindTargetByName(wrapperName) is NLog.Targets.Wrappers.AsyncTargetWrapper target && queueLimit > 0)
             {
                 target.QueueLimit = queueLimit;
                 target.OverflowAction = NLog.Targets.Wrappers.AsyncTargetWrapperOverflowAction.Discard;

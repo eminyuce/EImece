@@ -27,6 +27,7 @@ namespace EImece.Domain.Helpers.EmailHelper
         public EmailSender(ISettingService settingService, ILogger<EmailSender> logger, IBackgroundWorkQueue backgroundWorkQueue = null)
         {
             SettingService = settingService ?? throw new ArgumentNullException(nameof(settingService));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             BackgroundWorkQueue = backgroundWorkQueue;
         }
         private const string FromAddressRequiredMessage = "From Address cannot be null";
