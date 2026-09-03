@@ -49,28 +49,31 @@
                 }
             }
 
-            <!-- Client details-->
-            <div class="bg-secondary px-4 pt-4 pb-3 text-white">
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                    <h2 class="h6 mb-0 text-white">@Resource.OrderDetails</h2>
-                    <a class="text-white" href="@Url.Action("checkoutbillingdetails")">@Resource.Edit</a>
+            <div class="card border-0 shadow-sm mb-3">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h2 class="h6 mb-0">@Resource.OrderDetails</h2>
+                        <a href="@Url.Action("checkoutbillingdetails")">@Resource.Edit</a>
+                    </div>
+                    <ul class="list-unstyled mb-0">
+                        <li><span class="text-muted">@Resource.Client:&nbsp;</span>@customer.FullName</li>
+                        <li><span class="text-muted">@Resource.Email:&nbsp;</span>@customer.Email</li>
+                        <li><span class="text-muted">@Resource.PhoneNumber:&nbsp;</span>@customer.GsmNumber</li>
+                        @if (!string.IsNullOrEmpty(customer.IdentityNumber))
+                        {
+                            <li><span class="text-muted">@Resource.IdentityNumber:&nbsp;</span>@customer.IdentityNumber</li>
+                        }
+                        <li class="pt-2"><strong>@Resource.ShippingAddress</strong></li>
+                        <li>@Html.Partial("ShoppingCartTemplates/_AddressReview", Model)</li>
+                    </ul>
                 </div>
-                <ul class="list-unstyled mb-0">
-                    <li><span class="text-white-50">@Resource.Client:&nbsp;</span>@customer.FullName</li>
-                    <li><span class="text-white-50">@Resource.Email:&nbsp;</span>@customer.Email</li>
-                    <li><span class="text-white-50">@Resource.PhoneNumber:&nbsp;</span>@customer.GsmNumber</li>
-                    @if (!string.IsNullOrEmpty(customer.IdentityNumber))
-                    {
-                        <li><span class="text-white-50">@Resource.IdentityNumber:&nbsp;</span>@customer.IdentityNumber</li>
-                    }
-                    <li class="pt-2"><strong>@Resource.ShippingAddress</strong></li>
-                    <li>@Html.Partial("ShoppingCartTemplates/_AddressReview", Model)</li>
-                </ul>
             </div>
-            <!-- Navigation-->
             <div class="d-flex pt-4">
                 <div class="w-50 pr-3"><a class="btn btn-outline-secondary btn-block" href="@Url.Action("checkoutbillingdetails")"><i class="mr-1" data-feather="chevron-left"></i>@Resource.Back</a></div>
-                <div class="w-50 pl-2"><a class="btn btn-primary btn-block" href="@Url.Action("PlaceOrder")">@Resource.GoToPayment<i class="ml-1" data-feather="chevron-right"></i></a></div>
+                <div class="w-50 pl-2">
+                    <a class="btn btn-primary btn-block" href="@Url.Action("PlaceOrder")">@Resource.GoToPayment<i class="ml-1" data-feather="chevron-right"></i></a>
+                    <p class="font-size-sm text-muted mt-2 mb-0 text-center">@Html.Raw(Resource.PaymentIyzicoHtml)</p>
+                </div>
             </div>
         </div>
         @Html.Partial("_OrderSummary", Model)

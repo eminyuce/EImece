@@ -1,66 +1,86 @@
-@using EImece.Domain.Models.FrontModels;
-@using EImece.Domain.Entities;
-@using EImece.Web.Helpers.HtmlHelpers;
-@using EImece.Domain.Helpers.Extensions;
 @using EImece.Domain.Helpers;
-@using EImece.Domain;
 @using Resources;
 @model  String
 @{
-    var pageName = Model;
-    var page1 = @pageName.Equals("ShoppingCart", StringComparison.InvariantCultureIgnoreCase) ? "step-active" : "";
-    var page2 = @pageName.Equals("checkoutbillingdetails", StringComparison.InvariantCultureIgnoreCase) ? "step-active" : "";
-    var page3 = @pageName.Equals("checkoutPaymentOrderReview", StringComparison.InvariantCultureIgnoreCase) ? "step-active" : "";
-    var page4 = @pageName.Equals("PlaceOrder", StringComparison.InvariantCultureIgnoreCase) ? "step-active" : "";
+    var pageName = (Model ?? string.Empty).Trim();
     bool anyProducts = ViewData["AnyProducts"].ToBool(false);
+    var isComplete = pageName.Equals("ThankYouForYourOrder", StringComparison.InvariantCultureIgnoreCase)
+                     || pageName.Equals("Complete", StringComparison.InvariantCultureIgnoreCase);
 
+    var steps = new[]
+    {
+        "ShoppingCart",
+        "CheckoutBillingDetails",
+        "CheckoutPaymentOrderReview",
+        "PlaceOrder"
+    };
+    int current = 0;
+    if (isComplete)
+    {
+        current = steps.Length;
+    }
+    else
+    {
+        for (int i = 0; i < steps.Length; i++)
+        {
+            if (pageName.Equals(steps[i], StringComparison.InvariantCultureIgnoreCase))
+            {
+                current = i;
+                break;
+            }
+        }
+    }
+
+    Func<int, string> stepClass = (index) =>
+    {
+        if (isComplete) return "step-done";
+        if (index == current) return "step-active";
+        if (index < current) return "step-done";
+        return "";
+    };
 }
 
 <!-- Steps (wizard)-->
-<div class="steps">
+<div class="steps" aria-label="@Resource.Payment">
     <div class="steps-body">
-        <a class="step @page1" href="@Url.Action("ShoppingCart")">
-            @if (!string.IsNullOrEmpty(page1))
+        <a class="step @stepClass(0)" href="@Url.Action("ShoppingCart")" aria-current="@(current == 0 && !isComplete ? "step" : null)">
+            @if (current > 0)
             {
-            <span class="step-indicator">
-                <i data-feather="check"></i>
-            </span>
+                <span class="step-indicator"><i data-feather="check"></i></span>
             }
-
-            <span class="step-icon">
-                <i data-feather="shopping-cart"></i>
-            </span>1.@Resource.MyBasket
+            <span class="step-icon"><i data-feather="shopping-cart"></i></span>
+            1.@Resource.MyBasket
         </a>
-        <a class="step @page2" href="@Url.Action(anyProducts ?"checkoutbillingdetails" : "ShoppingCart")">
-            @if (!string.IsNullOrEmpty(page2))
+        <a class="step @stepClass(1)" href="@Url.Action((anyProducts && !isComplete) ? "checkoutbillingdetails" : "ShoppingCart")" aria-current="@(current == 1 ? "step" : null)">
+            @if (current > 1)
             {
-            <span class="step-indicator">
-                <i data-feather="check"></i>
-            </span>
+                <span class="step-indicator"><i data-feather="check"></i></span>
             }
-            <span class="step-icon">
-                <i data-feather="user"></i>
-            </span>2.@Resource.OrderDetails
+            <span class="step-icon"><i data-feather="user"></i></span>
+            2.@Resource.OrderDetails
         </a>
-        <a class="step  @page3" href="@Url.Action(anyProducts ? "checkoutPaymentOrderReview" : "ShoppingCart")">
-            @if (!string.IsNullOrEmpty(page3))
+        <a class="step @stepClass(2)" href="@Url.Action((anyProducts && !isComplete) ? "checkoutPaymentOrderReview" : "ShoppingCart")" aria-current="@(current == 2 ? "step" : null)">
+            @if (current > 2)
             {
-            <span class="step-indicator">
-                <i data-feather="check"></i>
-            </span>
+                <span class="step-indicator"><i data-feather="check"></i></span>
             }
-            <span class="step-icon">
-                <i data-feather="check-circle"></i>
-            </span>3.@Resource.OrderFinalReview
+            <span class="step-icon"><i data-feather="check-circle"></i></span>
+            3.@Resource.OrderFinalReview
         </a>
-        <a class="step   @page4" href="@Url.Action(anyProducts ? "PlaceOrder" : "ShoppingCart")">
-            @if (!string.IsNullOrEmpty(page4))
-            {
-            <span class="step-indicator">
-                <i data-feather="check"></i>
+        @if (isComplete)
+        {
+            <span class="step step-done" aria-current="step">
+                <span class="step-indicator"><i data-feather="check"></i></span>
+                <span class="step-icon"><i data-feather="credit-card"></i></span>
+                4.@Resource.Thanks
             </span>
-            }
-            <span class="step-icon"><i data-feather="credit-card"></i></span>4.@Resource.Payment
-        </a>
+        }
+        else
+        {
+            <a class="step @stepClass(3)" href="@Url.Action(anyProducts ? "PlaceOrder" : "ShoppingCart")" aria-current="@(current == 3 ? "step" : null)">
+                <span class="step-icon"><i data-feather="credit-card"></i></span>
+                4.@Resource.Payment
+            </a>
+        }
     </div>
 </div>

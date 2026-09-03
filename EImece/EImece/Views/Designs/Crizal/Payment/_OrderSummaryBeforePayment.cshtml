@@ -11,10 +11,11 @@
 @{
     var customer = Model.Customer ?? new CustomerDto();
     var products = Model.ShoppingCartItems;
+    var hideProducts = ViewData["HideProducts"].ToBool(false);
     var hasCustomerInfo = !string.IsNullOrEmpty(customer.FullName) || !string.IsNullOrEmpty(customer.Email);
     var hasShippingAddress = Model.ShippingAddress != null && !string.IsNullOrEmpty(Model.ShippingAddress.City);
 }
-@if (products.IsNotEmpty())
+@if (!hideProducts && products.IsNotEmpty())
 {
     <div class="common-block crizal-cart-items mb-4">
         <div class="line-title">

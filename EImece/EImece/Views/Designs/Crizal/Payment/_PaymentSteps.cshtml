@@ -48,7 +48,7 @@
 <!-- Steps (wizard)-->
 <div class="steps crizal-checkout-steps" aria-label="@Resource.Payment">
     <div class="steps-body">
-        <a class="step @stepClass(0)" href="@Url.Action("ShoppingCart")">
+        <a class="step @stepClass(0)" href="@Url.Action("ShoppingCart")" aria-current="@(current == 0 && !isComplete ? "step" : null)">
             @if (current > 0)
             {
                 <span class="step-indicator" aria-hidden="true"><i class="fas fa-check"></i></span>
@@ -56,7 +56,7 @@
             <span class="step-icon" aria-hidden="true"><i class="fas fa-shopping-cart"></i></span>
             <span class="step-label">1.@Resource.MyBasket</span>
         </a>
-        <a class="step @stepClass(1)" href="@Url.Action((anyProducts && !isComplete) ? "checkoutbillingdetails" : "ShoppingCart")">
+        <a class="step @stepClass(1)" href="@Url.Action((anyProducts && !isComplete) ? "checkoutbillingdetails" : "ShoppingCart")" aria-current="@(current == 1 ? "step" : null)">
             @if (current > 1)
             {
                 <span class="step-indicator" aria-hidden="true"><i class="fas fa-check"></i></span>
@@ -64,7 +64,7 @@
             <span class="step-icon" aria-hidden="true"><i class="fas fa-user"></i></span>
             <span class="step-label">2.@Resource.OrderDetails</span>
         </a>
-        <a class="step @stepClass(2)" href="@Url.Action((anyProducts && !isComplete) ? "checkoutPaymentOrderReview" : "ShoppingCart")">
+        <a class="step @stepClass(2)" href="@Url.Action((anyProducts && !isComplete) ? "checkoutPaymentOrderReview" : "ShoppingCart")" aria-current="@(current == 2 ? "step" : null)">
             @if (current > 2)
             {
                 <span class="step-indicator" aria-hidden="true"><i class="fas fa-check"></i></span>
@@ -74,15 +74,15 @@
         </a>
         @if (isComplete)
         {
-            <span class="step step-done">
+            <span class="step step-done" aria-current="step">
                 <span class="step-indicator" aria-hidden="true"><i class="fas fa-check"></i></span>
-                <span class="step-icon" aria-hidden="true"><i class="fas fa-credit-card"></i></span>
-                <span class="step-label">4.@Resource.PlaceOrder</span>
+                <span class="step-icon" aria-hidden="true"><i class="fas fa-flag-checkered"></i></span>
+                <span class="step-label">4.@Resource.Thanks</span>
             </span>
         }
         else
         {
-            <a class="step @stepClass(3)" href="@Url.Action(anyProducts ? "PlaceOrder" : "ShoppingCart")">
+            <a class="step @stepClass(3)" href="@Url.Action(anyProducts ? "PlaceOrder" : "ShoppingCart")" aria-current="@(current == 3 ? "step" : null)">
                 <span class="step-icon" aria-hidden="true"><i class="fas fa-credit-card"></i></span>
                 <span class="step-label">4.@Resource.Payment</span>
             </a>

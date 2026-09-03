@@ -30,7 +30,7 @@
                 </ol>
             </nav>
         </div>
-        <h1 class="page-title">@Resource.MyBasket</h1><span class="d-block mt-2 text-muted"></span>
+        <h1 class="page-title">@Resource.MyBasket</h1>
     </div>
 </div>
 <!-- Page Content-->
@@ -67,10 +67,9 @@
                     }
                     else
                     {
-                        <div class="alert alert-secondary">
-                            <div class="pt-3 pb-2 text-center ">
-                                @Html.Raw(String.Format(Resource.NoProductFoundInShoppingBasket, HttpUtility.HtmlAttributeEncode(Url.Action("Index", "Home"))))
-                            </div>
+                        <div class="alert alert-secondary text-center py-5">
+                            <p class="mb-3">@Resource.NoProductFoundInShoppingBasket</p>
+                            <a class="btn btn-primary" href="@continueShoppingLink">@Resource.ContinueShopping</a>
                         </div>
                     }
                 </div>

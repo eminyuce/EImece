@@ -217,10 +217,14 @@ function bindOnRemove() {
         }
         var postData = JSON.stringify({ shoppingItemId: shoppingItemId });
         ajaxMethodCall(postData, "/Payment/RemoveCart", function (data) {
+            if (!data || String(data.status).toUpperCase() === "FAILED") {
+                showCartFeedback($("#cart-feedback").attr("data-error-text"), true);
+                return;
+            }
             $('[data-shopping-item-row=' + shoppingItemId + ']').remove();
             $('[data-shopping-home-page-item=' + shoppingItemId + ']').remove();
             GetShoppingCartLinks();
-            if (data && data.TotalItemCount === 0 && $("[data-shopping-item-row]").length === 0) {
+            if (data.TotalItemCount === 0 && $("[data-shopping-item-row]").length === 0) {
                 window.location.reload();
                 return;
             }
@@ -236,7 +240,11 @@ function triggerUpdateQuantityMultiplePrice(e, shoppingItemId) {
     if (!quantity) return;
     var postData = JSON.stringify({ shoppingItemId: shoppingItemId, quantity: quantity });
     ajaxMethodCall(postData, "/Payment/UpdateQuantity", function (data) {
-        if (data && data.LineTotal) {
+        if (!data || String(data.status).toUpperCase() === "FAILED") {
+            showCartFeedback($("#cart-feedback").attr("data-error-text"), true);
+            return;
+        }
+        if (data.LineTotal) {
             $('[data-shopping-item-total-price=' + shoppingItemId + ']').html(data.LineTotal);
         }
         bindCalcuateTotalPrice();
@@ -284,11 +292,50 @@ function renderShoppingCartPrice(success) {
     ajaxMethodCall(postData, "/Payment/renderShoppingCartPrice", success);
 }
 
+function escapeCartHtml(value) {
+    return String(value == null ? "" : value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+}
+
+function showCartFeedback(message, isError) {
+    var $box = $("#cart-feedback");
+    if (!$box.length || !message) return;
+    $box.removeClass("d-none alert-success alert-danger")
+        .addClass(isError ? "alert-danger" : "alert-success")
+        .text(message);
+    window.clearTimeout($box.data("hideTimer"));
+    $box.data("hideTimer", window.setTimeout(function () {
+        $box.addClass("d-none");
+    }, 4000));
+}
+
+function updateCargoRow(data) {
+    var $el = $("#CargoFreeTextInfo");
+    if (!$el.length || !data) return;
+    var freeLabel = $el.attr("data-cargo-free") || "";
+    var cargoLabel = $el.attr("data-cargo-label") || "";
+    var isFree = !data.CargoPriceInt;
+    if ($el.is("tr")) {
+        if (isFree) {
+            $el.html('<td colspan="2" class="p-0 pt-2"><div class="alert alert-success text-center px-2 py-2 mb-0 free-cargo-banner" role="alert"><i class="fas fa-check-circle mr-1" aria-hidden="true"></i><strong>' + escapeCartHtml(freeLabel) + "</strong></div></td>");
+        } else {
+            $el.html('<th scope="row">' + escapeCartHtml(cargoLabel) + '</th><td class="text-end">' + escapeCartHtml(data.CargoPrice) + "</td>");
+        }
+    } else if (isFree) {
+        $el.html('<div class="alert alert-success text-center px-2 py-2 mb-0 free-cargo-banner" role="alert"><strong>' + escapeCartHtml(freeLabel) + "</strong></div>");
+    } else {
+        $el.html('<div class="d-flex justify-content-between mb-0"><span>' + escapeCartHtml(cargoLabel) + ':</span><span><strong>' + escapeCartHtml(data.CargoPrice) + "</strong></span></div>");
+    }
+}
+
 function bindCalcuateTotalPrice() {
     renderShoppingCartPrice(function (data) {
         if (!data) return;
         $('#CargoPrice').html(data.CargoPrice);
-        $('#CargoFreeTextInfo').html(data.CargoPriceHtml);
+        updateCargoRow(data);
         $('#TotalPrice').html(data.TotalPrice);
         $('#TotalPriceWithCargoPrice').html(data.TotalPriceWithCargoPrice);
         if (data.price) {

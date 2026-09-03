@@ -41,7 +41,6 @@
                 @Html.HiddenFor(model => customer.Id)
                 @Html.HiddenFor(model => customer.CreatedDate)
                 @Html.HiddenFor(model => customer.UpdatedDate)
-                @Html.HiddenFor(model => customer.Email)
                 <input type="hidden" name="customer.IsSameAsShippingAddress" value="true" />
 
                 <div class="line-title mb-3">
@@ -86,8 +85,8 @@
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group">
-                            @Html.LabelFor(model => customer.Email)
-                            <input type="email" class="form-control" value="@customer.Email" readonly="readonly" autocomplete="email" aria-readonly="true" />
+                            @Html.LabelFor(model => customer.Email) <span class="text-danger" aria-hidden="true">*</span>
+                            @Html.EditorFor(model => customer.Email, new { htmlAttributes = new { @class = "form-control", type = "email", autocomplete = "email", required = "required" } })
                             @Html.ValidationMessageFor(model => customer.Email, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -202,6 +201,11 @@
         <script>
             $(document).ready(function () {
                 GetIller();
+                var $firstError = $(".crizal-checkout-form .input-validation-error, .crizal-checkout-form .field-validation-error:visible").filter(":input").add(".crizal-checkout-form .input-validation-error").first();
+                if ($firstError.length) {
+                    $("html, body").animate({ scrollTop: $firstError.offset().top - 120 }, 250);
+                    $firstError.trigger("focus");
+                }
             });
         </script>
 }

@@ -52,7 +52,7 @@
                         <button class="btn btn-sm btn-outline-danger btn-block mt-2" type="submit"><i class="fas fa-times mr-1" aria-hidden="true"></i>@Resource.RemoveCoupon</button>
                     }
                 }
-                <div id="CargoFreeTextInfo" class="mb-0">
+                <div id="CargoFreeTextInfo" class="mb-0" data-cargo-label="@Resource.CargoPrice" data-cargo-free="@Resource.CargoFreeTextInfo">
                     @if (Model.BasketMinTotalPriceForCargoInt > 0)
                     {
                         if (Model.TotalPrice > Model.BasketMinTotalPriceForCargoInt)
@@ -101,12 +101,15 @@
                         </div>
                     </div>
                 }
-                <a class="btn btn-primary w-100" id="ContinueShoppingWithoutAccount" href="@Url.Action("ShoppingWithoutAccount", "Payment")">
-                    <i class="fas fa-credit-card mr-2" aria-hidden="true"></i>@Resource.GoToPayment
+                <a class="btn btn-primary w-100" href="@Url.Action("CheckoutBillingDetails","Payment")" id="ProceedToCheckout">
+                    <i class="fas fa-arrow-right mr-2" aria-hidden="true"></i>@Resource.ProceedToCheckout
                 </a>
-                <a class="btn btn-outline-secondary w-100 mt-2" href="@Url.Action("CheckoutBillingDetails","Payment")" id="ProceedToCheckout">
-                    <i class="fas fa-user mr-2" aria-hidden="true"></i>@Resource.ContinueWithMembership
-                </a>
+                @if (!Request.IsAuthenticated)
+                {
+                    <a class="btn btn-outline-secondary w-100 mt-2" id="ContinueShoppingWithoutAccount" href="@Url.Action("ShoppingWithoutAccount", "Payment")">
+                        <i class="fas fa-user mr-2" aria-hidden="true"></i>@Resource.ContinueWithoutMembership
+                    </a>
+                }
                 <hr>
                 <h3 class="h6 pt-2 font-weight-semibold"><span class="badge badge-success mr-2 align-middle">@Resource.Note</span>@Resource.AdditionalComments</h3>
                 <textarea class="form-control mb-0"

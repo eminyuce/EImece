@@ -415,7 +415,7 @@ namespace EImece.Controllers
                 else
                 {
                     Logger.LogDebug("Shopping cart is empty. Redirecting to shoppingcart.");
-                    TempData["StatusMessage"] = "Sepetiniz boÅŸ";
+                    TempData["StatusMessage"] = Resource.NoProductFoundInShoppingBasket;
                     return RedirectToAction(ShoppingCartAction, Domain.Constants.PaymentAction);
                 }
             }

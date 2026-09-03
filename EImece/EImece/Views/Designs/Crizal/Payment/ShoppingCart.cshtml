@@ -25,7 +25,7 @@
                 </li>
             </ol>
         </nav>
-        <h1 class="page-title">@Resource.MyBasket</h1><span class="d-block mt-2 text-muted"></span>
+        <h1 class="page-title">@Resource.MyBasket</h1>
     </div>
 </section>
 <!-- Page Content-->
@@ -39,7 +39,7 @@
          })
     <div class="row pt-4 mt-2">
         <div class="@(products.IsNotEmpty() ? "col-xl-9 col-md-8" : "col-12")">
-                    <div id="cart-feedback" class="alert d-none" role="status" aria-live="polite"></div>
+                    <div id="cart-feedback" class="alert d-none" role="status" aria-live="polite" data-error-text="@Resource.ModelIsNotCorrect"></div>
                     @if (products.IsNotEmpty())
                     {
                         <div class="common-block crizal-cart-items mb-4">
@@ -58,13 +58,13 @@
                     }
                     else
                     {
-                        @Html.Partial("_EmptyState", new EmptyStateViewModel(
-                            Resource.MyBasket,
-                            String.Format(Resource.NoProductFoundInShoppingBasket, HttpUtility.HtmlAttributeEncode(Url.Action("Index", "Home"))),
-                            Url.Action("Index", "Home"),
-                            Resource.ContinueShopping,
-                            "fa fa-shopping-cart"
-                        ))
+                        <div class="common-block crizal-cart-empty text-center">
+                            <div class="crizal-cart-empty__inner">
+                                <i class="fa fa-shopping-cart crizal-cart-empty__icon" aria-hidden="true"></i>
+                                <p class="mb-4">@Resource.NoProductFoundInShoppingBasket</p>
+                                <a class="butn-style8" href="@continueShoppingLink">@Resource.ContinueShopping</a>
+                            </div>
+                        </div>
                     }
                 </div>
 

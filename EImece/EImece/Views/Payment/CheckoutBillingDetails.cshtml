@@ -62,7 +62,7 @@
                 @Html.HiddenFor(model => customer.Id)
                 @Html.HiddenFor(model => customer.CreatedDate)
                 @Html.HiddenFor(model => customer.UpdatedDate)
-                @Html.HiddenFor(model => customer.Email)
+                @* Email is an editable checkout field so customers can correct a rejected address. *@
                 <input type="hidden" name="customer.IsSameAsShippingAddress" value="true" />
                 <div class="row">
                     @Html.AntiForgeryToken()
@@ -83,6 +83,13 @@
                     </div>
                 </div>
                 <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => customer.Email) <span class="text-danger" aria-hidden="true">*</span>
+                            @Html.EditorFor(model => customer.Email, new { htmlAttributes = new { @class = "form-control", type = "email", autocomplete = "email" } })
+                            @Html.ValidationMessageFor(model => customer.Email, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
                     <div class="col-sm-6">
                         <div class="form-group">
                             @Html.LabelFor(model => customer.IdentityNumber) <span class="text-danger" aria-hidden="true">*</span>
@@ -197,10 +204,12 @@
     @section Scripts {
         <script>
             $(document).ready(function () {
-
                 GetIller();
-
+                var $firstError = $(".js-checkout-form .input-validation-error").first();
+                if ($firstError.length) {
+                    $("html, body").animate({ scrollTop: $firstError.offset().top - 120 }, 250);
+                    $firstError.trigger("focus");
+                }
             });
         </script>
-
 }

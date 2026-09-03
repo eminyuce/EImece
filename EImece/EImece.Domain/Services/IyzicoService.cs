@@ -184,33 +184,9 @@ namespace EImece.Domain.Services
                 };
             }
 
-            // Populate basket items and calculate total price
-            List<BasketItem> basketItems = new List<BasketItem>();
-            decimal totalPrice = 0;
-
-            foreach (ShoppingCartItem shoppingCartItem in shoppingCart.ShoppingCartItems)
-            {
-                var item = shoppingCartItem.Product;
-                BasketItem basketItem = new BasketItem
-                {
-                    Id = item.ProductCode,
-                    Name = item.Name,
-                    Category1 = item.CategoryName,
-                    Category2 = AppConfig.ShoppingCartItemCategory2,
-                    ItemType = BasketItemType.PHYSICAL.ToString(),
-                    Price = CurrencyHelper.CurrencySignForIyizo(item.Price)
-                };
-                totalPrice += item.Price;
-                basketItems.Add(basketItem);
-            }
-
-            _logger.LogDebug("Total Price: " + totalPrice);
+            IyzicoCheckoutBasketMapper.ApplyCart(request, shoppingCart);
+            _logger.LogDebug("Total Price: " + request.Price);
             _logger.LogDebug("TotalPriceWithCargoPrice: " + shoppingCart.TotalPriceWithCargoPrice);
-
-            // Set price fields
-            request.Price = CurrencyHelper.CurrencySignForIyizo(totalPrice);
-            request.PaidPrice = CurrencyHelper.CurrencySignForIyizo(shoppingCart.TotalPriceWithCargoPrice);
-            request.BasketItems = basketItems;
 
             LogCheckoutFormRequest(options, request, customer.Email);
 
@@ -346,8 +322,9 @@ namespace EImece.Domain.Services
         {
             var buyer = request != null ? request.Buyer : null;
             var identity = buyer != null ? buyer.IdentityNumber : null;
+            var basketSummary = FormatBasketSummary(request);
             _logger.LogInformation(
-                "Iyzico CheckoutForm request host={0} locale={1} currency={2} conversationId={3} basketId={4} price={5} paidPrice={6} storeEmail={7} buyerEmail={8} gsm={9} identity={10}",
+                "Iyzico CheckoutForm request host={0} locale={1} currency={2} conversationId={3} basketId={4} price={5} paidPrice={6} items={7} storeEmail={8} buyerEmail={9} gsm={10} identity={11}",
                 options != null ? options.BaseUrl : null,
                 request != null ? request.Locale : null,
                 request != null ? request.Currency : null,
@@ -355,6 +332,7 @@ namespace EImece.Domain.Services
                 request != null ? request.BasketId : null,
                 request != null ? request.Price : null,
                 request != null ? request.PaidPrice : null,
+                basketSummary,
                 storeEmail,
                 buyer != null ? buyer.Email : null,
                 buyer != null ? buyer.GsmNumber : null,
@@ -399,6 +377,22 @@ namespace EImece.Domain.Services
                     hasContent,
                     !string.IsNullOrEmpty(result.Token));
             }
+        }
+
+        private static string FormatBasketSummary(CreateCheckoutFormInitializeRequest request)
+        {
+            if (request == null || request.BasketItems == null || request.BasketItems.Count == 0)
+            {
+                return "none";
+            }
+
+            var parts = new List<string>(request.BasketItems.Count);
+            foreach (var item in request.BasketItems)
+            {
+                parts.Add((item.Id ?? "?") + "=" + (item.Price ?? "0"));
+            }
+
+            return request.BasketItems.Count + ":" + string.Join(",", parts);
         }
 
         private static string MaskIdentityForLog(string identityNumber)

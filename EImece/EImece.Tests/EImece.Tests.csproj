@@ -62,6 +62,9 @@
     <Reference Include="HtmlAgilityPack, Version=1.12.4.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
       <HintPath>..\packages\HtmlAgilityPack.1.12.4\lib\Net45\HtmlAgilityPack.dll</HintPath>
     </Reference>
+    <Reference Include="Iyzipay, Version=2.1.78.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Iyzipay.2.1.78\lib\net45\Iyzipay.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.ApplicationInsights, Version=3.1.2.115, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.ApplicationInsights.3.1.2\lib\net462\Microsoft.ApplicationInsights.dll</HintPath>
     </Reference>
@@ -376,6 +379,7 @@
     <Compile Include="Helpers\DatabaseUtilityTests.cs" />
     <Compile Include="Helpers\GeneralHelperQaFixTests.cs" />
     <Compile Include="Helpers\IyzicoBuyerValidatorTests.cs" />
+    <Compile Include="Helpers\IyzicoCheckoutBasketMapperTests.cs" />
     <Compile Include="Helpers\EntityExtensionQaFixTests.cs" />
     <Compile Include="Helpers\ConnectionStringProviderTests.cs" />
     <Compile Include="Helpers\PaymentGatewayConfigTests.cs" />

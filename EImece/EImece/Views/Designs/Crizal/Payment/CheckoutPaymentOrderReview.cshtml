@@ -82,11 +82,11 @@
                     </a>
                 </div>
                 <div class="w-50 pl-2">
-                    <a class="butn-style8 btn-block" href="@Url.Action("PlaceOrder")">
+                    <a class="butn-style8 btn-block" href="@Url.Action("PlaceOrder")" id="GoToPayment">
                         @Resource.GoToPayment
                         <i class="fas fa-chevron-right ml-1" aria-hidden="true"></i>
                     </a>
-                    <p class="font-size-sm text-muted mt-2 mb-0 text-center">@Resource.IyzicoPaymentTitle</p>
+                    <p class="font-size-sm text-muted mt-2 mb-0 text-center">@Html.Raw(Resource.PaymentIyzicoHtml)</p>
                 </div>
             </div>
         </div>

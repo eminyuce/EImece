@@ -28,12 +28,22 @@
             <h2 class="h6 mb-0">@Resource.OrderSummary</h2>
         </div>
 
-        @if (Model.BasketMinTotalPriceForCargoInt > 0)
+        @{
+            var qualifiesForFreeCargo = Model.CargoPriceValue <= 0
+                || (Model.BasketMinTotalPriceForCargoInt > 0 && Model.TotalPrice > Model.BasketMinTotalPriceForCargoInt);
+        }
+        @if (Model.BasketMinTotalPriceForCargoInt > 0 && !qualifiesForFreeCargo)
         {
             <div class="alert alert-success text-center px-2 py-2 mb-3 free-cargo-banner" role="alert">
                 <i class="fas fa-truck mr-1" aria-hidden="true"></i>
                 <strong>@Model.BasketMinTotalPriceForCargoInt.CurrencySign() @Resource.CargoFreeText</strong>
             </div>
+        }
+
+        @if (TempData["CouponMessage"] != null)
+        {
+            var couponAlert = (TempData["CouponMessageType"] as string) ?? "info";
+            <div class="alert alert-@couponAlert py-2">@TempData["CouponMessage"]</div>
         }
 
         <table class="cart-sub-total table table-borderless mb-0">
@@ -44,35 +54,30 @@
                 </tr>
                 @if (Model.Coupon != null)
                 {
+                    var couponDiscount = Model.CouponValidatedDiscount > 0
+                        ? Model.CouponValidatedDiscount
+                        : Model.CalculateCouponDiscount(Model.TotalPrice + Model.CargoPriceValue);
                     <tr>
                         <th scope="row">@Resource.CouponCode</th>
                         <td class="text-end" id="CouponName">@Model.CouponName</td>
                     </tr>
+                    if (couponDiscount > 0)
+                    {
+                        <tr>
+                            <th scope="row">@Resource.CouponDiscount</th>
+                            <td class="text-end text-success">-@couponDiscount.CurrencySign()</td>
+                        </tr>
+                    }
+                    if (Model.CouponShippingDiscount > 0)
+                    {
+                        <tr>
+                            <th scope="row">@Resource.ShippingDiscount</th>
+                            <td class="text-end text-success">-@Model.CouponShippingDiscount.CurrencySign()</td>
+                        </tr>
+                    }
                 }
-                <tr id="CargoFreeTextInfo">
-                    @if (Model.BasketMinTotalPriceForCargoInt > 0)
-                    {
-                        if (Model.TotalPrice > Model.BasketMinTotalPriceForCargoInt)
-                        {
-                            <td colspan="2" class="p-0 pt-2">
-                                <div class="alert alert-success text-center px-2 py-2 mb-0 free-cargo-banner" role="alert">
-                                    <i class="fas fa-check-circle mr-1" aria-hidden="true"></i>
-                                    <strong>@Resource.CargoFreeTextInfo</strong>
-                                </div>
-                            </td>
-                        }
-                        else
-                        {
-                            <th scope="row">@Resource.CargoPrice</th>
-                            <td class="text-end">@Model.CargoPriceValue.CurrencySign()</td>
-                        }
-                    }
-                    else if (Model.CargoPriceValue > 0)
-                    {
-                        <th scope="row">@Resource.CargoPrice</th>
-                        <td class="text-end">@Model.CargoPriceValue.CurrencySign()</td>
-                    }
-                    else
+                <tr id="CargoFreeTextInfo" data-cargo-label="@Resource.CargoPrice" data-cargo-free="@Resource.CargoFreeTextInfo">
+                    @if (qualifiesForFreeCargo)
                     {
                         <td colspan="2" class="p-0 pt-2">
                             <div class="alert alert-success text-center px-2 py-2 mb-0 free-cargo-banner" role="alert">
@@ -80,6 +85,11 @@
                                 <strong>@Resource.CargoFreeTextInfo</strong>
                             </div>
                         </td>
+                    }
+                    else
+                    {
+                        <th scope="row">@Resource.CargoPrice</th>
+                        <td class="text-end">@Model.CargoPriceValue.CurrencySign()</td>
                     }
                 </tr>
                 <tr class="crizal-cart-total__grand">
@@ -91,32 +101,39 @@
 
         @if (IsAdditionalComment && anyProducts)
         {
-            if (Request.IsAuthenticated)
+            <a class="butn-style8 btn-block mb-2" id="ProceedToCheckout" href="@Url.Action("CheckoutBillingDetails","Payment")">
+                <i class="fas fa-arrow-right mr-2" aria-hidden="true"></i>@Resource.ProceedToCheckout
+            </a>
+            if (!Request.IsAuthenticated)
             {
-                <a class="butn-style8 btn-block mb-3" id="ProceedToCheckout" href="@Url.Action("CheckoutBillingDetails","Payment")">
-                    <i class="fas fa-arrow-right mr-2" aria-hidden="true"></i>@Resource.ProceedToCheckout
-                </a>
-            }
-            else
-            {
-                <a class="butn-style8 btn-block mb-2" id="ProceedToCheckout" href="@Url.Action("CheckoutBillingDetails","Payment")">
-                    <i class="fas fa-user-check mr-2" aria-hidden="true"></i>@Resource.ContinueWithMembership
-                </a>
                 <a class="butn-style8 outline btn-block mb-3" id="ContinueShoppingWithoutAccount" href="@Url.Action("ShoppingWithoutAccount", "Payment")">
-                    <i class="fas fa-user mr-2" aria-hidden="true"></i>@Resource.ContinueShoppingWithoutAccount
+                    <i class="fas fa-user mr-2" aria-hidden="true"></i>@Resource.ContinueWithoutMembership
                 </a>
             }
-            using (Html.BeginForm("ApplyCoupon", "Payment", FormMethod.Post, new { @class = "needs-validation", @novalidate = "" }))
+            if (Model.Coupon != null)
             {
-                @Html.AntiForgeryToken()
-                <div class="mb-2">
-                    <label class="visually-hidden" for="cart-promocode">@Resource.CouponCode</label>
-                    <div class="input-group">
-                        <input class="form-control" type="text" id="cart-promocode" name="couponCode" value="@Model.CouponCode" placeholder="@Resource.CouponCode" required="">
-                        <button class="btn btn-outline-primary" type="submit"><i class="fas fa-tag mr-1" aria-hidden="true"></i>@Resource.ApplyCoupon</button>
-                        <div class="invalid-feedback w-100">@Resource.ValidPromoCode</div>
+                using (Html.BeginForm("RemoveCoupon", "Payment", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    <button class="btn btn-sm btn-outline-danger btn-block mb-3" type="submit">
+                        <i class="fas fa-times mr-1" aria-hidden="true"></i>@Resource.RemoveCoupon
+                    </button>
+                }
+            }
+            if (Model.Coupon == null)
+            {
+                using (Html.BeginForm("ApplyCoupon", "Payment", FormMethod.Post, new { @class = "needs-validation", @novalidate = "" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="mb-2">
+                        <label class="visually-hidden" for="cart-promocode">@Resource.CouponCode</label>
+                        <div class="input-group">
+                            <input class="form-control" type="text" id="cart-promocode" name="couponCode" value="@Model.CouponCode" placeholder="@Resource.CouponCode" required="">
+                            <button class="btn btn-outline-primary" type="submit"><i class="fas fa-tag mr-1" aria-hidden="true"></i>@Resource.ApplyCoupon</button>
+                            <div class="invalid-feedback w-100">@Resource.ValidPromoCode</div>
+                        </div>
                     </div>
-                </div>
+                }
             }
             <hr class="my-3">
             <h3 class="h6 font-weight-semibold mb-2"><span class="badge bg-success mr-2 align-middle">@Resource.Note</span>@Resource.AdditionalComments</h3>
