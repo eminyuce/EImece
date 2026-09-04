@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Admin Grid Mobile Fixture</title>
+    <link rel="stylesheet" href="../EImece/Content/admin-vendor/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="../EImece/Content/griddly.css">
+    <link rel="stylesheet" href="../EImece/Content/adminGriddlyCompat.css">
+    <link rel="stylesheet" href="../EImece/Content/adminSite.css">
+    <link rel="stylesheet" href="../EImece/Content/adminShell.css">
+    <link rel="stylesheet" href="../EImece/Content/adminGridModern.css">
+    <link rel="stylesheet" href="../EImece/Content/adminMobile.css">
+    <style>
+        body { margin: 0; background: #f4f7fa; }
+        .admin-main { margin-left: 0 !important; }
+        .admin-content { padding: 16px; }
+    </style>
+</head>
+<body class="admin-app">
+    <div class="admin-main">
+        <main class="admin-content">
+            <h1 class="admin-page-title">Products</h1>
+            <div data-role="griddly" class="griddly eg-grid eg-grid-shell" data-griddly-count="2" data-griddly-pagesize="20" data-griddly-currentsort='[{"field":"UpdatedDate","direction":"Descending"}]'>
+                <output class="card-header grid-record-count" style="display:block">
+                    <div class="grid-record-count-inner">
+                        <span class="grid-record-count-badge griddly-recordtotal">2</span>
+                        <span class="grid-record-count-label">records</span>
+                    </div>
+                </output>
+                <div class="griddly-scrollable-container">
+                    <table class="table table-hover table-striped eg-grid-table">
+                        <thead>
+                            <tr class="columnHeaders">
+                                <th class="eg-col-index grid-header"></th>
+                                <th class="gridButtons eg-col-check grid-header"></th>
+                                <th class="eg-col-image grid-header">Image</th>
+                                <th class="eg-col-name sortable grid-header" data-griddly-sortfield="Name">Name<span class="icon">&nbsp;</span></th>
+                                <th class="eg-col-category sortable grid-header" data-griddly-sortfield="ProductCategory.Name">Category</th>
+                                <th class="eg-col-price sortable grid-header" data-griddly-sortfield="Price">Price</th>
+                                <th class="eg-col-state grid-header">State</th>
+                                <th class="eg-col-status grid-header">Active</th>
+                                <th class="eg-col-actions grid-header">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="data">
+                            <tr>
+                                <td class="eg-col-index"><span class="eg-row-index">1</span></td>
+                                <td class="gridButtons eg-col-check"><label class="eg-check-hit"><input class="gridCheckboxes" name="checkboxGrid" type="checkbox" /></label></td>
+                                <td class="eg-col-image"><div class="eg-thumb"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Crect fill='%23dbeafe' width='48' height='48'/%3E%3C/svg%3E" alt="" /></div></td>
+                                <td class="eg-col-name"><a class="eg-name-link" href="#">Sample Product Alpha</a><div class="eg-name-meta"><span class="eg-grid-meta">SKU-001</span></div></td>
+                                <td class="eg-col-category">Electronics</td>
+                                <td class="eg-col-price">₺1,250.00</td>
+                                <td class="eg-col-state"><div class="eg-state-badge">In Stock</div></td>
+                                <td class="eg-col-status"><button type="button" class="eg-status-group" data-eg-status-toggle><span class="eg-status-icon gridActiveIcon">Active</span></button></td>
+                                <td class="eg-col-actions"><div class="btn-group eg-actions"><button type="button" class="btn btn-sm eg-actions-toggle dropdown-toggle">Actions</button></div></td>
+                            </tr>
+                            <tr class="GridIsActive">
+                                <td class="eg-col-index"><span class="eg-row-index">2</span></td>
+                                <td class="gridButtons eg-col-check"><label class="eg-check-hit"><input class="gridCheckboxes" name="checkboxGrid" type="checkbox" /></label></td>
+                                <td class="eg-col-image"><div class="eg-thumb"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Crect fill='%23fee2e2' width='48' height='48'/%3E%3C/svg%3E" alt="" /></div></td>
+                                <td class="eg-col-name"><a class="eg-name-link" href="#">Inactive Sample Product Beta With A Longer Name</a></td>
+                                <td class="eg-col-category">Home &amp; Garden</td>
+                                <td class="eg-col-price">₺499.00</td>
+                                <td class="eg-col-state"><div class="eg-state-badge">Out of Stock</div></td>
+                                <td class="eg-col-status"><button type="button" class="eg-status-group" data-eg-status-toggle><span class="eg-status-icon gridNotActiveIcon">Inactive</span></button></td>
+                                <td class="eg-col-actions"><div class="btn-group eg-actions"><button type="button" class="btn btn-sm eg-actions-toggle dropdown-toggle">Actions</button></div></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="griddly-footer">
+                    <span class="griddly-summary">Records <span class="griddly-recordstart">1</span>-<span class="griddly-recordend">2</span> of <span class="griddly-recordtotal">2</span></span>
+                    <span class="griddly-pager"><a class="prev" href="javascript:;">&lt;&lt; Prev</a> Page <input type="text" class="pageNumber" value="1"> of <span class="pageCount">1</span> <a class="next" href="javascript:;">Next &gt;&gt;</a></span>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="../EImece/Scripts/admin-vendor/jquery-4.0.0.js"></script>
+    <script src="../EImece/Scripts/adminGridModern.js"></script>
+    <script>
+        if (window.egMarkModernGrids) { window.egMarkModernGrids(); }
+        if (window.egRefreshMobileGrid) { window.egRefreshMobileGrid(); }
+    </script>
+</body>
+</html>
