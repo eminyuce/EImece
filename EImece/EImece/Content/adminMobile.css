@@ -4,6 +4,38 @@
    mobile-first cards, and flawless usability across all admin pages.
    ========================================================================== */
 
+/* Shared responsive field helpers (all viewports) */
+body.admin-app .eg-grid-cell-textarea,
+body.admin-app .eg-admin-fluid-textarea {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 6px 8px;
+    border: 1px solid #d7dee8;
+    border-radius: 4px;
+    background-color: transparent;
+    color: #334155;
+    font-size: 13px;
+    line-height: 1.4;
+    resize: vertical;
+}
+
+body.admin-app .eg-grid-cell-textarea {
+    min-height: 60px;
+}
+
+body.admin-app .eg-admin-fluid-textarea {
+    min-height: 85px;
+}
+
+body.admin-app .admin-rss-page {
+    padding: 20px 24px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
 /* --------------------------------------------------------------------------
    1. Global Mobile Shell & Layout Refinements (max-width: 767px)
    -------------------------------------------------------------------------- */
@@ -688,5 +720,239 @@
         width: 100% !important;
         min-height: 44px !important;
         margin: 0 !important;
+    }
+
+    /* Inline fixed-width modals (AppLogs etc.) must not overflow the viewport */
+    body.admin-app .modal-content[style*="width"],
+    body.admin-app .modal-dialog.modal-lg .modal-content {
+        width: auto !important;
+        max-width: 100% !important;
+    }
+
+    body.admin-app .modal-dialog {
+        max-width: calc(100vw - 16px) !important;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   5. Admin edit forms, detail pages & non-grid tables (max-width: 767px)
+   Intent: every SaveOrEdit / detail / report page stacks cleanly on phones;
+   wide inline templates and raw tables scroll inside their container only.
+   -------------------------------------------------------------------------- */
+@media (max-width: 767px) {
+    body.admin-app .admin-content {
+        overflow-x: hidden;
+    }
+
+    /* Bootstrap columns — full width stack */
+    body.admin-app .admin-content .row > [class*="col-md-"],
+    body.admin-app .admin-content .row > [class*="col-lg-"],
+    body.admin-app .admin-content .row > [class*="col-sm-"] {
+        width: 100% !important;
+        max-width: 100% !important;
+        flex: 0 0 100% !important;
+    }
+
+    body.admin-app .eg-products-tree-col,
+    body.admin-app .eg-products-main-col {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    /* Definition lists in detail/modals */
+    body.admin-app .dl-horizontal dt,
+    body.admin-app .dl-horizontal dd {
+        float: none !important;
+        width: 100% !important;
+        margin-left: 0 !important;
+        text-align: left !important;
+    }
+
+    body.admin-app .dl-horizontal dd {
+        margin-bottom: 12px !important;
+    }
+
+    /* Grid / log textareas with inline fixed widths */
+    body.admin-app .eg-grid-cell-textarea,
+    body.admin-app .eg-admin-fluid-textarea,
+    body.admin-app .eg-grid-note,
+    body.admin-app .eg-review-note,
+    body.admin-app .eg-col-message textarea,
+    body.admin-app .eg-col-inner-message textarea,
+    body.admin-app .eg-col-note textarea,
+    body.admin-app table textarea[readonly] {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        min-height: 44px !important;
+        font-size: 14px !important;
+    }
+
+    /* Raw admin tables without a wrapper */
+    body.admin-app .admin-content > table.table,
+    body.admin-app .admin-content .card-body > table.table:not(.eg-grid-table) {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    body.admin-app .table-responsive {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        max-width: 100% !important;
+    }
+
+    /* Page-specific containers */
+    body.admin-app .admin-rss-page {
+        padding: 12px 10px !important;
+        max-width: 100% !important;
+    }
+
+    body.admin-app .audit-report-container,
+    body.admin-app .eg-cart-detail,
+    body.admin-app .order-details,
+    body.admin-app .metrics-page-wrap {
+        max-width: 100% !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+
+    body.admin-app .customers-admin-page textarea.eg-grid-note {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    /* Edit toolbars & page headers */
+    body.admin-app .admin-edit-toolbar-actions,
+    body.admin-app .admin-edit-simple-heading,
+    body.admin-app .users-admin-header,
+    body.admin-app .audit-header,
+    body.admin-app .d-flex.justify-content-between.align-items-center.mb-3 {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 10px !important;
+    }
+
+    body.admin-app .admin-edit-toolbar-actions .btn,
+    body.admin-app .users-admin-header-actions .btn,
+    body.admin-app .audit-header .btn,
+    body.admin-app .d-flex.gap-2 {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+    body.admin-app .d-flex.gap-2 > .btn,
+    body.admin-app .d-flex.gap-2 > a.btn {
+        flex: 1 1 auto;
+        min-height: 44px;
+    }
+
+    /* Rich text & code editors */
+    body.admin-app .tox-tinymce,
+    body.admin-app .tox .tox-edit-area__iframe {
+        max-width: 100% !important;
+    }
+
+    body.admin-app .tox-tinymce {
+        min-height: 280px !important;
+    }
+
+    body.admin-app .CodeMirror,
+    body.admin-app .CodeMirror-scroll {
+        max-width: 100% !important;
+    }
+
+    body.admin-app #admin-edit-tab-content .form-group {
+        margin-bottom: 14px !important;
+    }
+
+    /* Input groups & date pickers */
+    body.admin-app .input-group {
+        flex-wrap: wrap !important;
+        width: 100% !important;
+    }
+
+    body.admin-app .input-group .form-control {
+        min-width: 0 !important;
+        flex: 1 1 100% !important;
+    }
+
+    /* Price filter builder toolbar */
+    body.admin-app .price-filter-builder-wrapper .card-header {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 8px !important;
+    }
+
+    body.admin-app .price-filter-builder-wrapper .card-header > div {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        gap: 8px !important;
+        width: 100% !important;
+    }
+
+    body.admin-app .price-filter-builder-wrapper .card-header .btn {
+        flex: 1 1 auto;
+        min-height: 44px;
+    }
+
+    /* Media tabs */
+    body.admin-app .media-admin-page .nav-tabs {
+        flex-wrap: nowrap !important;
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+
+    body.admin-app .media-admin-page .nav-tabs > li,
+    body.admin-app .media-admin-page .nav-tabs .nav-item {
+        flex: 0 0 auto;
+    }
+
+    /* Order / customer detail cards */
+    body.admin-app .order-details .row.text-center > [class*="col-"],
+    body.admin-app .order-details .card-body .row > [class*="col-"] {
+        margin-bottom: 12px;
+    }
+
+    body.admin-app .order-products-table th,
+    body.admin-app .order-products-table td {
+        white-space: normal !important;
+        font-size: 13px;
+    }
+
+    /* KPI / stat rows */
+    body.admin-app .row.g-3 > [class*="col-md-"],
+    body.admin-app .metrics-help-cards > [class*="col-md-"] {
+        margin-bottom: 10px;
+    }
+
+    /* Coupon redemption & similar bare tables */
+    body.admin-app .admin-content > h2 + .table-responsive,
+    body.admin-app .admin-content > .table-responsive {
+        margin-bottom: 12px;
+    }
+}
+
+/* Tablet: forms and side-by-side layouts (768px - 991px) */
+@media (min-width: 768px) and (max-width: 991px) {
+    body.admin-app .eg-products-tree-col {
+        margin-bottom: 12px;
+    }
+
+    body.admin-app .audit-report-container,
+    body.admin-app .admin-rss-page {
+        max-width: 100% !important;
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+    }
+
+    body.admin-app .eg-grid-cell-textarea,
+    body.admin-app .eg-admin-fluid-textarea,
+    body.admin-app .eg-grid-note,
+    body.admin-app .eg-review-note {
+        max-width: 100% !important;
     }
 }
