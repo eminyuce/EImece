@@ -1,7 +1,6 @@
 @using Resources
-﻿@model EImece.Domain.Entities.AppLog
+@model EImece.Domain.Entities.AppLog
 @{
-    var styleClass = "height: 85px; background-color: transparent; width: 740px; margin: 0px;";
 }
 <div>
     <h4>
@@ -26,7 +25,7 @@
         </dt>
 
         <dd>
-            <textarea readonly="" style="@styleClass">@Model.EventMessage</textarea>
+            <textarea readonly="" class="eg-admin-fluid-textarea">@Model.EventMessage</textarea>
         </dd>
         }
         @if (!string.IsNullOrEmpty(Model.ErrorSource))
@@ -36,7 +35,7 @@
         </dt>
 
         <dd>
-            <textarea readonly="" style="@styleClass">@Model.ErrorSource</textarea>
+            <textarea readonly="" class="eg-admin-fluid-textarea">@Model.ErrorSource</textarea>
         </dd>
         }
         @if (!string.IsNullOrEmpty(Model.ErrorClass))
@@ -46,7 +45,7 @@
         </dt>
 
         <dd>
-            <textarea readonly="" style="@styleClass">@Model.ErrorClass</textarea>
+            <textarea readonly="" class="eg-admin-fluid-textarea">@Model.ErrorClass</textarea>
         </dd>
         }
         @if (!string.IsNullOrEmpty(Model.ErrorMessage))
@@ -56,7 +55,7 @@
         </dt>
 
         <dd>
-            <textarea readonly="" style="@styleClass">@Model.ErrorMessage</textarea>
+            <textarea readonly="" class="eg-admin-fluid-textarea">@Model.ErrorMessage</textarea>
         </dd>
         }
         @if (!string.IsNullOrEmpty(Model.InnerErrorMessage))
@@ -66,7 +65,7 @@
         </dt>
 
         <dd>
-            <textarea readonly="" style="@styleClass">@Model.InnerErrorMessage</textarea>
+            <textarea readonly="" class="eg-admin-fluid-textarea">@Model.InnerErrorMessage</textarea>
         </dd>
         }
     </dl>

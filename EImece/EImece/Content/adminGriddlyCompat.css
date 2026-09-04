@@ -175,8 +175,8 @@ body.admin-app .eg-actions-toggle .fa-gear {
     color: #607487;
 }
 
-/* iPhone: force Griddly's own scroller to be the horizontal pan surface. */
-@media (max-width: 991px) {
+/* Tablet: horizontal scroll inside Griddly. Phones (≤767px) use card layout in adminMobile.css. */
+@media (min-width: 768px) and (max-width: 991px) {
     body.admin-app .griddly-scrollable-container {
         display: block !important;
         width: 100% !important;

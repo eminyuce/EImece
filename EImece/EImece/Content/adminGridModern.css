@@ -3211,18 +3211,26 @@ body.admin-app .eg-grid .grid-wrap {
 @media (max-width: 767px) {
     body.admin-app .eg-orders-grid .eg-grid,
     body.admin-app .eg-orders-grid .grid-wrap,
-    body.admin-app .eg-orders-grid .eg-grid-scroll {
+    body.admin-app .eg-orders-grid .eg-grid-scroll,
+    body.admin-app .eg-orders-grid .griddly-scrollable-container {
         overflow-x: visible !important;
         background: transparent !important;
     }
 
-    body.admin-app .eg-orders-grid .grid-table,
-    body.admin-app .eg-orders-grid .grid-table > thead,
-    body.admin-app .eg-orders-grid .grid-table > tbody,
-    body.admin-app .eg-orders-grid .grid-table > thead > tr,
-    body.admin-app .eg-orders-grid .grid-table > tbody > tr,
-    body.admin-app .eg-orders-grid .grid-table > thead > tr > th,
-    body.admin-app .eg-orders-grid .grid-table > tbody > tr > td {
+    body.admin-app .eg-orders-grid table,
+    body.admin-app .eg-orders-grid .eg-grid-table,
+    body.admin-app .eg-orders-grid table > thead,
+    body.admin-app .eg-orders-grid .eg-grid-table > thead,
+    body.admin-app .eg-orders-grid table > tbody,
+    body.admin-app .eg-orders-grid .eg-grid-table > tbody,
+    body.admin-app .eg-orders-grid table > thead > tr,
+    body.admin-app .eg-orders-grid .eg-grid-table > thead > tr,
+    body.admin-app .eg-orders-grid table > tbody > tr,
+    body.admin-app .eg-orders-grid .eg-grid-table > tbody > tr,
+    body.admin-app .eg-orders-grid table > thead > tr > th,
+    body.admin-app .eg-orders-grid .eg-grid-table > thead > tr > th,
+    body.admin-app .eg-orders-grid table > tbody > tr > td,
+    body.admin-app .eg-orders-grid .eg-grid-table > tbody > tr > td {
         display: block !important;
         width: 100% !important;
         max-width: none !important;
@@ -3231,17 +3239,20 @@ body.admin-app .eg-grid .grid-wrap {
         box-sizing: border-box;
     }
 
-    body.admin-app .eg-orders-grid .grid-table {
+    body.admin-app .eg-orders-grid table,
+    body.admin-app .eg-orders-grid .eg-grid-table {
         table-layout: auto !important;
         border: 0 !important;
         background: transparent;
     }
 
-    body.admin-app .eg-orders-grid .grid-table > thead {
+    body.admin-app .eg-orders-grid table > thead,
+    body.admin-app .eg-orders-grid .eg-grid-table > thead {
         display: none !important;
     }
 
-    body.admin-app .eg-orders-grid .grid-table > tbody > tr {
+    body.admin-app .eg-orders-grid table > tbody > tr,
+    body.admin-app .eg-orders-grid .eg-grid-table > tbody > tr {
         display: grid !important;
         grid-template-columns: auto auto 1fr auto;
         grid-template-areas:
@@ -3259,8 +3270,8 @@ body.admin-app .eg-grid .grid-wrap {
         box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
     }
 
-    body.admin-app .eg-orders-grid .grid-table > tbody > tr:hover > td,
-    body.admin-app .eg-orders-grid .grid-table > tbody > tr > td {
+    body.admin-app .eg-orders-grid table > tbody > tr:hover > td,
+    body.admin-app .eg-orders-grid table > tbody > tr > td {
         background: transparent !important;
         border: 0 !important;
         padding: 0 !important;
@@ -3268,26 +3279,26 @@ body.admin-app .eg-grid .grid-wrap {
     }
 
     /* Card chrome: index + checkbox + actions on one row */
-    body.admin-app .eg-orders-grid .grid-table > tbody > tr > td.eg-col-index {
+    body.admin-app .eg-orders-grid table > tbody > tr > td.eg-col-index {
         grid-area: index;
         width: auto !important;
     }
 
-    body.admin-app .eg-orders-grid .grid-table > tbody > tr > td.eg-col-check,
-    body.admin-app .eg-orders-grid .grid-table > tbody > tr > td.gridButtons {
+    body.admin-app .eg-orders-grid table > tbody > tr > td.eg-col-check,
+    body.admin-app .eg-orders-grid table > tbody > tr > td.gridButtons {
         grid-area: check;
         width: auto !important;
         max-width: none !important;
         overflow: visible;
     }
 
-    body.admin-app .eg-orders-grid .grid-table > tbody > tr > td.eg-col-name {
+    body.admin-app .eg-orders-grid table > tbody > tr > td.eg-col-name {
         grid-area: name;
         min-width: 0 !important;
         max-width: none !important;
     }
 
-    body.admin-app .eg-orders-grid .grid-table > tbody > tr > td.eg-col-actions {
+    body.admin-app .eg-orders-grid table > tbody > tr > td.eg-col-actions {
         grid-area: actions;
         width: auto !important;
         min-width: 0 !important;
@@ -3295,15 +3306,15 @@ body.admin-app .eg-grid .grid-wrap {
         justify-self: end;
     }
 
-    body.admin-app .eg-orders-grid .grid-table > tbody > tr > td.eg-col-state,
-    body.admin-app .eg-orders-grid .grid-table > tbody > tr > td.eg-col-order-status {
+    body.admin-app .eg-orders-grid table > tbody > tr > td.eg-col-state,
+    body.admin-app .eg-orders-grid table > tbody > tr > td.eg-col-order-status {
         grid-area: status;
         width: 100% !important;
         max-width: none !important;
         padding-top: 4px !important;
     }
 
-    body.admin-app .eg-orders-grid .grid-table > tbody > tr > td.eg-col-order-amount {
+    body.admin-app .eg-orders-grid table > tbody > tr > td.eg-col-order-amount {
         grid-area: amount;
         display: block !important;
         width: 100% !important;
@@ -3314,8 +3325,8 @@ body.admin-app .eg-grid .grid-wrap {
     }
 
     /* Show all order fields on mobile/tablets with horizontal scroll */
-    body.admin-app .eg-orders-grid .grid-table > tbody > tr > td.eg-col-secondary,
-    body.admin-app .eg-orders-grid .grid-table > tbody > tr > td.gridDateClass {
+    body.admin-app .eg-orders-grid table > tbody > tr > td.eg-col-secondary,
+    body.admin-app .eg-orders-grid table > tbody > tr > td.gridDateClass {
         display: table-cell !important;
     }
 
@@ -3360,10 +3371,10 @@ body.admin-app .eg-grid .grid-wrap {
         line-height: 1.35;
     }
 
-    body.admin-app .eg-orders-grid .grid-table > thead > tr > th.eg-col-order-status,
-    body.admin-app .eg-orders-grid .grid-table > tbody > tr > td.eg-col-order-status,
-    body.admin-app .eg-orders-grid .grid-table > thead > tr > th.eg-col-state,
-    body.admin-app .eg-orders-grid .grid-table > tbody > tr > td.eg-col-state {
+    body.admin-app .eg-orders-grid table > thead > tr > th.eg-col-order-status,
+    body.admin-app .eg-orders-grid table > tbody > tr > td.eg-col-order-status,
+    body.admin-app .eg-orders-grid table > thead > tr > th.eg-col-state,
+    body.admin-app .eg-orders-grid table > tbody > tr > td.eg-col-state {
         min-width: 160px;
         max-width: none;
         white-space: normal;
@@ -4998,12 +5009,6 @@ body.admin-app .eg-orders-grid table > tbody > tr:has(input[name="checkboxGrid"]
         padding-left: 0;
     }
 
-    body.admin-app .eg-grid .grid-table > thead > tr > th.eg-col-status,
-    body.admin-app .eg-grid .grid-table > tbody > tr > td.eg-col-status,
-    body.admin-app .griddly table .eg-col-status {
-        display: none !important;
-    }
-
     body.admin-app .eg-grid .grid-table,
     body.admin-app .griddly table {
         width: 100% !important;
@@ -5055,17 +5060,6 @@ body.admin-app .eg-orders-grid table > tbody > tr:has(input[name="checkboxGrid"]
         box-shadow: none !important;
     }
 
-    body.admin-app .eg-grid-table > thead > tr > th.eg-col-price,
-    body.admin-app .eg-grid-table > tbody > tr > td.eg-col-price,
-    body.admin-app .eg-grid-table > thead > tr > th.eg-col-state,
-    body.admin-app .eg-grid-table > tbody > tr > td.eg-col-state,
-    body.admin-app .griddly table > thead > tr > th.eg-col-price,
-    body.admin-app .griddly table > tbody > tr > td.eg-col-price,
-    body.admin-app .griddly table > thead > tr > th.eg-col-state,
-    body.admin-app .griddly table > tbody > tr > td.eg-col-state {
-        display: none !important;
-    }
-
     body.admin-app .griddly table,
     body.admin-app .griddly table.eg-grid-table {
         min-width: 0 !important;
@@ -5079,7 +5073,8 @@ body.admin-app .eg-orders-grid table > tbody > tr:has(input[name="checkboxGrid"]
     }
 }
 
-@media (max-width: 991px) {
+@media (min-width: 768px) and (max-width: 991px) {
+    /* Tablet-only narrow column collapse — never on phones (card layout). */
     body.admin-app .eg-grid-table > thead > tr > th.eg-col-image,
     body.admin-app .eg-grid-table > tbody > tr > td.eg-col-image,
     body.admin-app .eg-grid-table > thead > tr > th.eg-col-index,
@@ -5169,7 +5164,9 @@ body.admin-app .eg-orders-grid table > tbody > tr:has(input[name="checkboxGrid"]
         overscroll-behavior-x: contain;
         touch-action: pan-x pan-y;
     }
+}
 
+@media (min-width: 768px) and (max-width: 991px) {
     body.admin-app .eg-grid table.eg-grid-table,
     body.admin-app .eg-grid table.grid-table,
     body.admin-app .griddly table.eg-grid-table,
@@ -5180,7 +5177,9 @@ body.admin-app .eg-orders-grid table > tbody > tr:has(input[name="checkboxGrid"]
         min-width: 1100px !important;
         table-layout: auto !important;
     }
+}
 
+@media (max-width: 991px) {
     /* Do not hide product columns — scroll to them instead. */
     body.admin-app .eg-grid table.eg-grid-table > thead > tr > th.eg-col-image,
     body.admin-app .eg-grid table.eg-grid-table > tbody > tr > td.eg-col-image,
