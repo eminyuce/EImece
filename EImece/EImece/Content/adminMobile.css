@@ -956,3 +956,156 @@ body.admin-app .admin-rss-page {
         max-width: 100% !important;
     }
 }
+
+/* --------------------------------------------------------------------------
+   6. Remaining edit/create pages — settings, templates, specs, tools
+   -------------------------------------------------------------------------- */
+@media (max-width: 767px) {
+    body.admin-app .eg-spec-date-input,
+    body.admin-app input[type="date"],
+    body.admin-app input[type="datetime-local"],
+    body.admin-app input[type="file"] {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    body.admin-app img.img-fluid,
+    body.admin-app .eg-image-preview-img,
+    body.admin-app .admin-logo-preview img {
+        max-width: 100% !important;
+        height: auto !important;
+    }
+
+    /* System Settings: search must not force 320px overflow */
+    body.admin-app .settings-search-wrapper {
+        min-width: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    body.admin-app .settings-center-container .form-control,
+    body.admin-app .settings-center-container .form-select,
+    body.admin-app .settings-center-container #globalSettingsSearch {
+        font-size: 16px !important;
+        min-height: 44px !important;
+        height: auto !important;
+    }
+
+    body.admin-app #stickySaveBar .card-body,
+    body.admin-app #stickySaveBar .d-flex.gap-2 {
+        width: 100%;
+        flex-wrap: wrap !important;
+    }
+
+    body.admin-app #stickySaveBar .btn {
+        flex: 1 1 auto;
+        min-height: 44px;
+    }
+
+    body.admin-app .settings-mobile-trigger {
+        min-height: 44px;
+    }
+
+    body.admin-app .settings-center-container .input-group {
+        flex-wrap: nowrap !important;
+    }
+
+    body.admin-app .settings-center-container .input-group .form-control {
+        flex: 1 1 auto !important;
+        min-width: 0 !important;
+    }
+
+    /* Template builder */
+    body.admin-app .tb-palette__item,
+    body.admin-app .admin-sample-bar .btn {
+        min-height: 44px;
+        touch-action: manipulation;
+    }
+
+    body.admin-app .admin-sample-bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    body.admin-app .admin-sample-bar .btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    body.admin-app .mail-template-test-toolbar .btn,
+    body.admin-app .js-mail-template-test {
+        width: 100%;
+        min-height: 44px;
+    }
+
+    body.admin-app .card-header.d-flex,
+    body.admin-app .admin-import-page .card-header {
+        flex-wrap: wrap !important;
+        gap: 8px;
+    }
+
+    body.admin-app .card-header.d-flex .btn,
+    body.admin-app .admin-import-page .card-header .btn {
+        min-height: 44px;
+    }
+
+    body.admin-app pre,
+    body.admin-app code {
+        max-width: 100%;
+        overflow-x: auto;
+        word-break: break-word;
+        white-space: pre-wrap;
+    }
+
+    body.admin-app .filepond--root,
+    body.admin-app .filepond--panel-root {
+        max-width: 100%;
+    }
+
+    body.admin-app .filepond--drop-label {
+        min-height: 88px;
+    }
+
+    /* Product specs header + move-products trees */
+    body.admin-app .eg-move-products-container > [class*="col-"],
+    body.admin-app .eg-move-tree-wrapper {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin-bottom: 12px;
+    }
+
+    body.admin-app .eg-move-selected-card {
+        flex-wrap: wrap;
+    }
+
+    body.admin-app .eg-move-clear-btn {
+        min-height: 44px;
+    }
+
+    /* Users edit / register / roles */
+    body.admin-app .user-roles-user {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    body.admin-app .card-footer .btn {
+        min-height: 44px;
+        flex: 1 1 auto;
+    }
+
+    /* Coupon generate / compress images */
+    body.admin-app .admin-content form .btn[type="submit"],
+    body.admin-app .admin-content .btn-lg {
+        min-height: 44px;
+        width: 100%;
+    }
+
+    body.admin-app .tox .tox-toolbar,
+    body.admin-app .tox .tox-toolbar__primary {
+        flex-wrap: wrap !important;
+    }
+}
+
+body.admin-app .eg-spec-date-input {
+    max-width: 280px;
+}
