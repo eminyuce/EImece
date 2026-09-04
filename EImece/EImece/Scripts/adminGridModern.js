@@ -275,7 +275,7 @@
             var n = $g.attr('data-griddly-count');
             if (n != null && n !== '') {
                 $g.find('.grid-record-count-badge.griddly-recordtotal').each(function () {
-                    if (!$.trim($(this).text())) {
+                    if (!String($(this).text() || '').trim()) {
                         $(this).text(n);
                     }
                 });
@@ -289,6 +289,9 @@
         markSecondaryGridColumns();
         fixGriddlyRecordRange();
         numberGridRows();
+        syncMobileGridBodyClass();
+        applyMobileGridLabels();
+        syncMobileSortToolbars();
     }
 
     /**
@@ -655,6 +658,205 @@
         el.scrollLeft = next;
     }
 
+    function stripHeaderLabel(text) {
+        return String(text || '')
+            .replace(/\u21C5/g, '')
+            .replace(/\u25B2/g, '')
+            .replace(/\u25BC/g, '')
+            .replace(/\s+/g, ' ')
+            .trim();
+    }
+
+    function getGridTableHeaders($table) {
+        var $row = $table.find('thead > tr.columnHeaders').first();
+        if (!$row.length) {
+            $row = $table.find('thead > tr').has('th[data-griddly-sortfield], th.grid-header, th.sortable').first();
+        }
+        if (!$row.length) {
+            $row = $table.find('thead > tr').first();
+        }
+        return $row.children('th');
+    }
+
+    function applyMobileGridLabels(context) {
+        if (!window.matchMedia('(max-width: 767px)').matches) {
+            return;
+        }
+
+        var $root = context ? $(context) : $(document);
+        var $tables = $root.is('table') ? $root : $root.find('.eg-grid table.eg-grid-table, .eg-grid table.grid-table, .griddly table, [data-role=griddly] table');
+        if (!$tables.length && !$root.is('table')) {
+            $tables = $('.eg-grid table.eg-grid-table, .eg-grid table.grid-table, .griddly table, [data-role=griddly] table');
+        }
+
+        $tables.each(function () {
+            var $table = $(this);
+            var $ths = getGridTableHeaders($table);
+            if (!$ths.length) {
+                return;
+            }
+
+            $table.find('tbody > tr').each(function () {
+                $(this).children('td').each(function (idx) {
+                    var $td = $(this);
+                    var $th = $ths.eq(idx);
+                    if (!$th.length || $td.hasClass('eg-col-check') || $td.hasClass('gridButtons') || $td.hasClass('eg-col-actions')) {
+                        return;
+                    }
+                    var label = stripHeaderLabel($th.text());
+                    if (label) {
+                        $td.attr('data-label', label);
+                    }
+                    if ($td.hasClass('eg-col-name') || $td.hasClass('eg-col-image') || $td.hasClass('eg-col-index')) {
+                        $td.addClass('eg-mobile-skip-label');
+                    }
+                });
+            });
+        });
+    }
+
+    function syncMobileGridBodyClass() {
+        document.body.classList.toggle('eg-grid-mobile-cards', window.matchMedia('(max-width: 767px)').matches);
+    }
+
+    function buildMobileSortToolbar($host, $table) {
+        var $sortThs = getGridTableHeaders($table).filter('[data-griddly-sortfield], .sortable[data-griddly-sortfield], .sortable');
+        $sortThs = $sortThs.filter(function () {
+            return !!($(this).attr('data-griddly-sortfield') || $(this).hasClass('sortable'));
+        });
+        if (!$sortThs.filter('[data-griddly-sortfield]').length) {
+            $sortThs = getGridTableHeaders($table).filter('[data-griddly-sortfield]');
+        }
+        if (!$sortThs.length) {
+            $host.find('> .eg-mobile-grid-toolbar').remove();
+            return;
+        }
+
+        var $toolbar = $host.children('.eg-mobile-grid-toolbar').first();
+        if (!$toolbar.length) {
+            $toolbar = $(
+                '<div class="eg-mobile-grid-toolbar" role="region" aria-label="Grid controls">' +
+                    '<div class="eg-mobile-sort-row">' +
+                        '<label class="eg-mobile-sort-label"><span class="eg-mobile-sort-caption">Sort by</span>' +
+                            '<select class="form-control eg-mobile-sort-field"></select></label>' +
+                        '<label class="eg-mobile-sort-label eg-mobile-sort-dir-label"><span class="eg-mobile-sort-caption">Order</span>' +
+                            '<select class="form-control eg-mobile-sort-direction">' +
+                                '<option value="Ascending">Ascending</option>' +
+                                '<option value="Descending">Descending</option>' +
+                            '</select></label>' +
+                    '</div>' +
+                '</div>'
+            );
+            $host.prepend($toolbar);
+        }
+
+        var $fieldSelect = $toolbar.find('.eg-mobile-sort-field');
+        var previous = $fieldSelect.val();
+        $fieldSelect.empty();
+        $sortThs.each(function () {
+            var $th = $(this);
+            var field = $th.attr('data-griddly-sortfield');
+            if (!field) {
+                return;
+            }
+            var label = stripHeaderLabel($th.text()) || field;
+            $fieldSelect.append($('<option></option>').val(field).text(label));
+        });
+
+        var $griddly = $host.is('[data-role=griddly]') ? $host : $host.closest('[data-role=griddly]');
+        var currentSort = null;
+        if ($griddly.length) {
+            currentSort = $griddly.data('griddly-currentsort');
+            if (typeof currentSort === 'string') {
+                try {
+                    currentSort = JSON.parse(currentSort);
+                } catch (e) {
+                    currentSort = null;
+                }
+            }
+        }
+        if (currentSort && currentSort.length) {
+            $fieldSelect.val(currentSort[0].field);
+            $toolbar.find('.eg-mobile-sort-direction').val(currentSort[0].direction);
+        } else if (previous) {
+            $fieldSelect.val(previous);
+        }
+    }
+
+    function syncMobileSortToolbars(context) {
+        if (!window.matchMedia('(max-width: 767px)').matches) {
+            $('.eg-mobile-grid-toolbar').remove();
+            return;
+        }
+
+        var $root = context ? $(context) : $(document);
+        var $hosts = $root.is('[data-role=griddly], .eg-grid-shell, .grid-mvc.eg-grid')
+            ? $root
+            : $root.find('[data-role=griddly], .eg-grid-shell, .grid-mvc.eg-grid');
+        if (!$hosts.length) {
+            $hosts = $('[data-role=griddly], .eg-grid-shell, .grid-mvc.eg-grid');
+        }
+
+        $hosts.each(function () {
+            var $host = $(this);
+            if ($host.hasClass('eg-orders-grid')) {
+                return;
+            }
+            var $table = $host.find('table.eg-grid-table, table.grid-table, table').first();
+            if (!$table.length) {
+                return;
+            }
+            buildMobileSortToolbar($host, $table);
+        });
+    }
+
+    function wireMobileGridEnhancements() {
+        var cardMq = window.matchMedia('(max-width: 767px)');
+
+        function refreshMobileGrid(context) {
+            syncMobileGridBodyClass();
+            applyMobileGridLabels(context);
+            syncMobileSortToolbars(context);
+        }
+
+        $(document).off('change.egMobileSort', '.eg-mobile-sort-field, .eg-mobile-sort-direction');
+        $(document).on('change.egMobileSort', '.eg-mobile-sort-field, .eg-mobile-sort-direction', function () {
+            var $toolbar = $(this).closest('.eg-mobile-grid-toolbar');
+            var $host = $toolbar.parent();
+            var field = $toolbar.find('.eg-mobile-sort-field').val();
+            var direction = $toolbar.find('.eg-mobile-sort-direction').val() || 'Descending';
+            if (!field) {
+                return;
+            }
+
+            var $griddly = $host.is('[data-role=griddly]') ? $host : $host.find('[data-role=griddly]').first();
+            if ($griddly.length && $griddly.data('griddly')) {
+                var inst = $griddly.data('griddly');
+                inst.setSortFields([{ field: field, direction: direction }]);
+                inst.refresh(true);
+                return;
+            }
+
+            var $th = $host.find('th[data-griddly-sortfield="' + field + '"]').first();
+            if ($th.length) {
+                $th.trigger('click');
+            }
+        });
+
+        refreshMobileGrid();
+        window.egRefreshMobileGrid = refreshMobileGrid;
+
+        if (cardMq.addEventListener) {
+            cardMq.addEventListener('change', function () { refreshMobileGrid(); });
+        } else if (cardMq.addListener) {
+            cardMq.addListener(function () { refreshMobileGrid(); });
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', refreshMobileGrid);
+        }
+    }
+
     function wireScrollNavButtons() {
         // Drop any prior click handlers (bundle + cache-busted overlay).
         $(document).off('click', '.eg-scroll-nav-left');
@@ -697,6 +899,10 @@
 
                 // Has horizontal overflow?
                 if (scrollW > clientW + 2) {
+                    if (window.matchMedia('(max-width: 767px)').matches) {
+                        $floatWrap.hide();
+                        return;
+                    }
                     $inner.css('width', scrollW + 'px');
                     $floatWrap.css({
                         left: rect.left + 'px',
@@ -759,6 +965,9 @@
         if (isOverlayReload) {
             wireScrollNavButtons();
             markModernGrids();
+            if (typeof window.egRefreshMobileGrid === 'function') {
+                window.egRefreshMobileGrid();
+            }
             return;
         }
         markModernGrids();
@@ -769,6 +978,7 @@
         wireActionMenus();
         wireCategoryTree();
         wireOpsMore();
+        wireMobileGridEnhancements();
         wireScrollNavButtons();
         wireFloatingScrollbar();
         sizeReviewNotes(document);
@@ -780,6 +990,9 @@
         wireFloatingScrollbar();
         sizeReviewNotes(document);
         updateSelectedCount();
+        if (typeof window.egRefreshMobileGrid === 'function') {
+            window.egRefreshMobileGrid();
+        }
     });
     window.egMarkModernGrids = markModernGrids;
     window.egUpdateSelectedCount = updateSelectedCount;
