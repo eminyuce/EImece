@@ -21,6 +21,17 @@ test.describe('Admin mobile page fixtures', () => {
     const viewportWidth = page.viewportSize().width;
     expect(textareaWidth).toBeLessThanOrEqual(viewportWidth);
 
+    const dateInput = page.locator('.eg-spec-date-input');
+    const dateWidth = await dateInput.evaluate((el) => el.getBoundingClientRect().width);
+    expect(dateWidth).toBeLessThanOrEqual(viewportWidth);
+
+    const search = page.locator('.settings-search-wrapper');
+    const searchBox = await search.boundingBox();
+    expect(searchBox.width).toBeLessThanOrEqual(viewportWidth);
+
+    const pageOverflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth + 2);
+    expect(pageOverflow).toBeFalsy();
+
     await page.screenshot({ path: '/opt/cursor/artifacts/admin_edit_form_mobile.png', fullPage: true });
   });
 

@@ -50,8 +50,8 @@
         <div class="admin-spec-field-meta">@(includeTime ? "tarih + saat" : "tarih")</div>
     </div>
     <div class="col-md-5">
-        <input id="spec_@fieldKey" name="@fieldKey" type="@inputType" class="form-control"
-               value="@inputValue" title="@tipText" style="max-width:280px;" />
+        <input id="spec_@fieldKey" name="@fieldKey" type="@inputType" class="form-control eg-spec-date-input"
+               value="@inputValue" title="@tipText" />
         <span class="admin-field-help">
             @(includeTime ? "Tarih ve saat birlikte kaydedilir." : "Sadece tarih kaydedilir (time=\"false\").")
         </span>
