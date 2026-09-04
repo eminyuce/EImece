@@ -464,13 +464,26 @@ body.admin-app .admin-rss-page {
         max-width: 100% !important;
     }
 
+    /* Keep inline grid ordering fields compact in card rows (don't flex-grow full width). */
+    body.admin-app .eg-grid:not(.eg-orders-grid) table.eg-grid-table > tbody > tr > td.eg-col-position[data-label] > .GridOrderingTextbox,
+    body.admin-app .griddly:not(.eg-orders-grid) table > tbody > tr > td.eg-col-position[data-label] > .GridOrderingTextbox,
+    body.admin-app .eg-grid:not(.eg-orders-grid) table.eg-grid-table > tbody > tr > td[data-label] > .GridOrderingTextbox,
+    body.admin-app .griddly:not(.eg-orders-grid) table > tbody > tr > td[data-label] > .GridOrderingTextbox,
     body.admin-app .GridOrderingTextbox {
-        width: 70px !important;
-        min-height: 44px !important;
+        flex: 0 0 auto !important;
+        width: 72px !important;
+        max-width: 72px !important;
+        min-width: 64px !important;
+        min-height: 40px !important;
+        height: 40px !important;
+        padding: 4px 8px !important;
+        margin-left: auto !important;
         font-size: 16px !important;
+        line-height: 1.2 !important;
         text-align: center !important;
         border: 1px solid #cbd5e1 !important;
         border-radius: 6px !important;
+        box-sizing: border-box !important;
     }
 
     body.admin-app .eg-status-group,
