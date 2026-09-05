@@ -1060,16 +1060,34 @@ namespace EImece.Domain.Services
         public void ParseTemplateAndSaveProductSpecifications(int productId, int templateId, int currentLanguage, NameValueCollection formValues)
         {
             var template = TemplateService.GetTemplate(templateId);
+            if (template == null || string.IsNullOrWhiteSpace(template.TemplateXml))
+            {
+                throw new InvalidOperationException("Template or TemplateXml is missing for templateId=" + templateId);
+            }
+
             XDocument xdoc = XDocument.Parse(template.TemplateXml);
-            var groups = xdoc.Root.Descendants("group");
+            if (xdoc.Root == null)
+            {
+                throw new InvalidOperationException("TemplateXml root is missing for templateId=" + templateId);
+            }
+
+            var groups = xdoc.Root.Descendants().Where(e =>
+                e.Name.LocalName.Equals("group", StringComparison.OrdinalIgnoreCase));
             var Specifications = new List<ProductSpecification>();
 
             foreach (var group in groups)
             {
-                var groupName = group.FirstAttribute.Value;
+                var groupName = ResolveGroupName(group);
                 int position = 1;
                 foreach (XElement field in group.Elements())
                 {
+                    var name = field.Attribute("name");
+                    if (name == null || string.IsNullOrWhiteSpace(name.Value))
+                    {
+                        continue;
+                    }
+
+                    var unit = field.Attribute("unit");
                     var p = new ProductSpecification();
                     p.GroupName = groupName;
                     p.ProductId = productId;
@@ -1078,20 +1096,13 @@ namespace EImece.Domain.Services
                     p.Position = position++;
                     p.IsActive = true;
                     p.Lang = currentLanguage;
-                    var name = field.Attribute("name");
-                    var unit = field.Attribute("unit");
-
-                    var value = ReadSpecFormValue(formValues, field, name != null ? name.Value : null);
-
-                    if (name != null)
-                    {
-                        p.Name = name.Value;
-                    }
+                    p.Name = name.Value;
                     if (unit != null)
                     {
                         p.Unit = unit.Value;
                     }
 
+                    var value = ReadSpecFormValue(formValues, field, name.Value);
                     p.Value = NormalizeSpecFieldValue(field, value);
                     Specifications.Add(p);
                 }
@@ -1103,16 +1114,34 @@ namespace EImece.Domain.Services
         public async Task ParseTemplateAndSaveProductSpecificationsAsync(int productId, int templateId, int currentLanguage, NameValueCollection formValues, CancellationToken cancellationToken = default(CancellationToken))
         {
             var template = await TemplateService.GetTemplateAsync(templateId, cancellationToken).ConfigureAwait(false);
+            if (template == null || string.IsNullOrWhiteSpace(template.TemplateXml))
+            {
+                throw new InvalidOperationException("Template or TemplateXml is missing for templateId=" + templateId);
+            }
+
             XDocument xdoc = XDocument.Parse(template.TemplateXml);
-            var groups = xdoc.Root.Descendants("group");
+            if (xdoc.Root == null)
+            {
+                throw new InvalidOperationException("TemplateXml root is missing for templateId=" + templateId);
+            }
+
+            var groups = xdoc.Root.Descendants().Where(e =>
+                e.Name.LocalName.Equals("group", StringComparison.OrdinalIgnoreCase));
             var Specifications = new List<ProductSpecification>();
 
             foreach (var group in groups)
             {
-                var groupName = group.FirstAttribute.Value;
+                var groupName = ResolveGroupName(group);
                 int position = 1;
                 foreach (XElement field in group.Elements())
                 {
+                    var name = field.Attribute("name");
+                    if (name == null || string.IsNullOrWhiteSpace(name.Value))
+                    {
+                        continue;
+                    }
+
+                    var unit = field.Attribute("unit");
                     var p = new ProductSpecification();
                     p.GroupName = groupName;
                     p.ProductId = productId;
@@ -1121,26 +1150,40 @@ namespace EImece.Domain.Services
                     p.Position = position++;
                     p.IsActive = true;
                     p.Lang = currentLanguage;
-                    var name = field.Attribute("name");
-                    var unit = field.Attribute("unit");
-
-                    var value = ReadSpecFormValue(formValues, field, name != null ? name.Value : null);
-
-                    if (name != null)
-                    {
-                        p.Name = name.Value;
-                    }
+                    p.Name = name.Value;
                     if (unit != null)
                     {
                         p.Unit = unit.Value;
                     }
 
+                    var value = ReadSpecFormValue(formValues, field, name.Value);
                     p.Value = NormalizeSpecFieldValue(field, value);
                     Specifications.Add(p);
                 }
             }
 
             await SaveProductSpecificationsAsync(Specifications, productId).ConfigureAwait(false);
+        }
+
+        private static string ResolveGroupName(XElement group)
+        {
+            if (group == null)
+            {
+                return string.Empty;
+            }
+
+            var nameAttr = group.Attribute("name");
+            if (nameAttr != null && !string.IsNullOrWhiteSpace(nameAttr.Value))
+            {
+                return nameAttr.Value;
+            }
+
+            if (group.FirstAttribute != null && !string.IsNullOrWhiteSpace(group.FirstAttribute.Value))
+            {
+                return group.FirstAttribute.Value;
+            }
+
+            return string.Empty;
         }
 
         private static string ReadSpecFormValue(NameValueCollection formValues, XElement field, string fieldName)
