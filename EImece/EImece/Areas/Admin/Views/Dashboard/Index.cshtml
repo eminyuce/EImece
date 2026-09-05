@@ -10,7 +10,7 @@
     var productPriceEnabled = isProductPriceEnable == null || isProductPriceEnable.SettingValue.ToBool(true);
     var settingService = DependencyResolver.Current.GetService<ISettingService>();
     var companyName = settingService != null
-        ? settingService.GetSettingByKey(Constants.CompanyName).ToStr()
+        ? settingService.GetSettingByKeyFromDb(Constants.CompanyName).ToStr()
         : (ViewBag.CompanyNameSetting as string ?? "");
     var searchValue = Request.QueryString["searchContent"].ToStr();
 }

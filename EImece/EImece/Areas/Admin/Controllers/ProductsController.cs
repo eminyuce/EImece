@@ -1,4 +1,4 @@
-﻿using EImece.Domain;
+using EImece.Domain;
 using EImece.Domain.Entities;
 using EImece.Domain.Factories.IFactories;
 using EImece.Domain.Helpers;
@@ -87,7 +87,7 @@ namespace EImece.Areas.Admin.Controllers
                 });
             }
 
-            var isProductPriceEnable = await SettingService.GetSettingObjectByKeyAsync(Constants.IsProductPriceEnable).ConfigureAwait(false);
+            var isProductPriceEnable = await SettingService.GetSettingObjectByKeyFromDbAsync(Constants.IsProductPriceEnable).ConfigureAwait(false);
             bool priceEnabled = isProductPriceEnable == null || isProductPriceEnable.SettingValue.ToBool(true);
 
             var filter = new ProductAdminListFilter
@@ -119,7 +119,7 @@ namespace EImece.Areas.Admin.Controllers
                 query = new AdminProductsIndexQuery();
             }
 
-            var isProductPriceEnable = await SettingService.GetSettingObjectByKeyAsync(Constants.IsProductPriceEnable);
+            var isProductPriceEnable = await SettingService.GetSettingObjectByKeyFromDbAsync(Constants.IsProductPriceEnable);
             bool priceEnabled = isProductPriceEnable == null || isProductPriceEnable.SettingValue.ToBool(true);
 
             var filter = new ProductAdminListFilter
@@ -287,7 +287,7 @@ namespace EImece.Areas.Admin.Controllers
                 productCategory = await ProductCategoryService.GetSingleAsync(content.ProductCategoryId);
             }
             ViewBag.ProductCategory = productCategory;
-            ViewBag.IsProductPriceEnable = await SettingService.GetSettingObjectByKeyAsync(Constants.IsProductPriceEnable);
+            ViewBag.IsProductPriceEnable = await SettingService.GetSettingObjectByKeyFromDbAsync(Constants.IsProductPriceEnable);
             return View(content);
         }
 
@@ -364,7 +364,7 @@ namespace EImece.Areas.Admin.Controllers
             {
                 product.MainImage = await FileStorageService.GetSingleAsync(product.MainImageId.Value);
             }
-            ViewBag.IsProductPriceEnable = await SettingService.GetSettingObjectByKeyAsync(Constants.IsProductPriceEnable);
+            ViewBag.IsProductPriceEnable = await SettingService.GetSettingObjectByKeyFromDbAsync(Constants.IsProductPriceEnable);
             product = contentId == 0 ? product : await ProductService.GetBaseContentAsync(contentId, cancellationToken);
 
             ViewBag.Brands = await GetBrandsSelectListAsync();

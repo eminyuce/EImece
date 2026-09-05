@@ -107,7 +107,7 @@ namespace EImece.Areas.Admin.Controllers
         public async Task<ActionResult> SendSampleEmail(CancellationToken cancellationToken)
         {
             String companyName = "Testing company Name";
-            var webSiteCompanyEmailAddress = await SettingService.GetSettingByKeyAsync(Constants.WebSiteCompanyEmailAddress);
+            var webSiteCompanyEmailAddress = await SettingService.GetSettingByKeyFromDbAsync(Constants.WebSiteCompanyEmailAddress);
             if (string.IsNullOrEmpty(webSiteCompanyEmailAddress))
             {
                 ModelState.AddModelError("", AdminResource.WebSiteCompanyEmailAddressRequired);
@@ -181,7 +181,7 @@ namespace EImece.Areas.Admin.Controllers
             var parsed = EnumHelper.ParseLanguage(language);
             var langValue = parsed.HasValue ? EnumHelper.GetEnumDescription(parsed.Value) : (language.StartsWith("en", StringComparison.OrdinalIgnoreCase) ? "en-US" : "tr-TR");
 
-            var setting = await SettingService.GetSettingObjectByKeyAsync(DomainConstants.AdminPanelLanguage).ConfigureAwait(false);
+            var setting = await SettingService.GetSettingObjectByKeyFromDbAsync(DomainConstants.AdminPanelLanguage).ConfigureAwait(false);
             if (setting == null)
             {
                 setting = new EImece.Domain.Entities.Setting

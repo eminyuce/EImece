@@ -5,7 +5,7 @@
 @{
     var SettingService = DependencyResolver.Current.GetService<ISettingService>();
     string companyName = EImece.Domain.Constants.CompanyName;
-    var companyNameSetting = SettingService.GetSettingByKey(companyName).ToStr();
+    var companyNameSetting = SettingService.GetSettingByKeyFromDb(companyName).ToStr();
     ViewBag.CompanyNameSetting = companyNameSetting;
 }
 <!DOCTYPE html>

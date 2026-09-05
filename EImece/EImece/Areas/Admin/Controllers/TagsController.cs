@@ -38,7 +38,7 @@ namespace EImece.Areas.Admin.Controllers
         public async Task<ActionResult> Index(CancellationToken cancellationToken, String search = "")
         {
             var result = await TagService.GetAdminPageListAsync(search, CurrentLanguage);
-            var isProductPriceEnable = await SettingService.GetSettingObjectByKeyAsync(Constants.IsProductPriceEnable);
+            var isProductPriceEnable = await SettingService.GetSettingObjectByKeyFromDbAsync(Constants.IsProductPriceEnable);
             ViewBag.IsProductPriceEnable = isProductPriceEnable;
             return View(result);
         }
@@ -52,7 +52,7 @@ namespace EImece.Areas.Admin.Controllers
             }
 
             var result = await TagService.GetAdminPageListAsync(search, CurrentLanguage);
-            var isProductPriceEnable = await SettingService.GetSettingObjectByKeyAsync(Constants.IsProductPriceEnable);
+            var isProductPriceEnable = await SettingService.GetSettingObjectByKeyFromDbAsync(Constants.IsProductPriceEnable);
             ViewBag.IsProductPriceEnable = isProductPriceEnable;
             return AdminGridResult(result);
         }

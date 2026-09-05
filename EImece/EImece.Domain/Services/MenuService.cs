@@ -327,13 +327,14 @@ namespace EImece.Domain.Services
 
         public List<MenuTreeModel> BuildTree(bool? isActive, int language)
         {
-            if (!IsCachingActivated)
+            // Admin passes isActive=null (all nodes, live data). Never serve Admin trees from cache.
+            // Storefront/warmup pass true/false and may use cache.
+            if (!IsCachingActivated || !isActive.HasValue || DataCachingProvider == null)
             {
                 return MenuRepository.BuildTree(isActive, language);
             }
 
-            // menu: family so InvalidateMenuCaches drops it after menu edits.
-            var cacheKey = CacheKeys.MenuPrefix + "admintree:" + isActive + ":lang" + language;
+            var cacheKey = CacheKeys.MenuPrefix + "tree:" + isActive.Value + ":lang" + language;
             return DataCachingProvider.GetOrAdd(
                 cacheKey,
                 () => MenuRepository.BuildTree(isActive, language),
@@ -342,12 +343,13 @@ namespace EImece.Domain.Services
 
         public async Task<List<MenuTreeModel>> BuildTreeAsync(bool? isActive, int language, CancellationToken cancellationToken = default(CancellationToken))
         {
-            if (!IsCachingActivated)
+            // Admin passes isActive=null (all nodes, live data). Never serve Admin trees from cache.
+            if (!IsCachingActivated || !isActive.HasValue || DataCachingProvider == null)
             {
                 return await MenuRepository.BuildTreeAsync(isActive, language, cancellationToken).ConfigureAwait(false);
             }
 
-            var cacheKey = CacheKeys.MenuPrefix + "admintree:" + isActive + ":lang" + language + AsyncCacheKeySuffix;
+            var cacheKey = CacheKeys.MenuPrefix + "tree:" + isActive.Value + ":lang" + language + AsyncCacheKeySuffix;
             return await DataCachingProvider.GetOrAddAsync(
                 cacheKey,
                 () => MenuRepository.BuildTreeAsync(isActive, language, CancellationToken.None),

@@ -635,7 +635,7 @@ namespace EImece.Areas.Admin.Controllers
         private async Task<EnableAuthenticatorViewModel> BuildEnableAuthenticatorViewModelAsync(ApplicationUser user)
         {
             string accountName = !string.IsNullOrEmpty(user.Email) ? user.Email : user.UserName;
-            string siteName = await SettingService.GetSettingByKeyAsync(Domain.Constants.CompanyName);
+            string siteName = await SettingService.GetSettingByKeyFromDbAsync(Domain.Constants.CompanyName);
             if (string.IsNullOrWhiteSpace(siteName) && Request?.Url != null)
             {
                 siteName = Request.Url.Host;

@@ -119,11 +119,11 @@ namespace EImece.Areas.Admin.Controllers
             {
                 if (returnModel.BaseContent.ImageWidth <= 0)
                 {
-                    returnModel.BaseContent.ImageWidth = (await SettingService.GetSettingByKeyAsync(Constants.DefaultImageWidth)).ToInt();
+                    returnModel.BaseContent.ImageWidth = (await SettingService.GetSettingByKeyFromDbAsync(Constants.DefaultImageWidth)).ToInt();
                 }
                 if (returnModel.BaseContent.ImageHeight <= 0)
                 {
-                    returnModel.BaseContent.ImageHeight = (await SettingService.GetSettingByKeyAsync(Constants.DefaultImageHeight)).ToInt();
+                    returnModel.BaseContent.ImageHeight = (await SettingService.GetSettingByKeyFromDbAsync(Constants.DefaultImageHeight)).ToInt();
                 }
             }
 

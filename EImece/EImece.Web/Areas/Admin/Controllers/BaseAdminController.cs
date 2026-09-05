@@ -115,10 +115,10 @@ namespace EImece.Web.Areas.Admin.Controllers
         };
 
         protected bool IsProductPriceEnabled =>
-            SettingService.GetSettingByKey(DomainConstants.IsProductPriceEnable).ToBool(true);
+            SettingService.GetSettingByKeyFromDb(DomainConstants.IsProductPriceEnable).ToBool(true);
 
         protected bool IsProductReviewEnabled =>
-            SettingService.GetSettingByKey(DomainConstants.IsProductReviewEnable).ToBool(true);
+            SettingService.GetSettingByKeyFromDb(DomainConstants.IsProductReviewEnable).ToBool(true);
 
         private static void SetGriddlyDefaultPageSize(int pageSize)
         {
@@ -142,9 +142,9 @@ namespace EImece.Web.Areas.Admin.Controllers
             AdminResource.Culture = culture;
             Resource.Culture = culture;
 
-            ViewBag.IsProductPriceEnable = SettingService.GetSettingObjectByKey(DomainConstants.IsProductPriceEnable);
-            ViewBag.IsProductReviewEnable = SettingService.GetSettingObjectByKey(DomainConstants.IsProductReviewEnable);
-            int gridPageSize = SettingService.GetSettingByKey(DomainConstants.GridPageSizeNumber).ToInt(DomainConstants.DefaultGridPageSizeNumber);
+            ViewBag.IsProductPriceEnable = SettingService.GetSettingObjectByKeyFromDb(DomainConstants.IsProductPriceEnable);
+            ViewBag.IsProductReviewEnable = SettingService.GetSettingObjectByKeyFromDb(DomainConstants.IsProductReviewEnable);
+            int gridPageSize = SettingService.GetSettingByKeyFromDb(DomainConstants.GridPageSizeNumber).ToInt(DomainConstants.DefaultGridPageSizeNumber);
             ViewBag.GridPageSizeNumber = gridPageSize;
             SetGriddlyDefaultPageSize(gridPageSize);
             ViewBag.CurrentLanguage = CurrentLanguage;
@@ -184,7 +184,7 @@ namespace EImece.Web.Areas.Admin.Controllers
 
         private bool MustRedirectToEnableAuthenticator(ActionExecutingContext filterContext)
         {
-            bool requireAuth = SettingService.GetSettingByKey(DomainConstants.RequireAdminAuthenticator).ToBool(DomainConstants.DefaultRequireAdminAuthenticator);
+            bool requireAuth = SettingService.GetSettingByKeyFromDb(DomainConstants.RequireAdminAuthenticator).ToBool(DomainConstants.DefaultRequireAdminAuthenticator);
             if (!requireAuth)
             {
                 return false;
@@ -294,7 +294,7 @@ namespace EImece.Web.Areas.Admin.Controllers
         {
             get
             {
-                var settingValue = SettingService.GetSettingByKey(DomainConstants.AdminPanelLanguage);
+                var settingValue = SettingService.GetSettingByKeyFromDb(DomainConstants.AdminPanelLanguage);
                 if (!string.IsNullOrWhiteSpace(settingValue))
                 {
                     var langEnum = EnumHelper.ParseLanguage(settingValue);

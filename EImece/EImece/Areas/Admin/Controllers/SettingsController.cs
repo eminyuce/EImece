@@ -55,7 +55,7 @@ namespace EImece.Areas.Admin.Controllers
 
         public async Task<ActionResult> AddWebSiteLogo(CancellationToken cancellationToken)
         {
-            var webSiteLogo = await SettingService.GetSettingObjectByKeyAsync(Constants.WebSiteLogo);
+            var webSiteLogo = await SettingService.GetSettingObjectByKeyFromDbAsync(Constants.WebSiteLogo);
             if (webSiteLogo == null)
             {
                 webSiteLogo = new Setting();
