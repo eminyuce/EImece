@@ -1,4 +1,4 @@
-@model object
+﻿@model object
 @using EImece.Domain.Entities
 @using EImece.Domain.Helpers
 @using EImece.Domain.Helpers.Extensions
@@ -30,10 +30,7 @@
     var rolesUrl = ViewData["RolesUrl"].ToStr();
     var unlockUrl = ViewData["UnlockUrl"].ToStr();
 
-    var hasSpecs = product != null
-        && product.ProductCategory != null
-        && product.ProductCategory.TemplateId.HasValue
-        && product.ProductCategory.TemplateId > 0;
+    var hasSpecs = ProductTemplateHelper.HasUsableProductXmlTemplate(product);
     var productReviewEnabled = true;
     var reviewSetting = ViewBag.IsProductReviewEnable as Setting;
     if (reviewSetting != null)

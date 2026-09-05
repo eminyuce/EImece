@@ -1,4 +1,4 @@
-﻿using EImece.Domain.Entities;
+using EImece.Domain.Entities;
 using EImece.Domain.Helpers.EmailHelper;
 using EImece.Domain.Models.AdminModels;
 using System.Collections.Generic;
@@ -75,6 +75,15 @@ namespace EImece.Domain.Services.IServices
         Task SaveSystemSettingModelAsync(SystemSettingModel settingModel);
 
         Dictionary<string, string> CreateShareableSocialMediaLinks(string link, string text, string imagefullPath);
+
+                Setting GetSettingObjectByKeyFromDb(string key);
+        Setting GetSettingObjectByKeyFromDb(string key, int language);
+        Task<Setting> GetSettingObjectByKeyFromDbAsync(string key);
+        Task<Setting> GetSettingObjectByKeyFromDbAsync(string key, int language);
+        string GetSettingByKeyFromDb(string key);
+        string GetSettingByKeyFromDb(string key, int language);
+        Task<string> GetSettingByKeyFromDbAsync(string key);
+        Task<string> GetSettingByKeyFromDbAsync(string key, int language);
 
         void ClearCache();
     }

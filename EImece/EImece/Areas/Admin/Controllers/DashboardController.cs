@@ -56,7 +56,7 @@ namespace EImece.Areas.Admin.Controllers
         public ActionResult Index()
         {
             ViewBag.Title = Resources.AdminResource.Dashboard;
-            var paymentProvider = SettingService?.GetSettingByKey(Domain.Constants.PaymentProvider) ?? Domain.Constants.DefaultPaymentProvider;
+            var paymentProvider = SettingService?.GetSettingByKeyFromDb(Domain.Constants.PaymentProvider) ?? Domain.Constants.DefaultPaymentProvider;
             ViewBag.IyzicoCredentialsMissing = string.Equals(paymentProvider, "Iyzico", StringComparison.OrdinalIgnoreCase)
                 && !AppConfig.HasConfiguredIyzicoCredentials;
             return View();
@@ -67,7 +67,7 @@ namespace EImece.Areas.Admin.Controllers
         public async Task<ActionResult> SystemHealth()
         {
             ViewBag.Title = Resources.AdminResource.SystemHealth;
-            var underConstructionValue = await SettingService.GetSettingByKeyAsync(Domain.Constants.IsSiteUnderConstruction).ConfigureAwait(false);
+            var underConstructionValue = await SettingService.GetSettingByKeyFromDbAsync(Domain.Constants.IsSiteUnderConstruction).ConfigureAwait(false);
             ViewBag.IsSiteUnderConstruction = underConstructionValue.ToBool(false);
             return View();
         }

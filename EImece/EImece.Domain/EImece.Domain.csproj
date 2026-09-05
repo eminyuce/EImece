@@ -495,6 +495,7 @@
     <Compile Include="DependencyInjection\DomainServiceProvider.cs" />
     <Compile Include="DependencyInjection\PropertyInjector.cs" />
     <Compile Include="Helpers\AdminAuditHelper.cs" />
+    <Compile Include="Helpers\ProductTemplateHelper.cs" />
     <Compile Include="Helpers\ObjectPoolHelper.cs" />
     <Compile Include="Helpers\AuthenticatedAesCipher.cs" />
     <Compile Include="Helpers\EncryptDecryptQueryString.cs" />

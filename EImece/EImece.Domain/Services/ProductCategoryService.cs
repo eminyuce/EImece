@@ -269,37 +269,34 @@ namespace EImece.Domain.Services
 
         public virtual List<ProductCategoryTreeModel> BuildTree(bool? isActive, int language = 1)
         {
-            List<ProductCategoryTreeModel> result;
-            if (IsCachingActivated)
+            // Admin passes isActive=null for live trees. Storefront/warmup pass true and may cache.
+            if (!IsCachingActivated || !isActive.HasValue || DataCachingProvider == null)
             {
-                var cacheKey = CacheKeys.CategoryPrefix + "admintree:" + isActive + ":lang" + language;
-                result = DataCachingProvider.GetOrAdd(
-                    cacheKey,
-                    () => ProductCategoryRepository.BuildTree(isActive, language),
-                    AppConfig.CacheMediumSeconds);
-            }
-            else
-            {
-                result = ProductCategoryRepository.BuildTree(isActive, language);
+                return ProductCategoryRepository.BuildTree(isActive, language);
             }
 
-            return result;
+            var cacheKey = CacheKeys.CategoryPrefix + "tree:" + isActive.Value + ":lang" + language;
+            return DataCachingProvider.GetOrAdd(
+                cacheKey,
+                () => ProductCategoryRepository.BuildTree(isActive, language),
+                AppConfig.CacheMediumSeconds);
         }
 
         [Timed("service.product_category.build_tree_async")]
 
         public virtual async Task<List<ProductCategoryTreeModel>> BuildTreeAsync(bool? isActive, int language = 1)
         {
-            if (IsCachingActivated)
+            // Admin passes isActive=null for live trees. Storefront/warmup pass true and may cache.
+            if (!IsCachingActivated || !isActive.HasValue || DataCachingProvider == null)
             {
-                var cacheKey = CacheKeys.CategoryPrefix + "admintree:" + isActive + ":lang" + language + AsyncCacheKeySuffix;
-                return await DataCachingProvider.GetOrAddAsync(
-                    cacheKey,
-                    () => ProductCategoryRepository.BuildTreeAsync(isActive, language),
-                    AppConfig.CacheMediumSeconds).ConfigureAwait(false);
+                return await ProductCategoryRepository.BuildTreeAsync(isActive, language).ConfigureAwait(false);
             }
 
-            return await ProductCategoryRepository.BuildTreeAsync(isActive, language).ConfigureAwait(false);
+            var cacheKey = CacheKeys.CategoryPrefix + "tree:" + isActive.Value + ":lang" + language + AsyncCacheKeySuffix;
+            return await DataCachingProvider.GetOrAddAsync(
+                cacheKey,
+                () => ProductCategoryRepository.BuildTreeAsync(isActive, language),
+                AppConfig.CacheMediumSeconds).ConfigureAwait(false);
         }
 
         [Timed("service.product_categories.get_by_id_sync")]

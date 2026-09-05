@@ -242,6 +242,71 @@ namespace EImece.Domain.Services
             return SelectSettingByKey(allSettings, key, language);
         }
 
+        /// <summary>
+        /// Admin-safe: resolve a setting key from the database (never the storefront settings cache).
+        /// </summary>
+        public Setting GetSettingObjectByKeyFromDb(string key)
+        {
+            return SelectSettingByKey(GetAllSettingsNoCache(), key);
+        }
+
+        public Setting GetSettingObjectByKeyFromDb(string key, int language)
+        {
+            return SelectSettingByKey(GetAllSettingsNoCache(), key, language);
+        }
+
+        public async Task<Setting> GetSettingObjectByKeyFromDbAsync(string key)
+        {
+            var allSettings = await GetAllSettingsNoCacheAsync().ConfigureAwait(false);
+            return SelectSettingByKey(allSettings, key);
+        }
+
+        public async Task<Setting> GetSettingObjectByKeyFromDbAsync(string key, int language)
+        {
+            var allSettings = await GetAllSettingsNoCacheAsync().ConfigureAwait(false);
+            return SelectSettingByKey(allSettings, key, language);
+        }
+
+        public string GetSettingByKeyFromDb(string key)
+        {
+            var result = GetSettingObjectByKeyFromDb(key);
+            if (result.SettingValue != NULL_VALUE && !string.IsNullOrWhiteSpace(result.SettingValue))
+            {
+                return result.SettingValue;
+            }
+            return System.Configuration.ConfigurationManager.AppSettings[key] ?? string.Empty;
+        }
+
+        public string GetSettingByKeyFromDb(string key, int language)
+        {
+            var result = GetSettingObjectByKeyFromDb(key, language);
+            if (result.SettingValue != NULL_VALUE && !string.IsNullOrWhiteSpace(result.SettingValue))
+            {
+                return result.SettingValue;
+            }
+            return System.Configuration.ConfigurationManager.AppSettings[key] ?? string.Empty;
+        }
+
+        public async Task<string> GetSettingByKeyFromDbAsync(string key)
+        {
+            var result = await GetSettingObjectByKeyFromDbAsync(key).ConfigureAwait(false);
+            if (result.SettingValue != NULL_VALUE && !string.IsNullOrWhiteSpace(result.SettingValue))
+            {
+                return result.SettingValue;
+            }
+            return System.Configuration.ConfigurationManager.AppSettings[key] ?? string.Empty;
+        }
+
+        public async Task<string> GetSettingByKeyFromDbAsync(string key, int language)
+        {
+            var result = await GetSettingObjectByKeyFromDbAsync(key, language).ConfigureAwait(false);
+            if (result.SettingValue != NULL_VALUE && !string.IsNullOrWhiteSpace(result.SettingValue))
+            {
+                return result.SettingValue;
+            }
+            return System.Configuration.ConfigurationManager.AppSettings[key] ?? string.Empty;
+        }
+
         public Models.DTOs.SettingDto GetSettingDtoByKey(string key)
         {
             var s = GetSettingObjectByKey(key);
@@ -469,7 +534,7 @@ namespace EImece.Domain.Services
 
             Type type = result.GetType();
             // Use cached settings (AsNoTracking list) instead of bypassing cache with tracked query.
-            List<Setting> allSettings = GetAllSettings();
+            List<Setting> allSettings = GetAllSettingsNoCache();
             List<Setting> Settings = allSettings.Where(r => Constants.SystemSettings.Equals(r.Description, StringComparison.InvariantCultureIgnoreCase)).ToList();
             // Loop over properties.
             foreach (PropertyInfo propertyInfo in type.GetProperties())
@@ -513,7 +578,7 @@ namespace EImece.Domain.Services
             var result = new SystemSettingModel();
 
             Type type = result.GetType();
-            List<Setting> allSettings = await GetAllSettingsAsync().ConfigureAwait(false);
+            List<Setting> allSettings = await GetAllSettingsNoCacheAsync(cancellationToken).ConfigureAwait(false);
             List<Setting> Settings = allSettings
                 .Where(r => Constants.SystemSettings.Equals(r.Description, StringComparison.InvariantCultureIgnoreCase)).ToList();
             // Loop over properties.
@@ -559,7 +624,7 @@ namespace EImece.Domain.Services
             {
                 throw new ArgumentException("SystemSettingModel cannot be null");
             }
-            List<Setting> Settings = GetAllSettings();
+            List<Setting> Settings = GetAllSettingsNoCache();
             // Get type.
             Type type = settingModel.GetType();
 
@@ -605,7 +670,7 @@ namespace EImece.Domain.Services
             {
                 throw new ArgumentException("SystemSettingModel cannot be null");
             }
-            List<Setting> Settings = await GetAllSettingsAsync().ConfigureAwait(false);
+            List<Setting> Settings = await GetAllSettingsNoCacheAsync().ConfigureAwait(false);
             // Get type.
             Type type = settingModel.GetType();
 
@@ -655,7 +720,7 @@ namespace EImece.Domain.Services
             var result = new SettingModel();
 
             Type type = result.GetType();
-            List<Setting> Settings = GetAllSettings().Where(r => r.Lang == language && Constants.AdminSetting.Equals(r.Description, StringComparison.InvariantCultureIgnoreCase)).ToList();
+            List<Setting> Settings = GetAllSettingsNoCache().Where(r => r.Lang == language && Constants.AdminSetting.Equals(r.Description, StringComparison.InvariantCultureIgnoreCase)).ToList();
             // Loop over properties.
             foreach (PropertyInfo propertyInfo in type.GetProperties())
             {
@@ -689,9 +754,10 @@ namespace EImece.Domain.Services
         {
             var result = new SettingModel();
             Type type = result.GetType();
-            List<Setting> Settings = (await GetAllSettingsAsync().ConfigureAwait(false))
+            // Admin settings UI must always read live DB rows (never the storefront settings cache).
+            List<Setting> allSettings = await GetAllSettingsNoCacheAsync().ConfigureAwait(false);
+            List<Setting> Settings = allSettings
                 .Where(r => r.Lang == language && Constants.AdminSetting.Equals(r.Description, StringComparison.InvariantCultureIgnoreCase)).ToList();
-            var allSettings = await GetAllSettingsAsync().ConfigureAwait(false);
             foreach (PropertyInfo propertyInfo in type.GetProperties())
             {
                 var setting = ResolveSettingForModel(Settings, allSettings, propertyInfo.Name, language);
@@ -723,7 +789,7 @@ namespace EImece.Domain.Services
             {
                 throw new ArgumentException("SettingModel cannot be null");
             }
-            List<Setting> Settings = GetAllSettings();
+            List<Setting> Settings = GetAllSettingsNoCache();
             // Get type.
             Type type = settingModel.GetType();
 
@@ -765,7 +831,7 @@ namespace EImece.Domain.Services
             {
                 throw new ArgumentException("SettingModel cannot be null");
             }
-            List<Setting> Settings = await GetAllSettingsAsync().ConfigureAwait(false);
+            List<Setting> Settings = await GetAllSettingsNoCacheAsync().ConfigureAwait(false);
             // Get type.
             Type type = settingModel.GetType();
 
