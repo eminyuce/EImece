@@ -146,10 +146,19 @@ namespace EImece.Areas.Admin.Controllers
         {
             var templates = await TemplateService.GetActiveBaseEntitiesAsync(true, CurrentLanguage, cancellationToken);
             var trComparer = StringComparer.Create(System.Globalization.CultureInfo.GetCultureInfo("tr-TR"), true);
-            var sorted = templates.OrderBy(t => t.Name.ToStr(), trComparer).ThenBy(t => t.Id).ToList();
+            // Deduplicate by Id first, then by display name (keep lowest Id) so the dropdown never shows repeated items.
+            var unique = templates
+                .Where(t => t != null)
+                .GroupBy(t => t.Id)
+                .Select(g => g.First())
+                .GroupBy(t => (t.Name ?? string.Empty).Trim(), trComparer)
+                .Select(g => g.OrderBy(t => t.Id).First())
+                .OrderBy(t => t.Name.ToStr(), trComparer)
+                .ThenBy(t => t.Id)
+                .ToList();
             var resultListItem = new List<SelectListItem>();
             resultListItem.Add(new SelectListItem() { Text = AdminResource.SelectTemplate, Value = "0" });
-            foreach (var item in sorted)
+            foreach (var item in unique)
             {
                 resultListItem.Add(new SelectListItem() { Text = item.Name, Value = item.Id.ToStr() });
             }

@@ -217,15 +217,23 @@
                 if (!$combos.length) return;
                 $combos.each(function () {
                     var $combo = $(this);
+                    if ($combo.data("eg-combobox-ready")) return;
                     var $select = $combo.find("select[data-searchable-select], select[data-brand-select]");
                     if (!$select.length) $select = $combo.find("select");
                     if (!$select.length) return;
+                    $combo.data("eg-combobox-ready", true);
                     var entityName = $combo.attr("data-entity-name") || "şablon";
                     var emptyText = "Aramanızla eşleşen " + entityName + " bulunamadı.";
                     var options = [];
+                    var seenValues = {};
                     $select.find("option").each(function () {
                         var $o = $(this);
-                        options.push({ value: $o.attr("value") || "", text: ($o.text() || "").trim(), isPlaceholder: ($o.attr("value") || "") === "" || $o.attr("value") === "0" && ($o.text()||"").trim() === "@AdminResource.SelectTemplate" });
+                        var val = $o.attr("value") || "";
+                        var txt = ($o.text() || "").trim();
+                        if (Object.prototype.hasOwnProperty.call(seenValues, val)) return;
+                        seenValues[val] = true;
+                        var isPh = val === "" || (val === "0" && (txt === "@AdminResource.SelectTemplate" || txt === ($combo.attr("data-placeholder") || "").trim()));
+                        options.push({ value: val, text: txt, isPlaceholder: isPh });
                     });
                     // Fix placeholder detection for TemplateId where placeholder is value 0 with text SelectTemplate
                     var rawPlaceholder = $combo.attr("data-placeholder");

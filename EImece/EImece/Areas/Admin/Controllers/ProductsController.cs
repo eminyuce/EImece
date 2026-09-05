@@ -168,7 +168,7 @@ namespace EImece.Areas.Admin.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.Template = await TemplateService.GetTemplateAsync(content.ProductCategory.TemplateId.Value, cancellationToken);
+            ViewBag.Template = await ResolveProductTemplateAsync(content, cancellationToken);
             return View(content);
         }
 
@@ -177,18 +177,68 @@ namespace EImece.Areas.Admin.Controllers
         public async Task<ActionResult> SaveOrEditProductSpecs(CancellationToken cancellationToken, int id, int templateId, String saveButton = null)
         {
             int productId = id;
-            await ProductService.ParseTemplateAndSaveProductSpecificationsAsync(productId, templateId, CurrentLanguage, Request.Unvalidated.Form, cancellationToken);
+            var savedOk = false;
+            try
+            {
+                if (templateId <= 0)
+                {
+                    ModelState.AddModelError("", "Ürün kategorisine bağlı geçerli bir şablon yok. Önce kategoriye şablon atayın.");
+                }
+                else
+                {
+                    await ProductService.ParseTemplateAndSaveProductSpecificationsAsync(productId, templateId, CurrentLanguage, Request.Unvalidated.Form, cancellationToken);
+                    savedOk = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, "Unable to save product specifications for product {ProductId}, template {TemplateId}", productId, templateId);
+                ModelState.AddModelError("", AdminResource.GeneralSaveErrorMessage);
+            }
 
-            if (!String.IsNullOrEmpty(saveButton) && saveButton.Equals(AdminResource.SaveButtonAndCloseText, StringComparison.InvariantCultureIgnoreCase))
+            if (savedOk
+                && !String.IsNullOrEmpty(saveButton)
+                && saveButton.Equals(AdminResource.SaveButtonAndCloseText, StringComparison.InvariantCultureIgnoreCase))
             {
                 return RedirectToAction(IndexAction);
             }
 
-            ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
+            if (savedOk)
+            {
+                ModelState.AddModelError("", AdminResource.SuccessfullySavedCompleted);
+            }
+
             Product content = await ProductService.GetProductByIdAsync(id, cancellationToken);
-            ViewBag.Template = await TemplateService.GetTemplateAsync(content.ProductCategory.TemplateId.Value, cancellationToken);
+            if (content == null)
+            {
+                return HttpNotFound();
+            }
+            ViewBag.Template = await ResolveProductTemplateAsync(content, cancellationToken);
             RemoveModelState();
             return View(content);
+        }
+
+        private async Task<Template> ResolveProductTemplateAsync(Product content, CancellationToken cancellationToken)
+        {
+            if (content == null)
+            {
+                return null;
+            }
+
+            int? templateId = null;
+            if (content.ProductCategory != null
+                && content.ProductCategory.TemplateId.HasValue
+                && content.ProductCategory.TemplateId.Value > 0)
+            {
+                templateId = content.ProductCategory.TemplateId.Value;
+            }
+
+            if (!templateId.HasValue)
+            {
+                return null;
+            }
+
+            return await TemplateService.GetTemplateAsync(templateId.Value, cancellationToken);
         }
 
         //
