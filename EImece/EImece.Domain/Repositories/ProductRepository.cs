@@ -164,7 +164,8 @@ namespace EImece.Domain.Repositories
             Expression<Func<Product, object>> includeProperty3 = r => r.MainImage;
             Expression<Func<Product, object>> includeProperty5 = r => r.Brand;
             Expression<Func<Product, object>> includeProperty2 = r => r.ProductCategory;
-            Expression<Func<Product, object>>[] includeProperties = { includeProperty2, includeProperty3, includeProperty4, includeProperty5 };
+            Expression<Func<Product, object>> includeProperty6 = r => r.ProductCategory.Template;
+            Expression<Func<Product, object>>[] includeProperties = { includeProperty2, includeProperty3, includeProperty4, includeProperty5, includeProperty6 };
             var products = GetAllIncluding(includeProperties).Where(r => r.Lang == language);
             search = search.ToStr().Trim();
             if (!String.IsNullOrEmpty(search))
@@ -264,6 +265,7 @@ namespace EImece.Domain.Repositories
             includeProperties.Add(r => r.Brand);
             includeProperties.Add(r => r.ProductFiles.Select(q => q.FileStorage));
             includeProperties.Add(r => r.ProductCategory);
+            includeProperties.Add(r => r.ProductCategory.Template);
             includeProperties.Add(r => r.ProductTags.Select(q => q.Tag).Select(q1 => q1.TagCategory));
             includeProperties.Add(r => r.ProductSpecifications);
             var item = GetSingleIncluding(id, includeProperties.ToArray());
@@ -279,6 +281,7 @@ namespace EImece.Domain.Repositories
             includeProperties.Add(r => r.Brand);
             includeProperties.Add(r => r.ProductFiles.Select(q => q.FileStorage));
             includeProperties.Add(r => r.ProductCategory);
+            includeProperties.Add(r => r.ProductCategory.Template);
             includeProperties.Add(r => r.ProductTags.Select(q => q.Tag).Select(q1 => q1.TagCategory));
             includeProperties.Add(r => r.ProductSpecifications);
             return await GetSingleIncludingAsync(id, cancellationToken, includeProperties.ToArray()).ConfigureAwait(false);
@@ -294,7 +297,7 @@ namespace EImece.Domain.Repositories
             includeProperties.Add(r => r.ProductCategory);
             includeProperties.Add(r => r.ProductTags.Select(q => q.Tag));
 
-            // Trim once in CLR — embedding search.Trim() inside the expression tree makes EF emit
+            // Trim once in CLR Ã¢â‚¬â€ embedding search.Trim() inside the expression tree makes EF emit
             // LTRIM/RTRIM (or client evaluation) per predicate and can block index seeks on Name*.
             var term = (search ?? string.Empty).Trim();
             Expression<Func<Product, bool>> match = r2 => r2.IsActive && r2.Lang == lang
@@ -570,7 +573,7 @@ namespace EImece.Domain.Repositories
         }
 
         /// <summary>
-        /// Narrow carrier for sproc product rows — only the columns the storefront search
+        /// Narrow carrier for sproc product rows Ã¢â‚¬â€ only the columns the storefront search
         /// consumer needs; ObjectContext.Translate ignores non-matching result-set columns.
         /// </summary>
         public sealed class SearchProductRowDto

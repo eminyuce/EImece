@@ -1,7 +1,9 @@
+﻿using EImece.Domain.Caching;
 using EImece.Domain.Entities;
 using EImece.Domain.Repositories.IRepositories;
 using EImece.Domain.Services.IServices;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -13,27 +15,55 @@ namespace EImece.Domain.Services
     {
         public ITemplateRepository TemplateRepository { get; set; }
 
-        public TemplateService(ITemplateRepository repository, ILogger<TemplateService> logger) : base(repository, logger)
+        public TemplateService(
+            ITemplateRepository repository,
+            IEimeceCacheProvider dataCachingProvider,
+            ILogger<TemplateService> logger)
+            : base(repository, dataCachingProvider, logger)
         {
-            TemplateRepository = repository;
+            TemplateRepository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
         public List<Template> GetAllActiveTemplates()
         {
-            var cacheKey = Constants.GetAllActiveTemplatesCacheKey;
-            return DataCachingProvider.GetOrAdd(
-                cacheKey,
-                () => TemplateRepository.GetAllActiveTemplates(),
-                AppConfig.CacheLongSeconds);
+            var list = LoadAllActiveTemplates();
+            return list ?? new List<Template>();
         }
 
         private async Task<List<Template>> GetAllActiveTemplatesAsync()
         {
+            var list = await LoadAllActiveTemplatesAsync().ConfigureAwait(false);
+            return list ?? new List<Template>();
+        }
+
+        private List<Template> LoadAllActiveTemplates()
+        {
+            if (DataCachingProvider == null)
+            {
+                return TemplateRepository.GetAllActiveTemplates() ?? new List<Template>();
+            }
+
+            var cacheKey = Constants.GetAllActiveTemplatesCacheKey;
+            return DataCachingProvider.GetOrAdd(
+                cacheKey,
+                () => TemplateRepository.GetAllActiveTemplates() ?? new List<Template>(),
+                AppConfig.CacheLongSeconds) ?? new List<Template>();
+        }
+
+        private async Task<List<Template>> LoadAllActiveTemplatesAsync()
+        {
+            if (DataCachingProvider == null)
+            {
+                return await TemplateRepository.GetAllActiveTemplatesAsync(CancellationToken.None).ConfigureAwait(false)
+                    ?? new List<Template>();
+            }
+
             var cacheKey = Constants.GetAllActiveTemplatesCacheKey + AsyncCacheKeySuffix;
             return await DataCachingProvider.GetOrAddAsync(
                 cacheKey,
-                () => TemplateRepository.GetAllActiveTemplatesAsync(CancellationToken.None),
-                AppConfig.CacheLongSeconds).ConfigureAwait(false);
+                async () => await TemplateRepository.GetAllActiveTemplatesAsync(CancellationToken.None).ConfigureAwait(false)
+                    ?? new List<Template>(),
+                AppConfig.CacheLongSeconds).ConfigureAwait(false) ?? new List<Template>();
         }
 
         public override Template GetSingle(int id)
@@ -63,7 +93,10 @@ namespace EImece.Domain.Services
                 else
                 {
                     Logger.LogWarning("GetTemplate cache miss for id" + id + "; loaded from database.");
-                    DataCachingProvider.Clear(Constants.GetAllActiveTemplatesCacheKey);
+                    if (DataCachingProvider != null)
+                    {
+                        DataCachingProvider.Clear(Constants.GetAllActiveTemplatesCacheKey);
+                    }
                 }
             }
             return result;
@@ -91,8 +124,11 @@ namespace EImece.Domain.Services
                 else
                 {
                     Logger.LogWarning("GetTemplateAsync cache miss for id" + id + "; loaded from database.");
-                    DataCachingProvider.Clear(Constants.GetAllActiveTemplatesCacheKey);
-                    DataCachingProvider.Clear(Constants.GetAllActiveTemplatesCacheKey + AsyncCacheKeySuffix);
+                    if (DataCachingProvider != null)
+                    {
+                        DataCachingProvider.Clear(Constants.GetAllActiveTemplatesCacheKey);
+                        DataCachingProvider.Clear(Constants.GetAllActiveTemplatesCacheKey + AsyncCacheKeySuffix);
+                    }
                 }
             }
             return result;

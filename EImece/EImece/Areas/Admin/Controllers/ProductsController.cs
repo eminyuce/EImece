@@ -1,4 +1,4 @@
-using EImece.Domain;
+﻿using EImece.Domain;
 using EImece.Domain.Entities;
 using EImece.Domain.Factories.IFactories;
 using EImece.Domain.Helpers;
@@ -168,7 +168,28 @@ namespace EImece.Areas.Admin.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.Template = await ResolveProductTemplateAsync(content, cancellationToken);
+
+            Template template = null;
+            try
+            {
+                template = await ResolveProductTemplateAsync(content, cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, "Unable to resolve product XML template for product {ProductId}", id);
+            }
+
+            if (template == null || string.IsNullOrWhiteSpace(template.TemplateXml))
+            {
+                TempData["ErrorMessage"] = "Bu \u00fcr\u00fcn\u00fcn kategorisine ba\u011fl\u0131 ge\u00e7erli bir \u00fcr\u00fcn XML \u015fablonu yok. \u00d6nce kategoriye \u015fablon atay\u0131n.";
+                if (content.ProductCategoryId > 0)
+                {
+                    return RedirectToAction(IndexAction, new { id = content.ProductCategoryId });
+                }
+                return RedirectToAction(IndexAction);
+            }
+
+            ViewBag.Template = template;
             return View(content);
         }
 
@@ -182,7 +203,7 @@ namespace EImece.Areas.Admin.Controllers
             {
                 if (templateId <= 0)
                 {
-                    ModelState.AddModelError("", "Ürün kategorisine bağlı geçerli bir şablon yok. Önce kategoriye şablon atayın.");
+                    ModelState.AddModelError("", "ÃœrÃ¼n kategorisine baÄŸlÄ± geÃ§erli bir ÅŸablon yok. Ã–nce kategoriye ÅŸablon atayÄ±n.");
                 }
                 else
                 {
@@ -456,7 +477,7 @@ namespace EImece.Areas.Admin.Controllers
                 var oldCatName = oldCategory != null ? oldCategory.Name : "-";
                 var newCatName = newCategory != null ? newCategory.Name : "-";
                 var count = productIdList.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Length;
-                ViewBag.MoveProductsMessage = String.Format("Seçilen {0} ürün '{1}' kategorisinden '{2}' kategorisine başarıyla taşındı.", count, oldCatName, newCatName);
+                ViewBag.MoveProductsMessage = String.Format("SeÃ§ilen {0} Ã¼rÃ¼n '{1}' kategorisinden '{2}' kategorisine baÅŸarÄ±yla taÅŸÄ±ndÄ±.", count, oldCatName, newCatName);
             }
 
             return View(products);
