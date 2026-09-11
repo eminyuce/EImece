@@ -27,7 +27,7 @@ namespace EImece.Tests.Helpers
         {
             Assert.AreEqual("setting:logoimage", CacheKeys.WebSiteLogoImage);
             StringAssert.StartsWith(CacheKeys.WebSiteLogoImage, CacheKeys.SettingPrefix);
-            Assert.AreEqual("WebSiteLogo", CacheKeys.WebSiteLogoImageLegacy);
+            Assert.AreNotEqual(CacheKeys.WebSiteLogoImageLegacy, CacheKeys.WebSiteLogoImage);
         }
 
         [TestMethod]

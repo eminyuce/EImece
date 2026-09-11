@@ -104,7 +104,7 @@ namespace EImece.Tests.Controllers
         public void GetDeserializeObjectProductSpecItem()
         {
             var ooo = JsonConvert.DeserializeObject<ProductSpecItemRoot>("{\"selectedTotalSpecs\":[{\"SpecsName\":\"color\",\"SpecsValue\":\"Kirmizi\"}]}");
-            var selectedTotalSpecs = ooo.selectedTotalSpecs;
+            var _ = ooo.selectedTotalSpecs;
         }
 
         private String ConnectionString { get { return Constants.DbConnectionKey; } }
@@ -123,7 +123,6 @@ namespace EImece.Tests.Controllers
             doc.LoadHtml(html);
 
             var brtags = doc.DocumentNode.SelectNodes("//br");
-            var divNodes = doc.DocumentNode.SelectSingleNode("//div");
 
             HtmlNode paragraghNode = doc.CreateElement("p");
             var DivTags = doc.DocumentNode.SelectNodes("div");
@@ -201,7 +200,7 @@ namespace EImece.Tests.Controllers
             var commentRepo = new ProductCommentRepository(db, TestNullLoggers.Create<ProductCommentRepository>());
             var orderProductRepo = new OrderProductRepository(db);
             var tagServ = new TagService(new TagRepository(db, TestNullLoggers.Create<TagRepository>()), cache, new ProductTagRepository(db), new StoryTagRepository(db), TestNullLoggers.Create<TagService>());
-            var templateServ = new EImece.Domain.Services.TemplateService(new TemplateRepository(db), TestNullLoggers.Create<EImece.Domain.Services.TemplateService>());
+            var templateServ = new EImece.Domain.Services.TemplateService(new TemplateRepository(db), cache, TestNullLoggers.Create<EImece.Domain.Services.TemplateService>());
             var productTagRepo = new ProductTagRepository(db);
             var specRepo = new ProductSpecificationRepository(db);
             var entityFactory = new EntityFactory(settingService);
@@ -225,7 +224,7 @@ namespace EImece.Tests.Controllers
                 tagCategoryServ,
                 TestNullLoggers.Create<ProductService>());
             var product = ProductService.GetProductDetailViewModelById(175363);
-            Assert.IsTrue(product.RelatedProducts.Count > 0);
+            Assert.IsNotEmpty(product.RelatedProducts);
         }
 
         [TestMethod]
@@ -266,13 +265,15 @@ namespace EImece.Tests.Controllers
             String orderConfirmationEmailTemplateHtml = File.ReadAllText(@"C:\Users\YUCE\Documents\GitHub\EImece\EImece\EImece.Tests\dataFolder\emailTemplates\OrderConfirmationEmail.html");
             Assert.IsNotNull(orderRepo.GetOrderById(12));
             var cOrder = oservice.GetOrderById(12);
-            Customer customer = cservice.GetUserId("44a72377-7a04-49ec-b8bb-40b9140deddc");
-            var pp = new OrderConfirmationEmailRazorTemplate();
-            pp.CompanyAddress = "3828 Mall Road  Los Angeles, California, 90017";
-            pp.CompanyEmailAddress = "info@gmail.com";
-            pp.CompanyPhoneNumber = "05456687854";
-            pp.FinishedOrder = cOrder;
-            pp.OrderProducts = cOrder.OrderProducts.ToList();
+            var _ = cservice.GetUserId("44a72377-7a04-49ec-b8bb-40b9140deddc");
+            var pp = new OrderConfirmationEmailRazorTemplate
+            {
+                CompanyAddress = "3828 Mall Road  Los Angeles, California, 90017",
+                CompanyEmailAddress = "info@gmail.com",
+                CompanyPhoneNumber = "05456687854",
+                FinishedOrder = cOrder,
+                OrderProducts = cOrder.OrderProducts.ToList()
+            };
             string result = Engine.Razor.RunCompile(orderConfirmationEmailTemplateHtml, "Test", null, pp);
             Assert.IsNotNull(result);
         }
@@ -298,8 +299,8 @@ namespace EImece.Tests.Controllers
             //System.IO.File.ReadAllText(Server.MapPath(@"~/App_Data/file.txt"));
             var ilceStr = File.ReadAllText(@"C:\Users\YUCE\Documents\GitHub\EImece\EImece\EImece\App_Data\il-ilce-mahalle\ilceler.json");
             var illerStr = File.ReadAllText(@"C:\Users\YUCE\Documents\GitHub\EImece\EImece\EImece\App_Data\il-ilce-mahalle\iller.json");
-            var IlceRoot = JsonConvert.DeserializeObject(ilceStr, typeof(IlceRoot));
-            var IlRoot = JsonConvert.DeserializeObject(illerStr, typeof(IlRoot));
+            var _ = JsonConvert.DeserializeObject(ilceStr, typeof(IlceRoot));
+            var _1 = JsonConvert.DeserializeObject(illerStr, typeof(IlRoot));
         }
 
         [TestMethod]
@@ -316,7 +317,7 @@ namespace EImece.Tests.Controllers
         [TestMethod]
         public void ReadAllBytesImages()
         {
-            var imageBytes = File.ReadAllBytes(@"‪C:\Users\YUCE\Desktop\vesikalik.jpg");
+            var _ = File.ReadAllBytes(@"‪C:\Users\YUCE\Desktop\vesikalik.jpg");
         }
 
         [TestMethod]
@@ -339,7 +340,7 @@ namespace EImece.Tests.Controllers
                 var test = (Urlset)serializer.Deserialize(reader);
                 foreach (var tUrl in test.Url)
                 {
-                    var buffer = GeneralHelper.GetImageFromUrl(tUrl.Loc);
+                    var _ = GeneralHelper.GetImageFromUrl(tUrl.Loc);
                 }
             }
         }
@@ -363,8 +364,7 @@ namespace EImece.Tests.Controllers
                     //  {
                     //      dbValueObj = new ProductSpecification();
                     //  }
-                    var dbValueObj = new ProductSpecification();
-                    dbValueObj.FieldFormat = field;
+                    var dbValueObj = new ProductSpecification { FieldFormat = field };
 
                     Console.WriteLine("1)" + name + "1.1)" + name.Value + " 2)" + unit + " 3)" + values + " 4)" + display + "5)" + field.Name.LocalName);
                 }
@@ -448,9 +448,11 @@ QUITE
             try
             {
                 cnn.Open();
-                SqlCommand cmd = new SqlCommand();
-                cmd.Connection = cnn;
-                cmd.CommandText = "select getdate() date";
+                SqlCommand cmd = new SqlCommand
+                {
+                    Connection = cnn,
+                    CommandText = "select getdate() date"
+                };
                 cmd.ExecuteNonQuery();
                 cnn.Close();
                 Console.WriteLine("It is done.");
@@ -566,7 +568,7 @@ QUITE
             totalDayOutsideOfUSA += span.Days;
 
             DateTime firstUsaEntrance = "07/03/2012".ToDateTime();
-            DateTime fiveYearsLaterUsaEntrance = "07/03/2017".ToDateTime();
+            var _ = "07/03/2017".ToDateTime();
             DateTime fiveYearsLaterUsaEntrance2 = "04/03/2017".ToDateTime();
 
             DateTime todayDate = DateTime.Now;

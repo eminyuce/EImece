@@ -61,10 +61,35 @@ namespace EImece.Domain.Observability.Logging
 
         private static void ConfigureNLogTargets(LoggingOptions options)
         {
-            var config = LogManager.Configuration ?? new LoggingConfiguration();
+            var config = LogManager.Configuration;
+            if (config == null || config.LoggingRules.Count == 0)
+            {
+                var nlogConfigPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "NLog.config");
+                if (System.IO.File.Exists(nlogConfigPath))
+                {
+                    config = new NLog.Config.XmlLoggingConfiguration(nlogConfigPath);
+                }
+                else
+                {
+                    config = config ?? new LoggingConfiguration();
+                    var memoryTarget = new NLog.Targets.MemoryTarget("defaultMemory");
+                    config.AddTarget("defaultMemory", memoryTarget);
+                    config.AddRuleForAllLevels(memoryTarget);
+                }
+            }
 
             var logDirectory = options.ResolveAbsoluteLogDirectory();
-            Directory.CreateDirectory(logDirectory);
+            if (options.FileEnabled)
+            {
+                try
+                {
+                    Directory.CreateDirectory(logDirectory);
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    // Fail-safe when running in environments without write access to BaseDirectory (e.g. vstest in Program Files)
+                }
+            }
 
             config.Variables["LogsLocation"] = logDirectory;
             config.Variables["ApplicationName"] = options.ApplicationName ?? "EImece";

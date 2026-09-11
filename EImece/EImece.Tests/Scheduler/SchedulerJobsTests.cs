@@ -102,7 +102,6 @@ namespace EImece.Tests.Scheduler
 
             // If scheduler is enabled or disabled
             var result = await healthCheck.CheckHealthAsync(new HealthCheckContext(), CancellationToken.None);
-            Assert.IsNotNull(result);
             Assert.IsTrue(result.Status == HealthStatus.Healthy || result.Status == HealthStatus.Unhealthy);
         }
 
@@ -118,7 +117,6 @@ namespace EImece.Tests.Scheduler
                 var healthCheck = new BackgroundServiceHealthCheck(sched);
 
                 var result = await healthCheck.CheckHealthAsync(new HealthCheckContext(), CancellationToken.None);
-                Assert.IsNotNull(result);
                 Assert.AreEqual(HealthStatus.Healthy, result.Status);
                 Assert.IsTrue(result.Description.Contains("Quartz running") || result.Description.Contains("disabled by config"));
             }

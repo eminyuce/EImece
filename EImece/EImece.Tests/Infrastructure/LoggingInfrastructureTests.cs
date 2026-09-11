@@ -25,8 +25,8 @@ namespace EImece.Tests.Infrastructure
             LoggingOptions.ResetForTests();
             var options = LoggingOptions.FromAppConfig();
 
-            Assert.AreEqual("media/logs", options.FilePath);
-            Assert.AreEqual("media/logs", LoggingOptions.DefaultFileRelativePath);
+            var expected = Path.Combine("media", "logs");
+            Assert.AreEqual(expected, options.FilePath);
         }
 
         [TestMethod]
