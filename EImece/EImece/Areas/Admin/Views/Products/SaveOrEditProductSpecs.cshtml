@@ -1,4 +1,4 @@
-﻿@using System.Xml;
+@using System.Xml;
 @using System.Linq;
 @using System.Text;
 @using System.Xml.Linq;
@@ -9,6 +9,7 @@
 @model Product
 @{
     ViewBag.Title = AdminResource.ProductSpecs;
+    ViewBag.HelpSettingKey = "ProductSpecs_help/info_section";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
     var template = (Template)ViewBag.Template;
     var specs = Model.ProductSpecifications;
@@ -42,17 +43,6 @@
     }
     Değer listeleri: <a href="@Url.Action("Index", "Lists")">Listeler</a>
 </div>
-
-@{ ViewData["HelpId"] = "productSpecsHelp"; }
-@Html.Partial("_AdminHelpAccordionStart")
-<ul style="margin-top: 0;">
-    <li>Bu sayfada ürünün <strong>ek özelliklerini</strong> doldurursunuz (renk, beden, ölçü vb.).</li>
-    <li>Alanlar, ürün kategorisine bağlı <strong>şablondan</strong> gelir. Şablon adı yukarıdaki linkten düzenlenebilir.</li>
-    <li>Açılır listelerdeki seçenekler <strong>Değer listeleri</strong> menüsünden tanımlanır.</li>
-    <li>Şablon veya kategori şablonu yoksa bu sayfada alan görünmez; önce şablon atayın.</li>
-</ul>
-<p style="margin-top: 12px; margin-bottom: 0;"><strong>Örnek:</strong> Şablon “Giyim” ise Renk = Kırmızı, Beden = M seçip Kaydet → ürün detayında bu özellikler görünür.</p>
-@Html.Partial("_AdminHelpAccordionEnd")
 
 <div class="row" style="margin-bottom: 16px;">
     <div class="col-md-3">

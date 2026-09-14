@@ -184,3 +184,16 @@
 .settings-center-container .btn{ transition:all .14s ease; }
 .settings-center-container .btn:active{ transform:translateY(1px) scale(.98); }
 .settings-center-container .form-check-input{ cursor:pointer; }
+
+/* Page Help Management Tab & Modal Styling */
+#tab-page-help .table th{ font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:var(--sc-slate-500); }
+#tab-page-help .table td{ padding:11px 12px; font-size:13.5px; }
+#pageHelpEditorToolbar .btn{ font-size:12px; padding:4px 8px; border-radius:6px; color:var(--sc-slate-700); }
+#pageHelpEditorToolbar .btn:hover{ background:var(--sc-slate-100); }
+.page-help-modal-content{ font-size:14px; line-height:1.65; color:var(--sc-slate-700); }
+.page-help-modal-content p:last-child{ margin-bottom:0; }
+.page-help-modal-content ul{ padding-left:20px; margin-bottom:12px; }
+.page-help-modal-content li{ margin-bottom:6px; }
+.page-help-modal-content code{ background:#f1f5f9; color:#0f172a; padding:2px 6px; border-radius:4px; font-size:12.5px; font-family:var(--bs-font-monospace); }
+.page-help-modal-content strong{ color:#0f172a; }
+

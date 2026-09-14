@@ -3,6 +3,7 @@
 @using Resources;
 @{
     ViewBag.Title = "Mail Template";
+    ViewBag.HelpSettingKey = "MailTemplates_help/info_section";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
     var saveButtonText = AdminResource.SaveButtonText;
     var ExistingMainImageText = AdminResource.ExistingMainImageText;
@@ -23,23 +24,6 @@
     </button>
 </div>
 <hr class="adminLine" />
-
-@{ ViewData["HelpId"] = "mailTemplatesHelp"; }
-@Html.Partial("_AdminHelpAccordionStart")
-<ul style="margin-top: 0;">
-    <li>Bu sayfada sistemin gönderdiği <strong>e-posta şablonlarını</strong> düzenlersiniz (sipariş onayı, şifre sıfırlama vb.).</li>
-    <li><strong>İsim</strong>: Sistemin şablonu bulduğu anahtar ad. Düzenlerken genelde değiştirilmemelidir.</li>
-    <li><strong>Konu</strong>: E-posta konusu. Dinamik alanlar Razor sözdizimi ile yazılabilir.</li>
-    <li><strong>E-Posta İçerik</strong>: 2. sekmedeki editörde düzenlenen HTML e-posta içeriği.</li>
-    <li><strong>Yayında / Sıra</strong>: Şablonun kullanımı ve listelenme sırası.</li>
-    <li><strong>Test E-posta</strong>: Şablonu kaydetmeden veya kaydettikten sonra SMTP ayarlarıyla gerçek bir deneme e-postası gönderebilirsiniz. Model alanları şablondaki <code>@@Model</code> özelliklerinden otomatik üretilir.</li>
-</ul>
-<p style="margin-top: 12px; margin-bottom: 6px;"><strong>Örnek 1 — Konu:</strong></p>
-<pre style="background:#f9f9f9; border:1px solid #cce5ff; padding:10px; margin-bottom:12px; white-space:pre-wrap;">Siparişiniz alındı - #@@Model.OrderNumber</pre>
-<p style="margin-bottom: 6px;"><strong>Örnek 2 — Kısa gövde:</strong></p>
-<pre style="background:#f9f9f9; border:1px solid #cce5ff; padding:10px; margin-bottom:0; white-space:pre-wrap;">&lt;p&gt;Merhaba @@Model.CustomerName,&lt;/p&gt;
-&lt;p&gt;Siparişiniz başarıyla alındı.&lt;/p&gt;</pre>
-@Html.Partial("_AdminHelpAccordionEnd")
 
 @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "editor-form" }))
 {

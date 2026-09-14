@@ -1,10 +1,17 @@
 @using Resources;
 @using Microsoft.AspNet.Identity;
 @using EImece.Domain;
+@using EImece.Domain.Helpers;
 @{
     var companyNameSetting = ViewBag.CompanyNameSetting as string ?? "";
     var userName = User.Identity.GetUserName();
     var pageTitle = ViewBag.Title as string;
+
+    string currentController = (ViewContext.RouteData?.Values["controller"] ?? "Dashboard").ToString();
+    string currentAction = (ViewContext.RouteData?.Values["action"] ?? "Index").ToString();
+    string declaredKey = ViewBag.HelpSettingKey as string;
+    string pageKey = !string.IsNullOrWhiteSpace(declaredKey) ? declaredKey : $"{currentController}_{currentAction}";
+    bool hasHelpText = PageHelpHelper.HasHelpContent(pageKey);
 }
 <header class="admin-topbar">
     <div class="admin-topbar-left">
@@ -68,6 +75,22 @@
                     <span class="admin-topbar-label">@AdminResource.Hello @userName!</span>
                 </a>
             </li>
+            @if (hasHelpText)
+            {
+                <li class="admin-topbar-help admin-topbar-action--essential">
+                    <button type="button"
+                            class="admin-topbar-help-btn"
+                            id="adminPageHelpBtn"
+                            title="@AdminResource.HowToUse"
+                            aria-label="@AdminResource.HowToUse"
+                            aria-controls="adminHelpSlideOver"
+                            aria-expanded="false"
+                            data-page-key="@pageKey">
+                        <i class="fa-solid fa-circle-question" aria-hidden="true"></i>
+                        <span class="admin-topbar-label">Yardım</span>
+                    </button>
+                </li>
+            }
             <li class="admin-topbar-action--essential">
                 <a href="javascript:document.getElementById('logoutForm').submit()" title="@AdminResource.Logout">
                     <i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i>

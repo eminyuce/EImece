@@ -1,4 +1,4 @@
-﻿@using EImece.Domain.Helpers;
+@using EImece.Domain.Helpers;
 @using EImece.Domain;
 @using Resources;
 @using EImece.Domain.Entities;
@@ -7,6 +7,7 @@
 
 @{
     ViewBag.Title = AdminResource.MoveProductCategory;
+    ViewBag.HelpSettingKey = "ProductCategories_Move_help/info_section";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
     var productCategoryDropDownList = (List<SelectListItem>)ViewBag.ProductCategoryDropDownList;
     var saveButtonText = AdminResource.SaveButtonText;
@@ -24,16 +25,6 @@
         <span id="treeClickContainer"></span>
     </div>
     <div class="col-md-9">
-        @{ ViewData["HelpId"] = "moveCategoryHelp"; }
-        @Html.Partial("_AdminHelpAccordionStart")
-        <ul style="margin-bottom: 0; margin-top: 0;">
-            <li>Bu sayfa, bir ürün kategorisini kategori ağacında başka bir yere taşımanızı sağlar.</li>
-            <li><strong>Taşınacak ürün kategorisi</strong> listesinden taşımak istediğiniz kategoriyi seçin.</li>
-            <li><strong>Yeni üst kategori</strong> listesinden kategorinin gideceği üst kategoriyi seçin.</li>
-            <li>Kategoriyi en üst seviyeye almak için <strong>Yeni üst kategori</strong> alanında <strong>Ana Kategori Yap</strong> seçeneğini seçin.</li>
-            <li>Soldaki ağaç mevcut kategori yapısını gösterir; kaydettikten sonra sayfayı yenileyerek sonucu görebilirsiniz.</li>
-        </ul>
-        @Html.Partial("_AdminHelpAccordionEnd")
         @using (Html.BeginForm("MoveProductCategory", "ProductCategories", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
         @Html.AntiForgeryToken()

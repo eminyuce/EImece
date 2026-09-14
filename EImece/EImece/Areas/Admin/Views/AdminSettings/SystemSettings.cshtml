@@ -3,6 +3,7 @@
 @using Resources;
 @{
     ViewBag.Title = AdminResource.AdminSystemSettings;
+    ViewBag.HelpSettingKey = "SystemSettings_help/info_section";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 
     // Pre-calculate status summaries for overview dashboard
@@ -86,38 +87,6 @@
                 </div>
             </div>
         </div>
-    </div>
-
-    <!-- Help Accordion -->
-    <div class="mb-3">
-        @{ ViewData["HelpId"] = "systemSettingsHelp"; }
-        @Html.Partial("_AdminHelpAccordionStart")
-        <div class="row">
-            <div class="col-md-4">
-                <h6 class="fw-bold text-primary"><i class="fa-solid fa-bag-shopping me-1"></i> @AdminResource.StoreConfiguration</h6>
-                <ul class="small ps-3 mb-0">
-                    <li><strong>Genel & SEO:</strong> @AdminResource.StoreConfigHelp1</li>
-                    <li><strong>Görünüm & PWA:</strong> @AdminResource.StoreConfigHelp2</li>
-                    <li><strong>Medya Politikaları:</strong> @AdminResource.StoreConfigHelp3</li>
-                </ul>
-            </div>
-            <div class="col-md-4">
-                <h6 class="fw-bold text-success"><i class="fa-solid fa-briefcase me-1"></i> @AdminResource.BusinessAndCommerce</h6>
-                <ul class="small ps-3 mb-0">
-                    <li><strong>Firma Bilgileri:</strong> @AdminResource.BusinessConfigHelp1</li>
-                    <li><strong>Satış & Ödemeler:</strong> @AdminResource.BusinessConfigHelp2</li>
-                </ul>
-            </div>
-            <div class="col-md-4">
-                <h6 class="fw-bold text-danger"><i class="fa-solid fa-shield me-1"></i> @AdminResource.SystemAndSecurity</h6>
-                <ul class="small ps-3 mb-0">
-                    <li><strong>@AdminResource.SecurityLabel</strong> @AdminResource.SystemConfigHelp1</li>
-                    <li><strong>E-Posta:</strong> @AdminResource.SystemConfigHelp2</li>
-                    <li><strong>Entegrasyonlar & @AdminResource.Tools:</strong> @AdminResource.SystemConfigHelp3</li>
-                </ul>
-            </div>
-        </div>
-        @Html.Partial("_AdminHelpAccordionEnd")
     </div>
 
     <!-- Main Settings Form -->
@@ -238,6 +207,10 @@
                         </a>
                         <a class="list-group-item list-group-item-action d-flex align-items-center justify-content-between" data-bs-toggle="pill" href="#tab-tools" role="tab">
                             <span><i class="fa-solid fa-wrench text-secondary me-2"></i> @AdminResource.SystemToolsAndMaintenance</span>
+                        </a>
+                        <a class="list-group-item list-group-item-action d-flex align-items-center justify-content-between" data-bs-toggle="pill" href="#tab-page-help" role="tab" id="nav-tab-page-help">
+                            <span><i class="fa-solid fa-circle-question text-secondary me-2"></i> Sayfa Yardım Rehberleri</span>
+                            <span class="badge bg-primary-subtle text-primary border border-primary-subtle small" id="badgePageHelpCount">Rehberler</span>
                         </a>
                     </div>
                 </div>
@@ -1759,10 +1732,247 @@
                         </div>
                     </div>
 
+                    <!-- ========================================================================= -->
+                    <!-- 10. PAGE HELP GUIDES TAB -->
+                    <!-- ========================================================================= -->
+                    <div id="tab-page-help" class="tab-pane fade" role="tabpanel">
+                        <div class="card shadow-sm mb-4 setting-section-card" data-section-name="Sayfa Yardım Rehberleri">
+                            <div class="card-header bg-white py-3 border-bottom d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+                                <div>
+                                    <h5 class="mb-1 fw-bold text-dark">
+                                        <i class="fa-solid fa-circle-question text-primary me-2"></i>Sayfa Yardım Rehberleri Yönetimi
+                                    </h5>
+                                    <small class="text-muted">
+                                        Admin sayfalarındaki üst menüde yer alan <strong>"Yardım"</strong> butonuna tıklandığında açılan rehber içeriklerini buradan ekleyebilir, güncelleyebilir veya önizleyebilirsiniz.
+                                    </small>
+                                </div>
+                                <div class="d-flex gap-2">
+                                    <button type="button" class="btn btn-outline-secondary btn-sm" id="btnRefreshPageHelpList" title="Listeyi Yenile">
+                                        <i class="fa-solid fa-rotate me-1"></i> Yenile
+                                    </button>
+                                    <button type="button" class="btn btn-primary btn-sm px-3 fw-bold shadow-sm" id="btnAddNewPageHelp">
+                                        <i class="fa-solid fa-plus me-1"></i> Yeni Sayfa Yardımı Ekle
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body p-4">
+                                <!-- Metrics Stats -->
+                                <div class="row g-3 mb-4">
+                                    <div class="col-sm-4">
+                                        <div class="p-3 border rounded bg-light d-flex align-items-center justify-content-between shadow-sm">
+                                            <div>
+                                                <small class="text-muted d-block text-uppercase fw-bold" style="font-size:11px;">Kayıtlı Sayfa</small>
+                                                <span class="fs-4 fw-bold text-dark" id="statTotalPages">0</span>
+                                            </div>
+                                            <span class="p-2 bg-primary-subtle text-primary rounded"><i class="fa-solid fa-file-lines fa-lg"></i></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="p-3 border rounded bg-light d-flex align-items-center justify-content-between shadow-sm">
+                                            <div>
+                                                <small class="text-muted d-block text-uppercase fw-bold" style="font-size:11px;">Özelleştirildi (DB)</small>
+                                                <span class="fs-4 fw-bold text-success" id="statCustomPages">0</span>
+                                            </div>
+                                            <span class="p-2 bg-success-subtle text-success rounded"><i class="fa-solid fa-circle-check fa-lg"></i></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="p-3 border rounded bg-light d-flex align-items-center justify-content-between shadow-sm">
+                                            <div>
+                                                <small class="text-muted d-block text-uppercase fw-bold" style="font-size:11px;">Varsayılan Şablon</small>
+                                                <span class="fs-4 fw-bold text-secondary" id="statDefaultPages">0</span>
+                                            </div>
+                                            <span class="p-2 bg-secondary-subtle text-secondary rounded"><i class="fa-solid fa-shield-halved fa-lg"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Filter / Search Controls -->
+                                <div class="row g-2 mb-3">
+                                    <div class="col-md-6">
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-text bg-white"><i class="fa-solid fa-magnifying-glass text-muted"></i></span>
+                                            <input type="text" id="filterPageHelpSearch" class="form-control" placeholder="Sayfa adı ara..." autocomplete="off" />
+                                            <button type="button" class="btn btn-outline-secondary d-none" id="btnClearPageHelpFilter">
+                                                <i class="fa-solid fa-xmark"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <select id="filterPageHelpCategory" class="form-select form-select-sm">
+                                            <option value="">Tüm Kategoriler</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <select id="filterPageHelpStatus" class="form-select form-select-sm">
+                                            <option value="">Tüm Durumlar</option>
+                                            <option value="custom">Özelleştirilmiş (DB)</option>
+                                            <option value="default">Varsayılan Şablon</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Loading spinner -->
+                                <div id="pageHelpLoading" class="text-center py-5">
+                                    <div class="spinner-border text-primary" role="status">
+                                        <span class="visually-hidden">Yükleniyor...</span>
+                                    </div>
+                                    <p class="text-muted small mt-2">Yardım rehberleri yükleniyor...</p>
+                                </div>
+
+                                <!-- Table -->
+                                <div class="table-responsive" id="pageHelpTableContainer" style="display:none;">
+                                    <table class="table table-hover align-middle border mb-0" id="tablePageHelp">
+                                        <thead class="table-light">
+                                            <tr style="font-size:12px;">
+                                                <th style="min-width:240px;">Sayfa Adı</th>
+                                                <th style="min-width:130px;">Kategori</th>
+                                                <th style="min-width:140px;">Durum</th>
+                                                <th style="min-width:140px;">Son Güncelleme</th>
+                                                <th class="text-end" style="min-width:170px;">İşlemler</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="pageHelpTableBody">
+                                            <!-- Dynamically populated -->
+                                        </tbody>
+                                    </table>
+                                    <div id="pageHelpEmptyNotice" class="text-center py-4 d-none">
+                                        <i class="fa-solid fa-inbox text-muted fa-2x mb-2"></i>
+                                        <p class="text-muted mb-0">Filtreye uygun sayfa yardım rehberi bulunamadı.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
     }
+</div>
+
+<!-- ========================================================================= -->
+<!-- EDIT / ADD PAGE HELP MODAL -->
+<!-- ========================================================================= -->
+<div class="modal fade" id="pageHelpEditModal" tabindex="-1" aria-labelledby="pageHelpEditModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header bg-light py-3 border-bottom">
+                <h5 class="modal-title fw-bold" id="pageHelpEditModalTitle">
+                    <i class="fa-solid fa-circle-question text-primary me-2"></i>Sayfa Yardım Bilgisi Düzenle
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Kapat"></button>
+            </div>
+            <div class="modal-body p-4">
+                <div id="pageHelpModalAlert" class="alert alert-danger d-none mb-3 py-2 px-3 small"></div>
+
+                <!-- Page Preset Selection -->
+                <div class="mb-3" id="pageHelpPresetGroup">
+                    <label class="form-label fw-bold small text-muted text-uppercase" for="pageHelpPresetSelect">Tanımlı Admin Sayfası Seçin</label>
+                    <select class="form-select form-select-sm" id="pageHelpPresetSelect">
+                        <option value="">-- Hazır bir sayfa seçin veya özel tanımlayın --</option>
+                    </select>
+                    <div class="form-text small">Hazır sayfa seçtiğinizde başlık ve varsayılan şablon otomatik yüklenir.</div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold small text-muted text-uppercase" for="pageHelpModalName">Sayfa / Rehber Başlığı</label>
+                    <input type="text" class="form-control form-control-sm" id="pageHelpModalName" placeholder="Örn: Sistem Kullanıcıları" required />
+                    <input type="hidden" id="pageHelpModalKey" />
+                </div>
+
+                <!-- Content Editor & Live Preview -->
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap gap-2">
+                        <label class="form-label fw-bold small text-muted text-uppercase mb-0" for="pageHelpModalContent">Yardım Rehberi İçeriği (HTML)</label>
+                        <div class="btn-group btn-group-sm" role="group">
+                            <button type="button" class="btn btn-outline-primary active" id="btnTabEditContent">
+                                <i class="fa-solid fa-code me-1"></i> HTML Editör
+                            </button>
+                            <button type="button" class="btn btn-outline-primary" id="btnTabPreviewContent">
+                                <i class="fa-solid fa-eye me-1"></i> Canlı Önizleme
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Toolbar -->
+                    <div class="p-2 border rounded-top bg-light d-flex flex-wrap align-items-center gap-1" id="pageHelpEditorToolbar">
+                        <button type="button" class="btn btn-white btn-sm border bg-white" data-tag="b" title="Kalın Metin">
+                            <i class="fa-solid fa-bold"></i>
+                        </button>
+                        <button type="button" class="btn btn-white btn-sm border bg-white" data-tag="p" title="Paragraf">
+                            <i class="fa-solid fa-paragraph"></i>
+                        </button>
+                        <button type="button" class="btn btn-white btn-sm border bg-white" data-tag="ul" title="Madde İşaretli Liste">
+                            <i class="fa-solid fa-list-ul"></i>
+                        </button>
+                        <button type="button" class="btn btn-white btn-sm border bg-white" data-tag="code" title="Kod / Vurgu">
+                            <i class="fa-solid fa-code"></i>
+                        </button>
+                        <button type="button" class="btn btn-white btn-sm border bg-white" data-tag="alert" title="Bilgi Kutusu">
+                            <i class="fa-solid fa-circle-info"></i>
+                        </button>
+                        <div class="ms-auto">
+                            <button type="button" class="btn btn-outline-secondary btn-sm" id="btnLoadDefaultTemplate" title="Varsayılan Şablonu Yükle">
+                                <i class="fa-solid fa-file-import me-1"></i> Şablonu Yükle
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Textarea Editor -->
+                    <div id="pageHelpEditorPane">
+                        <textarea class="form-control rounded-0 rounded-bottom font-monospace" id="pageHelpModalContent" rows="9" style="font-size:13px; line-height:1.5;" placeholder="<p>Sayfa rehberi metni...</p><ul><li>Özellik 1</li></ul>"></textarea>
+                    </div>
+
+                    <!-- Live Preview Container -->
+                    <div id="pageHelpPreviewPane" class="p-3 border rounded-bottom bg-white" style="display:none; min-height: 200px; max-height: 350px; overflow-y: auto;">
+                        <div id="pageHelpLivePreviewContent" class="page-help-modal-content"></div>
+                    </div>
+                    <div class="form-text small mt-1">İçerikte standart HTML etiketleri (<code>&lt;p&gt;</code>, <code>&lt;ul&gt;</code>, <code>&lt;li&gt;</code>, <code>&lt;strong&gt;</code>, <code>&lt;code&gt;</code>, <code>&lt;div class="alert alert-info"&gt;</code>) kullanabilirsiniz.</div>
+                </div>
+            </div>
+            <div class="modal-footer bg-light py-2 px-3 d-flex justify-content-between align-items-center">
+                <button type="button" class="btn btn-outline-danger btn-sm" id="btnDeletePageHelpModal" title="Bu sayfanın yardım içeriğini kaldır">
+                    <i class="fa-solid fa-trash-can me-1"></i>Rehberi Kaldır
+                </button>
+                <div class="d-flex gap-2">
+                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">İptal</button>
+                    <button type="button" class="btn btn-success btn-sm px-4 fw-bold shadow-sm" id="btnSavePageHelpModal">
+                        <i class="fa-solid fa-floppy-disk me-1"></i>Değişiklikleri Kaydet
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ========================================================================= -->
+<!-- PREVIEW PAGE HELP MODAL (EXACT MATCH TO GLOBAL HELP MODAL) -->
+<!-- ========================================================================= -->
+<div class="modal fade" id="pageHelpPreviewModal" tabindex="-1" aria-labelledby="pageHelpPreviewModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header bg-light py-3 border-bottom">
+                <div class="d-flex align-items-center gap-2">
+                    <span class="p-2 bg-primary-subtle text-primary rounded-circle d-flex align-items-center justify-content-center" style="width:34px;height:34px;">
+                        <i class="fa-solid fa-circle-question"></i>
+                    </span>
+                    <div>
+                        <h5 class="modal-title fw-bold mb-0 text-dark" id="pageHelpPreviewModalTitle">Sayfa Yardım Rehberi</h5>
+                        <small class="text-muted" id="pageHelpPreviewModalSubtitle">Önizleme</small>
+                    </div>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Kapat"></button>
+            </div>
+            <div class="modal-body p-4" id="pageHelpPreviewModalBody">
+                <!-- Injected content -->
+            </div>
+            <div class="modal-footer bg-light py-2 px-3 border-top d-flex justify-content-end align-items-center">
+                <span class="badge bg-secondary-subtle text-secondary border small d-none" id="pageHelpPreviewModalKeyBadge"></span>
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Kapat</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- ========================================================================= -->
@@ -2272,8 +2482,8 @@
             });
 
             // Auto-navigate to first invalid field tab if validation errors exist
-            var $firstInvalid = $('#systemSettingsForm').find('.input-validation-error, .text-danger:not(:empty)').first();
-            if ($firstInvalid.length) {
+            var $firstInvalid = $('#systemSettingsForm').find('.input-validation-error, .field-validation-error:not(:empty)').first();
+            if ($firstInvalid.length && (!window.location.hash || window.location.hash === '#overview')) {
                 var $parentPane = $firstInvalid.closest('.tab-pane');
                 if ($parentPane.length && $parentPane.attr('id')) {
                     var tabSelector = '#' + $parentPane.attr('id');
@@ -2355,7 +2565,8 @@
     '#tab-security': ['#tab-security'],
     '#tab-smtp': ['#tab-smtp'],
     '#tab-integrations': ['#tab-integrations'],
-    '#tab-tools': ['#tab-tools']
+    '#tab-tools': ['#tab-tools'],
+    '#tab-page-help': ['#tab-page-help']
   };
   var initialData = $('#systemSettingsForm').serialize();
   function updateSectionBadges(){
@@ -2415,5 +2626,503 @@
     }, 320);
   });
 })();
+</script>
+<script>
+(function ($) {
+    'use strict';
+
+    var pageHelpData = [];
+    var isLoaded = false;
+    var csrfToken = function () {
+        return $('input[name="__RequestVerificationToken"]').first().val();
+    };
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        return String(str)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
+
+    function loadPageHelpList() {
+        $('#pageHelpLoading').show();
+        $('#pageHelpTableContainer').hide();
+        $('#pageHelpModalAlert').addClass('d-none').text('');
+
+        $.ajax({
+            url: '@Url.Action("GetPageHelpList", "AdminSettings", new { area = "admin" })',
+            type: 'GET',
+            dataType: 'json',
+            success: function (res) {
+                $('#pageHelpLoading').hide();
+                if (res && res.success && res.items) {
+                    pageHelpData = res.items;
+                    isLoaded = true;
+                    populateCategoryDropdown();
+                    populatePresetDropdown();
+                    renderTable();
+                    updateCounters();
+                    $('#pageHelpTableContainer').fadeIn(150);
+                } else {
+                    $('#pageHelpTableContainer').show();
+                    $('#pageHelpTableBody').html('<tr><td colspan="5" class="text-center text-danger py-4">Veriler yüklenirken hata oluştu.</td></tr>');
+                }
+            },
+            error: function () {
+                $('#pageHelpLoading').hide();
+                $('#pageHelpTableContainer').show();
+                $('#pageHelpTableBody').html('<tr><td colspan="5" class="text-center text-danger py-4">Sunucu ile iletişim kurulamadı.</td></tr>');
+            }
+        });
+    }
+
+    function updateCounters() {
+        var total = pageHelpData.length;
+        var custom = pageHelpData.filter(function (x) { return x.IsCustomized; }).length;
+        var def = total - custom;
+
+        $('#statTotalPages').text(total);
+        $('#statCustomPages').text(custom);
+        $('#statDefaultPages').text(def);
+        $('#badgePageHelpCount').text(custom > 0 ? custom + ' Özel' : 'Rehberler');
+    }
+
+    function populateCategoryDropdown() {
+        var $catSelect = $('#filterPageHelpCategory');
+        $catSelect.find('option:not(:first)').remove();
+
+        var categories = [];
+        pageHelpData.forEach(function (item) {
+            if (item.Category && categories.indexOf(item.Category) === -1) {
+                categories.push(item.Category);
+            }
+        });
+        categories.sort();
+
+        categories.forEach(function (c) {
+            $catSelect.append($('<option>', { value: c, text: c }));
+        });
+    }
+
+    function populatePresetDropdown() {
+        var $presetSelect = $('#pageHelpPresetSelect');
+        $presetSelect.find('option:not(:first)').remove();
+
+        pageHelpData.forEach(function (item) {
+            $presetSelect.append($('<option>', {
+                value: item.Key,
+                text: item.PageName + ' (' + (item.Category || 'Özel') + ')'
+            }));
+        });
+    }
+
+    function renderTable() {
+        var query = ($('#filterPageHelpSearch').val() || '').trim().toLowerCase();
+        var selectedCat = $('#filterPageHelpCategory').val() || '';
+        var selectedStatus = $('#filterPageHelpStatus').val() || '';
+
+        var filtered = pageHelpData.filter(function (item) {
+            if (query) {
+                var nameMatch = item.PageName && item.PageName.toLowerCase().indexOf(query) !== -1;
+                var keyMatch = item.Key && item.Key.toLowerCase().indexOf(query) !== -1;
+                var routeMatch = item.RouteInfo && item.RouteInfo.toLowerCase().indexOf(query) !== -1;
+                if (!nameMatch && !keyMatch && !routeMatch) return false;
+            }
+            if (selectedCat && item.Category !== selectedCat) {
+                return false;
+            }
+            if (selectedStatus === 'custom' && !item.IsCustomized) {
+                return false;
+            }
+            if (selectedStatus === 'default' && item.IsCustomized) {
+                return false;
+            }
+            return true;
+        });
+
+        var $tbody = $('#pageHelpTableBody');
+        $tbody.empty();
+
+        if (!filtered.length) {
+            $('#pageHelpEmptyNotice').removeClass('d-none');
+            $('#tablePageHelp').hide();
+            return;
+        }
+
+        $('#pageHelpEmptyNotice').addClass('d-none');
+        $('#tablePageHelp').show();
+
+        filtered.forEach(function (item) {
+            var statusBadge = item.IsCustomized
+                ? '<span class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1"><i class="fa-solid fa-circle-check me-1"></i>Özelleştirildi (DB)</span>'
+                : '<span class="badge bg-secondary-subtle text-secondary border px-2 py-1"><i class="fa-solid fa-shield-halved me-1"></i>Varsayılan Şablon</span>';
+
+            var updatedText = item.UpdatedDate
+                ? momentDateOrString(item.UpdatedDate)
+                : '<span class="text-muted">-</span>';
+
+            var routeBadge = item.RouteInfo
+                ? '<small class="text-muted d-block font-monospace" style="font-size:11px;">' + escapeHtml(item.RouteInfo) + '</small>'
+                : '';
+
+            var resetBtn = item.IsCustomized
+                ? '<button type="button" class="btn btn-outline-danger btn-sm btn-reset-page-help" data-key="' + escapeHtml(item.Key) + '" title="Varsayılan Şablona Sıfırla"><i class="fa-solid fa-rotate-left"></i></button>'
+                : '';
+
+            var $tr = $('<tr>' +
+                '<td>' +
+                    '<div class="fw-bold text-dark">' + escapeHtml(item.PageName) + '</div>' +
+                    routeBadge +
+                '</td>' +
+                '<td><span class="badge bg-light text-dark border">' + escapeHtml(item.Category || 'Özel') + '</span></td>' +
+                '<td>' + statusBadge + '</td>' +
+                '<td><small class="text-muted">' + updatedText + '</small></td>' +
+                '<td class="text-end">' +
+                    '<div class="btn-group btn-group-sm" role="group">' +
+                        '<button type="button" class="btn btn-outline-primary btn-preview-page-help" data-key="' + escapeHtml(item.Key) + '" title="Önizle"><i class="fa-solid fa-eye me-1"></i>Önizle</button>' +
+                        '<button type="button" class="btn btn-primary btn-edit-page-help" data-key="' + escapeHtml(item.Key) + '" title="Düzenle"><i class="fa-solid fa-pen-to-square me-1"></i>Düzenle</button>' +
+                        resetBtn +
+                    '</div>' +
+                '</td>' +
+            '</tr>');
+
+            $tbody.append($tr);
+        });
+    }
+
+    function momentDateOrString(d) {
+        if (!d) return '-';
+        if (typeof d === 'string') {
+            var match = d.match(/\/Date\((\d+)\)\//);
+            if (match) {
+                var dt = new Date(parseInt(match[1], 10));
+                return dt.toLocaleDateString('tr-TR') + ' ' + dt.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
+            }
+            return escapeHtml(d.replace('T', ' ').slice(0, 16));
+        }
+        return '-';
+    }
+
+    // Tab Navigation Trigger: Load list when tab-page-help is shown
+    $(document).on('shown.bs.tab', 'a[href="#tab-page-help"]', function () {
+        if (!isLoaded) {
+            loadPageHelpList();
+        }
+    });
+
+    if (window.location.hash === '#tab-page-help') {
+        setTimeout(function () {
+            if (!isLoaded) loadPageHelpList();
+        }, 150);
+    }
+
+    $('#btnRefreshPageHelpList').on('click', function () {
+        loadPageHelpList();
+    });
+
+    // Filters
+    $('#filterPageHelpSearch').on('input', function () {
+        var val = $(this).val();
+        $('#btnClearPageHelpFilter').toggleClass('d-none', !val);
+        renderTable();
+    });
+
+    $('#btnClearPageHelpFilter').on('click', function () {
+        $('#filterPageHelpSearch').val('').trigger('input').focus();
+    });
+
+    $('#filterPageHelpCategory, #filterPageHelpStatus').on('change', function () {
+        renderTable();
+    });
+
+    // Open Add Modal
+    $('#btnAddNewPageHelp').on('click', function () {
+        $('#pageHelpEditModalTitle').html('<i class="fa-solid fa-circle-plus text-primary me-2"></i>Yeni Sayfa Yardım Bilgisi Ekle');
+        $('#pageHelpPresetGroup').show();
+        $('#pageHelpPresetSelect').val('');
+        $('#pageHelpModalName').val('');
+        $('#pageHelpModalKey').val('').prop('readonly', false);
+        $('#pageHelpModalContent').val('');
+        $('#pageHelpModalAlert').addClass('d-none').text('');
+        switchModalTab('edit');
+
+        var modal = new bootstrap.Modal(document.getElementById('pageHelpEditModal'));
+        modal.show();
+    });
+
+    // Preset Selection in Add Modal
+    $('#pageHelpPresetSelect').on('change', function () {
+        var selectedKey = $(this).val();
+        if (!selectedKey) return;
+
+        var found = pageHelpData.filter(function (x) { return x.Key === selectedKey; })[0];
+        if (found) {
+            $('#pageHelpModalName').val(found.PageName);
+            $('#pageHelpModalKey').val(found.Key);
+            $('#pageHelpModalContent').val(found.CurrentContent || found.DefaultContent || '');
+            updateLivePreview();
+        }
+    });
+
+    // Open Edit Modal for a specific row
+    $(document).on('click', '.btn-edit-page-help', function () {
+        var key = $(this).data('key');
+        var found = pageHelpData.filter(function (x) { return x.Key === key; })[0];
+
+        $('#pageHelpEditModalTitle').html('<i class="fa-solid fa-pen-to-square text-primary me-2"></i>Sayfa Yardım Bilgisi Düzenle');
+        $('#pageHelpPresetGroup').hide();
+        $('#pageHelpModalAlert').addClass('d-none').text('');
+        switchModalTab('edit');
+
+        if (found) {
+            $('#pageHelpModalName').val(found.PageName);
+            $('#pageHelpModalKey').val(found.Key).prop('readonly', true);
+            $('#pageHelpModalContent').val(found.CurrentContent || found.DefaultContent || '');
+            updateLivePreview();
+            var modal = new bootstrap.Modal(document.getElementById('pageHelpEditModal'));
+            modal.show();
+        } else {
+            $.getJSON('@Url.Action("GetPageHelpDetail", "AdminSettings", new { area = "admin" })', { key: key }, function (res) {
+                if (res && res.success) {
+                    $('#pageHelpModalName').val(res.name);
+                    $('#pageHelpModalKey').val(res.key).prop('readonly', true);
+                    $('#pageHelpModalContent').val(res.content || res.defaultContent || '');
+                    updateLivePreview();
+                    var modal = new bootstrap.Modal(document.getElementById('pageHelpEditModal'));
+                    modal.show();
+                }
+            });
+        }
+    });
+
+    // Preview button from row
+    $(document).on('click', '.btn-preview-page-help', function () {
+        var key = $(this).data('key');
+        var found = pageHelpData.filter(function (x) { return x.Key === key; })[0];
+
+        if (found) {
+            showPreviewModal(found.PageName, found.Key, found.CurrentContent || found.DefaultContent);
+        } else {
+            $.getJSON('@Url.Action("GetPageHelpDetail", "AdminSettings", new { area = "admin" })', { key: key }, function (res) {
+                if (res && res.success) {
+                    showPreviewModal(res.name, res.key, res.content || res.defaultContent);
+                }
+            });
+        }
+    });
+
+    function showPreviewModal(title, key, content) {
+        $('#pageHelpPreviewModalTitle').text(title || 'Sayfa Yardım Rehberi');
+        $('#pageHelpPreviewModalSubtitle').text('Önizleme');
+        $('#pageHelpPreviewModalKeyBadge').text(key);
+        $('#pageHelpPreviewModalBody').html(content || '<p class="text-muted fst-italic">İçerik bulunmuyor.</p>');
+
+        var modal = new bootstrap.Modal(document.getElementById('pageHelpPreviewModal'));
+        modal.show();
+    }
+
+    // Reset / Delete row
+    $(document).on('click', '.btn-reset-page-help', function () {
+        var key = $(this).data('key');
+        if (!confirm('Bu sayfa yardım içeriğini varsayılan şablona sıfırlamak istediğinize emin misiniz?')) {
+            return;
+        }
+
+        var $btn = $(this);
+        $btn.prop('disabled', true);
+
+        $.ajax({
+            url: '@Url.Action("DeletePageHelp", "AdminSettings", new { area = "admin" })',
+            type: 'POST',
+            data: {
+                key: key,
+                __RequestVerificationToken: csrfToken()
+            },
+            success: function (res) {
+                if (res && res.success) {
+                    var item = pageHelpData.filter(function (x) { return x.Key === key; })[0];
+                    if (item) {
+                        item.IsCustomized = false;
+                        item.CurrentContent = res.defaultContent || item.DefaultContent;
+                        item.UpdatedDate = null;
+                    }
+                    renderTable();
+                    updateCounters();
+                } else {
+                    alert(res && res.message ? res.message : 'Sıfırlama sırasında hata oluştu.');
+                    $btn.prop('disabled', false);
+                }
+            },
+            error: function () {
+                alert('Sunucu ile iletişim kurulamadı.');
+                $btn.prop('disabled', false);
+            }
+        });
+    });
+
+    // Modal Tabs (Editor vs Live Preview)
+    function switchModalTab(tab) {
+        if (tab === 'edit') {
+            $('#btnTabEditContent').addClass('active');
+            $('#btnTabPreviewContent').removeClass('active');
+            $('#pageHelpEditorPane').show();
+            $('#pageHelpEditorToolbar').show();
+            $('#pageHelpPreviewPane').hide();
+        } else {
+            $('#btnTabEditContent').removeClass('active');
+            $('#btnTabPreviewContent').addClass('active');
+            $('#pageHelpEditorPane').hide();
+            $('#pageHelpEditorToolbar').hide();
+            $('#pageHelpPreviewPane').show();
+            updateLivePreview();
+        }
+    }
+
+    $('#btnTabEditContent').on('click', function () { switchModalTab('edit'); });
+    $('#btnTabPreviewContent').on('click', function () { switchModalTab('preview'); });
+
+    function updateLivePreview() {
+        var html = $('#pageHelpModalContent').val() || '<p class="text-muted fst-italic">Önizlenecek içerik boş.</p>';
+        $('#pageHelpLivePreviewContent').html(html);
+    }
+
+    $('#pageHelpModalContent').on('input', function () {
+        if ($('#pageHelpPreviewPane').is(':visible')) {
+            updateLivePreview();
+        }
+    });
+
+    // Formatting Toolbar Buttons
+    $('#pageHelpEditorToolbar button[data-tag]').on('click', function () {
+        var tag = $(this).data('tag');
+        var textarea = document.getElementById('pageHelpModalContent');
+        if (!textarea) return;
+
+        var start = textarea.selectionStart;
+        var end = textarea.selectionEnd;
+        var text = textarea.value;
+        var selected = text.substring(start, end);
+        var replacement = '';
+
+        switch (tag) {
+            case 'b':
+                replacement = '<strong>' + (selected || 'Kalın Metin') + '</strong>';
+                break;
+            case 'p':
+                replacement = '<p>' + (selected || 'Yeni paragraf metni...') + '</p>';
+                break;
+            case 'ul':
+                replacement = '<ul>\n  <li>' + (selected || 'Madde 1') + '</li>\n  <li>Madde 2</li>\n</ul>';
+                break;
+            case 'code':
+                replacement = '<code>' + (selected || 'kod_ornek') + '</code>';
+                break;
+            case 'alert':
+                replacement = '<div class="alert alert-info py-2 px-3 small my-2">\n  <i class="fa-solid fa-circle-info me-1"></i> ' + (selected || 'Önemli not veya ipucu...') + '\n</div>';
+                break;
+        }
+
+        textarea.value = text.substring(0, start) + replacement + text.substring(end);
+        textarea.focus();
+        textarea.selectionStart = start + replacement.length;
+        textarea.selectionEnd = start + replacement.length;
+        updateLivePreview();
+    });
+
+    // Load Default Template button inside Edit Modal
+    $('#btnLoadDefaultTemplate').on('click', function () {
+        var key = ($('#pageHelpModalKey').val() || '').trim();
+        var found = pageHelpData.filter(function (x) { return x.Key === key; })[0];
+        if (found && found.DefaultContent) {
+            $('#pageHelpModalContent').val(found.DefaultContent);
+            updateLivePreview();
+            return;
+        }
+
+        var generic = '<p>Bu sayfada <strong>' + ($('#pageHelpModalName').val() || 'işlemlerinizi') + '</strong> gerçekleştirirsiniz.</p>\n' +
+            '<ul>\n' +
+            '  <li>Arama ve filtreleme alanlarını kullanarak kayıtlara hızlıca ulaşabilirsiniz.</li>\n' +
+            '  <li>İşlemler sütunundaki butonlar ile detayları düzenleyebilir veya silebilirsiniz.</li>\n' +
+            '</ul>';
+        $('#pageHelpModalContent').val(generic);
+        updateLivePreview();
+    });
+
+    // Save Button in Edit Modal
+    $('#btnSavePageHelpModal').on('click', function () {
+        var key = ($('#pageHelpModalKey').val() || '').trim();
+        var name = ($('#pageHelpModalName').val() || '').trim();
+        var content = $('#pageHelpModalContent').val();
+
+        if (!name) {
+            $('#pageHelpModalAlert').removeClass('d-none').text('Sayfa / rehber başlığı zorunludur.');
+            $('#pageHelpModalName').focus();
+            return;
+        }
+
+        if (!key) {
+            key = name.toLowerCase()
+                .replace(/ğ/g, 'g').replace(/ü/g, 'u').replace(/ş/g, 's').replace(/ı/g, 'i').replace(/ö/g, 'o').replace(/ç/g, 'c')
+                .replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '') + '_help/info_section';
+            $('#pageHelpModalKey').val(key);
+        }
+
+        var $btn = $(this);
+        var origHtml = $btn.html();
+        $btn.prop('disabled', true).html('<i class="fa-solid fa-spinner fa-spin me-1"></i> Kaydediliyor...');
+        $('#pageHelpModalAlert').addClass('d-none').text('');
+
+        $.ajax({
+            url: '@Url.Action("SavePageHelp", "AdminSettings", new { area = "admin" })',
+            type: 'POST',
+            data: {
+                key: key,
+                name: name,
+                content: content,
+                __RequestVerificationToken: csrfToken()
+            },
+            success: function (res) {
+                $btn.prop('disabled', false).html(origHtml);
+                if (res && res.success) {
+                    var modalEl = document.getElementById('pageHelpEditModal');
+                    var modal = bootstrap.Modal.getInstance(modalEl);
+                    if (modal) modal.hide();
+
+                    var existing = pageHelpData.filter(function (x) { return x.Key === res.key; })[0];
+                    if (existing) {
+                        existing.PageName = res.name || existing.PageName;
+                        existing.CurrentContent = content;
+                        existing.IsCustomized = true;
+                        existing.UpdatedDate = new Date().toISOString();
+                    } else {
+                        pageHelpData.unshift({
+                            Key: res.key,
+                            PageName: res.name || key,
+                            Category: 'Özel',
+                            RouteInfo: '',
+                            DefaultContent: content,
+                            CurrentContent: content,
+                            IsCustomized: true,
+                            UpdatedDate: new Date().toISOString()
+                        });
+                    }
+
+                    renderTable();
+                    updateCounters();
+                } else {
+                    $('#pageHelpModalAlert').removeClass('d-none').text(res && res.message ? res.message : 'Kayıt sırasında hata oluştu.');
+                }
+            },
+            error: function () {
+                $btn.prop('disabled', false).html(origHtml);
+                $('#pageHelpModalAlert').removeClass('d-none').text('Sunucu hatası oluştu.');
+            }
+        });
+    });
+
+})(jQuery);
 </script>
 @Html.Partial("_AdminInitTooltips")

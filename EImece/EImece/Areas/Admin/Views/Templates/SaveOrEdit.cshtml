@@ -1,4 +1,4 @@
-﻿@model EImece.Domain.Entities.Template
+@model EImece.Domain.Entities.Template
 @using System.Linq
 @using System.Web.Script.Serialization
 @using Resources
@@ -7,6 +7,7 @@
     var saveButtonText = AdminResource.SaveButtonText;
     var saveButtonAndCloseText = AdminResource.SaveButtonAndCloseText;
     ViewBag.Title = AdminResource.Templates;
+    ViewBag.HelpSettingKey = "Templates_help/info_section";
     var XmlEditorConfiguration = ViewBag.XmlEditorConfiguration;
     var listNames = ViewBag.ListNames as IEnumerable<string> ?? Enumerable.Empty<string>();
     var listNamesJson = new JavaScriptSerializer().Serialize(listNames.ToList());
@@ -38,19 +39,6 @@
     <br />
     <span class="text-muted">Açılır liste için önce <a href="@listsUrl">Değer listeleri</a> oluşturun; listedeki ad ile <em>values</em> aynı olmalı.</span>
 </div>
-
-@{ ViewData["HelpId"] = "templatesHelp"; }
-@Html.Partial("_AdminHelpAccordionStart")
-<ul style="margin-top: 0;">
-    <li>Bu sayfada <strong>ürün ek özellik şablonlarını</strong> görsel olarak oluşturursunuz; kayıtta XML otomatik üretilir.</li>
-    <li><strong>Grup</strong>: alanları böler (ürün formunda başlık olarak görünür).</li>
-    <li><strong>Metin / Metin alanı / Açılır liste / Radyo / Çoklu seçim / Tarih-Saat / Evet-Hayır</strong>: ürün “Ek Özellikleri” ekranındaki alan türleri.</li>
-    <li><strong>Metin alanı</strong> HTML kabul eder (<code>html="true"</code>). <strong>Tarih/Saat</strong>te “Saat göster” kapalıysa sadece tarih kaydedilir.</li>
-    <li><strong>Çoklu seçim</strong> birden fazla onay kutusu gösterir; değerler <code>A, B, C</code> biçiminde saklanır ve sitede aynı şekilde gösterilir.</li>
-    <li>Açılır liste, radyo ve çoklu seçimde <strong>Liste (values)</strong> liste adı veya <code>A, B, C</code> olabilir.</li>
-    <li>İsterseniz altta <strong>Gelişmiş XML</strong> panelinden ham XML’i de düzenleyebilirsiniz.</li>
-</ul>
-@Html.Partial("_AdminHelpAccordionEnd")
 
 @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "templateSaveForm" }))
 {

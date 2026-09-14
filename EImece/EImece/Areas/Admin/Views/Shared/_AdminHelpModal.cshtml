@@ -1,0 +1,145 @@
+@using Resources;
+@{
+    var controller = ViewContext.RouteData?.Values["controller"]?.ToString() ?? "Admin";
+    var action = ViewContext.RouteData?.Values["action"]?.ToString() ?? "Index";
+    var helpSettingKey = (ViewBag.HelpSettingKey as string) ?? $"{controller}_{action}_help/info_section";
+    var helpUrl = Url.Action("GetPageHelp", "Dashboard", new { area = "admin" });
+}
+
+<div class="modal fade"
+     id="adminPageHelpModal"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="adminPageHelpTitle"
+     aria-describedby="adminPageHelpBody"
+     aria-hidden="true"
+     data-help-key="@helpSettingKey"
+     data-help-url="@helpUrl">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable admin-help-modal-dialog" role="document">
+        <div class="modal-content admin-help-modal-content">
+            <div class="modal-header admin-help-modal-header">
+                <div class="admin-help-title-wrap">
+                    <span class="admin-help-title-icon" aria-hidden="true">
+                        <i class="fa-solid fa-circle-question"></i>
+                    </span>
+                    <h5 class="modal-title" id="adminPageHelpTitle">@AdminResource.HowToUse</h5>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="@AdminResource.ButtonCancel"></button>
+            </div>
+            <div class="modal-body admin-help-modal-body" id="adminPageHelpBody" tabindex="0">
+                <div class="admin-help-loading text-center p-4 text-muted">
+                    <i class="fa-solid fa-spinner fa-spin fa-2x mb-2 d-block text-primary"></i>
+                    <span>@AdminResource.Loading</span>
+                </div>
+            </div>
+            <div class="modal-footer admin-help-modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal" id="adminPageHelpCloseBtn">
+                    @AdminResource.ButtonCancel
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function () {
+        var helpCache = {};
+
+        function initHelpModal() {
+            var modalEl = document.getElementById('adminPageHelpModal');
+            if (!modalEl) return;
+
+            var bodyEl = document.getElementById('adminPageHelpBody');
+            var triggerBtn = document.getElementById('adminPageHelpBtn');
+            var key = modalEl.getAttribute('data-help-key');
+            var url = modalEl.getAttribute('data-help-url');
+
+            modalEl.addEventListener('show.bs.modal', function () {
+                if (helpCache[key]) {
+                    bodyEl.innerHTML = helpCache[key];
+                    return;
+                }
+
+                bodyEl.innerHTML = '<div class="admin-help-loading text-center p-4 text-muted">' +
+                    '<i class="fa-solid fa-spinner fa-spin fa-2x mb-2 d-block text-primary"></i>' +
+                    '<span>@Html.Raw(HttpUtility.JavaScriptStringEncode(AdminResource.Loading))</span>' +
+                    '</div>';
+
+                var requestUrl = url + (url.indexOf('?') >= 0 ? '&' : '?') + 'key=' + encodeURIComponent(key);
+
+                if (window.jQuery) {
+                    $.ajax({
+                        url: requestUrl,
+                        type: 'GET',
+                        dataType: 'json',
+                        cache: false,
+                        success: function (res) {
+                            renderContent(res);
+                        },
+                        error: function () {
+                            renderError();
+                        }
+                    });
+                } else {
+                    fetch(requestUrl, {
+                        headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' }
+                    })
+                    .then(function (r) { return r.json(); })
+                    .then(function (res) { renderContent(res); })
+                    .catch(function () { renderError(); });
+                }
+            });
+
+            modalEl.addEventListener('shown.bs.modal', function () {
+                var closeBtn = document.getElementById('adminPageHelpCloseBtn');
+                if (closeBtn) {
+                    closeBtn.focus();
+                }
+            });
+
+            modalEl.addEventListener('hidden.bs.modal', function () {
+                if (triggerBtn) {
+                    triggerBtn.focus();
+                }
+            });
+
+            function renderContent(res) {
+                if (res && res.success && res.hasContent) {
+                    var html = '<div class="admin-help-rendered">' + res.content + '</div>';
+                    helpCache[key] = html;
+                    bodyEl.innerHTML = html;
+                } else {
+                    var emptyHtml = '<div class="admin-help-empty p-3 text-center text-muted">' +
+                        '<i class="fa-solid fa-circle-info fa-2x mb-2 d-block text-secondary"></i>' +
+                        '<p class="mb-1">Bu sayfa için henüz yardım içeriği tanımlanmamıştır.</p>' +
+                        '<small class="text-muted">Ayar anahtarı: <code>' + (res && res.key ? res.key : key) + '</code></small>' +
+                        '</div>';
+                    helpCache[key] = emptyHtml;
+                    bodyEl.innerHTML = emptyHtml;
+                }
+            }
+
+            function renderError() {
+                bodyEl.innerHTML = '<div class="admin-help-error p-3 text-center text-danger">' +
+                    '<i class="fa-solid fa-triangle-exclamation fa-2x mb-2 d-block"></i>' +
+                    '<p class="mb-1">Yardım içeriği yüklenirken bir sorun oluştu.</p>' +
+                    '<button type="button" class="btn btn-outline-secondary btn-sm mt-2" id="adminHelpRetryBtn">Tekrar Dene</button>' +
+                    '</div>';
+
+                var retryBtn = document.getElementById('adminHelpRetryBtn');
+                if (retryBtn) {
+                    retryBtn.addEventListener('click', function () {
+                        delete helpCache[key];
+                        modalEl.dispatchEvent(new Event('show.bs.modal'));
+                    });
+                }
+            }
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initHelpModal);
+        } else {
+            initHelpModal();
+        }
+    })();
+</script>

@@ -5,6 +5,7 @@
 @using Resources;
 @{
     ViewBag.Title = AdminResource.WebSiteLogo;
+    ViewBag.HelpSettingKey = "WebSiteLogo_help/info_section";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
     var saveButtonText = AdminResource.SaveButtonText;
     string fileName = Model != null ? Model.SettingValue.ToStr() : "";
@@ -18,18 +19,6 @@
     <div class="col-lg-8 mx-auto">
         <h2 class="admin-page-title">@AdminResource.WebSiteLogo</h2>
         <p class="text-muted mb-3">Sitenizin üst menüsünde görünen logoyu buradan yükleyin. Kaydettikten sonra üst çubuktaki yenile ile önbelleği temizleyin.</p>
-
-        @{ ViewData["HelpId"] = "webSiteLogoHelp"; }
-        @Html.Partial("_AdminHelpAccordionStart")
-        <ul class="mb-2">
-            <li>Bu sayfada web sitenizin <strong>logosunu</strong> değiştirebilirsiniz.</li>
-            <li>Logo seçmek için aşağıdaki alandan dosya (Gözat / Dosya Seç) butonuna tıklayın ve bilgisayarınızdan logonuzu seçin.</li>
-            <li>Mevcut logo aşağıda önizleme olarak görünür. Önizleme yoksa yeni bir dosya yükleyin.</li>
-            <li>Değişiklikleri kaydetmek için <strong>@saveButtonText</strong> butonuna tıklamayı unutmayın.</li>
-            <li>Logo kaydedildikten sonra üst menüdeki <strong>@AdminResource.Refresh</strong> ile site önbelleğini temizleyebilirsiniz; ardından logo vitrinde görünür.</li>
-        </ul>
-        <p class="mb-0"><strong>Tavsiye:</strong> Yatay PNG (şeffaf arka plan), yaklaşık 240&times;80 piksel veya aynı oran. İhtiyacınız olmayan boyutlandırma ayarları kaldırılmıştır.</p>
-        @Html.Partial("_AdminHelpAccordionEnd")
 
         @using (Html.BeginForm("UploadWebSiteLogo", "Settings", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {

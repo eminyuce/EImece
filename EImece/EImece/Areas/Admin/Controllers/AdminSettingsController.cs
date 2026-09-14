@@ -9,7 +9,9 @@ using EImece.Web.Areas.Admin.Controllers;
 using Microsoft.Extensions.Logging;
 using Resources;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.Mime;
 using System.Threading;
 using System.Threading.Tasks;
@@ -203,6 +205,184 @@ namespace EImece.Areas.Admin.Controllers
             _memoryCacheProvider?.ClearAll();
 
             return Json(new { success = true, language = langValue, message = AdminResource.SuccessfullySavedCompleted });
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> GetPageHelpList(CancellationToken cancellationToken)
+        {
+            var dict = await PageHelpHelper.GetAllHelpTextsAsync(SettingService, _memoryCacheProvider).ConfigureAwait(false);
+            var items = dict != null ? dict.Values.ToList() : new List<PageHelpItemDto>();
+            return Json(new { success = true, items = items }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> GetPageHelpDetail(string key, CancellationToken cancellationToken)
+        {
+            if (string.IsNullOrWhiteSpace(key))
+            {
+                return Json(new { success = false, message = "Ayar anahtarı boş olamaz." }, JsonRequestBehavior.AllowGet);
+            }
+
+            string cleanKey = PageHelpHelper.NormalizeKey(key);
+            var predefined = PageHelpHelper.GetPredefinedPages().FirstOrDefault(p => string.Equals(p.Key, cleanKey, StringComparison.OrdinalIgnoreCase));
+            var setting = await SettingService.GetSettingObjectByKeyFromDbAsync(cleanKey).ConfigureAwait(false);
+
+            string defaultContent = predefined?.DefaultContent ?? PageHelpHelper.GetDefaultContent(cleanKey);
+            bool isCustomized = setting != null && !string.IsNullOrWhiteSpace(setting.SettingValue);
+            string content = isCustomized ? setting.SettingValue : defaultContent;
+            string pageName = setting?.Name ?? predefined?.PageName ?? cleanKey.Replace(PageHelpHelper.KeySuffix, "");
+
+            return Json(new
+            {
+                success = true,
+                key = cleanKey,
+                name = pageName,
+                category = predefined?.Category ?? "Özel",
+                routeInfo = predefined?.RouteInfo ?? "",
+                isCustomized = isCustomized,
+                content = content,
+                defaultContent = defaultContent,
+                updatedDate = setting != null ? setting.UpdatedDate.ToString("dd.MM.yyyy HH:mm") : null
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [ValidateInput(false)]
+        public async Task<ActionResult> SavePageHelp(string key, string name, string content, CancellationToken cancellationToken)
+        {
+            if (string.IsNullOrWhiteSpace(key))
+            {
+                return Json(new { success = false, message = "Sayfa veya ayar anahtarı boş olamaz." });
+            }
+
+            string cleanKey = PageHelpHelper.NormalizeKey(key);
+            var setting = await SettingService.GetSettingObjectByKeyFromDbAsync(cleanKey).ConfigureAwait(false);
+
+            string settingTitle = string.IsNullOrWhiteSpace(name) ? cleanKey.Replace(PageHelpHelper.KeySuffix, "") : name.Trim();
+            string htmlContent = content?.Trim() ?? string.Empty;
+
+            if (setting == null)
+            {
+                setting = new EImece.Domain.Entities.Setting
+                {
+                    Name = settingTitle,
+                    SettingKey = cleanKey,
+                    Description = DomainConstants.SystemSettings + " - Page Help",
+                    SettingValue = htmlContent,
+                    IsActive = true,
+                    Lang = 1
+                };
+            }
+            else
+            {
+                setting.Name = settingTitle;
+                setting.SettingValue = htmlContent;
+                setting.IsActive = true;
+            }
+
+            await SettingService.SaveOrEditEntityAsync(setting).ConfigureAwait(false);
+            PageHelpHelper.EvictCache(_memoryCacheProvider);
+            SettingService.ClearCache();
+            _memoryCacheProvider?.ClearAll();
+
+            return Json(new
+            {
+                success = true,
+                message = AdminResource.SuccessfullySavedCompleted,
+                key = cleanKey,
+                name = settingTitle
+            });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> DeletePageHelp(string key, CancellationToken cancellationToken)
+        {
+            if (string.IsNullOrWhiteSpace(key))
+            {
+                return Json(new { success = false, message = "Ayar anahtarı boş olamaz." });
+            }
+
+            string cleanKey = PageHelpHelper.NormalizeKey(key);
+            var setting = await SettingService.GetSettingObjectByKeyFromDbAsync(cleanKey).ConfigureAwait(false);
+
+            if (setting != null)
+            {
+                await SettingService.DeleteEntityAsync(setting).ConfigureAwait(false);
+                PageHelpHelper.EvictCache(_memoryCacheProvider);
+                SettingService.ClearCache();
+                _memoryCacheProvider?.ClearAll();
+            }
+
+            string defaultContent = PageHelpHelper.GetDefaultContent(cleanKey);
+
+            return Json(new
+            {
+                success = true,
+                message = "Sayfa yardım bilgisi varsayılana sıfırlandı.",
+                key = cleanKey,
+                defaultContent = defaultContent
+            });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> RemovePageHelp(string key, CancellationToken cancellationToken)
+        {
+            if (string.IsNullOrWhiteSpace(key))
+            {
+                return Json(new { success = false, message = "Sayfa veya ayar anahtarı boş olamaz." });
+            }
+
+            string cleanKey = PageHelpHelper.NormalizeKey(key);
+            var predefined = PageHelpHelper.GetPredefinedPages().FirstOrDefault(p => string.Equals(p.Key, cleanKey, StringComparison.OrdinalIgnoreCase));
+            var setting = await SettingService.GetSettingObjectByKeyFromDbAsync(cleanKey).ConfigureAwait(false);
+
+            bool isPredefined = predefined != null;
+
+            if (isPredefined)
+            {
+                string title = predefined.PageName;
+                if (setting == null)
+                {
+                    setting = new EImece.Domain.Entities.Setting
+                    {
+                        Name = title,
+                        SettingKey = cleanKey,
+                        Description = DomainConstants.SystemSettings + " - Page Help",
+                        SettingValue = string.Empty,
+                        IsActive = true,
+                        Lang = 1
+                    };
+                }
+                else
+                {
+                    setting.Name = title;
+                    setting.SettingValue = string.Empty;
+                    setting.IsActive = true;
+                }
+                await SettingService.SaveOrEditEntityAsync(setting).ConfigureAwait(false);
+            }
+            else
+            {
+                if (setting != null)
+                {
+                    await SettingService.DeleteEntityAsync(setting).ConfigureAwait(false);
+                }
+            }
+
+            PageHelpHelper.EvictCache(_memoryCacheProvider);
+            SettingService.ClearCache();
+            _memoryCacheProvider?.ClearAll();
+
+            return Json(new
+            {
+                success = true,
+                message = "Sayfa yardım rehberi başarıyla kaldırıldı.",
+                key = cleanKey,
+                isPredefined = isPredefined
+            });
         }
     }
 }

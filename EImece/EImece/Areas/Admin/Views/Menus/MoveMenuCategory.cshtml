@@ -1,4 +1,4 @@
-﻿@using EImece.Domain.Helpers;
+@using EImece.Domain.Helpers;
 @using EImece.Domain;
 @using Resources;
 @using EImece.Domain.Entities;
@@ -7,6 +7,7 @@
 
 @{
     ViewBag.Title = AdminResource.MoveProductMenu;
+    ViewBag.HelpSettingKey = "Menus_Move_help/info_section";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
     var productCategoryDropDownList = (List<SelectListItem>)ViewBag.MenuCategoryDropDownList;
     var saveButtonText = AdminResource.SaveButtonText;
@@ -29,18 +30,6 @@
         <span id="treeClickContainer"></span>
     </div>
     <div class="col-md-9">
-        @{ ViewData["HelpId"] = "moveMenuHelp"; }
-        @Html.Partial("_AdminHelpAccordionStart")
-        <ul style="margin-top: 0;">
-            <li>Bu sayfada bir menü öğesini menü ağacında <strong>başka bir yere taşırsınız</strong>.</li>
-            <li><strong>Taşınacak menü</strong> listesinden taşımak istediğiniz menüyü seçin.</li>
-            <li><strong>Yeni üst menü</strong> listesinden gideceği üst menüyü seçin.</li>
-            <li>En üst seviyeye almak için <strong>Yeni üst menü</strong> alanında <strong>Ana Kategori Yap</strong> seçeneğini seçin.</li>
-            <li>Soldaki ağaç mevcut menü yapısını gösterir.</li>
-        </ul>
-        <p style="margin-top: 12px; margin-bottom: 0;"><strong>Örnek:</strong> Taşınacak = “İletişim”, Yeni üst = “Kurumsal” → İletişim, Kurumsal’ın altına taşınır.</p>
-        @Html.Partial("_AdminHelpAccordionEnd")
-
         @using (Html.BeginForm("MoveMenuCategory", "Menus", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
         @Html.AntiForgeryToken()

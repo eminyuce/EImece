@@ -4,19 +4,12 @@
 @{
     var saveButtonText = AdminResource.SaveButtonText;
     ViewBag.Title = AdminResource.Users;
+    ViewBag.HelpSettingKey = "Users_Edit_help/info_section";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
 <h2>@AdminResource.Users</h2>
 <hr class="adminLine" />
-
-@{ ViewData["HelpId"] = "userEditHelp"; }
-@Html.Partial("_AdminHelpAccordionStart")
-<ul style="margin-top: 0;">
-    <li>@AdminResource.UserEditHelp1</li>
-    <li>@AdminResource.UserEditHelp2</li>
-</ul>
-@Html.Partial("_AdminHelpAccordionEnd")
 
 @using (Html.BeginForm())
 {

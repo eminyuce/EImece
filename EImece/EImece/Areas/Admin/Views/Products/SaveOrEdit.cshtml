@@ -19,24 +19,10 @@
     List<ProductCategoryTreeModel> ProductCategoryTree = ViewBag.ProductCategoryTree;
     var brands = (List<SelectListItem>)ViewBag.Brands;
     var controllerName = "Products";
+    ViewBag.HelpSettingKey = "ProductPage_help/info_section";
 }
 <h2 class="admin-page-title">@AdminResource.ProductPageTitle</h2>
 <hr class="adminLine" />
-
-@{ ViewData["HelpId"] = "productsHelp"; }
-@Html.Partial("_AdminHelpAccordionStart")
-<ul style="margin-top: 0;">
-    <li>Bu sayfada <strong>ürün</strong> oluşturur veya düzenlersiniz.</li>
-    <li>Soldaki ağaçtan ürünün <strong>kategorisini</strong> seçin (zorunlu).</li>
-    <li><strong>Fiyat</strong>: Satış fiyatı. <strong>Ürün indirimi</strong> varsa fiyat üzerinden ek indirim uygulanır.</li>
-    <li><strong>Ana sayfa</strong>: Ürünü ana sayfada gösterir. <strong>Kampanya</strong>: Kampanya listelerinde öne çıkarır.</li>
-    <li><strong>Marka / etiketler</strong>: Filtreleme ve vitrin için kullanılır.</li>
-    <li><strong>Ürün Ölçü Seçenekleri</strong> / <strong>Ürün Renk Seçenekleri</strong>: Mağaza ürün detayında beden ve renk açılır listeleri için virgülle ayırın (ör. <code>S,M,L,XL</code> ve renk adları).</li>
-    <li>Kategori şablonuna bağlı ek özellikler (özellik satırları) ürün listesinden “özellik” ikonuyla doldurulur; ölçü/renk seçeneklerinden ayrıdır.</li>
-</ul>
-<p style="margin-top: 12px; margin-bottom: 6px;"><strong>Örnek 1:</strong> Kategori “Tişörtler” → İsim “Basic Beyaz Tişört” → Fiyat 499 → Kaydet.</p>
-<p style="margin-bottom: 0;"><strong>Örnek 2:</strong> Aynı ürün → Kampanya işaretli + indirim 50 → kampanya vitrininde görünür.</p>
-@Html.Partial("_AdminHelpAccordionEnd")
 
 <div class="row">
 

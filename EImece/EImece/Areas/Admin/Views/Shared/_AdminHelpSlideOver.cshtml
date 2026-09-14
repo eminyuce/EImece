@@ -1,0 +1,452 @@
+@using Resources
+@{
+    string currentController = (ViewContext.RouteData.Values["controller"] ?? "Dashboard").ToString();
+    string currentAction = (ViewContext.RouteData.Values["action"] ?? "Index").ToString();
+    string declaredKey = ViewBag.HelpSettingKey as string;
+    string resolvedPageKey = !string.IsNullOrWhiteSpace(declaredKey) ? declaredKey : $"{currentController}_{currentAction}";
+}
+
+<!-- Backdrop Overlay with blur & darken -->
+<div id="adminHelpBackdrop" class="admin-help-backdrop" aria-hidden="true"></div>
+
+<!-- Slide-Over Panel (Desktop: Right 400px, Mobile/Tablet: Bottom Sheet max-height ~85vh) -->
+<aside id="adminHelpSlideOver"
+       class="admin-help-slideover"
+       role="dialog"
+       aria-labelledby="adminHelpSlideOverTitle"
+       aria-describedby="adminHelpSlideOverContent"
+       aria-modal="true"
+       aria-hidden="true"
+       tabindex="-1"
+       data-default-page-key="@resolvedPageKey">
+
+    <!-- Mobile/Tablet Grab Handle -->
+    <div class="admin-help-drag-handle-wrapper d-lg-none" aria-hidden="true">
+        <span class="admin-help-drag-handle"></span>
+    </div>
+
+    <!-- Header -->
+    <div class="admin-help-header">
+        <div class="admin-help-header-left">
+            <span class="admin-help-header-icon" aria-hidden="true">
+                <i class="fa-solid fa-circle-question"></i>
+            </span>
+            <div>
+                <h3 id="adminHelpSlideOverTitle" class="admin-help-title">@AdminResource.HowToUse</h3>
+                <span id="adminHelpSlideOverSubtitle" class="admin-help-subtitle">Sayfa Yardım Rehberi</span>
+            </div>
+        </div>
+        <button type="button"
+                id="btnCloseAdminHelpSlideOver"
+                class="admin-help-close-btn"
+                aria-label="@AdminResource.Close"
+                title="@AdminResource.Close">
+            <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+        </button>
+    </div>
+
+    <!-- Body Scrollable Content -->
+    <div class="admin-help-body" id="adminHelpSlideOverContent">
+
+        <!-- Loading Skeleton State -->
+        <div id="adminHelpSkeleton" class="admin-help-skeleton" aria-hidden="true">
+            <div class="admin-help-skeleton-line title shimmer"></div>
+            <div class="admin-help-skeleton-line meta shimmer"></div>
+            <div class="admin-help-skeleton-card shimmer mt-3">
+                <div class="admin-help-skeleton-line long shimmer"></div>
+                <div class="admin-help-skeleton-line medium shimmer"></div>
+                <div class="admin-help-skeleton-line short shimmer"></div>
+            </div>
+            <div class="admin-help-skeleton-card shimmer mt-3">
+                <div class="admin-help-skeleton-line medium shimmer"></div>
+                <div class="admin-help-skeleton-line long shimmer"></div>
+                <div class="admin-help-skeleton-line short shimmer"></div>
+            </div>
+        </div>
+
+        <!-- Rendered Content Container -->
+        <div id="adminHelpContent" class="admin-help-content" style="display:none;"></div>
+
+        <!-- Empty State Notice -->
+        <div id="adminHelpEmpty" class="admin-help-empty text-center py-4" style="display:none;">
+            <i class="fa-regular fa-file-lines fa-3x text-muted mb-3" aria-hidden="true"></i>
+            <h5 class="fw-bold text-dark mb-1">Rehber Bulunamadı</h5>
+            <p class="text-muted small mb-3">Bu sayfa için henüz bir yardım rehberi tanımlanmamış.</p>
+            <a href="@Url.Action("SystemSettings", "AdminSettings", new { area = "admin" })#tab-page-help"
+               class="btn btn-outline-primary btn-sm px-3 shadow-sm">
+                <i class="fa-solid fa-plus me-1" aria-hidden="true"></i>Bu Sayfa İçin Yardım Ekle
+            </a>
+        </div>
+
+        <!-- Error State Notice -->
+        <div id="adminHelpError" class="admin-help-error alert alert-warning" style="display:none;">
+            <i class="fa-solid fa-triangle-exclamation me-1" aria-hidden="true"></i>
+            <span>Yardım içeriği yüklenirken bir sorun oluştu.</span>
+            <button type="button" class="btn btn-outline-secondary btn-sm d-block mt-2" id="btnRetryAdminHelp">Tekrar Dene</button>
+        </div>
+
+    </div>
+
+    <!-- Footer: Metadata & "Was this helpful?" Feedback -->
+    <div class="admin-help-footer">
+        <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap gap-1">
+            <!-- Last updated date -->
+            <span id="adminHelpLastUpdated" class="admin-help-updated" style="display:none;">
+                <i class="fa-regular fa-clock me-1" aria-hidden="true"></i>
+                <span class="admin-help-updated-text"></span>
+            </span>
+
+            <!-- Admin quick link to edit in system settings -->
+            <a href="@Url.Action("SystemSettings", "AdminSettings", new { area = "admin" })#tab-page-help"
+               class="admin-help-admin-link"
+               title="Rehberi Sistem Ayarlarında Düzenle">
+                <i class="fa-solid fa-pen-to-square me-1" aria-hidden="true"></i>Rehberi Düzenle
+            </a>
+        </div>
+
+        <!-- "Was this helpful?" feedback section -->
+        <div id="adminHelpFeedbackSection" class="admin-help-feedback">
+            <span class="admin-help-feedback-label">Bu rehber yardımcı oldu mu?</span>
+            <div class="admin-help-feedback-buttons" id="adminHelpFeedbackButtons">
+                <button type="button"
+                        class="admin-help-feedback-btn btn-thumbs-up"
+                        data-helpful="true"
+                        title="Evet, yardımcı oldu"
+                        aria-label="Evet, yardımcı oldu">
+                    <i class="fa-regular fa-thumbs-up" aria-hidden="true"></i>
+                    <span>Evet</span>
+                </button>
+                <button type="button"
+                        class="admin-help-feedback-btn btn-thumbs-down"
+                        data-helpful="false"
+                        title="Hayır, yardımcı olmadı"
+                        aria-label="Hayır, yardımcı olmadı">
+                    <i class="fa-regular fa-thumbs-down" aria-hidden="true"></i>
+                    <span>Hayır</span>
+                </button>
+            </div>
+            <div id="adminHelpFeedbackThankYou" class="admin-help-feedback-thankyou" style="display:none;">
+                <i class="fa-solid fa-circle-check text-success me-1" aria-hidden="true"></i>
+                <span>Geri bildiriminiz için teşekkürler!</span>
+            </div>
+        </div>
+    </div>
+</aside>
+
+<script>
+(function (window, document) {
+    'use strict';
+
+    var slideOverEl = document.getElementById('adminHelpSlideOver');
+    var backdropEl = document.getElementById('adminHelpBackdrop');
+    var closeBtnEl = document.getElementById('btnCloseAdminHelpSlideOver');
+    var titleEl = document.getElementById('adminHelpSlideOverTitle');
+    var contentEl = document.getElementById('adminHelpContent');
+    var skeletonEl = document.getElementById('adminHelpSkeleton');
+    var emptyEl = document.getElementById('adminHelpEmpty');
+    var errorEl = document.getElementById('adminHelpError');
+    var lastUpdatedEl = document.getElementById('adminHelpLastUpdated');
+    var lastUpdatedTextEl = lastUpdatedEl ? lastUpdatedEl.querySelector('.admin-help-updated-text') : null;
+    var feedbackButtonsEl = document.getElementById('adminHelpFeedbackButtons');
+    var feedbackThankYouEl = document.getElementById('adminHelpFeedbackThankYou');
+    var retryBtnEl = document.getElementById('btnRetryAdminHelp');
+
+    if (!slideOverEl || !backdropEl) return;
+
+    var cache = {};
+    var votedKeys = {};
+    var lastTrigger = null;
+    var currentPageKey = null;
+    var isOpen = false;
+
+    // Body Scroll Lock with scrollbar shift compensation
+    var scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+
+    function lockBodyScroll() {
+        document.body.classList.add('admin-help-locked');
+        if (scrollbarWidth > 0) {
+            document.body.style.paddingRight = scrollbarWidth + 'px';
+        }
+    }
+
+    function unlockBodyScroll() {
+        document.body.classList.remove('admin-help-locked');
+        document.body.style.paddingRight = '';
+    }
+
+    // Markdown detection & simple renderer fallback
+    function renderContent(rawText) {
+        if (!rawText) return '';
+        var trimmed = rawText.trim();
+        // If it starts with HTML tags, render as HTML
+        if (trimmed.startsWith('<') && trimmed.endsWith('>')) {
+            return rawText;
+        }
+
+        // Simple Markdown parsing: headings, bold, lists, paragraphs, code
+        var html = trimmed
+            .replace(/^### (.*$)/gim, '<h6 class="fw-bold mt-3 mb-2">$1</h6>')
+            .replace(/^## (.*$)/gim, '<h5 class="fw-bold mt-3 mb-2">$1</h5>')
+            .replace(/^# (.*$)/gim, '<h4 class="fw-bold mt-3 mb-2">$1</h4>')
+            .replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>')
+            .replace(/\*(.*?)\*/gim, '<em>$1</em>')
+            .replace(/`([^`]+)`/gim, '<code>$1</code>')
+            .replace(/^\s*\n\*/gim, '<ul>\n*')
+            .replace(/^(\*|\-)\s+(.*$)/gim, '<li>$2</li>')
+            .replace(/\n\n+/g, '</p><p>');
+
+        return '<p>' + html + '</p>';
+    }
+
+    function fetchHelp(pageKey) {
+        if (!pageKey) return;
+        currentPageKey = pageKey;
+
+        // Reset states
+        skeletonEl.style.display = 'block';
+        contentEl.style.display = 'none';
+        emptyEl.style.display = 'none';
+        errorEl.style.display = 'none';
+        if (lastUpdatedEl) lastUpdatedEl.style.display = 'none';
+
+        // Check feedback vote state for this pageKey
+        if (votedKeys[pageKey]) {
+            feedbackButtonsEl.style.display = 'none';
+            feedbackThankYouEl.style.display = 'block';
+        } else {
+            feedbackButtonsEl.style.display = 'flex';
+            feedbackThankYouEl.style.display = 'none';
+        }
+
+        // Use cached result if available
+        if (cache[pageKey]) {
+            displayHelp(cache[pageKey]);
+            return;
+        }
+
+        var encodedKey = encodeURIComponent(pageKey);
+        var apiUrl = '@Url.Content("~/api/help/")' + encodedKey;
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', apiUrl, true);
+        xhr.setRequestHeader('Accept', 'application/json');
+
+        xhr.onload = function () {
+            if (xhr.status >= 200 && xhr.status < 300) {
+                try {
+                    var data = JSON.parse(xhr.responseText);
+                    cache[pageKey] = data;
+                    displayHelp(data);
+                } catch (e) {
+                    fallbackToMvcEndpoint(pageKey);
+                }
+            } else {
+                fallbackToMvcEndpoint(pageKey);
+            }
+        };
+
+        xhr.onerror = function () {
+            fallbackToMvcEndpoint(pageKey);
+        };
+
+        xhr.send();
+    }
+
+    function fallbackToMvcEndpoint(pageKey) {
+        var mvcUrl = '@Url.Action("GetPageHelp", "Dashboard", new { area = "admin" })?key=' + encodeURIComponent(pageKey);
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', mvcUrl, true);
+        xhr.setRequestHeader('Accept', 'application/json');
+
+        xhr.onload = function () {
+            skeletonEl.style.display = 'none';
+            if (xhr.status >= 200 && xhr.status < 300) {
+                try {
+                    var data = JSON.parse(xhr.responseText);
+                    displayHelp({
+                        title: titleEl.textContent || '@AdminResource.HowToUse',
+                        content: data.content,
+                        hasContent: data.hasContent,
+                        lastUpdated: null
+                    });
+                } catch (e) {
+                    errorEl.style.display = 'block';
+                }
+            } else {
+                errorEl.style.display = 'block';
+            }
+        };
+
+        xhr.onerror = function () {
+            skeletonEl.style.display = 'none';
+            errorEl.style.display = 'block';
+        };
+
+        xhr.send();
+    }
+
+    function displayHelp(data) {
+        skeletonEl.style.display = 'none';
+
+        if (data && data.title) {
+            titleEl.textContent = data.title;
+        }
+
+        var hasValidContent = data && data.hasContent && data.content &&
+            data.content.trim() !== 'RETURN-NULL-VALUE' &&
+            data.content.trim() !== '' &&
+            data.content.trim() !== 'null';
+
+        if (hasValidContent) {
+            contentEl.innerHTML = renderContent(data.content);
+            contentEl.style.display = 'block';
+            emptyEl.style.display = 'none';
+        } else {
+            contentEl.style.display = 'none';
+            emptyEl.style.display = 'block';
+
+            var helpBtn = document.getElementById('adminPageHelpBtn');
+            if (helpBtn) {
+                var parentLi = helpBtn.closest('.admin-topbar-help') || helpBtn;
+                parentLi.style.display = 'none';
+            }
+        }
+
+        if (data && data.lastUpdated && lastUpdatedEl && lastUpdatedTextEl) {
+            lastUpdatedTextEl.textContent = 'Son güncelleme: ' + data.lastUpdated;
+            lastUpdatedEl.style.display = 'inline-flex';
+        } else if (lastUpdatedEl) {
+            lastUpdatedEl.style.display = 'none';
+        }
+    }
+
+    function open(key, trigger) {
+        var targetKey = key || slideOverEl.getAttribute('data-default-page-key') || 'SystemUsers_help/info_section';
+        lastTrigger = trigger || document.activeElement;
+        isOpen = true;
+
+        lockBodyScroll();
+
+        backdropEl.classList.add('is-visible');
+        slideOverEl.classList.add('is-open');
+        slideOverEl.setAttribute('aria-hidden', 'false');
+
+        fetchHelp(targetKey);
+
+        // Focus close button inside panel
+        setTimeout(function () {
+            closeBtnEl.focus();
+        }, 180);
+    }
+
+    function close() {
+        if (!isOpen) return;
+        isOpen = false;
+
+        backdropEl.classList.remove('is-visible');
+        slideOverEl.classList.remove('is-open');
+        slideOverEl.setAttribute('aria-hidden', 'true');
+
+        unlockBodyScroll();
+
+        if (lastTrigger && typeof lastTrigger.focus === 'function') {
+            lastTrigger.focus();
+        }
+    }
+
+    // Feedback POST
+    function submitFeedback(isHelpful) {
+        if (!currentPageKey || votedKeys[currentPageKey]) return;
+
+        votedKeys[currentPageKey] = true;
+        feedbackButtonsEl.style.display = 'none';
+        feedbackThankYouEl.style.display = 'block';
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '@Url.Content("~/api/help/feedback")', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+
+        xhr.send(JSON.stringify({
+            pageKey: currentPageKey,
+            isHelpful: isHelpful
+        }));
+    }
+
+    // Event Listeners
+    if (closeBtnEl) {
+        closeBtnEl.addEventListener('click', close);
+    }
+
+    if (backdropEl) {
+        backdropEl.addEventListener('click', close);
+    }
+
+    if (retryBtnEl) {
+        retryBtnEl.addEventListener('click', function () {
+            if (currentPageKey) fetchHelp(currentPageKey);
+        });
+    }
+
+    // Feedback buttons
+    if (feedbackButtonsEl) {
+        var fbBtns = feedbackButtonsEl.querySelectorAll('.admin-help-feedback-btn');
+        for (var i = 0; i < fbBtns.length; i++) {
+            (function (btn) {
+                btn.addEventListener('click', function () {
+                    var isHelpful = btn.getAttribute('data-helpful') === 'true';
+                    submitFeedback(isHelpful);
+                });
+            })(fbBtns[i]);
+        }
+    }
+
+    // Keyboard ESC & Tab Trap
+    document.addEventListener('keydown', function (e) {
+        if (!isOpen) return;
+
+        if (e.key === 'Escape' || e.keyCode === 27) {
+            e.preventDefault();
+            close();
+            return;
+        }
+
+        if (e.key === 'Tab' || e.keyCode === 9) {
+            var focusables = slideOverEl.querySelectorAll('button:not([disabled]), [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+            if (!focusables.length) return;
+
+            var first = focusables[0];
+            var last = focusables[focusables.length - 1];
+
+            if (e.shiftKey) {
+                if (document.activeElement === first) {
+                    e.preventDefault();
+                    last.focus();
+                }
+            } else {
+                if (document.activeElement === last) {
+                    e.preventDefault();
+                    first.focus();
+                }
+            }
+        }
+    });
+
+    // Wire global trigger button
+    var topbarHelpBtn = document.getElementById('adminPageHelpBtn');
+    if (topbarHelpBtn) {
+        topbarHelpBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            var btnKey = topbarHelpBtn.getAttribute('data-page-key');
+            open(btnKey, topbarHelpBtn);
+        });
+    }
+
+    // Expose global API
+    window.adminHelpSlideOver = {
+        open: open,
+        close: close,
+        fetch: fetchHelp
+    };
+
+})(window, document);
+</script>

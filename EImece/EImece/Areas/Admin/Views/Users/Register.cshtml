@@ -3,19 +3,12 @@
 
 @{
     ViewBag.Title = AdminResource.Register;
+    ViewBag.HelpSettingKey = "Users_Register_help/info_section";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
 <h2>@AdminResource.CreateNewAccount</h2>
 <hr class="adminLine" />
-
-@{ ViewData["HelpId"] = "userRegisterHelp"; }
-@Html.Partial("_AdminHelpAccordionStart")
-<ul style="margin-top: 0;">
-    <li>@AdminResource.UserEditHelp1</li>
-    <li>@AdminResource.UserEditHelp2</li>
-</ul>
-@Html.Partial("_AdminHelpAccordionEnd")
 
 @using (Html.BeginForm("Register", "Users", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {

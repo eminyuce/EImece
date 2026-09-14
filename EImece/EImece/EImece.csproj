@@ -527,6 +527,7 @@
     <Compile Include="Controllers\UrlController.cs" />
     <Compile Include="Controllers\Api\V1\RegionsApiController.cs" />
     <Compile Include="Controllers\Api\V1\SubscribersApiController.cs" />
+    <Compile Include="Controllers\Api\HelpApiController.cs" />
     <Compile Include="Controllers\Api\V1\CartApiController.cs" />
     <Compile Include="Controllers\Api\V1\OrdersApiController.cs" />
     <Compile Include="App_Start\DesignConfig.cs" />
@@ -1108,6 +1109,8 @@
     <Content Include="Areas\Admin\Views\Shared\_AdminEditNextStep.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_AdminHelpAccordionStart.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_AdminHelpAccordionEnd.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_AdminHelpModal.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_AdminHelpSlideOver.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_AdminTreePicker.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\Grid\_GridChrome.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\Grid\_GridImageCell.cshtml" />

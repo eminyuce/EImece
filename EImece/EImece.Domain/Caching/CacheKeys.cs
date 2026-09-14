@@ -62,6 +62,8 @@ namespace EImece.Domain.Caching
         public const string WebSiteLogoImageLegacy = "WebSiteLogo";
         public static string AllSettings(int language) => string.Format(CultureInfo.InvariantCulture, "{0}all:lang{1}", SettingPrefix, language);
         public static string AllSettingsAsync(int language) => AllSettings(language) + ":async";
+        public static string PageHelpPrefix => SettingArea + ":pagehelp:";
+        public static string PageHelpDictionary => SettingArea + ":pagehelp:all_dict";
 
         #endregion
 

@@ -72,6 +72,44 @@ namespace EImece.Areas.Admin.Controllers
             return View();
         }
 
+        // GET: Admin/Dashboard/GetPageHelp?key=...
+        [HttpGet]
+        public async Task<ActionResult> GetPageHelp(string key)
+        {
+            if (string.IsNullOrWhiteSpace(key))
+            {
+                return Json(new { success = false, message = "Key is required." }, JsonRequestBehavior.AllowGet);
+            }
+
+            string cleanKey = key.Trim();
+            var item = await PageHelpHelper.GetHelpItemAsync(cleanKey, SettingService, MemoryCacheProvider).ConfigureAwait(false);
+
+            string content = item?.CurrentContent;
+            if (string.IsNullOrWhiteSpace(content) && SettingService != null)
+            {
+                content = await SettingService.GetSettingByKeyAsync(cleanKey).ConfigureAwait(false);
+                if (string.IsNullOrWhiteSpace(content))
+                {
+                    content = PageHelpHelper.GetDefaultContent(cleanKey);
+                }
+            }
+
+            bool hasContent = !string.IsNullOrWhiteSpace(content);
+
+            return Json(new
+            {
+                success = true,
+                key = cleanKey,
+                hasContent = hasContent,
+                content = content ?? string.Empty
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        private static string GetDefaultHelpContent(string key)
+        {
+            return PageHelpHelper.GetDefaultContent(key);
+        }
+
         [HttpGet]
         public async Task<ActionResult> SearchContent(CancellationToken cancellationToken, String searchContent)
         {

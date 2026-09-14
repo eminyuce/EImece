@@ -3,6 +3,7 @@
 @using EImece.Domain.Helpers;
 @{
     ViewBag.Title = AdminResource.AdminGeneralSettings;
+    ViewBag.HelpSettingKey = "AdminSettings_help/info_section";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 
     EImece.Domain.Entities.Setting isProductPriceEnable = ViewBag.IsProductPriceEnable;
@@ -14,21 +15,6 @@
 @Html.AdminBreadcrumb(AdminResource.AdminGeneralSettings)
 <h2 class="admin-page-title">@AdminResource.AdminGeneralSettings</h2>
 <hr class="adminLine" />
-
-@{ ViewData["HelpId"] = "generalSettingsHelp"; }
-@Html.Partial("_AdminHelpAccordionStart")
-<ul style="margin-top: 0;">
-    <li>@AdminResource.AdminGeneralSettingsHelpLead</li>
-    <li><strong>@AdminResource.CompanyAndContactInfo:</strong> @AdminResource.CompanyInfoAndContactHelp</li>
-    @if (productPriceEnabled)
-    {
-        <li><strong>@AdminResource.CargoSettings:</strong> @AdminResource.AdminGeneralSettingsCargoHelp</li>
-    }
-    <li><strong>@AdminResource.SeoSettings:</strong> @AdminResource.AdminGeneralSettingsSeoHelp</li>
-    <li><strong>@AdminResource.FooterSettings:</strong> @AdminResource.AdminGeneralSettingsFooterHelp</li>
-</ul>
-<p style="margin-top: 12px; margin-bottom: 0;"><strong>@AdminResource.Important:</strong> @AdminResource.AdminGeneralSettingsSaveWarning</p>
-@Html.Partial("_AdminHelpAccordionEnd")
 
 @using (Html.BeginForm("Index", "AdminSettings"))
 {

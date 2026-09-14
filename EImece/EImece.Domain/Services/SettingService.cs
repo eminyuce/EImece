@@ -75,7 +75,11 @@ namespace EImece.Domain.Services
                 DataCachingProvider.Clear(CacheKeys.WebAppManifest);
                 DataCachingProvider.Clear(CacheKeys.WebSiteLogoImage);
                 DataCachingProvider.Clear(CacheKeys.WebSiteLogoImageLegacy);
+                DataCachingProvider.Clear(CacheKeys.PageHelpDictionary);
+                DataCachingProvider.Clear(CacheKeys.PageHelpDictionary + "_ASYNC");
+                DataCachingProvider.ClearByPrefix(CacheKeys.PageHelpPrefix);
             }
+            PageHelpHelper.EvictCache(DataCachingProvider);
         }
 
         private const string SettingValueDtoCachePrefix = "SettingValueDto:";

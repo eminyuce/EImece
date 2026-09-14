@@ -7,26 +7,13 @@
     var saveButtonText = AdminResource.SaveButtonText;
     var ExistingMainImageText = AdminResource.ExistingMainImageText;
     ViewBag.Title = "SaveOrEdit";
+    ViewBag.HelpSettingKey = "Brands_help/info_section";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
     var saveButtonAndCloseText = AdminResource.SaveButtonAndCloseText;
-
 }
  
 <h2>@AdminResource.Brands</h2>
 <hr class="adminLine" />
-
-@{ ViewData["HelpId"] = "brandsHelp"; }
-@Html.Partial("_AdminHelpAccordionStart")
-<ul style="margin-top: 0; margin-bottom: 0;">
-    <li>Bu sayfada <strong>marka</strong> oluşturur veya düzenlersiniz.</li>
-    <li><strong>İsim</strong>: Markanın görünen adı.</li>
-    <li><strong>Yayında mı</strong>: İşaretliyse marka sitede görünür.</li>
-    <li><strong>Ana sayfa</strong>: İşaretliyse marka ana sayfada listelenir.</li>
-    <li><strong>Sırası</strong>: Listede görünme sırası; küçük sayı önce gelir.</li>
-    <li><strong>Resim</strong>: Marka logosunu yükleyin. <strong>Resim durumu</strong> ile görüntülenmeyi açıp kapatabilirsiniz.</li>
-    <li><strong>Genel açıklama</strong>: 2. sekmedeki içerik editöründe yazılır.</li>
-</ul>
-@Html.Partial("_AdminHelpAccordionEnd")
 
 @using (Html.BeginForm("SaveOrEdit", "brands", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {

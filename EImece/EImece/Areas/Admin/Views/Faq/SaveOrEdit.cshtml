@@ -10,22 +10,12 @@
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
     var saveButtonAndCloseText = AdminResource.SaveButtonAndCloseText;
     ViewBag.Title = AdminResource.Faq;
+    ViewBag.HelpSettingKey = "Faq_help/info_section";
     ViewBag.ContentSectionTitle = AdminResource.Answer;
 }
 
 <h2>@AdminResource.Faq</h2>
 <hr class="adminLine" />
-
-@{ ViewData["HelpId"] = "faqHelp"; }
-@Html.Partial("_AdminHelpAccordionStart")
-<ul style="margin-top: 0; margin-bottom: 0;">
-    <li>Bu sayfada <strong>sık sorulan soru (SSS)</strong> ekler veya düzenlersiniz.</li>
-    <li><strong>İsim</strong>: Yönetimde görünen kısa başlık.</li>
-    <li><strong>Soru</strong>: Ziyaretçiye gösterilen soru metni.</li>
-    <li><strong>Cevap</strong>: 2. sekmedeki içerik editöründe yazılır.</li>
-    <li><strong>Yayında / Sıra</strong>: Sitede görünme ve listelenme sırası.</li>
-</ul>
-@Html.Partial("_AdminHelpAccordionEnd")
 
 @using (Html.BeginForm("SaveOrEdit", "Faq", FormMethod.Post))
 {

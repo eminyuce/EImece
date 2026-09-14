@@ -587,7 +587,8 @@ body.admin-app.sidebar-collapsed .admin-sidebar-toggle .admin-toggle-icon-expand
     align-items: center;
 }
 
-.admin-topbar-actions > li > a {
+.admin-topbar-actions > li > a,
+.admin-topbar-actions > li > button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -598,16 +599,28 @@ body.admin-app.sidebar-collapsed .admin-sidebar-toggle .admin-toggle-icon-expand
     font-size: 12px;
     font-weight: 600;
     border-radius: 6px;
+    border: 0;
+    background: transparent;
     white-space: nowrap;
     touch-action: manipulation;
     -webkit-tap-highlight-color: transparent;
+    cursor: pointer;
+    font-family: inherit;
+    line-height: inherit;
 }
 
 .admin-topbar-actions > li > a:hover,
-.admin-topbar-actions > li > a:focus {
+.admin-topbar-actions > li > a:focus,
+.admin-topbar-actions > li > button:hover,
+.admin-topbar-actions > li > button:focus {
     background: #f0f4f8;
     color: #102a43;
     text-decoration: none;
+    outline: none;
+}
+
+.admin-topbar-actions > li > button:focus-visible {
+    box-shadow: 0 0 0 2px rgba(11, 110, 153, 0.4);
 }
 
 .admin-topbar-actions .form-control {
@@ -2037,3 +2050,349 @@ body.admin-app.admin-mega-open .admin-sidebar-overlay {
         transform: none;
     }
 }
+
+/* ==========================================================================
+   Admin Global Contextual Page Help Modal
+   ========================================================================== */
+.admin-help-modal-dialog {
+    max-width: 580px;
+    margin: 1.75rem auto;
+}
+
+/* ==========================================================================
+   Admin Right-Side Slide-Over Help Panel & Bottom Sheet (< 1024px)
+   ========================================================================== */
+
+/* Body scroll lock with scrollbar compensation */
+body.admin-help-locked {
+    overflow: hidden !important;
+}
+
+/* Backdrop overlay with blur & darken */
+.admin-help-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.45);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 1049;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.admin-help-backdrop.is-visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Slide-over panel (Desktop: >= 1024px) */
+.admin-help-slideover {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 400px;
+    max-width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    background: #ffffff;
+    box-shadow: -8px 0 28px rgba(15, 23, 42, 0.14), -1px 0 3px rgba(15, 23, 42, 0.08);
+    z-index: 1050;
+    display: flex;
+    flex-direction: column;
+    transform: translateX(100%);
+    transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+    outline: none;
+}
+
+.admin-help-slideover.is-open {
+    transform: translateX(0);
+}
+
+/* Tablet & Mobile: Bottom sheet (< 1024px) */
+@media (max-width: 1023.98px) {
+    .admin-help-slideover {
+        top: auto;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        max-height: 85vh;
+        max-height: 85dvh;
+        border-radius: 20px 20px 0 0;
+        box-shadow: 0 -8px 30px rgba(15, 23, 42, 0.18);
+        transform: translateY(100%);
+        transition: transform 0.34s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .admin-help-slideover.is-open {
+        transform: translateY(0);
+    }
+}
+
+/* Grab handle for bottom sheet */
+.admin-help-drag-handle-wrapper {
+    display: flex;
+    justify-content: center;
+    padding: 10px 0 4px;
+}
+
+.admin-help-drag-handle {
+    width: 40px;
+    height: 5px;
+    border-radius: 999px;
+    background: #cbd5e1;
+}
+
+/* Header */
+.admin-help-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #f8fafc;
+    flex-shrink: 0;
+}
+
+.admin-help-header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.admin-help-header-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: #e0f2fe;
+    color: #0284c7;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+}
+
+.admin-help-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0;
+    line-height: 1.25;
+}
+
+.admin-help-subtitle {
+    font-size: 11px;
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    display: block;
+}
+
+.admin-help-close-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: #64748b;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.admin-help-close-btn:hover {
+    background: #e2e8f0;
+    color: #0f172a;
+}
+
+.admin-help-close-btn:focus-visible {
+    outline: 2px solid #0284c7;
+    outline-offset: 1px;
+}
+
+/* Body & Content */
+.admin-help-body {
+    padding: 20px;
+    overflow-y: auto;
+    flex: 1 1 auto;
+    overscroll-behavior: contain;
+    font-size: 14px;
+    line-height: 1.65;
+    color: #334155;
+}
+
+.admin-help-content p {
+    margin-bottom: 12px;
+}
+
+.admin-help-content p:last-child {
+    margin-bottom: 0;
+}
+
+.admin-help-content ul {
+    padding-left: 20px;
+    margin-bottom: 12px;
+}
+
+.admin-help-content ul:last-child {
+    margin-bottom: 0;
+}
+
+.admin-help-content li {
+    margin-bottom: 6px;
+}
+
+.admin-help-content strong {
+    color: #0f172a;
+    font-weight: 600;
+}
+
+.admin-help-content code {
+    background: #f1f5f9;
+    color: #0f172a;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 12.5px;
+    font-family: var(--bs-font-monospace);
+}
+
+.admin-help-empty {
+    text-align: center;
+    padding: 30px 10px;
+}
+
+/* Skeleton Loading Shimmer */
+.admin-help-skeleton-line {
+    height: 14px;
+    border-radius: 6px;
+    background: #e2e8f0;
+    margin-bottom: 10px;
+}
+
+.admin-help-skeleton-line.title {
+    height: 22px;
+    width: 65%;
+    margin-bottom: 12px;
+}
+
+.admin-help-skeleton-line.meta {
+    height: 12px;
+    width: 40%;
+    margin-bottom: 20px;
+}
+
+.admin-help-skeleton-line.long { width: 100%; }
+.admin-help-skeleton-line.medium { width: 85%; }
+.admin-help-skeleton-line.short { width: 55%; }
+
+.admin-help-skeleton-card {
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 14px;
+    background: #f8fafc;
+}
+
+.shimmer {
+    background: linear-gradient(90deg, #f1f5f9 0%, #e2e8f0 50%, #f1f5f9 100%);
+    background-size: 200% 100%;
+    animation: adminHelpShimmer 1.5s infinite;
+}
+
+@keyframes adminHelpShimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* Footer & Feedback */
+.admin-help-footer {
+    padding: 14px 20px;
+    border-top: 1px solid #e2e8f0;
+    background: #f8fafc;
+    flex-shrink: 0;
+}
+
+.admin-help-updated {
+    font-size: 12px;
+    color: #64748b;
+    display: inline-flex;
+    align-items: center;
+}
+
+.admin-help-admin-link {
+    font-size: 12px;
+    font-weight: 600;
+    color: #0284c7;
+    text-decoration: none;
+}
+
+.admin-help-admin-link:hover {
+    text-decoration: underline;
+}
+
+.admin-help-feedback {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px dashed #e2e8f0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.admin-help-feedback-label {
+    font-size: 12.5px;
+    font-weight: 500;
+    color: #475569;
+}
+
+.admin-help-feedback-buttons {
+    display: flex;
+    gap: 6px;
+}
+
+.admin-help-feedback-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    font-size: 12px;
+    font-weight: 600;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    background: #ffffff;
+    color: #334155;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.admin-help-feedback-btn:hover {
+    background: #f1f5f9;
+    border-color: #94a3b8;
+}
+
+.admin-help-feedback-btn.btn-thumbs-up:hover {
+    color: #059669;
+    border-color: #059669;
+    background: #ecfdf5;
+}
+
+.admin-help-feedback-btn.btn-thumbs-down:hover {
+    color: #dc2626;
+    border-color: #dc2626;
+    background: #fef2f2;
+}
+
+.admin-help-feedback-thankyou {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #059669;
+    display: flex;
+    align-items: center;
+}
+
