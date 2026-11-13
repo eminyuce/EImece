@@ -44,8 +44,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AutoMapper, Version=16.0.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoMapper.16.2.0\lib\net471\AutoMapper.dll</HintPath>
+    <Reference Include="AutoMapper, Version=16.0.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005">
+      <HintPath>..\packages\AutoMapper.16.3.0\lib\net471\AutoMapper.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Azure.Core, Version=1.60.0.0, Culture=neutral, PublicKeyToken=92742159e12e44c8, processorArchitecture=MSIL">
       <HintPath>..\packages\Azure.Core.1.60.0\lib\net472\Azure.Core.dll</HintPath>
@@ -68,8 +69,9 @@
     <Reference Include="Microsoft.ApplicationInsights, Version=3.1.2.115, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.ApplicationInsights.3.1.2\lib\net462\Microsoft.ApplicationInsights.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=10.0.0.10, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.10.0.10\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=11.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
+      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.11.0.0\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Bcl.Cryptography, Version=10.0.0.10, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.Cryptography.10.0.10\lib\net462\Microsoft.Bcl.Cryptography.dll</HintPath>
@@ -87,17 +89,21 @@
     <Reference Include="Microsoft.Extensions.Caching.Memory, Version=10.0.0.10, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.Caching.Memory.10.0.10\lib\net462\Microsoft.Extensions.Caching.Memory.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Extensions.Configuration, Version=10.0.0.10, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.Configuration.10.0.10\lib\net462\Microsoft.Extensions.Configuration.dll</HintPath>
+    <Reference Include="Microsoft.Extensions.Configuration, Version=11.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60">
+      <HintPath>..\packages\Microsoft.Extensions.Configuration.11.0.0\lib\net462\Microsoft.Extensions.Configuration.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Extensions.Configuration.Abstractions, Version=10.0.0.10, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.Configuration.Abstractions.10.0.10\lib\net462\Microsoft.Extensions.Configuration.Abstractions.dll</HintPath>
+    <Reference Include="Microsoft.Extensions.Configuration.Abstractions, Version=11.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60">
+      <HintPath>..\packages\Microsoft.Extensions.Configuration.Abstractions.11.0.0\lib\net462\Microsoft.Extensions.Configuration.Abstractions.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Extensions.Configuration.Binder, Version=10.0.0.10, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.Configuration.Binder.10.0.10\lib\net462\Microsoft.Extensions.Configuration.Binder.dll</HintPath>
+    <Reference Include="Microsoft.Extensions.Configuration.Binder, Version=11.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60">
+      <HintPath>..\packages\Microsoft.Extensions.Configuration.Binder.11.0.0\lib\net462\Microsoft.Extensions.Configuration.Binder.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Extensions.Configuration.EnvironmentVariables, Version=10.0.0.10, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.Configuration.EnvironmentVariables.10.0.10\lib\net462\Microsoft.Extensions.Configuration.EnvironmentVariables.dll</HintPath>
+    <Reference Include="Microsoft.Extensions.Configuration.EnvironmentVariables, Version=11.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60">
+      <HintPath>..\packages\Microsoft.Extensions.Configuration.EnvironmentVariables.11.0.0\lib\net462\Microsoft.Extensions.Configuration.EnvironmentVariables.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Extensions.Configuration.FileExtensions, Version=8.0.0.1, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.Configuration.FileExtensions.8.0.1\lib\net462\Microsoft.Extensions.Configuration.FileExtensions.dll</HintPath>
@@ -105,17 +111,24 @@
     <Reference Include="Microsoft.Extensions.Configuration.Json, Version=8.0.0.1, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.Configuration.Json.8.0.1\lib\net462\Microsoft.Extensions.Configuration.Json.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection, Version=11.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60">
+      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.11.0.0\lib\net462\Microsoft.Extensions.DependencyInjection.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=11.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60">
+      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.11.0.0\lib\net462\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Diagnostics.Abstractions, Version=11.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60">
+      <HintPath>..\packages\Microsoft.Extensions.Diagnostics.Abstractions.11.0.0\lib\net462\Microsoft.Extensions.Diagnostics.Abstractions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.FileProviders.Abstractions, Version=11.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60">
+      <HintPath>..\packages\Microsoft.Extensions.FileProviders.Abstractions.11.0.0\lib\net462\Microsoft.Extensions.FileProviders.Abstractions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.Extensions.FileProviders.Physical, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.FileProviders.Physical.8.0.0\lib\net462\Microsoft.Extensions.FileProviders.Physical.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.DependencyInjection, Version=10.0.0.10, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.10.0.10\lib\net462\Microsoft.Extensions.DependencyInjection.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=10.0.0.10, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.10.0.10\lib\net462\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.Diagnostics.Abstractions, Version=10.0.0.10, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.Diagnostics.Abstractions.10.0.10\lib\net462\Microsoft.Extensions.Diagnostics.Abstractions.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Extensions.Diagnostics.HealthChecks, Version=8.0.11.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.Diagnostics.HealthChecks.8.0.11\lib\net462\Microsoft.Extensions.Diagnostics.HealthChecks.dll</HintPath>
@@ -123,20 +136,55 @@
     <Reference Include="Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions, Version=8.0.11.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions.8.0.11\lib\net462\Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Extensions.FileProviders.Abstractions, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.FileProviders.Abstractions.8.0.0\lib\net462\Microsoft.Extensions.FileProviders.Abstractions.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Extensions.FileSystemGlobbing, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.FileSystemGlobbing.8.0.0\lib\net462\Microsoft.Extensions.FileSystemGlobbing.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Extensions.Hosting.Abstractions, Version=8.0.0.1, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.Hosting.Abstractions.8.0.1\lib\net462\Microsoft.Extensions.Hosting.Abstractions.dll</HintPath>
+    <Reference Include="Microsoft.Extensions.Hosting.Abstractions, Version=11.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60">
+      <HintPath>..\packages\Microsoft.Extensions.Hosting.Abstractions.11.0.0\lib\net462\Microsoft.Extensions.Hosting.Abstractions.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Extensions.Http, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.Http.8.0.0\lib\net462\Microsoft.Extensions.Http.dll</HintPath>
+    <Reference Include="Microsoft.Extensions.Http, Version=11.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60">
+      <HintPath>..\packages\Microsoft.Extensions.Http.11.0.0\lib\net462\Microsoft.Extensions.Http.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Extensions.Http.Polly, Version=8.0.11.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.Http.Polly.8.0.11\lib\netstandard2.0\Microsoft.Extensions.Http.Polly.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging, Version=11.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60">
+      <HintPath>..\packages\Microsoft.Extensions.Logging.11.0.0\lib\net462\Microsoft.Extensions.Logging.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging.Abstractions, Version=11.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60">
+      <HintPath>..\packages\Microsoft.Extensions.Logging.Abstractions.11.0.0\lib\net462\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging.Configuration, Version=11.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60">
+      <HintPath>..\packages\Microsoft.Extensions.Logging.Configuration.11.0.0\lib\net462\Microsoft.Extensions.Logging.Configuration.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Options, Version=11.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60">
+      <HintPath>..\packages\Microsoft.Extensions.Options.11.0.0\lib\net462\Microsoft.Extensions.Options.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Options.ConfigurationExtensions, Version=11.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60">
+      <HintPath>..\packages\Microsoft.Extensions.Options.ConfigurationExtensions.11.0.0\lib\net462\Microsoft.Extensions.Options.ConfigurationExtensions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Primitives, Version=11.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60">
+      <HintPath>..\packages\Microsoft.Extensions.Primitives.11.0.0\lib\net462\Microsoft.Extensions.Primitives.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="OpenTelemetry, Version=1.0.0.0, Culture=neutral, PublicKeyToken=7bd6737fe5b67e3c">
+      <HintPath>..\packages\OpenTelemetry.1.21.0\lib\net462\OpenTelemetry.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="OpenTelemetry.Api, Version=1.0.0.0, Culture=neutral, PublicKeyToken=7bd6737fe5b67e3c">
+      <HintPath>..\packages\OpenTelemetry.Api.1.21.0\lib\net462\OpenTelemetry.Api.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="OpenTelemetry.Api.ProviderBuilderExtensions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=7bd6737fe5b67e3c">
+      <HintPath>..\packages\OpenTelemetry.Api.ProviderBuilderExtensions.1.21.0\lib\net462\OpenTelemetry.Api.ProviderBuilderExtensions.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Polly.Extensions.Http, Version=3.0.0.0, Culture=neutral, PublicKeyToken=c8a3ffc3f8f825cc, processorArchitecture=MSIL">
       <HintPath>..\packages\Polly.Extensions.Http.3.0.0\lib\netstandard2.0\Polly.Extensions.Http.dll</HintPath>
@@ -149,24 +197,6 @@
     </Reference>
     <Reference Include="Microsoft.Extensions.ObjectPool, Version=8.0.11.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.ObjectPool.8.0.11\lib\net462\Microsoft.Extensions.ObjectPool.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.Logging, Version=10.0.0.10, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.Logging.10.0.10\lib\net462\Microsoft.Extensions.Logging.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.Logging.Abstractions, Version=10.0.0.10, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.Logging.Abstractions.10.0.10\lib\net462\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.Logging.Configuration, Version=10.0.0.10, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.Logging.Configuration.10.0.10\lib\net462\Microsoft.Extensions.Logging.Configuration.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.Options, Version=10.0.0.10, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.Options.10.0.10\lib\net462\Microsoft.Extensions.Options.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.Options.ConfigurationExtensions, Version=10.0.0.10, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.Options.ConfigurationExtensions.10.0.10\lib\net462\Microsoft.Extensions.Options.ConfigurationExtensions.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.Primitives, Version=10.0.0.10, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.Primitives.10.0.10\lib\net462\Microsoft.Extensions.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Identity.Client, Version=4.87.0.0, Culture=neutral, PublicKeyToken=0a613f4dd989e8ae, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Identity.Client.4.87.0\lib\net472\Microsoft.Identity.Client.dll</HintPath>
@@ -234,15 +264,6 @@
     <Reference Include="NLog.Extensions.Logging, Version=6.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\packages\NLog.Extensions.Logging.6.1.4\lib\net462\NLog.Extensions.Logging.dll</HintPath>
     </Reference>
-    <Reference Include="OpenTelemetry, Version=1.0.0.0, Culture=neutral, PublicKeyToken=7bd6737fe5b67e3c, processorArchitecture=MSIL">
-      <HintPath>..\packages\OpenTelemetry.1.17.0\lib\net462\OpenTelemetry.dll</HintPath>
-    </Reference>
-    <Reference Include="OpenTelemetry.Api, Version=1.0.0.0, Culture=neutral, PublicKeyToken=7bd6737fe5b67e3c, processorArchitecture=MSIL">
-      <HintPath>..\packages\OpenTelemetry.Api.1.17.0\lib\net462\OpenTelemetry.Api.dll</HintPath>
-    </Reference>
-    <Reference Include="OpenTelemetry.Api.ProviderBuilderExtensions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=7bd6737fe5b67e3c, processorArchitecture=MSIL">
-      <HintPath>..\packages\OpenTelemetry.Api.ProviderBuilderExtensions.1.17.0\lib\net462\OpenTelemetry.Api.ProviderBuilderExtensions.dll</HintPath>
-    </Reference>
     <Reference Include="OpenTelemetry.PersistentStorage.Abstractions, Version=1.1.1.1228, Culture=neutral, PublicKeyToken=7bd6737fe5b67e3c, processorArchitecture=MSIL">
       <HintPath>..\packages\OpenTelemetry.PersistentStorage.Abstractions.1.1.1\lib\net462\OpenTelemetry.PersistentStorage.Abstractions.dll</HintPath>
     </Reference>
@@ -271,8 +292,9 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Diagnostics.DiagnosticSource, Version=10.0.0.10, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Diagnostics.DiagnosticSource.10.0.10\lib\net462\System.Diagnostics.DiagnosticSource.dll</HintPath>
+    <Reference Include="System.Diagnostics.DiagnosticSource, Version=11.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
+      <HintPath>..\packages\System.Diagnostics.DiagnosticSource.11.0.0\lib\net462\System.Diagnostics.DiagnosticSource.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Formats.Asn1, Version=10.0.0.10, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
